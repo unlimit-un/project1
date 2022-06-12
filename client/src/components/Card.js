@@ -3,10 +3,9 @@ import React from 'react'
 function Card() {
   return (
     <>
-        <div class ="d-flex flex-column bd-highlight mb-3">
-            <div className="d-lg-none">คำขออนุมัติ</div>
-
-        </div>
+        <div className ="border my-2 border-primary rounded">คำขออนุมัติ</div>
+        <div className ="border my-2 border-primary rounded">คำขออนุมัติ1</div>
+       
     </>
   )
 }
