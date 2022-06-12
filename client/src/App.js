@@ -1,9 +1,18 @@
 import React from 'react'
+import { Routes, Route } from 'react-router-dom'
+import { HomePage } from './pages/HomePage';
 function App() {
   return (
-    <h1 className="text-3xl font-bold underline text-primary">
-      Hello world!  
-    </h1>
+    <>
+      <div className="bg-gray-100 min-h-screen">
+        <div className="flex justify-center items-center min-h-screen">
+          <h1 className="m-0 text-2xl text-black">Hello Project</h1>
+        </div>
+        <Routes>
+          <Route path='/' exac element={<HomePage/>}/>
+        </Routes>
+      </div>
+    </>
   );
 }
 
