@@ -1,4 +1,5 @@
 import React from 'react'
+import Card from '../../components/Card'
 import Navbar from '../../components/manager/NavbarM'
 import { SidebarM } from '../../components/manager/SidebarM'
 export const HomePageM = () => {
@@ -10,7 +11,9 @@ export const HomePageM = () => {
                 <div className="col-lg-2 col-md-3 col-12">
                     <SidebarM/>
                 </div>
-                <div className="col-lg-10 col-md-9 col-12"></div>
+                <div className="col-lg-10 col-md-9 col-12">
+                    <Card/>
+                </div>
             </div>
         </div>
     </>
