@@ -1,5 +1,5 @@
 import React from 'react'
-import Card from '../../components/Card'
+import Card from '../../components/manager/Card'
 import Navbar from '../../components/manager/NavbarM'
 import { SidebarM } from '../../components/manager/SidebarM'
 export const HomePageM = () => {
