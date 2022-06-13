@@ -16,9 +16,9 @@ export const HomePageM = () => {
                         <div className="col-lg-3 col-md-4 col-xs-12 p-0">
                             <SidebarM/>
                         </div>
-                        <div className="col-lg-9 col-md-4 col-xs-12 p-0">
+                        <div className="col-lg-9 col-md-8 col-xs-12 p-0">
                             <div className="container mt-3">
-                                <div className="row items-stretch gap-y-5">
+                                <div className="row gap-y-5">
                                     <div className="col-md-7 col-12">
                                         <CardM label="ขออนุมัติ" icon={faClipboardCheck} content={content} color="green"/>
                                     </div>
