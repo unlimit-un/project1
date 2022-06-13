@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 
 const CardFillColorM = ({title, subTitle, caption, color}) => {
 
-    const [classColor,setClassColor] = useState({
+    const classColor= {
         body: `card-body bg-${color}-400`,
-        footer: `card-footer !bg-${color}-600 text-center`,
-    })
+        footer: `card-footer !bg-${color}-500 text-center`,
+    }
     return (
         <>
             <div className="card text-white">

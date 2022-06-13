@@ -1,20 +1,47 @@
-import { faBell, faBuilding, faClipboardCheck } from '@fortawesome/free-solid-svg-icons'
-import React from 'react'
-import CardFillColorM from '../../components/manager/CardFillColorM'
-import CardM from '../../components/manager/CardM'
+import { faBars, faBell, faBuilding, faChartLine, faClipboardCheck, faHamburger } from '@fortawesome/free-solid-svg-icons'
+import React, { useEffect, useState } from 'react'
+import CardFillColorM from '../../components/manager/subComponents/CardFillColorM'
+import CardM from '../../components/manager/subComponents/CardM'
 import Navbar from '../../components/manager/NavbarM'
 import SidebarM from '../../components/manager/SidebarM'
+import FooterM from '../../components/manager/FooterM'
+import { Collapse } from 'react-bootstrap'
 export const HomePageM = () => {
     const content = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente ipsum, mollitia beatae vero rerum animi vitae dolor dolorem eius optio, molestiae eveniet voluptas expedita iure, quaerat qui fugit ducimus minus?"
+    const [open, setOpen] = useState({
+        person: {
+            status: false,
+            id: 'person'
+        },
+        main_menu:{
+            status: true,
+            id: 'main_menu'
+        }
+    });
+
+    useEffect(() => {
+      
+        window.addEventListener('resize',()=>{
+            if (!open.main_menu.status) {
+                if (window.innerWidth > 750) {
+                    setOpen({person: open.person, main_menu: {status: true}})
+                }
+            }
+        })
+    },[window])
+    
     return (
         <>
-            <div className="bg-blue-100 min-h-screen">
-                <Navbar/>
+            <div className="bg-white min-h-screen">
+                <Navbar open={open} setOpen={setOpen}/>
                 <div className="container-fluid">
-
                     <div className="row">
                         <div className="col-lg-3 col-md-4 col-xs-12 p-0">
-                            <SidebarM/>
+                            <Collapse in={open.main_menu.status}>
+                                <div id={open.main_menu.id} className="bg-blue-200 min-h-screen h-full">
+                                    <SidebarM open={open} setOpen={setOpen}/>
+                                </div>
+                            </Collapse>
                         </div>
                         <div className="col-lg-9 col-md-8 col-xs-12 p-0">
                             <div className="container mt-3">
@@ -36,6 +63,7 @@ export const HomePageM = () => {
                         </div>
                     </div>
                 </div>
+                <FooterM/>
             </div>
         </>
     )
