@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faHome, faScrewdriverWrench, faUserGear, faTable, faBell, faClipboardList, faClipboardCheck, faBuilding } from "@fortawesome/free-solid-svg-icons";
 import { Link } from 'react-router-dom';
 import { LinkMenuM } from './LinkMenuM';
-export const SidebarM = () => {
+const SidebarM = () => {
     const [open, setOpen] = useState({
         person: {
             status: false,
@@ -17,12 +17,10 @@ export const SidebarM = () => {
             <div className="bg-blue-200 min-h-screen">
                 <div className="flex flex-col items-center">
                     <div className="flex flex-col items-center mt-4 mb-2">
-                        {/* profile */}
                         <img src={Logo} alt="profile.jpg" className="w-20 h-20 rounded-circle"/>
                         <p className="m-0 text-lg">Unlimit unarn</p>
                     </div>
                     <div className="container-fluid">
-                        {/* Menu */}
                         <ul className="list-none bg-white flex flex-col gap-3 py-2 px-0 m-0">
                             <LinkMenuM path="/manager/" icon={faHome} label="หน้าหลัก" />
                             <li>
@@ -59,3 +57,5 @@ export const SidebarM = () => {
         </>
     )
 }
+
+export default SidebarM

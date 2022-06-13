@@ -4,8 +4,8 @@ import Logo from '../../assets/demo.jpg'
 const Navbar = () => {
   return (
     <>
-        <nav class="navbar navbar-expand-lg bg-blue-400 ">
-            <div class="container-fluid">
+        <nav className="navbar navbar-expand-lg bg-blue-400 ">
+            <div className="container-fluid">
                 <div className="row justify-between items-center w-full">
                     <div className="col-7">
                         <img src={Logo} alt="Logo.jpg" className="rounded-circle w-16 h-16"/>

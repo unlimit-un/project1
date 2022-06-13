@@ -3,7 +3,6 @@ import { Routes, Route } from 'react-router-dom'
 import { HomePage } from './pages/HomePage';
 import { HomePageM } from './pages/manager/HomePageM';
 
-
 function App() {
   return (
     <>
