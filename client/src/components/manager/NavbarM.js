@@ -1,5 +1,6 @@
 import React from 'react'
-import Logo from '../../assets/demo.jpg'
+import Logo from '../../assets/Logo.jpg'
+import Demo from '../../assets/demo.jpg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
 
@@ -16,7 +17,7 @@ const Navbar = ({ open, setOpen}) => {
                     <div className="col-5">
                         <div className="flex flex-row items-center w-full justify-between">
                             <div className="flex items-center">
-                                <img src={Logo} alt="Logo.jpg" className="rounded-circle md:w-16 md:h-16 w-12 h-12"/>
+                                <img src={Demo} alt="Demo.jpg" className="rounded-circle md:w-16 md:h-16 w-12 h-12"/>
                                 <p className="mb-0 ml-5 text-blue-100 bold md:text-2xl text-lg">Unlimit unarn</p>
                             </div>
                             <button 
