@@ -13,6 +13,7 @@ function Card({icon, color, label, content}) {
             {content}
           </div>
         </div>
+        
     </>
   )
 }
