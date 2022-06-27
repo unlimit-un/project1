@@ -6,7 +6,7 @@ import Navbar from '../../components/manager/NavbarM'
 import SidebarM from '../../components/manager/SidebarM'
 import FooterM from '../../components/manager/FooterM'
 import { Collapse } from 'react-bootstrap'
-export const HomePageM = () => {
+const HomePageM = () => {
     const content = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente ipsum, mollitia beatae vero rerum animi vitae dolor dolorem eius optio, molestiae eveniet voluptas expedita iure, quaerat qui fugit ducimus minus?"
     const [open, setOpen] = useState({
         person: {
@@ -68,3 +68,5 @@ export const HomePageM = () => {
         </>
     )
 }
+
+export default HomePageM
