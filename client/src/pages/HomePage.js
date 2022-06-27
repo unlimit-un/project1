@@ -20,10 +20,16 @@ const {pathname} = useLocation()
   
   return (
     <>
-      <div className="bg-blue-200 min-h-screen grid md:grid-cols-2 grid-cols-1 justify-items-center items-center">
-          
-          <img src={backgrond_img} alt="background.jpg" className=""/>
-          {pathname === '/'?homepage:<Login/>}
+      <div className="bg-blue-200 container-fluid min-h-screen flex items-center">
+          <div className="row">
+            <div className="col-md-6 col-12">
+              <img src={backgrond_img} alt="background.jpg"/>
+            </div>
+            <div className="col-md-6 col-12 d-flex justify-center">
+            {pathname === '/'?homepage:<Login/>}
+            </div>
+            
+          </div>
           
 
       </div>
