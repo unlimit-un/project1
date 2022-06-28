@@ -16,12 +16,12 @@ const Login = () => {
   })
 
   const navigate = useNavigate();  
-  // useEffect(() => {
-  //   console.log(localStorage.getItem('user_data'));
-  //   if (localStorage.getItem('user_data') !== undefined) {
-  //     navigate('/manager');
-  //   }
-  // }, [])
+  useEffect(() => {
+    console.log(localStorage.getItem('user_data'));
+    if (localStorage.getItem('user_data')) {
+      navigate('/manager');
+    }
+  }, [])
   
   const setUsername = ({target:{value: val}})=>{
     setUserData({...userData, username: val})
@@ -42,7 +42,6 @@ const Login = () => {
         <h1 className="text-center">เข้าสู่ระบบ</h1>
         <hr className="my-16"/>
         <div className="flex flex-column mt-4">
-
           <form 
             onSubmit={(e)=>{
                 e.preventDefault();
@@ -62,7 +61,6 @@ const Login = () => {
               <button className="bg-green-500 text-white rounded-full p-3 hover:bg-green-400 transition-all ease-in-out duration-100">เข้าสู่ระบบ</button>
             </div>
           </form>
-
           <div className="flex justify-center mt-2">
             <Link to="/register" className="text-danger mx-auto"> สมัครสมาชิก </Link>
           </div>
