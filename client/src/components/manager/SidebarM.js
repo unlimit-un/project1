@@ -13,10 +13,10 @@ const SidebarM = ({ open, setOpen }) => {
     useEffect( () => {
         
             (async()=>{
-
                 const data =  await axios.get('http://localhost:3001/api/login')
                 console.log(data);
             })()
+            
     }, [])
     
     const sign_out = async () =>{
@@ -32,6 +32,7 @@ const SidebarM = ({ open, setOpen }) => {
         )
 
         if (result.status === 200) {
+            localStorage.clear();
             navigate('/');
         }else{
             console.log(result.data);
