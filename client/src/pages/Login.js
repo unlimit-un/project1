@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Logo from '../assets/Logo.jpg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faKey } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
 
 const Login = () => {
@@ -12,15 +12,37 @@ const Login = () => {
     password: ''
   })
 
+  const navigate = useNavigate();
+
   const login_fnc = async (e) =>{
     e.preventDefault();
-    const result = await axios.post(`http://localhost:3001/api/login`,{
-      username: userData.username,
-      password: userData.password,
-      type: 'MANAGER'
-    })
-    console.log(result);
-  }
+    const result = await axios.post(`http://localhost:3001/api/login`,
+      {
+        username: userData.username,
+        password: userData.password,
+        type: 'MANAGER'
+      },
+      {
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        withCredentials: true
+      }
+    )
+    // console.log(result.data);
+    localStorage.setItem('user_data', JSON.stringify(result.data));
+    navigate('/manager');
+  } 
+
+  useEffect(() => {
+    // localStorage.clear()
+    console.log(localStorage.getItem('user_data'));
+    // if (localStorage.getItem('user_data') !== undefined) {
+    //   navigate('/manager');
+    // }
+  }, [])
+  
   
   return (
     <>
@@ -46,7 +68,7 @@ const Login = () => {
             </div> 
             <div className="input-group mb-3 input-group-lg">
               <input 
-                type="text" 
+                type="password" 
                 className="form-control" 
                 placeholder="รหัสผ่าน"
                 required

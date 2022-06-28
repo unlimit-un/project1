@@ -1,12 +1,42 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Logo from '../../assets/demo.jpg'
 import { Collapse } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faHome, faScrewdriverWrench, faUserGear, faTable, faBell, faClipboardList, faClipboardCheck, faBuilding, faPowerOff } from "@fortawesome/free-solid-svg-icons";
 import { LinkMenuM } from './LinkMenuM';
 import SubMenuItem from './SubMenuItem';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 const SidebarM = ({ open, setOpen }) => {
-    console.log(open.main_menu.status);
+
+    const navigate = useNavigate();
+    useEffect( () => {
+        
+            (async()=>{
+
+                const data =  await axios.get('http://localhost:3001/api/login')
+                console.log(data);
+            })()
+    }, [])
+    
+    const sign_out = async () =>{
+        const result = await axios.post(
+            'http://localhost:3001/api/logout',
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                withCredentials: true
+            }
+        )
+
+        if (result.status === 200) {
+            navigate('/');
+        }else{
+            console.log(result.data);
+        }
+    }
     return (
         <>
             
@@ -47,7 +77,7 @@ const SidebarM = ({ open, setOpen }) => {
                                 <LinkMenuM path="/manager/" icon={faClipboardCheck} label="คำขออนุมัติ" />
                                 <LinkMenuM path="/manager/" icon={faBuilding} label="จัดการสถานที่" />
                                 <li className="list-group-item p-0 group">
-                                    <button className="p-2 px-3 text-gray-600 no-underline w-100 block group-hover:!text-white hover:bg-red-500 ease-in-out duration-300 text-left">
+                                    <button onClick={sign_out} className="p-2 px-3 text-gray-600 no-underline w-100 block group-hover:!text-white hover:bg-red-500 ease-in-out duration-300 text-left">
                                         <FontAwesomeIcon icon={faPowerOff} className="text-black group-hover:!text-white ease-in-out duration-300"/> ออกจากระบบ
                                     </button>
                                 </li>

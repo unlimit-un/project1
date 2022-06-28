@@ -1,20 +1,18 @@
 const router = require('express').Router();
 
 const bcrypt = require('bcryptjs');
+const { Store } = require('express-session');
 const { escape } = require('mysql2')
 
 const db = require('../../config/database');
 
-let session;
-const construc = (session) =>{
-    session = session
-}
+const auth_session = require('../../middleware/auth_session')
 
-router.post('/register', async (req, res)=>{
-    
+
+router.post('/register',  async (req, res)=>{
     try {
         const {username, password, name, surname, tel, email, type} = req.body;
-        console.log(username, password, name, surname, tel, email, type);
+        // console.log(username, password, name, surname, tel, email, type);
 
         if (!(username && password && name && surname && tel && email && type)){
             res.status(400).send('data required');
@@ -34,7 +32,7 @@ router.post('/register', async (req, res)=>{
                 break;
         
             case 'ENGINEER':
-                 userData = await db.query(`SELECT * FROM engineer WHERE engineer_username = ${escape(username)}`);
+                    userData = await db.query(`SELECT * FROM engineer WHERE engineer_username = ${escape(username)}`);
                 break;
         
             default:
@@ -114,59 +112,29 @@ router.post('/register', async (req, res)=>{
             res.status(400).send('type not match')
         }
         
-   } catch (error) {
-        console.log(error);
-   }
-})
-
-router.post('/login', async (req, res)=>{
-    try {
-        const {username, password, type} = req.body;
-
-        if (!(username && password && type)) {
-            res.status(400).send('data is requried')
-            return false;
-        }
-        let user;
-        switch (type) {
-            case 'MANAGER':
-                [user] = await db.query(`SELECT * FROM manager WHERE manager_username= ${escape(username)}`);
-                break;
-        
-            case 'MAID':
-                [user] = await db.query(`SELECT * FROM maid WHERE maid_username= ${escape(username)}`);
-                break;
-        
-            case 'ENGINEER':
-                [user] = await db.query(`SELECT * FROM engineer WHERE engineer_username= ${escape(username)}`);
-                break;
-        
-            default:
-                res.status(400).send('type not match');
-                break;
-        }
-        console.log(user);
-        if (user && (await bcrypt.compare(password, !!user['manager_password']?user['manager_password']:!!user['maid_password']?user['maid_password']:user['engineer_password']))) {
-            if (!session) { 
-                
-                session = req.session;
-                session.user_data = !!user['manager_id']?{user_id: user['manager_id'], type: 'manager'}:
-                                !!user['maid_id']?{user_id: user['maid_id'], type: 'maid'}:
-                                {user_id: user['engineer_id'], type: 'engineer'};
-                // console.log(`req.session.userid: ${session.userid}`)
-    
-                res.status(200).json(session.user_data)
-            }else{
-
-                res.status(400).send('you are logined')
-            }
-
-        }else{
-            res.status(400).send('username or password went wrong')
-        }
     } catch (error) {
         console.log(error);
     }
 })
+    
+router.get('/login', (req, res)=>{  
+    // console.log(req.auth_session);
+    if(req.auth_session){
+        res.send(req.auth_session.user_data)
+    }else{
+        res.send('no data')
+    }
+})
 
-module.exports = {construc, router};
+// router.post('/logout', (req, res)=>{ 
+//     if (req.auth_session.hasOwnProperty('user_data')) {
+//         req.auth_session = undefined;
+//         res.status(200).send('sign out.')
+//     }else{
+//         res.status(401).send('please login')
+//     }
+// })
+
+
+
+module.exports = router;
