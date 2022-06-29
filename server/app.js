@@ -48,7 +48,7 @@ app.get('/api/login', check_session_login, (req, res)=>{
     }
 })
 
-app.post('/register',  async (req, res)=>{
+app.post('/api/register_manager',  async (req, res)=>{
     try {
         const {username, password, name, surname, tel, email, type} = req.body;
         // console.log(username, password, name, surname, tel, email, type);
