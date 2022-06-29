@@ -48,6 +48,46 @@ app.get('/api/login', check_session_login, (req, res)=>{
     }
 })
 
+app.post('/register',  async (req, res)=>{
+    try {
+        const {username, password, name, surname, tel, email, type} = req.body;
+        // console.log(username, password, name, surname, tel, email, type);
+
+        if (!(username && password && name && surname && tel && email && type)){
+            res.status(400).send('data required');
+            return false;
+        }
+
+        const userData = await db.query(`SELECT * FROM manager WHERE manager_username = ${escape(username)}`);
+        
+        if (userData.length > 0){
+            res.status(400).send('this username has been used');
+            return false;
+        } 
+
+        const bcryptPassword = await bcrypt.hash(password, 10);
+        const result = await db.query(`
+            INSERT INTO manager(manager_name, manager_surname, manager_username, manager_password, manager_tel, manager_email) 
+            VALUES(
+                ${escape(name)}, 
+                ${escape(surname)}, 
+                ${escape(username)}, 
+                ${escape(bcryptPassword)}, 
+                ${escape(tel)}, 
+                ${escape(email)}
+                )
+            `);
+        if (result) {
+            res.status(200).send('insert manager success');
+        }else{
+            res.sendStatus(400)
+        }
+        
+    } catch (error) {
+        console.log(error);
+    }
+})
+
 app.post('/api/login', check_session_login, async (req, res)=>{
     try {
         const {username, password, type} = req.body;
