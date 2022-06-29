@@ -1,10 +1,12 @@
 import { faBell, faBuilding, faClipboardCheck } from '@fortawesome/free-solid-svg-icons'
 import React, { useEffect, useState } from 'react'
-import { CardLineTop, CardFillColor } from '../../components/manager/subComponents/Cards'
+import { CardLineAfter, CardFillColor } from '../../components/manager/subComponents/Cards'
 import Navbar from '../../components/manager/NavbarM'
 import SidebarM from '../../components/manager/SidebarM'
 import FooterM from '../../components/manager/FooterM'
 import { Collapse } from 'react-bootstrap'
+import { authUser } from '../../functions/LoginFunc'
+import { useNavigate } from 'react-router-dom'
 const HomePageM = () => {
     const content = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente ipsum, mollitia beatae vero rerum animi vitae dolor dolorem eius optio, molestiae eveniet voluptas expedita iure, quaerat qui fugit ducimus minus?"
     const [open, setOpen] = useState({
@@ -17,7 +19,7 @@ const HomePageM = () => {
             id: 'main_menu'
         }
     });
-
+    const navigate = useNavigate();
     useEffect(() => {
       
         window.addEventListener('resize',()=>{
@@ -27,6 +29,8 @@ const HomePageM = () => {
                 }
             }
         })
+
+        authUser(navigate);
     },[])
     
     return (
@@ -44,15 +48,16 @@ const HomePageM = () => {
                         </div>
                         <div className="col-lg-9 col-md-8 col-xs-12 p-0">
                             <div className="container mt-3">
+                                <h1 className="text-2xl">หน้าหลัก</h1>
                                 <div className="row gap-y-5">
                                     <div className="col-md-7 col-12">
-                                        <CardLineTop label="ขออนุมัติ" icon={faClipboardCheck} content={content} color="green"/>
+                                        <CardLineAfter label="ขออนุมัติ" icon={faClipboardCheck} content={content} afterLine="after:bg-green-400"/>
                                     </div>
                                     <div className="col-md-5 col-12">
-                                        <CardLineTop label="แจ้งซ่อมจากบุคคลทั่วไป" icon={faBell} content={content} color="green"/>
+                                        <CardLineAfter label="แจ้งซ่อมจากบุคคลทั่วไป" icon={faBell} content={content} afterLine="after:bg-green-400"/>
                                     </div>
                                     <div className="col-12">
-                                        <CardLineTop label="จัดการสถานที่" icon={faBuilding} content={content} color="green"/>
+                                        <CardLineAfter label="จัดการสถานที่" icon={faBuilding} content={content} afterLine="after:bg-green-400"/>
                                     </div>
                                     <div className="col-md-5">
                                         <CardFillColor colorBody="bg-green-400" colorFooter="!bg-green-500" title="20" subTitle="จำนวนพนักงาน" caption="ข้อมูลเพิ่มเติม"/>

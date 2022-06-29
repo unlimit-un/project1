@@ -37,3 +37,19 @@ export const LoginFunc = async (userData, navigate) => {
     }
 }
 
+export const authUser = async (navigate) =>{
+  await axios.get('http://localhost:3001/api/login')
+    .catch(error=>{
+      // console.log(error.response.data);
+      localStorage.clear();
+      navigate('/login')
+    })
+    .then(result=>{
+      if (result !== undefined && result.status === 200) {
+        localStorage.setItem('user_data',result.data)
+        navigate('/manager')
+      }
+      
+    })
+}
+

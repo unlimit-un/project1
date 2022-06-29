@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import { InputGroupIconsSupfix, RadioInline } from '../components/FormElements';
 
-import { LoginFunc } from "../functions/LoginFunc";
+import { authUser, LoginFunc } from "../functions/LoginFunc";
 
 const Login = () => { 
 
@@ -19,18 +19,9 @@ const Login = () => {
   useEffect(() => {
 
     (async ()=>{
-      await axios.get('http://localhost:3001/api/login')
-      .catch(error=>{
-        // console.log(error.response.data);
-        localStorage.clear();
-      })
-      .then(result=>{
-        if (result !== undefined && result.status === 200) {
-          localStorage.setItem('user_data',result.data)
-          navigate('/manager')
-        }
-        
-      })
+
+      await authUser(navigate);
+      
     })()
 
   }, [])

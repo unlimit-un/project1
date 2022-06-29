@@ -1,11 +1,11 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useEffect, useState, } from 'react'
 
-export const CardLineTop = ({icon, color, label, content}) =>{
+export const CardLineAfter = ({icon, afterLine, label, content}) =>{
   // const classContent = `card relative after:absolute after:bg-${color}-500 after:w-full after:h-1 after:left-0 after:top-0 h-full`
   return (
     <>
-        <div className={`card relative after:absolute after:bg-${color}-500 after:w-full after:h-1 after:left-0 after:top-0 h-full`}>
+        <div className={`card relative after:absolute ${afterLine} after:w-full after:h-1 after:left-0 after:top-0 h-full`}>
           <div className="card-header">
             <h5 className="m-0 "> <FontAwesomeIcon icon={icon}/> {label}</h5>
           </div>
