@@ -39,6 +39,15 @@ const check_session_login = (req, res, next) =>{
     next()
 }
 
+app.get('/api/login', check_session_login, (req, res)=>{  
+    console.log(req.auth_session);
+    if(req.auth_session){
+        res.send(req.auth_session.user_data)
+    }else{
+        res.send('no data')
+    }
+})
+
 app.post('/api/login', check_session_login, async (req, res)=>{
     try {
         const {username, password, type} = req.body;
@@ -87,7 +96,7 @@ app.post('/api/login', check_session_login, async (req, res)=>{
             }
 
         }else{
-            res.status(400).send('username or password went wrong') 
+            res.send('username or password went wrong') 
         }
     } catch (error) {
         console.log(error);

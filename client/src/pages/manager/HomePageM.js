@@ -1,7 +1,6 @@
-import { faBars, faBell, faBuilding, faChartLine, faClipboardCheck, faHamburger } from '@fortawesome/free-solid-svg-icons'
+import { faBell, faBuilding, faClipboardCheck } from '@fortawesome/free-solid-svg-icons'
 import React, { useEffect, useState } from 'react'
-import CardFillColorM from '../../components/manager/subComponents/CardFillColorM'
-import CardM from '../../components/manager/subComponents/CardM'
+import { CardLineTop, CardFillColor } from '../../components/manager/subComponents/Cards'
 import Navbar from '../../components/manager/NavbarM'
 import SidebarM from '../../components/manager/SidebarM'
 import FooterM from '../../components/manager/FooterM'
@@ -28,7 +27,7 @@ const HomePageM = () => {
                 }
             }
         })
-    },[window])
+    },[])
     
     return (
         <>
@@ -47,16 +46,16 @@ const HomePageM = () => {
                             <div className="container mt-3">
                                 <div className="row gap-y-5">
                                     <div className="col-md-7 col-12">
-                                        <CardM label="ขออนุมัติ" icon={faClipboardCheck} content={content} color="green"/>
+                                        <CardLineTop label="ขออนุมัติ" icon={faClipboardCheck} content={content} color="green"/>
                                     </div>
                                     <div className="col-md-5 col-12">
-                                        <CardM label="แจ้งซ่อมจากบุคคลทั่วไป" icon={faBell} content={content} color="green"/>
+                                        <CardLineTop label="แจ้งซ่อมจากบุคคลทั่วไป" icon={faBell} content={content} color="green"/>
                                     </div>
                                     <div className="col-12">
-                                        <CardM label="จัดการสถานที่" icon={faBuilding} content={content} color="green"/>
+                                        <CardLineTop label="จัดการสถานที่" icon={faBuilding} content={content} color="green"/>
                                     </div>
                                     <div className="col-md-5">
-                                        <CardFillColorM title="20" subTitle="จำนวนพนักงาน" caption="ข้อมูลเพิ่มเติม" color="green"/>
+                                        <CardFillColor colorBody="bg-green-400" colorFooter="!bg-green-500" title="20" subTitle="จำนวนพนักงาน" caption="ข้อมูลเพิ่มเติม"/>
                                     </div>
                                 </div>
                             </div>

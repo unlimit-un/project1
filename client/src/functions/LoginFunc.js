@@ -1,5 +1,4 @@
-import React from 'react'
-
+import Swal from "sweetalert2"
 import axios from "axios";
 
 export const LoginFunc = async (userData, navigate) => {
@@ -16,16 +15,25 @@ export const LoginFunc = async (userData, navigate) => {
         },
         withCredentials: true
       }
-    )
-    // console.log(result.data);
+    ).catch( async (error)=>{
+      await Swal.fire({
+        title: "ผิดพลาด",
+        icon: "error",
+        text: `${error.response.data}`
+      })
+    })
+    
     if (result.status === 200) {
         
         localStorage.setItem('user_data', JSON.stringify(result.data));
-        navigate('/manager');
-    }else{
-        console.log(result);
+        await Swal.fire({
+          title: "สำเร็จ",
+          icon: "success",
+          text: "กำลังเข้าสู่ระบบ"
+        }).then(()=>{
+          navigate('/manager');
+        })
+        
     }
-
-    return(<></>);
 }
 

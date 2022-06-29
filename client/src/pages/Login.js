@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Logo from '../assets/Logo.jpg'
 import { faUser, faKey } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from 'react-router-dom';
-
+import axios from 'axios'
 import { InputGroupIconsSupfix, RadioInline } from '../components/FormElements';
 
 import { LoginFunc } from "../functions/LoginFunc";
@@ -17,10 +17,22 @@ const Login = () => {
 
   const navigate = useNavigate();  
   useEffect(() => {
-    console.log(localStorage.getItem('user_data'));
-    if (localStorage.getItem('user_data')) {
-      navigate('/manager');
-    }
+
+    (async ()=>{
+      await axios.get('http://localhost:3001/api/login')
+      .catch(error=>{
+        // console.log(error.response.data);
+        localStorage.clear();
+      })
+      .then(result=>{
+        if (result !== undefined && result.status === 200) {
+          localStorage.setItem('user_data',result.data)
+          navigate('/manager')
+        }
+        
+      })
+    })()
+
   }, [])
   
   const setUsername = ({target:{value: val}})=>{

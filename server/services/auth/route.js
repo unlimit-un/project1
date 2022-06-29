@@ -117,14 +117,6 @@ router.post('/register',  async (req, res)=>{
     }
 })
     
-router.get('/login', (req, res)=>{  
-    // console.log(req.auth_session);
-    if(req.auth_session){
-        res.send(req.auth_session.user_data)
-    }else{
-        res.send('no data')
-    }
-})
 
 // router.post('/logout', (req, res)=>{ 
 //     if (req.auth_session.hasOwnProperty('user_data')) {
