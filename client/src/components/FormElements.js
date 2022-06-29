@@ -39,3 +39,22 @@ export const InputGroupIconsSupfix = ({type, placeholder, callback, icon}) =>{
         </>
     )
 }
+
+export const InputGroupwitlabel= ({type, placeholder, callback, id, label}) =>{
+    return (
+        <>
+            <div className="mb-3">
+              <label htmlFor={id} className="form-label">{label}</label>
+              <input 
+                    type={type}
+                    className="form-control" 
+                    id={id} 
+                    placeholder={placeholder}
+                    required
+                    onChange={callback}
+                
+              />
+            </div>
+        </>
+    )
+}
