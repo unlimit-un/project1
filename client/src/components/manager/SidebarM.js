@@ -13,7 +13,7 @@ const SidebarM = ({ open, setOpen }) => {
     useEffect( () => {
         
             (async()=>{
-                const data =  await axios.get('http://192.168.43.201:3001/api/login')
+                const data =  await axios.get('http://localhost:3001/api/login')
                 console.log(data);
             })()
             
@@ -21,7 +21,7 @@ const SidebarM = ({ open, setOpen }) => {
     
     const sign_out = async () =>{
         const result = await axios.post(
-            'http://192.168.43.201:3001/api/logout',
+            'http://localhost:3001/api/logout',
             {
                 headers: {
                     'Content-Type': 'application/json',

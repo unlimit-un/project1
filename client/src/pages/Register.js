@@ -18,7 +18,7 @@ const Register = () => {
   const navigate = useNavigate ();
   const register_fnc = async (e) =>{
     e.preventDefault();
-    const result = await axios.post(`http://192.168.43.201/api/register_manager`,{
+    const result = await axios.post(`http://localhost/api/register_manager`,{
       name: userData.name,
       surname: userData.surname,
       username: userData.username,
