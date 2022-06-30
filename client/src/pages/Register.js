@@ -74,8 +74,8 @@ const Register = () => {
 
   return (
     <> 
-       <div className="card card-body ">
-        <div className="flex justify-center top-50 end-0">
+      <div className="card card-body ">
+        <div className="flex justify-center ">
           <form onSubmit={register_fnc}>
 
             <InputGroupwitlabel callback={SetName} id="input_name" label="ชื่อ"  placeholder="กรอกชื่อ" type="text" />
@@ -90,8 +90,8 @@ const Register = () => {
               <button className="!bg-green-400 text-white rounded-full p-3">ยืนยัน</button>
             </div>
           </form>
-        </div>
-       </div>
+         </div>
+      </div>
     </>
   )
 }
