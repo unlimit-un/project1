@@ -117,7 +117,7 @@ router.post('/register',  async (req, res)=>{
     }
 })
     
-
+ 
 // router.post('/logout', (req, res)=>{ 
 //     if (req.auth_session.hasOwnProperty('user_data')) {
 //         req.auth_session = undefined;

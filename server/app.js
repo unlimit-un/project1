@@ -14,7 +14,7 @@ const app = express();
 const origin = process.env.NODE_ENV === 'development'? "http://localhost:3000": "http://192.168.43.201:3000";
 
 app.use(cors({
-    origin,
+    origin: ["http://192.168.43.201:3000", "http://localhost:3000"],
     credentials: true
 })); 
 app.use(express.urlencoded({ extended: true  }))
@@ -23,7 +23,7 @@ app.use(cookie_parser());
 app.use(express_session({
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 1000 * 60 * 60, secure: false},
+    cookie: { maxAge: 36000, secure: false},
     secret: process.env.SESSION_SECRET
 }));
 
@@ -31,16 +31,25 @@ let session;
 
 const check_session_login = (req, res, next) =>{
     if (session === undefined) {
+        console.log("case 1");
         res.status(401)
-    }else{
-        req.auth_session = session
+    }else if(session !== undefined && req.auth_session !== undefined && session.user_id === req.auth_session.user_id){
+        console.log("case 2");
+        session = undefined
         // console.log(req.mw_session);
+    }else{
+        console.log(req.auth_session);
+        console.log('req.auth_session');
+        console.log("session");
+        console.log(session);
+        console.log("case 3");
+        req.auth_session = session
     }
     next()
 }
 
 app.get('/api/login', check_session_login, (req, res)=>{  
-    console.log(req.auth_session);
+    
     if(req.auth_session){
         res.send(req.auth_session.user_data)
     }else{
@@ -120,15 +129,20 @@ app.post('/api/login', check_session_login, async (req, res)=>{
             if (req.auth_session !== session) {
                 req.auth_session = session
             }
-            if (session === undefined && req.auth_session === undefined) { 
-                
+            // if (session === undefined && req.auth_session === undefined) { 
+            if (true) { 
+                console.log(req.sessionID);
                 session = req.session;
                 session.user_data = !!user['manager_id']?{user_id: user['manager_id'], type: 'manager'}:
-                                !!user['maid_id']?{user_id: user['maid_id'], type: 'maid'}:
-                                {user_id: user['engineer_id'], type: 'engineer'};
+                !!user['maid_id']?{user_id: user['maid_id'], type: 'maid'}:
+                {user_id: user['engineer_id'], type: 'engineer'};
                 // console.log(`req.session.userid: ${session.userid}`)
-                // console.log(session);  
+                // console.log(session);
+                // sessionStorage.setItem(`${session}`)
+                req.session.cookie.id = req.sessionID;
+                console.log(req);
                 res.status(200).json(session.user_data) 
+                
                 updataSessionFnc();
             }else{
 

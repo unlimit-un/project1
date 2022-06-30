@@ -24,13 +24,14 @@ export const LoginFunc = async (userData, navigate) => {
     })
     
     if (result.status === 200) {
-        
+        // console.log(document.cookie);
         localStorage.setItem('user_data', JSON.stringify(result.data));
         await Swal.fire({
           title: "สำเร็จ",
           icon: "success",
           text: "กำลังเข้าสู่ระบบ"
         }).then(()=>{
+          
           navigate('/manager');
         })
         
