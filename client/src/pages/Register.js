@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import axios from "axios";
 import { InputGroupwitlabel } from '../components/FormElements';
 import Swal from 'sweetalert2';
-import {  useNavigate } from 'react-router-dom';
+import { Link , useNavigate } from 'react-router-dom';
 
 const Register = () => {
 
@@ -75,9 +75,10 @@ const Register = () => {
   return (
     <> 
       <div className="card card-body ">
-        <div className="flex justify-center ">
+        <div className="flex justify-center flex-column">
+        <h1 className="text-center">ระบบลงทะเบียน</h1>
+          <div className="flex flex-column mt-6">
           <form onSubmit={register_fnc}>
-
             <InputGroupwitlabel callback={SetName} id="input_name" label="ชื่อ"  placeholder="กรอกชื่อ" type="text" />
             <InputGroupwitlabel callback={SetSurname} id="input_surname" label="สกุล" placeholder="กรอกสกุล" type="text"/>
             <InputGroupwitlabel callback={SetUsername} id="input_username" label="ชื่อผู้ใช้งาน" placeholder="กรอกชื่อผู้ใช้งาน" type="text"/>
@@ -87,9 +88,13 @@ const Register = () => {
          
            
             <div className="flex justify-center">
-              <button className="!bg-green-400 text-white rounded-full p-3">ยืนยัน</button>
+              <button className="!bg-red-600 text-white rounded-full p-3">ยืนยัน</button>
             </div>
           </form>
+          <div className="flex justify-center mt-2">
+            <Link to="/login" className="text-danger mx-auto"> มีบัญชีอยู่แล้ว เข้าสู่ระบบ </Link>
+          </div>
+          </div>
          </div>
       </div>
     </>

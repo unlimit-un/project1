@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+.dropdown-toggle::after {
+    content: none !important;
+}
+
 ::-webkit-scrollbar {
     width: 7px;
     height: 7px;              /* height of horizontal scrollbar ← You're missing this */

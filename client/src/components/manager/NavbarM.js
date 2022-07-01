@@ -3,6 +3,7 @@ import Logo from '../../assets/Logo.jpg'
 import Demo from '../../assets/demo.jpg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faBell } from '@fortawesome/free-solid-svg-icons'
+import { Dropdown } from 'react-bootstrap'
 
 const Navbar = () => {
     // console.log(open.main_menu);
@@ -26,7 +27,17 @@ const Navbar = () => {
                                 >
                                     <FontAwesomeIcon icon={faBars}/>
                                 </button>
-                                <button className="bg-blue-300 text-white rounded-circle w-12 h-12 text-xl"><FontAwesomeIcon icon={faBell}/></button>
+                                    <Dropdown>
+                                        <Dropdown.Toggle className="!bg-blue-300 !border-blue-300 text-white rounded-circle w-12 h-12 text-xl" >
+                                            <FontAwesomeIcon icon={faBell}/>
+                                        </Dropdown.Toggle>
+
+                                        <Dropdown.Menu>
+                                            <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+                                            <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+                                            <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                                        </Dropdown.Menu>
+                                    </Dropdown>
                                 <img src={Demo} alt="Demo.jpg" className="rounded-circle w-12 h-12"/>
                             </div>
                         </div>

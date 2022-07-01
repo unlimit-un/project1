@@ -15,9 +15,9 @@ function App() {
         <Routes>
           <Route path='/' exac element={<HomePage/>}>
             <Route path='/login' element={<Login/>}/>
+            <Route path='/register' element={<Register/>}/>
           </Route>
           <Route path='/manager' exac element={<HomePageM/>}/>
-          <Route path='/register' element={<Register/>}/>
 
         </Routes>
       </div>
