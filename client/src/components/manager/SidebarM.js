@@ -5,39 +5,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faHome, faScrewdriverWrench, faUserGear, faTable, faBell, faClipboardList, faClipboardCheck, faBuilding, faPowerOff } from "@fortawesome/free-solid-svg-icons";
 import { LinkMenuM } from './LinkMenuM';
 import SubMenuItem from './SubMenuItem';
-import axios from 'axios';
+import {SignOutFunc} from '../../functions/AuthFunc'
 import { useNavigate } from 'react-router-dom';
 const SidebarM = ({ open, setOpen }) => {
-
-    const navigate = useNavigate();
-    useEffect( () => {
-        
-            (async()=>{
-                const data =  await axios.get('http://localhost:3001/api/login')
-                console.log(data);
-            })()
-            
-    }, [window])
-    
-    const sign_out = async () =>{
-        const result = await axios.post(
-            'http://localhost:3001/api/logout',
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                withCredentials: true
-            }
-        )
-
-        if (result.status === 200) {
-            localStorage.clear();
-            navigate('/');
-        }else{
-            console.log(result.data);
-        }
-    }
+    const navigate = useNavigate()
     return (
         <>
             <div className="bg-blue-200 min-h-screen h-full">
@@ -77,7 +48,7 @@ const SidebarM = ({ open, setOpen }) => {
                             <LinkMenuM path="/manager/" icon={faClipboardCheck} label="คำขออนุมัติ" />
                             <LinkMenuM path="/manager/" icon={faBuilding} label="จัดการสถานที่" />
                             <li className="list-group-item p-0 group">
-                                <button onClick={sign_out} className="p-2 px-3 text-gray-600 no-underline w-100 block group-hover:!text-white hover:bg-red-500 ease-in-out duration-300 text-left">
+                                <button onClick={()=>SignOutFunc(navigate)} className="p-2 px-3 text-gray-600 no-underline w-100 block group-hover:!text-white hover:bg-red-500 ease-in-out duration-300 text-left">
                                     <FontAwesomeIcon icon={faPowerOff} className="text-black group-hover:!text-white ease-in-out duration-300"/> ออกจากระบบ
                                 </button>
                             </li>

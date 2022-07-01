@@ -27,7 +27,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
         },
     ]
     const options = {
-        // responsive: true,
+        responsive: true,
         plugins: {
           legend: {
             position: position,

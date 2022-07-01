@@ -2,25 +2,23 @@ import React, { useEffect, useState } from 'react'
 import Logo from '../assets/Logo.jpg'
 import { faUser, faKey } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios'
 import { InputGroupIconsSupfix, RadioInline } from '../components/FormElements';
 
-import { authUser, LoginFunc } from "../functions/LoginFunc";
+import { checkAutoRedirectUser, LoginFunc } from "../functions/AuthFunc";
 
 const Login = () => { 
-
   const [ userData, setUserData ] = useState({
     username: '',
     password: '',
     type: ''
   })
-
+  
   const navigate = useNavigate();  
   useEffect(() => {
-
+    
     (async ()=>{
-
-      await authUser(navigate);
+     
+      await checkAutoRedirectUser(navigate);
       
     })()
 

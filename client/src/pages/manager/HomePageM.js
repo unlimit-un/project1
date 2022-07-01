@@ -1,11 +1,10 @@
-import { faBell, faBuilding, faClipboardCheck, faHome, faLineChart } from '@fortawesome/free-solid-svg-icons'
+import { faHome, faLineChart } from '@fortawesome/free-solid-svg-icons'
 import React, { useEffect, useState } from 'react'
-import { CardLineAfter, CardFillColor } from '../../components/manager/subComponents/Cards'
+import { CardFillColor } from '../../components/manager/subComponents/Cards'
 import Navbar from '../../components/manager/NavbarM'
 import SidebarM from '../../components/manager/SidebarM'
 import FooterM from '../../components/manager/FooterM'
-import { Collapse } from 'react-bootstrap'
-import { authUser } from '../../functions/LoginFunc'
+import { checkAutoRedirectUser } from '../../functions/AuthFunc'
 import { useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { LineChart } from '../../components/Charts'
@@ -21,16 +20,7 @@ const HomePageM = () => {
 
     const navigate = useNavigate();
     useEffect(() => {
-      
-        window.addEventListener('resize',()=>{
-            if (!open.main_menu.status) {
-                if (window.innerWidth > 750) {
-                    setOpen({person: open.person, main_menu: {status: true}})
-                }
-            }
-        })
-
-        authUser(navigate);
+        checkAutoRedirectUser(navigate);
     },[])
 
     const dataChart = pre_dataLineChart(['jan','feb','m'],'top','title')
