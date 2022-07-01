@@ -96,7 +96,7 @@ app.post('/api/non_auth/login', async (req, res)=>{
             res.status(200).json(token) 
 
         }else{
-            res.send('username or password went wrong') 
+            res.status(400).send('username or password went wrong') 
         }
     } catch (error) {
         console.log(error);

@@ -10,6 +10,7 @@ export const LoginFunc = async (userData, navigate) => {
       type: userData.type
     }
     const result = await axiosPostNonAuth(`${ROOT_SERVER}/api/non_auth/login`, data)
+    console.log(result);
     if (result.status === 200) {
       localStorage.setItem('user_token', result.data);
       await Swal.fire({
@@ -17,7 +18,7 @@ export const LoginFunc = async (userData, navigate) => {
         icon: "success",
         text: "กำลังเข้าสู่ระบบ"
       }).then(()=>{
-        navigate('/manager');
+        checkAutoRedirectUser(navigate)
       })
     }
   } catch (error) {
@@ -37,8 +38,9 @@ export const checkAutoRedirectUser = async (navigate) =>{
       const uri = `${ROOT_SERVER}/api/checkToken`;
       const resToken = await axiosGet(uri);
       const {user_type} = resToken.data;
+      
       if (resToken.status === 200 || resToken.data === "OK") {
-        user_type === 'MANAGER' ?navigate('/manager') :user_type ==='MAID'?navigate('/maid'):navigate('engineer')
+        user_type === 'MANAGER' ?navigate('/manager') :user_type ==='MAID'?navigate('/maid'):navigate('/engineer')
       }
     } catch (error) {
       console.log(error);
