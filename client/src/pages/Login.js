@@ -48,7 +48,7 @@ const Login = () => {
             onSubmit={(e)=>{
                 e.preventDefault();
                 console.log(userData);
-                LoginFunc(userData, navigate)
+                LoginFunc(userData, navigate, pathname)
               }
             }
           >

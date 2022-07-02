@@ -143,7 +143,6 @@ const HomePageM = () => {
                             {
                                 pathname === '/manager' || pathname === '/manager/'?HomePageM:<ManageEmp/>
                             }
-                            
                         </div>
                     </div>
                 </div>

@@ -2,7 +2,7 @@ import Swal from "sweetalert2"
 import { axiosGet, axiosPost, axiosPostNonAuth } from "./AxiosCustom";
 
 const ROOT_SERVER =`http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}`;
-export const LoginFunc = async (userData, navigate) => {
+export const LoginFunc = async (userData, navigate, pathname) => {
   try {
     const data ={
       username: userData.username,
@@ -18,7 +18,7 @@ export const LoginFunc = async (userData, navigate) => {
         icon: "success",
         text: "กำลังเข้าสู่ระบบ"
       }).then(()=>{
-        checkAutoRedirectUser(navigate)
+        checkAutoRedirectUser(navigate, pathname)
       })
     }
   } catch (error) {
