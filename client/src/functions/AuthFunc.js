@@ -31,16 +31,16 @@ export const LoginFunc = async (userData, navigate) => {
    
 }
 
-export const checkAutoRedirectUser = async (navigate) =>{
-  
+export const checkAutoRedirectUser = async (navigate, pathname) =>{
   if (localStorage.getItem('user_token')) {
     try {
       const uri = `${ROOT_SERVER}/api/checkToken`;
       const resToken = await axiosGet(uri);
       const {user_type} = resToken.data;
-      
       if (resToken.status === 200 || resToken.data === "OK") {
-        user_type === 'MANAGER' ?navigate('/manager') :user_type ==='MAID'?navigate('/maid'):navigate('/engineer')
+        if (!(pathname.includes('manager')||pathname.includes('maid')||pathname.includes('engineer'))) {
+          user_type === 'MANAGER'  ?navigate('/manager') :user_type ==='MAID' ?navigate('/maid'):navigate('/engineer')
+        }
       }
     } catch (error) {
       console.log(error);

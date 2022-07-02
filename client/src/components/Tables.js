@@ -8,16 +8,16 @@ export const TablesStriped = ({data}) => {
             <thead>
                 <tr>
                     {
-                        data.thead.map(item=><th>{item}</th>)
+                        data.thead.map((item, i)=><th key={i}>{item}</th>)
                     }
                 </tr>
             </thead>
             <tbody>
                 {
-                    data.tbody.map(item=>{
+                    data.tbody.map((item, index)=>{
                         return(
-                            <tr>
-                                {item.map(subitem=><td>{subitem}</td>)}
+                            <tr key={index}>
+                                {item.map((subitem, i)=><td key={i}>{subitem}</td>)}
                             </tr>
                         )
                     })

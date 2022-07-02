@@ -12,22 +12,16 @@ function App() {
   return (
     <>
       <div className="bg-gray-100 min-h-screen">
-
-
-
         <Routes>
           <Route path='/' exac element={<HomePage/>}>
             <Route path='/login' element={<Login/>}/>
             <Route path='/register' element={<Register/>}/>
           </Route>
           <Route path='/manager' exac element={<HomePageM/>}>
-            <Route path='/manage_emp' element={<ManageEmp/>} /> 
-
+            <Route path='/manager/manage_emp' element={<ManageEmp/>} /> 
           </Route>
-          <Route path='/manager' exac element={<HomePageM/>}/>
           <Route path='/maid' exac element={<HomePageMaid/>}/>
           <Route path='/engineer' exac element={<HomepageE/>}/>
-
         </Routes>
       </div>
     </>

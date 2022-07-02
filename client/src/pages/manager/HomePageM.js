@@ -5,11 +5,12 @@ import Navbar from '../../components/manager/NavbarM'
 import {SidebarLeftManager, SidebarRightManager} from '../../components/manager/SidebarM'
 import FooterM from '../../components/manager/FooterM'
 import { checkAutoRedirectUser } from '../../functions/AuthFunc'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { LineChart } from '../../components/Charts'
-import { pre_dataLineChart } from '../../functions/PrepareChartData'
+import { pre_dataBarChart } from '../../functions/PrepareChartData'
 import { TablesStriped } from '../../components/Tables'
+import ManageEmp from './ManageEmp'
 
 
 const HomePageM = () => {
@@ -24,8 +25,12 @@ const HomePageM = () => {
 
     const [arr_data] = useState({data: [20,30,50,60,40,80,40,50,90,65,42,35]});
     const navigate = useNavigate();
+    
+    const {pathname} = useLocation();
+
     useEffect(() => {
-        checkAutoRedirectUser(navigate);
+
+        checkAutoRedirectUser(navigate, pathname);
         
         setDataSetsLeaveRole(
             [{
@@ -53,7 +58,7 @@ const HomePageM = () => {
                 // fill: true
             },]
         )
-    },[])
+    },[''])
    
     const dataTableModel = {
         thead:['ลำดับ', 'ชื่อ', 'ราคา', 'จำนวน'],
@@ -63,9 +68,66 @@ const HomePageM = () => {
         ]
     }
     const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    const dataChartLeave = pre_dataLineChart(labels,'top','สถิติการลาของสมาชิกทั้งหมด')
-    const dataChartLeaveEngineer = pre_dataLineChart(labels,'top','สถิติการลาของช่าง', dataSetsLeaveRole)
-    const dataChartLeaveMaid = pre_dataLineChart(labels,'top','สถิติการลาของแม่บ้าน', dataSetsLeaveRole)
+    const dataChartLeave = pre_dataBarChart(labels,'top','สถิติการลาของสมาชิกทั้งหมด')
+    const dataChartLeaveEngineer = pre_dataBarChart(labels,'top','สถิติการลาของช่าง', dataSetsLeaveRole)
+    const dataChartLeaveMaid = pre_dataBarChart(labels,'top','สถิติการลาของแม่บ้าน', dataSetsLeaveRole)
+
+    const HomePageM = (
+        <div className="container-fluid mt-3">
+            <h1 className="text-2xl"><FontAwesomeIcon icon={faHome}/> หน้าหลัก</h1>
+            <div className="row">
+                <div className="col-lg-9 col-12">
+                    <div className="row gap-y-5 mt-4">
+                        <div className="col-md-4 col-12">
+                            <CardFillColor colorBody="bg-emerald-400" colorFooter="!bg-emerald-500" title="20" subTitle="จำนวนพนักงาน" caption="ข้อมูลเพิ่มเติม"/>
+                        </div>
+                        <div className="col-md-4 col-12">
+                            <CardFillColor colorBody="bg-purple-400" colorFooter="!bg-purple-500" title="10" subTitle="จำนวนแม่บ้าน" caption="ข้อมูลเพิ่มเติม"/>
+                        </div>
+                        <div className="col-md-4 col-12">
+                            <CardFillColor colorBody="bg-slate-400" colorFooter="!bg-slate-500" title="10" subTitle="จำนวนช่าง" caption="ข้อมูลเพิ่มเติม"/>
+                        </div>
+                    </div>
+                    <div className="my-3">
+                        <div className="card">
+                            <div className="card-header">
+                                <h1 className="text-xl m-0"><FontAwesomeIcon icon={faLineChart}/> สถิติการลาของพนักงาน</h1>
+                            </div>
+                            <div className="card-body row justify-content-stretch">
+                                <div className="col-12">
+                                    <div className="h-full">
+                                        <LineChart data={dataChartLeave.data} options={dataChartLeave.options}/>
+                                    </div>
+                                </div>
+                                {/* <hr/> */}
+                                <div className="col-12 row mt-2">
+                                    <div className="col-6">
+                                        <LineChart data={dataChartLeaveEngineer.data} options={dataChartLeaveEngineer.options} height="400rem" />
+                                    </div>
+                                    <div className="col-6">
+                                        <LineChart data={dataChartLeaveMaid.data} options={dataChartLeaveMaid.options} height="400rem" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="card mt-4">
+                            <div className="card-header">
+                                <h1 className="text-xl m-0">
+                                    <FontAwesomeIcon icon={faClipboardList}/> ข้อมูลยอดการสั่งซื้อ
+                                </h1>
+                            </div>
+                            <div className="card-body">
+                                <TablesStriped data={dataTableModel}/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-lg-3 p-0 my-4 d-lg-block d-none">
+                    <SidebarRightManager/>
+                </div>
+            </div>
+        </div>
+    )
     return (
         <>
             <div className="bg-white min-h-screen">
@@ -78,60 +140,10 @@ const HomePageM = () => {
                             </div>
                         </div>
                         <div className="col-lg-10 col-md-9 col-xs-12 px-0">
-                            <div className="container-fluid mt-3">
-                                <h1 className="text-2xl"><FontAwesomeIcon icon={faHome}/> หน้าหลัก</h1>
-                                <div className="row">
-                                    <div className="col-lg-9 col-12">
-                                        <div className="row gap-y-5 mt-4">
-                                            <div className="col-md-4 col-12">
-                                                <CardFillColor colorBody="bg-emerald-400" colorFooter="!bg-emerald-500" title="20" subTitle="จำนวนพนักงาน" caption="ข้อมูลเพิ่มเติม"/>
-                                            </div>
-                                            <div className="col-md-4 col-12">
-                                                <CardFillColor colorBody="bg-purple-400" colorFooter="!bg-purple-500" title="10" subTitle="จำนวนแม่บ้าน" caption="ข้อมูลเพิ่มเติม"/>
-                                            </div>
-                                            <div className="col-md-4 col-12">
-                                                <CardFillColor colorBody="bg-slate-400" colorFooter="!bg-slate-500" title="10" subTitle="จำนวนช่าง" caption="ข้อมูลเพิ่มเติม"/>
-                                            </div>
-                                        </div>
-                                        <div className="my-3">
-                                            <div className="card">
-                                                <div className="card-header">
-                                                    <h1 className="text-xl m-0"><FontAwesomeIcon icon={faLineChart}/> สถิติการลาของพนักงาน</h1>
-                                                </div>
-                                                <div className="card-body row justify-content-stretch">
-                                                    <div className="col-12">
-                                                        <div className="h-full">
-                                                            <LineChart data={dataChartLeave.data} options={dataChartLeave.options}/>
-                                                        </div>
-                                                    </div>
-                                                    {/* <hr/> */}
-                                                    <div className="col-12 row mt-2">
-                                                        <div className="col-6">
-                                                            <LineChart data={dataChartLeaveEngineer.data} options={dataChartLeaveEngineer.options} height="400rem" />
-                                                        </div>
-                                                        <div className="col-6">
-                                                            <LineChart data={dataChartLeaveMaid.data} options={dataChartLeaveMaid.options} height="400rem" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="card mt-4">
-                                                <div className="card-header">
-                                                    <h1 className="text-xl m-0">
-                                                        <FontAwesomeIcon icon={faClipboardList}/> ข้อมูลยอดการสั่งซื้อ
-                                                    </h1>
-                                                </div>
-                                                <div className="card-body">
-                                                    <TablesStriped data={dataTableModel}/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-lg-3 p-0 my-4 d-lg-block d-none">
-                                        <SidebarRightManager/>
-                                    </div>
-                                </div>
-                            </div>
+                            {
+                                pathname === '/manager' || pathname === '/manager/'?HomePageM:<ManageEmp/>
+                            }
+                            
                         </div>
                     </div>
                 </div>

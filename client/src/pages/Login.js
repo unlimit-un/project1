@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Logo from '../assets/Logo.jpg'
 import { faUser, faKey } from '@fortawesome/free-solid-svg-icons';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { InputGroupIconsSupfix, RadioInline } from '../components/FormElements';
 
 import { checkAutoRedirectUser, LoginFunc } from "../functions/AuthFunc";
@@ -14,11 +14,12 @@ const Login = () => {
   })
   
   const navigate = useNavigate();  
+  const { pathname } = useLocation();
   useEffect(() => {
     
     (async ()=>{
      
-      await checkAutoRedirectUser(navigate);
+      await checkAutoRedirectUser(navigate, pathname);
       
     })()
 
