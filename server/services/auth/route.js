@@ -1,13 +1,9 @@
 const router = require('express').Router();
 
 const bcrypt = require('bcryptjs');
-const { Store } = require('express-session');
-const { escape } = require('mysql2')
+const { escape } = require('mysql2');
 
 const db = require('../../config/database');
-
-const auth_session = require('../../middleware/auth_session')
-
 
 router.post('/register',  async (req, res)=>{
     try {
@@ -40,7 +36,6 @@ router.post('/register',  async (req, res)=>{
                 break;
         }
 
-        // const userData = await db.query(`SELECT * FROM users WHERE u_username = ${escape(username)}`)
         
         if (userData.length > 0){
             res.status(400).send('this username has been used');
@@ -116,16 +111,24 @@ router.post('/register',  async (req, res)=>{
         console.log(error);
     }
 })
+
+router.get('/checkToken', (req, res)=>{
     
- 
-// router.post('/logout', (req, res)=>{ 
-//     if (req.auth_session.hasOwnProperty('user_data')) {
-//         req.auth_session = undefined;
-//         res.status(200).send('sign out.')
-//     }else{
-//         res.status(401).send('please login')
-//     }
-// })
+    if (req.user_data) {
+        const {user_type, user_id} = JSON.parse(JSON.stringify(req.user_data))
+        // console.log(user_data);
+        res.status(200).send({user_type, user_id})
+    }else{
+        res.status(401)
+    }
+})
+     
+router.post('/logout', (req, res)=>{ 
+    if (req.user_data) {
+        req.user_data = null
+    }
+    res.sendStatus(200)
+})
 
 
 

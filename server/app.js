@@ -1,63 +1,24 @@
 const express = require('express');
 const cors = require('cors');
-const express_session = require('express-session');
-const cookie_parser = require('cookie-parser');
+
 require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const { escape } = require('mysql2')
 
 const db = require('./config/database');
-
-const auth_session = require('./middleware/auth_session')
-
+const jwt = require('jsonwebtoken')
+const auth = require('./middleware/verify_token')
 const app = express();
-const origin = process.env.NODE_ENV === 'development'? "http://localhost:3000": "http://192.168.43.201:3000";
+// const origin = process.env.NODE_ENV === 'development'? "http://localhost:3000": "http://192.168.43.201:3000";
 
 app.use(cors({
     origin: ["http://192.168.43.201:3000", "http://localhost:3000"],
     credentials: true
 })); 
-app.use(express.urlencoded({ extended: true  }))
+
 app.use(express.json());
-app.use(cookie_parser());
-app.use(express_session({
-    resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 36000, secure: false},
-    secret: process.env.SESSION_SECRET
-}));
 
-let session;
-
-const check_session_login = (req, res, next) =>{
-    if (session === undefined) {
-        console.log("case 1");
-        res.status(401)
-    }else if(session !== undefined && req.auth_session !== undefined && session.user_id === req.auth_session.user_id){
-        console.log("case 2");
-        session = undefined
-        // console.log(req.mw_session);
-    }else{
-        console.log(req.auth_session);
-        console.log('req.auth_session');
-        console.log("session");
-        console.log(session);
-        console.log("case 3");
-        req.auth_session = session
-    }
-    next()
-}
-
-app.get('/api/login', check_session_login, (req, res)=>{  
-    
-    if(req.auth_session){
-        res.send(req.auth_session.user_data)
-    }else{
-        res.send('no data')
-    }
-})
-
-app.post('/api/register_manager',  async (req, res)=>{
+app.post('/api/non_auth/register_manager',  async (req, res)=>{
     try {
         const {username, password, name, surname, tel, email, type} = req.body;
         // console.log(username, password, name, surname, tel, email, type);
@@ -97,7 +58,7 @@ app.post('/api/register_manager',  async (req, res)=>{
     }
 })
 
-app.post('/api/login', check_session_login, async (req, res)=>{
+app.post('/api/non_auth/login', async (req, res)=>{
     try {
         const {username, password, type} = req.body;
 
@@ -123,55 +84,26 @@ app.post('/api/login', check_session_login, async (req, res)=>{
                 res.status(400).send('type not match');
                 break;
         }
-        // console.log(user);
-        if (user && (await bcrypt.compare(password, !!user['manager_password']?user['manager_password']:!!user['maid_password']?user['maid_password']:user['engineer_password']))) {
-            // console.log(req.session);
-            if (req.auth_session !== session) {
-                req.auth_session = session
-            }
-            // if (session === undefined && req.auth_session === undefined) { 
-            if (true) { 
-                console.log(req.sessionID);
-                session = req.session;
-                session.user_data = !!user['manager_id']?{user_id: user['manager_id'], type: 'manager'}:
-                !!user['maid_id']?{user_id: user['maid_id'], type: 'maid'}:
-                {user_id: user['engineer_id'], type: 'engineer'};
-                // console.log(`req.session.userid: ${session.userid}`)
-                // console.log(session);
-                // sessionStorage.setItem(`${session}`)
-                req.session.cookie.id = req.sessionID;
-                console.log(req);
-                res.status(200).json(session.user_data) 
-                
-                updataSessionFnc();
-            }else{
 
-                res.status(400).send('you are logined')
-            }
+        if (user && (await bcrypt.compare(password, !!user['manager_password']?user['manager_password']:!!user['maid_password']?user['maid_password']:user['engineer_password']))) {
+           
+            const token = jwt.sign(
+                { user_type: !!user['manager_id']?'MANAGER':!!user['maid_id']?'MAID':'ENGINEER',user_id: !!user['manager_id']?user['manager_id']:!!user['maid_id']?user['maid_id']:user['engineer_id']},
+                process.env.TOKEN_KEY,
+                { expiresIn: "1d" } // 1d = 1000*60*60*24
+            )
+            
+            res.status(200).json(token) 
 
         }else{
-            res.send('username or password went wrong') 
+            res.status(400).send('username or password went wrong') 
         }
     } catch (error) {
         console.log(error);
     }
 })
 
-app.post('/api/logout', check_session_login, (req, res)=>{ 
-    if (!(req.auth_session === undefined || req.auth_session.user_data === undefined)) {
-        req.auth_session = undefined;
-        session = undefined;
-        res.status(200).send('sign out.')
-    }else{
-        res.status(401).send('please login')
-    }
-})
+app.use('/api', auth, require('./services/auth/route'))
+app.use('/api/manager', auth, require('./services/other/manager/router'))
  
-const updataSessionFnc = () =>{
-    if (session !== undefined) {
-        app.use('/api', auth_session(session), require('./services/auth/route'))
-    }
-}
-
-
 module.exports = app; 

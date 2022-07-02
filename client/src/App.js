@@ -5,6 +5,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import HomePageM from './pages/manager/HomePageM';
 import ManageEmp from './pages/manager/ManageEmp';
+import HomepageE from './pages/engineer/HomepageE';
+import HomePageMaid from './pages/made/HomePageMaid';
 
 function App() {
   return (
@@ -22,6 +24,9 @@ function App() {
             <Route path='/manage_emp' element={<ManageEmp/>} /> 
 
           </Route>
+          <Route path='/manager' exac element={<HomePageM/>}/>
+          <Route path='/maid' exac element={<HomePageMaid/>}/>
+          <Route path='/engineer' exac element={<HomepageE/>}/>
 
         </Routes>
       </div>
