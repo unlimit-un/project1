@@ -1,14 +1,21 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Logo from '../../assets/demo.jpg'
 import { Collapse } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown, faHome, faScrewdriverWrench, faUserGear, faTable, faBell, faClipboardList, faClipboardCheck, faBuilding, faPowerOff } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDown, faHome, faScrewdriverWrench, faUserGear, faTable, faBell, faClipboardList, faClipboardCheck, faBuilding, faPowerOff, faExclamationCircle, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { LinkMenuM } from './LinkMenuM';
 import SubMenuItem from './SubMenuItem';
 import {SignOutFunc} from '../../functions/AuthFunc'
 import { useNavigate } from 'react-router-dom';
-const SidebarM = ({ open, setOpen }) => {
+import { ListGroupFlushWithLink } from './subComponents/ListGroup';
+
+export const SidebarLeftManager = ({ open, setOpen }) => {
     const navigate = useNavigate()
+    const [classToggle, setClassToggle] = useState("");
+    const onToggleMenu = (e) =>{
+        setOpen({person:{status: !open.person.status}})
+        !open.person.status?setClassToggle("!text-white !bg-blue-500"): setClassToggle("")
+    }
     return (
         <>
             <div className="bg-blue-200 min-h-screen h-full">
@@ -18,21 +25,23 @@ const SidebarM = ({ open, setOpen }) => {
                         <p className="m-0 text-lg">Unlimit unarn</p>
                     </div>
                     <div className="container-fluid">
-                        <ul className="list-group bg-white">
+                        <ul className="list-group bg-white  text-sm">
                             <LinkMenuM path="/manager/" icon={faHome} label="หน้าหลัก" />
                             <li className="list-group-item p-0">
-                                <button
-                                    onClick={()=>setOpen({person:{status: !open.person.status}})}
-                                    aria-expanded = {open.person.status}
-                                    aria-controls = {open.person.id} 
-                                    className = "flex justify-between items-center w-100 p-2 px-3 bg-blue-500 text-white"
-                                >
-                                    <span><FontAwesomeIcon icon={faUserGear}/> จัดการข้อมูลพนักงาน</span> 
-                                    <FontAwesomeIcon icon={faAngleDown}/>
-                                </button>
+                                <div className="group">
+                                    <button
+                                        onClick={(e)=>onToggleMenu(e)}
+                                        aria-expanded = {open.person.status}
+                                        aria-controls = {open.person.id} 
+                                        className = {classToggle+" flex justify-between items-center w-100 p-2 px-3 text-start group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-300"}
+                                    >
+                                        <span><FontAwesomeIcon icon={faUserGear}/> พนักงาน</span> 
+                                        <FontAwesomeIcon className="group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-100" icon={faAngleDown}/>
+                                    </button>
+                                </div>
                                 <Collapse in={open.person.status}>
                                     <div id={open.person.id} className="py-1">
-                                        <ul className=" px-0">
+                                        <ul className=" px-0 ">
                                             <SubMenuItem label={"แม่บ้าน"}/>
                                             <SubMenuItem label={"ช่างซ่อม"}/>
                                             <SubMenuItem label={"ช่างซ่อมภายนอก"}/>
@@ -47,7 +56,7 @@ const SidebarM = ({ open, setOpen }) => {
                             <LinkMenuM path="/manager/" icon={faClipboardList} label="ประวัติการลา" />
                             <LinkMenuM path="/manager/" icon={faClipboardCheck} label="คำขออนุมัติ" />
                             <LinkMenuM path="/manager/" icon={faBuilding} label="จัดการสถานที่" />
-                            <li className="list-group-item p-0 group">
+                            <li className="list-group-item p-0 group  text-sm">
                                 <button onClick={()=>SignOutFunc(navigate)} className="p-2 px-3 text-gray-600 no-underline w-100 block group-hover:!text-white hover:bg-red-500 ease-in-out duration-300 text-left">
                                     <FontAwesomeIcon icon={faPowerOff} className="text-black group-hover:!text-white ease-in-out duration-300"/> ออกจากระบบ
                                 </button>
@@ -60,4 +69,20 @@ const SidebarM = ({ open, setOpen }) => {
     )
 }
 
-export default SidebarM
+export const SidebarRightManager = () =>{
+
+    const listGroup = [
+        {title:"unlimit", icon: faUsers, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
+        {title:"unlimit", icon: faUsers, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
+        {title:"unlimit", icon: faUsers, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."}
+    ]
+    
+    return (
+        <>
+            <div className="card card-body">
+                <h5 className="mb-3 text-base"><FontAwesomeIcon icon={faExclamationCircle}/> รายการแจ้งเตือน</h5>
+                <ListGroupFlushWithLink lists={listGroup}/>
+            </div>
+        </>
+    )
+}
