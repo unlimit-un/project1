@@ -4,6 +4,7 @@ import HomePage from './pages/HomePage';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import HomePageM from './pages/manager/HomePageM';
+import ManageEmp from './pages/manager/ManageEmp';
 
 function App() {
   return (
@@ -17,7 +18,10 @@ function App() {
             <Route path='/login' element={<Login/>}/>
             <Route path='/register' element={<Register/>}/>
           </Route>
-          <Route path='/manager' exac element={<HomePageM/>}/>
+          <Route path='/manager' exac element={<HomePageM/>}>
+            <Route path='/manage_emp' element={<ManageEmp/>} /> 
+
+          </Route>
 
         </Routes>
       </div>
