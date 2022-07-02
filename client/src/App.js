@@ -7,6 +7,7 @@ import HomePageM from './pages/manager/HomePageM';
 import ManageEmp from './pages/manager/ManageEmp';
 import HomepageE from './pages/engineer/HomepageE';
 import HomePageMaid from './pages/made/HomePageMaid';
+import PageNotFound from './pages/PageNotFound';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           </Route>
           <Route path='/maid' exac element={<HomePageMaid/>}/>
           <Route path='/engineer' exac element={<HomepageE/>}/>
+          <Route path='*' element={<PageNotFound/>}/>
         </Routes>
       </div>
     </>

@@ -7,8 +7,8 @@ import FooterM from '../../components/manager/FooterM'
 import { checkAutoRedirectUser } from '../../functions/AuthFunc'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { LineChart } from '../../components/Charts'
-import { pre_dataBarChart } from '../../functions/PrepareChartData'
+import { BarChart, PieChart } from '../../components/Charts'
+import { pre_dataBarChart, pre_dataPieChart } from '../../functions/PrepareChartData'
 import { TablesStriped } from '../../components/Tables'
 import ManageEmp from './ManageEmp'
 
@@ -22,6 +22,7 @@ const HomePageM = () => {
         }
     });
     const [dataSetsLeaveRole, setDataSetsLeaveRole ] = useState([]);
+    const [dataSetsRepair, setDataSetsRepair ] = useState([]);
 
     const [arr_data] = useState({data: [20,30,50,60,40,80,40,50,90,65,42,35]});
     const navigate = useNavigate();
@@ -31,7 +32,20 @@ const HomePageM = () => {
     useEffect(() => {
 
         checkAutoRedirectUser(navigate, pathname);
-        
+        setDataSetsRepair([
+            {
+                label: 'รายการที่ซ่อมเสร็จแล้ว',
+                data: arr_data.data.map((data)=> data + Math.random()*100),
+                borderColor: 'rgb(255, 99, 132)',
+                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            },
+            {
+                label: 'รายการที่รอดำเนินการ',
+                data: arr_data.data.map((data)=> data + Math.random()*100),
+                borderColor: 'rgb(53, 162, 235)',
+                backgroundColor: 'rgba(53, 162, 235, 0.5)',
+            },
+        ])
         setDataSetsLeaveRole(
             [{
                 label: 'ลาป่วย',
@@ -71,6 +85,9 @@ const HomePageM = () => {
     const dataChartLeave = pre_dataBarChart(labels,'top','สถิติการลาของสมาชิกทั้งหมด')
     const dataChartLeaveEngineer = pre_dataBarChart(labels,'top','สถิติการลาของช่าง', dataSetsLeaveRole)
     const dataChartLeaveMaid = pre_dataBarChart(labels,'top','สถิติการลาของแม่บ้าน', dataSetsLeaveRole)
+    const dataChartRepair = pre_dataPieChart(['รายการที่ซ่อมเสร็จแล้ว', 'รายการที่กำลังดำเนินการ',],'top','แผนภูมิการซ่อมทั้งหมด')
+    const dataChartRepairBar = pre_dataBarChart(labels,'top','แผนภูมิการซ่อมทั้งหมด', dataSetsRepair)
+
 
     const HomePageM = (
         <div className="container-fluid mt-3">
@@ -96,16 +113,32 @@ const HomePageM = () => {
                             <div className="card-body row justify-content-stretch">
                                 <div className="col-12">
                                     <div className="h-full">
-                                        <LineChart data={dataChartLeave.data} options={dataChartLeave.options}/>
+                                        <BarChart data={dataChartLeave.data} options={dataChartLeave.options}/>
                                     </div>
                                 </div>
-                                {/* <hr/> */}
                                 <div className="col-12 row mt-2">
                                     <div className="col-6">
-                                        <LineChart data={dataChartLeaveEngineer.data} options={dataChartLeaveEngineer.options} height="400rem" />
+                                        <BarChart data={dataChartLeaveEngineer.data} options={dataChartLeaveEngineer.options} height="250rem" />
                                     </div>
                                     <div className="col-6">
-                                        <LineChart data={dataChartLeaveMaid.data} options={dataChartLeaveMaid.options} height="400rem" />
+                                        <BarChart data={dataChartLeaveMaid.data} options={dataChartLeaveMaid.options} height="250rem" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="card mt-4">
+                            <div className="card-header">
+                                <h1 className="text-xl m-0"><FontAwesomeIcon icon={faLineChart}/> การซ่อมทั้งหมด</h1>
+                            </div>
+                            <div className="card-body row justify-content-stretch">
+                                <div className="col-lg-4 md-5 col-12">
+                                    <div className="h-full card card-body">
+                                        <PieChart data={dataChartRepair.data} options={dataChartRepair.options} height="250rem" />
+                                    </div>
+                                </div>
+                                <div className="col-lg-8 col-md-7 col-12">
+                                    <div className="h-full card card-body">
+                                        <BarChart data={dataChartRepairBar.data} options={dataChartRepairBar.options} height="250rem" />
                                     </div>
                                 </div>
                             </div>

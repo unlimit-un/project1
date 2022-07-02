@@ -1,11 +1,13 @@
 
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler} from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler, BarElement, ArcElement} from 'chart.js';
 
   ChartJS.register(
     CategoryScale,
     LinearScale,
+    ArcElement,
     PointElement,
     LineElement,
+    BarElement,
     Title,
     Tooltip,
     Legend,
@@ -87,6 +89,51 @@ export const pre_dataBarChart = ( labels ,position, title, dataset ) =>{
           propagate: true
         }
       },
+    };
+  const data = {
+      labels,
+      datasets: dataset?dataset:demoDatasets
+  };
+
+  return {data, options}
+}
+
+export const pre_dataPieChart = ( labels ,position, title, dataset ) =>{
+  const demoDatasets = [
+      {
+          // label: 'Dataset 1',
+          data: [20,30],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)',
+          ],
+          borderWidth: 1,
+      }
+  ]
+  const options = {
+      // responsive: true,
+      plugins: {
+        legend: {
+          position: position,
+        },
+        title: {
+          display: true,
+          text: title,
+        }
+      },
+      maintainAspectRatio: false
     };
   const data = {
       labels,
