@@ -80,7 +80,7 @@ export const SidebarRightManager = () =>{
     return (
         <>
             <div className="card card-body">
-                <h5 className="mb-3 text-base"><FontAwesomeIcon icon={faExclamationCircle}/> รายการแจ้งเตือน</h5>
+                <h5 className="mb-3 text-base"><FontAwesomeIcon icon={faExclamationCircle}/> รายการแจ้งซ่อม</h5>
                 <ListGroupFlushWithLink lists={listGroup}/>
             </div>
         </>
