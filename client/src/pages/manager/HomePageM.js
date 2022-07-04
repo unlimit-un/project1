@@ -11,6 +11,9 @@ import { BarChart, PieChart } from '../../components/Charts'
 import { pre_dataBarChart, pre_dataPieChart } from '../../functions/PrepareChartData'
 import { TablesStriped } from '../../components/Tables'
 import ManageEmp from './ManageEmp'
+import Material from './Material'
+import Request from './Request'
+import Leave from './Leave'
 
 
 const HomePageM = () => {
@@ -90,7 +93,7 @@ const HomePageM = () => {
 
 
     const HomePageM = (
-        <div className="container-fluid mt-3">
+            <>
             <h1 className="text-2xl"><FontAwesomeIcon icon={faHome}/> หน้าหลัก</h1>
             <div className="row">
                 <div className="col-lg-9 col-12">
@@ -159,7 +162,7 @@ const HomePageM = () => {
                     <SidebarRightManager/>
                 </div>
             </div>
-        </div>
+            </>
     )
     return (
         <>
@@ -173,9 +176,19 @@ const HomePageM = () => {
                             </div>
                         </div>
                         <div className="col-lg-10 col-md-9 col-xs-12 px-0">
-                            {
-                                pathname === '/manager' || pathname === '/manager/'?HomePageM:<ManageEmp/>
-                            }
+                            <div className="container-fuild my-3">
+                                {
+                                    
+                                    pathname.includes('/manager/manage_emp')?<ManageEmp/>:
+                                    pathname.includes('/manager/material')?<Material/>:
+                                    pathname.includes('/manager/leave')?<Leave/>:
+                                    pathname.includes('/manager/request')?<Request/>:
+                                    pathname.includes('/manager/repair')?HomePageM:
+                                    pathname.includes('/manager/schedual_work')?HomePageM:
+                                    pathname.includes('/manager/location')?HomePageM:
+                                    HomePageM
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
