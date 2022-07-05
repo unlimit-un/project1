@@ -31,7 +31,7 @@ function ManageEmp() {
                     <div className="w-full">
                         <h1 className="ms-5">siriwimon</h1>
                             <ul className="ms-5">
-                                <li>ชื่อผู้ใช้งาน :</li>
+                                <li>ชื่อผู้ใช้งาน : </li>
                                 <li>อีเมล :</li>
                                 <li>เบอร์โทร :</li>
                             </ul> 

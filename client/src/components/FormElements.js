@@ -40,7 +40,7 @@ export const InputGroupIconsSupfix = ({type, placeholder, callback, icon}) =>{
     )
 }
 
-export const InputGroupwitlabel= ({type, placeholder, callback, id, label}) =>{
+export const InputGroupwitlabel= ({type, callback, id, label}) =>{
     return (
         <>
             <div className="mb-3">
@@ -49,7 +49,7 @@ export const InputGroupwitlabel= ({type, placeholder, callback, id, label}) =>{
                     type={type}
                     className="form-control" 
                     id={id} 
-                    placeholder={placeholder}
+                   
                     required
                     onChange={callback}
                 
