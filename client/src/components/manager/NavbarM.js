@@ -18,7 +18,7 @@ const Navbar = () => {
     ]
   return (
     <>
-        <nav className="navbar navbar-expand-lg bg-blue-400 ">
+        <nav className="navbar navbar-expand-lg bg-blue-400 sticky-top">
             <div className="container-fluid">
                 <div className="row justify-between items-center w-full">
                     <div className="col-7">

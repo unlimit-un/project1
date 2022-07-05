@@ -1,6 +1,6 @@
 import { faBell, faCopy, faEye } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { SidebarRightManager } from '../../components/manager/SidebarM'
 import { Bandage } from '../../components/manager/subComponents/Bandage'
 import { CardFillColorNonFooter } from '../../components/manager/subComponents/Cards'
@@ -8,6 +8,15 @@ import { ModalCard, ModalButton } from '../../components/Modals'
 import { TablesStripedDataTable } from '../../components/Tables'
 
 const Repair = () => {
+
+    const ref = useRef(null)
+    const [height, setHeight] = useState(0);
+
+    useEffect(() => {
+        setHeight(ref.current.clientHeight)
+    }, [])
+    
+
     const totalCard = (
         <div className="container-fulid">
             <p className="text-md m-0 text-start">ทั้งหมด</p>
@@ -119,7 +128,7 @@ const Repair = () => {
             <h1 className="text-2xl"><FontAwesomeIcon icon={faBell}/> จัดการข้อมูลการแจ้งซ่อม</h1>
             <div className="container-fluid">
                 <div className="row gap-y-3">
-                    <div className="col-lg-9 col-md-8 col-12">
+                    <div className="col-lg-9 col-md-8 col-12" ref={ref}>
                         <div className="row items-stretch gap-y-2">
                             <div className="col-lg-3 col-md-6 col-12">
                                 <button className="w-full h-full" onClick={()=>handleFilterData('ทั้งหมด')}>
@@ -147,7 +156,7 @@ const Repair = () => {
                         </div>
                     </div>
                     <div className="col-lg-3 col-md-4 col-12">
-                        <SidebarRightManager/>
+                        <SidebarRightManager maxHeight={height}/>
                     </div>
                 </div>
             </div>

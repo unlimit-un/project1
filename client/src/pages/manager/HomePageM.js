@@ -1,5 +1,5 @@
 import { faClipboardList, faHome, faLineChart } from '@fortawesome/free-solid-svg-icons'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { CardFillColor } from '../../components/manager/subComponents/Cards'
 import Navbar from '../../components/manager/NavbarM'
 import {SidebarLeftManager, SidebarRightManager} from '../../components/manager/SidebarM'
@@ -27,14 +27,18 @@ const HomePageM = () => {
     });
     const [dataSetsLeaveRole, setDataSetsLeaveRole ] = useState([]);
     const [dataSetsRepair, setDataSetsRepair ] = useState([]);
+    const [height, setHeight] = useState(0);
 
     const [arr_data] = useState({data: [20,30,50,60,40,80,40,50,90,65,42,35]});
     const navigate = useNavigate();
     
     const {pathname} = useLocation();
 
-    useEffect(() => {
+    const ref = useRef(null)
 
+    useEffect(() => {
+        setHeight(ref.current.clientHeight)
+    
         checkAutoRedirectUser(navigate, pathname);
         setDataSetsRepair([
             {
@@ -94,10 +98,10 @@ const HomePageM = () => {
 
 
     const HomePageM = (
-            <>
+        <>
             <h1 className="text-2xl"><FontAwesomeIcon icon={faHome}/> หน้าหลัก</h1>
-            <div className="row">
-                <div className="col-lg-9 col-12">
+            <div className="row ">
+                <div className="col-lg-9 col-12"  ref={ref}>
                     <div className="row gap-y-5 mt-4">
                         <div className="col-md-4 col-12">
                             <CardFillColor colorBody="bg-emerald-400" colorFooter="!bg-emerald-500" title="20" subTitle="จำนวนพนักงาน" caption="ข้อมูลเพิ่มเติม"/>
@@ -109,7 +113,24 @@ const HomePageM = () => {
                             <CardFillColor colorBody="bg-slate-400" colorFooter="!bg-slate-500" title="10" subTitle="จำนวนช่าง" caption="ข้อมูลเพิ่มเติม"/>
                         </div>
                     </div>
-                    <div className="my-3">
+                    <div className="card my-3">
+                        <div className="card-header">
+                            <h1 className="text-xl m-0"><FontAwesomeIcon icon={faLineChart}/> การซ่อมทั้งหมด</h1>
+                        </div>
+                        <div className="card-body row justify-content-stretch">
+                            <div className="col-lg-4 col-md-5 col-12">
+                                <div className="h-full card card-body">
+                                    <PieChart data={dataChartRepair.data} options={dataChartRepair.options} height="250rem" />
+                                </div>
+                            </div>
+                            <div className="col-lg-8 col-md-7 col-12">
+                                <div className="h-full card card-body">
+                                    <BarChart data={dataChartRepairBar.data} options={dataChartRepairBar.options} height="250rem" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-4">
                         <div className="card">
                             <div className="card-header">
                                 <h1 className="text-xl m-0"><FontAwesomeIcon icon={faLineChart}/> สถิติการลาของพนักงาน</h1>
@@ -130,23 +151,7 @@ const HomePageM = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="card mt-4">
-                            <div className="card-header">
-                                <h1 className="text-xl m-0"><FontAwesomeIcon icon={faLineChart}/> การซ่อมทั้งหมด</h1>
-                            </div>
-                            <div className="card-body row justify-content-stretch">
-                                <div className="col-lg-4 md-5 col-12">
-                                    <div className="h-full card card-body">
-                                        <PieChart data={dataChartRepair.data} options={dataChartRepair.options} height="250rem" />
-                                    </div>
-                                </div>
-                                <div className="col-lg-8 col-md-7 col-12">
-                                    <div className="h-full card card-body">
-                                        <BarChart data={dataChartRepairBar.data} options={dataChartRepairBar.options} height="250rem" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        
                         <div className="card mt-4">
                             <div className="card-header">
                                 <h1 className="text-xl m-0">
@@ -159,11 +164,11 @@ const HomePageM = () => {
                         </div>
                     </div>
                 </div>
-                <div className="col-lg-3 p-0 my-4 d-lg-block d-none">
-                    <SidebarRightManager/>
+                <div className="col-lg-3 p-0 my-4 d-lg-block d-none self-stretch ">
+                    <SidebarRightManager maxHeight={height}/>
                 </div>
             </div>
-            </>
+        </>
     )
     return (
         <>
