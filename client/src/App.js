@@ -11,6 +11,7 @@ import PageNotFound from './pages/PageNotFound';
 import Material from './pages/manager/Material';
 import Request from './pages/manager/Request';
 import Leave from './pages/manager/Leave';
+import Repair from './pages/manager/Repair';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path='/manager/material' element={<Material/>} /> 
             <Route path='/manager/request' element={<Request/>} /> 
             <Route path='/manager/leave' element={<Leave/>} /> 
+            <Route path='/manager/repair' element={<Repair/>} /> 
           </Route>
           <Route path='/maid' exac element={<HomePageMaid/>}/>
           <Route path='/engineer' exac element={<HomepageE/>}/>

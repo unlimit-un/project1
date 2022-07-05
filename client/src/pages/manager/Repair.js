@@ -1,45 +1,49 @@
-import { faClipboardCheck, faCopy, faEye } from '@fortawesome/free-solid-svg-icons'
+import { faBell, faCopy, faEye } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
+import { SidebarRightManager } from '../../components/manager/SidebarM'
 import { Bandage } from '../../components/manager/subComponents/Bandage'
 import { CardFillColorNonFooter } from '../../components/manager/subComponents/Cards'
-import { ModalButton, ModalCard } from '../../components/Modals'
+import { ModalCard, ModalButton } from '../../components/Modals'
 import { TablesStripedDataTable } from '../../components/Tables'
 
-const Leave = () => {
-    const acceptCard = (
-        <div className="container-fulid">
-            <p className="text-md m-0 text-start">คำขออนุมัติ</p>
-            <div className="text-end">
-                <p className="text-3xl m-0">10</p>
-                <p className="text-md m-0">คำขอที่ผ่านการอนุมัติ</p>
-            </div>
-        </div>
-    )
+const Repair = () => {
     const totalCard = (
         <div className="container-fulid">
-            <p className="text-md m-0 text-start">คำขออนุมัติ</p>
+            <p className="text-md m-0 text-start">ทั้งหมด</p>
             <div className="text-end">
                 <p className="text-3xl m-0">10</p>
-                <p className="text-md m-0">คำขอทั้งหมด</p>
+                <p className="text-md m-0">รายการ</p>
             </div>
         </div>
     )
+
+    const successCard = (
+        <div className="container-fulid">
+            <p className="text-md m-0 text-start">ดำเนินการเสร็จสิ้น</p>
+            <div className="text-end">
+                <p className="text-3xl m-0">8</p>
+                <p className="text-md m-0">รายการ</p>
+            </div>
+        </div>
+    )
+
+    const processCard = (
+        <div className="container-fulid">
+            <p className="text-md m-0 text-start">กำลังดำเนินการ</p>
+            <div className="text-end">
+                <p className="text-3xl m-0">2</p>
+                <p className="text-md m-0">รายการ</p>
+            </div>
+        </div>
+    )
+
     const waitingCard = (
         <div className="container-fulid">
-            <p className="text-md m-0 text-start">คำขออนุมัติ</p>
+            <p className="text-md m-0 text-start">รอดำเนินการ</p>
             <div className="text-end">
-                <p className="text-3xl m-0">10</p>
-                <p className="text-md m-0">คำขอที่รอการอนุมัติ</p>
-            </div>
-        </div>
-    )
-    const denyCard = (
-        <div className="container-fulid">
-            <p className="text-md m-0 text-start">คำขออนุมัติ</p>
-            <div className="text-end">
-                <p className="text-3xl m-0">10</p>
-                <p className="text-md m-0">คำขอที่ไม่ผ่านการอนุมัติ</p>
+                <p className="text-3xl m-0">0</p>
+                <p className="text-md m-0">รายการ</p>
             </div>
         </div>
     )
@@ -78,7 +82,7 @@ const Leave = () => {
     const Modal = {
         mHead: (
             <>
-                <h1 className="m-0 text-2xl"><FontAwesomeIcon icon={faCopy}/> รายละเอียดการลา</h1>
+                <h1 className="m-0 text-2xl"><FontAwesomeIcon icon={faCopy}/> รายละเอียดการแจ้งซ่อม</h1>
             </>
         ),
         mBody: (
@@ -112,37 +116,41 @@ const Leave = () => {
     }
     return (
         <>
-            <h1 className="text-2xl"><FontAwesomeIcon icon={faClipboardCheck}/> จัดการข้อมูลการลา</h1>
+            <h1 className="text-2xl"><FontAwesomeIcon icon={faBell}/> จัดการข้อมูลการแจ้งซ่อม</h1>
             <div className="container-fluid">
-                <div className="row items-stretch gap-y-2">
-                    <div className="col-lg-3 col-md-6 col-12">
-                        <button className="w-full h-full" onClick={()=>handleFilterData('ทั้งหมด')}>
-                            <CardFillColorNonFooter classBody="bg-blue-400 hover:bg-blue-500 transition-all duration-300 rounded" contentBody={totalCard} classCard="text-white transition-all duration-300 hover:-translate-y-3 h-full"/>
-                        </button>
+                <div className="row gap-y-3">
+                    <div className="col-lg-9 col-md-8 col-12">
+                        <div className="row items-stretch gap-y-2">
+                            <div className="col-lg-3 col-md-6 col-12">
+                                <button className="w-full h-full" onClick={()=>handleFilterData('ทั้งหมด')}>
+                                    <CardFillColorNonFooter classBody="bg-blue-400 hover:bg-blue-500 transition-all duration-300 rounded" contentBody={totalCard} classCard="text-white transition-all duration-300 hover:-translate-y-3 w-full h-full"/>
+                                </button>
+                            </div>
+                            <div className="col-lg-3 col-md-6 col-12">
+                                <button className="w-full h-full" onClick={()=>handleFilterData('ดำเนินการเสร็จสิ้น')}>
+                                    <CardFillColorNonFooter classBody="bg-green-400 hover:bg-green-500 transition-all duration-300 rounded" contentBody={successCard} classCard="text-white transition-all duration-300 hover:-translate-y-3 w-full h-full"/>
+                                </button>
+                            </div>
+                            <div className="col-lg-3 col-md-6 col-12">
+                                <button className="w-full h-full" onClick={()=>handleFilterData('กำลังดำเนินการ')}>
+                                    <CardFillColorNonFooter classBody="bg-yellow-400 hover:bg-yellow-500 transition-all duration-300 rounded" contentBody={processCard} classCard="transition-all duration-300 hover:-translate-y-3 w-full h-full"/>
+                                </button>
+                            </div>
+                            <div className="col-lg-3 col-md-6 col-12">
+                                <button className="w-full h-full" onClick={()=>handleFilterData('รอดำเนินการ')}>
+                                    <CardFillColorNonFooter classBody="bg-red-400 hover:bg-red-500 transition-all duration-300 rounded" contentBody={waitingCard} classCard="text-white transition-all duration-300 hover:-translate-y-3 w-full h-full"/>
+                                </button>
+                            </div>
+                        </div>
+                        <div className="mt-3">
+                            <CardFillColorNonFooter contentBody={tableLeave} />
+                        </div>
                     </div>
-                    <div className="col-lg-3 col-md-6 col-12">
-                        <button className="w-full h-full" onClick={()=>handleFilterData('อนุมัติ')}>
-                            <CardFillColorNonFooter classBody="bg-green-400 hover:bg-green-500 transition-all duration-300 rounded" contentBody={acceptCard} classCard="text-white transition-all duration-300 hover:-translate-y-3 h-full"/>
-                        </button>
+                    <div className="col-lg-3 col-md-4 col-12">
+                        <SidebarRightManager/>
                     </div>
-                    <div className="col-lg-3 col-md-6 col-12">
-                        <button className="w-full h-full" onClick={()=>handleFilterData('รออนุมัติ')}>
-                            <CardFillColorNonFooter classBody="bg-yellow-400 hover:bg-yellow-500 transition-all duration-300 rounded" contentBody={waitingCard} classCard="transition-all duration-300 hover:-translate-y-3 h-full"/>
-                        </button>
-                    </div>
-                    
-                    <div className="col-lg-3 col-md-6 col-12">
-
-                        <button className="w-full h-full" onClick={()=>handleFilterData('ไม่อนุมัติ')}>
-                            <CardFillColorNonFooter classBody="bg-red-400 hover:bg-red-500 transition-all duration-300 rounded" contentBody={denyCard} classCard="text-white transition-all duration-300 hover:-translate-y-3 h-full"/>
-                        </button>
-                    </div>
-                </div>
-                <div className="mt-3">
-                    <CardFillColorNonFooter contentBody={tableLeave} />
                 </div>
             </div>
-            
 
             {/* modal */}
             <ModalCard modalShow={modalShow} setModalShow={setModalShow} modalBody={Modal.mBody} modalHead={Modal.mHead}/>
@@ -150,4 +158,4 @@ const Leave = () => {
     )
 }
 
-export default Leave
+export default Repair

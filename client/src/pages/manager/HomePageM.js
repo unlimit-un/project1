@@ -14,6 +14,7 @@ import ManageEmp from './ManageEmp'
 import Material from './Material'
 import Request from './Request'
 import Leave from './Leave'
+import Repair from './Repair'
 
 
 const HomePageM = () => {
@@ -176,14 +177,14 @@ const HomePageM = () => {
                             </div>
                         </div>
                         <div className="col-lg-10 col-md-9 col-xs-12 px-0">
-                            <div className="container-fuild my-3">
+                            <div className="container-fluid my-3">
                                 {
                                     
                                     pathname.includes('/manager/manage_emp')?<ManageEmp/>:
                                     pathname.includes('/manager/material')?<Material/>:
                                     pathname.includes('/manager/leave')?<Leave/>:
                                     pathname.includes('/manager/request')?<Request/>:
-                                    pathname.includes('/manager/repair')?HomePageM:
+                                    pathname.includes('/manager/repair')?<Repair/>:
                                     pathname.includes('/manager/schedual_work')?HomePageM:
                                     pathname.includes('/manager/location')?HomePageM:
                                     HomePageM

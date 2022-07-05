@@ -2,11 +2,20 @@ import React from 'react'
 import Logo from '../../assets/Logo.jpg'
 import Demo from '../../assets/demo.jpg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars, faBell } from '@fortawesome/free-solid-svg-icons'
-import { Dropdown } from 'react-bootstrap'
+import { faBars, faBell, faExclamationCircle, faUsers } from '@fortawesome/free-solid-svg-icons'
+import { Dropdown, DropdownButton } from 'react-bootstrap'
+import { ListGroupDropdownItem, ListGroupFlushWithLink } from './subComponents/ListGroup'
+import DropdownItem from 'react-bootstrap/esm/DropdownItem'
 
 const Navbar = () => {
     // console.log(open.main_menu);
+    const listGroup = [
+        {title:"unlimit", icon: faUsers, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
+        {title:"unlimit", icon: faUsers, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
+        {title:"unlimit", icon: faUsers, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
+        {title:"unlimit", icon: faUsers, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
+        {title:"unlimit", icon: faUsers, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."}
+    ]
   return (
     <>
         <nav className="navbar navbar-expand-lg bg-blue-400 ">
@@ -27,17 +36,16 @@ const Navbar = () => {
                                 >
                                     <FontAwesomeIcon icon={faBars}/>
                                 </button>
-                                    <Dropdown>
-                                        <Dropdown.Toggle className="!bg-blue-300 !border-blue-300 text-white rounded-circle w-12 h-12 text-xl" >
-                                            <FontAwesomeIcon icon={faBell}/>
-                                        </Dropdown.Toggle>
+                                <Dropdown>
+                                    <Dropdown.Toggle className="rounded-circle w-12 h-12 !bg-blue-300 text-white !border-blue-300">
+                                        <FontAwesomeIcon icon={faBell}/>
+                                    </Dropdown.Toggle>
 
-                                        <Dropdown.Menu>
-                                            <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                                            <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                                            <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-                                        </Dropdown.Menu>
-                                    </Dropdown>
+                                    <Dropdown.Menu style={{minWidth: "20rem" }} className="max-h-screen overflow-auto">
+                                        <Dropdown.ItemText><h5 className="text-base"><FontAwesomeIcon icon={faExclamationCircle}/> รายการแจ้งเตือน</h5></Dropdown.ItemText>
+                                        <ListGroupDropdownItem lists={listGroup}/>
+                                    </Dropdown.Menu>
+                                </Dropdown>
                                 <img src={Demo} alt="Demo.jpg" className="rounded-circle w-12 h-12"/>
                             </div>
                         </div>

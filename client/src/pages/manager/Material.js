@@ -26,9 +26,11 @@ const Material = () => {
   return (
     <>
         <h1 className="text-2xl"><FontAwesomeIcon icon={faScrewdriverWrench}/> วัสดุครุภัณฑ์</h1>
-        <div className="card card-body mt-4">
-            <TablesStripedDataTable data={dataTableModel}/>
-        </div>
+        <div className="container-fluid">
+
+          <div className="card card-body mt-4">
+              <TablesStripedDataTable data={dataTableModel}/>
+          </div>
           <div className="card card-body mt-4">
             <div className="flex flex-column justify-center">
               <h3>เพิ่มรายการวัสดุครุภัณฑ์</h3>
@@ -63,6 +65,7 @@ const Material = () => {
               <button className="!bg-blue-600  text-white text-xl rounded w-25 p-2 ">เพิ่ม</button>
             </div>
           </div>
+        </div>
     </>
   )
 }
