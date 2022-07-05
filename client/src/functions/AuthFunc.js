@@ -37,6 +37,7 @@ export const checkAutoRedirectUser = async (navigate, pathname) =>{
       const uri = `${ROOT_SERVER}/api/checkToken`;
       const resToken = await axiosGet(uri);
       const {user_type} = resToken.data;
+      
       if (resToken.status === 200 || resToken.data === "OK") {
         if (!(pathname.includes('manager')||pathname.includes('maid')||pathname.includes('engineer'))) {
           user_type === 'MANAGER'  ?navigate('/manager') :user_type ==='MAID' ?navigate('/maid'):navigate('/engineer')
@@ -44,6 +45,10 @@ export const checkAutoRedirectUser = async (navigate, pathname) =>{
       }
     } catch (error) {
       console.log(error);
+      if (error.response.status === 401) {
+        localStorage.clear();
+        navigate('/login')
+      }
   
     }
   }

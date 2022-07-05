@@ -142,8 +142,6 @@ const Leave = () => {
                     <CardFillColorNonFooter contentBody={tableLeave} />
                 </div>
             </div>
-            
-
             {/* modal */}
             <ModalCard modalShow={modalShow} setModalShow={setModalShow} modalBody={Modal.mBody} modalHead={Modal.mHead}/>
         </>

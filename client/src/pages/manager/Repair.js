@@ -62,9 +62,9 @@ const Repair = () => {
     const initial = {
         thead:['ชื่อ', 'ประเภทการลา', 'เรื่อง', 'เริ่มลาวันที่', 'ถึงวันที่', 'สถานะ'],
         tbody:[
-            ['unlimit', 'ลากิจ', 'ไปทำธุระต่างจังหวัด', '3/7/2023', '5/7/2023', <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-success" text="อนุมัติ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>],
-            ['unlimit', 'ลาพักร้อน', 'ลาไปเที่ยว', '6/7/2023', '12/7/2023', <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-danger" text="ไม่อนุมัติ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>],
-            ['unlimit', 'ลาป่วย', 'ป่วยไข้', '7/8/2023', '15/8/2023', <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-warning" text="รออนุมัติ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>],
+            ['unlimit', 'ลากิจ', 'ไปทำธุระต่างจังหวัด', '3/7/2023', '5/7/2023', <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-success" text="ดำเนินการเสร็จสิ้น"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>],
+            ['unlimit', 'ลาพักร้อน', 'ลาไปเที่ยว', '6/7/2023', '12/7/2023', <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-danger" text="รอดำเนินการ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>],
+            ['unlimit', 'ลาป่วย', 'ป่วยไข้', '7/8/2023', '15/8/2023', <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-warning" text="กำลังดำเนินการ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>],
         ]
     }
     const [dataTable, setDataTable] = useState(initial);
@@ -73,6 +73,7 @@ const Repair = () => {
         setDataTable({
                 ...initial, 
                 tbody:  initial.tbody.filter(item =>{
+                    console.log(item);
                 if ( item[5].props.children[0].props.text === text ) {
                     return item
                 }else if(text === 'ทั้งหมด'){
