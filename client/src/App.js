@@ -24,7 +24,7 @@ function App() {
             <Route path='/register' element={<Register/>}/>
           </Route>
           <Route path='/manager' exac element={<IndexManager/>}>
-            <Route path='/manager/manage_emp' element={<ManageEmp/>} /> 
+            <Route path='/manager/manage_emp/:page' element={<ManageEmp/>} /> 
             <Route path='/manager/material' element={<Material/>} /> 
             <Route path='/manager/request' element={<Request/>} /> 
             <Route path='/manager/leave' element={<Leave/>} /> 

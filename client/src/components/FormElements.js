@@ -40,7 +40,7 @@ export const InputGroupIconsSupfix = ({type, placeholder, callback, icon}) =>{
     )
 }
 
-export const InputGroupwitlabel= ({type, callback, id, label}) =>{
+export const InputGroupwitlabel= ({type, callback, id, label, disable}) =>{
     return (
         <>
             <div className="mb-3">
@@ -49,11 +49,32 @@ export const InputGroupwitlabel= ({type, callback, id, label}) =>{
                     type={type}
                     className="form-control" 
                     id={id} 
-                   
+                    disabled={disable}
                     required
                     onChange={callback}
                 
               />
+            </div>
+        </>
+    )
+}
+export const SelectOptionWithLabel= ({callback, id, label, options}) =>{
+   
+    return (
+        <>
+            <div className="mb-3 flex flex-column">
+              <label htmlFor={id} className="form-label">{label}</label>
+              <select id={id} className="form-control">
+                {
+                    options.map((item, index)=>{
+                        return(
+                            <>
+                                <option value={item.value} key={index}>{item.text}</option>
+                            </>
+                        )
+                    })
+                }
+              </select>
             </div>
         </>
     )

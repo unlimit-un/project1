@@ -90,7 +90,7 @@ app.post('/api/non_auth/login', async (req, res)=>{
             const token = jwt.sign(
                 { user_type: !!user['manager_id']?'MANAGER':!!user['maid_id']?'MAID':'ENGINEER',user_id: !!user['manager_id']?user['manager_id']:!!user['maid_id']?user['maid_id']:user['engineer_id']},
                 process.env.TOKEN_KEY,
-                { expiresIn: "1d" } // 1d = 1000*60*60*24
+                { expiresIn: "6h" } // 1d = 1000*60*60*24
             )
             
             res.status(200).json(token) 

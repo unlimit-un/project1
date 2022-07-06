@@ -42,9 +42,10 @@ export const SidebarLeftManager = ({ open, setOpen }) => {
                                 <Collapse in={open.person.status}>
                                     <div id={open.person.id} className="py-1">
                                         <ul className=" px-0 ">
-                                            <SubMenuItem label={"แม่บ้าน"} path="/manager/manage_emp?p=maid"/>
-                                            <SubMenuItem label={"ช่างซ่อม"} path="/manager/manage_emp?p=en"/>
-                                            <SubMenuItem label={"ช่างซ่อมภายนอก"} path="/manager/manage_emp?p=os_en"/>
+                                            <SubMenuItem label={"แม่บ้าน"} path="/manager/manage_emp/maid"/>
+                                            <SubMenuItem label={"ช่างซ่อม"} path="/manager/manage_emp/en"/>
+                                            <SubMenuItem label={"ช่างซ่อมภายนอก"} path="/manager/manage_emp/os_en"/>
+                                            <SubMenuItem label={"เพิ่มพนักงานในระบบ"} path="/manager/manage_emp/ins"/>
                                         </ul>
                                     </div>
                                 </Collapse>
