@@ -1,7 +1,6 @@
 import { faScrewdriverWrench } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
-import { InputGroupwitlabelmaterial } from '../../components/FormElements'
 import { TablesStripedDataTable } from '../../components/Tables'
 
 const Material = () => {
