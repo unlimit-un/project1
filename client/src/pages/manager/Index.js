@@ -13,6 +13,8 @@ import Leave from './Leave'
 import Repair from './Repair'
 import Notify from './Notify'
 import HomePageM from './HomePageM'
+import Bookmarks from './Bookmarks'
+import Calendar from './Calendar'
 
 const IndexManager = () => {
 
@@ -33,6 +35,9 @@ const IndexManager = () => {
         
     },[])
 
+    if (pathname.includes('/manager/bookmarks')) {
+        return(<Bookmarks open={open} setOpen={setOpen}/>)
+    }
     return (
         <>
             <div className="bg-white min-h-screen">
@@ -53,7 +58,7 @@ const IndexManager = () => {
                                     pathname.includes('/manager/leave')?<Leave/>:
                                     pathname.includes('/manager/request')?<Request/>:
                                     pathname.includes('/manager/repair')?<Repair/>:
-                                    pathname.includes('/manager/schedual_work')?<HomePageM/>:
+                                    pathname.includes('/manager/schedual_work')?<Calendar/>:
                                     pathname.includes('/manager/notify')?<Notify/>:
                                     pathname.includes('/manager/location')?<HomePageM/>:
                                     <HomePageM/>

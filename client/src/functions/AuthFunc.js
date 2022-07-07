@@ -2,6 +2,7 @@ import Swal from "sweetalert2"
 import { axiosGet, axiosPost, axiosPostNonAuth } from "./AxiosCustom";
 
 const ROOT_SERVER =`http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}`;
+
 export const LoginFunc = async (userData, navigate, pathname) => {
   try {
     const data ={
@@ -39,9 +40,16 @@ export const checkAutoRedirectUser = async (navigate, pathname) =>{
       const {user_type} = resToken.data;
       
       if (resToken.status === 200 || resToken.data === "OK") {
-        if (!(pathname.includes('manager')||pathname.includes('maid')||pathname.includes('engineer'))) {
+        
+        if (pathname.split('/')[1] !== user_type.toLowerCase() && !(pathname.includes('login') || pathname.includes('register'))) {
+          navigate('/forbidden')
+          return false
+        }
+       
+        if (!(pathname.includes(user_type.toLowerCase()))) {
           user_type === 'MANAGER'  ?navigate('/manager') :user_type ==='MAID' ?navigate('/maid'):navigate('/engineer')
         }
+        
       }
     } catch (error) {
       console.log(error);

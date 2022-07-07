@@ -106,7 +106,7 @@ const InsEmp = ({title, options, optionsLocation}) => {
                                     <SelectOptionWithLabel id="select_role"  options={options} label="ประเภทงาน"/>
                                 </div>
                                 <div className="col-md-4 col-12">
-                                    <InputGroupwitlabel id="input_name" label="เบอร์ติดต่อ" type="text" disable="true"/>
+                                    <InputGroupwitlabel id="input_name" label="เบอร์ติดต่อ" type="text" disable="disabled"/>
                                 </div>
                             </div>
                         </div>

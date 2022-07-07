@@ -27,6 +27,32 @@ export const ModalCard = ({modalHead, modalBody, modalShow, setModalShow}) => {
   )
 }
 
+export const ModalCardConfirm = ({modalHead, modalBody, modalShow, setModalShow, confrimCallback, cancleCallback}) => {
+  return (
+    <>
+        <Modal
+            show={modalShow}
+            onHide={()=>setModalShow(false)}
+            size="lg"
+            centered
+        >
+        <Modal.Header closeButton>
+            <Modal.Title>
+                {modalHead}
+            </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            {modalBody}
+        </Modal.Body>
+        <Modal.Footer>
+            <Button variant="secondary" onClick={async ()=>{await cancleCallback(); await setModalShow(false);}}>Close</Button>
+            <Button variant="primary" onClick={async ()=>{await confrimCallback(); await setModalShow(false);}}>OK</Button>
+        </Modal.Footer>
+        </Modal>
+    </>
+  )
+}
+
 export const ModalButton = ({setModalShow, icon}) =>{
     return (
         <>

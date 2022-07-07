@@ -32,12 +32,12 @@ const Navbar = () => {
                                 <p className="mb-0 ml-5 text-blue-100 bold md:text-2xl text-lg">Unlimit unarn</p>
                             </div> */}
                             <div className="flex items-center gap-x-2">
-                                <button 
-                                    onClick={()=>{}}
-                                    className="bg-blue-300 text-white text-xl rounded-circle w-12 h-12 md:hidden inline-block"
+                                <Link 
+                                    to="/manager/bookmarks"
+                                    className="bg-blue-300 text-white text-xl rounded-circle w-12 h-12 md:hidden  flex items-center justify-center"
                                 >
                                     <FontAwesomeIcon icon={faBars}/>
-                                </button>
+                                </Link>
                                 <Dropdown>
                                     <Dropdown.Toggle className="rounded-circle w-12 h-12 !bg-blue-300 text-white !border-blue-300">
                                         <FontAwesomeIcon icon={faBell}/>

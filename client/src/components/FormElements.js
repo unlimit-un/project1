@@ -68,9 +68,7 @@ export const SelectOptionWithLabel= ({callback, id, label, options}) =>{
                 {
                     options.map((item, index)=>{
                         return(
-                            <>
-                                <option value={item.value} key={index}>{item.text}</option>
-                            </>
+                            <option value={item.value} key={index}>{item.text}</option>
                         )
                     })
                 }

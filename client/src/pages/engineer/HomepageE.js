@@ -1,14 +1,15 @@
 import { faPowerOff } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { checkAutoRedirectUser, SignOutFunc } from '../../functions/AuthFunc'
 
 
 const HomepageE = () => {
     const navigate = useNavigate();
+    const {pathname} = useLocation();
     useEffect(()=>{
-        checkAutoRedirectUser(navigate)
+        checkAutoRedirectUser(navigate, pathname)
     },[])
     return (
         <>
