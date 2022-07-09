@@ -52,13 +52,13 @@ export const InputGroupwitlabel= ({type, callback, id, label, disable}) =>{
                     disabled={disable}
                     required
                     onChange={callback}
-                
+                    autoComplete="off"
               />
             </div>
         </>
     )
 }
-export const SelectOptionWithLabel= ({callback, id, label, options}) =>{
+export const SelectOptionWithLabel= ({callback, id, label, options_arr_obj}) =>{
    
     return (
         <>
@@ -66,7 +66,7 @@ export const SelectOptionWithLabel= ({callback, id, label, options}) =>{
               <label htmlFor={id} className="form-label">{label}</label>
               <select id={id} className="form-control">
                 {
-                    options.map((item, index)=>{
+                    options_arr_obj.map((item, index)=>{
                         return(
                             <option value={item.value} key={index}>{item.text}</option>
                         )

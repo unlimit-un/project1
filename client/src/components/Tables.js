@@ -31,12 +31,12 @@ export const TablesStriped = ({data}) => {
   )
 }
 
-export const TablesStripedDataTable = ({data}) => {
+export const TablesStripedDataTable = ({data, id}) => {
     const dataTable = new Promise((res, rej)=>{
-        $('#tableStriped').dataTable().fnDestroy()
+        $(`#tableStriped${id}`).dataTable().fnDestroy()
         res();
     }).then(()=>{
-        return $('#tableStriped').dataTable({
+        return $(`#tableStriped${id}`).dataTable({
             "dom": 'lrtip',
             "bDestroy": true
         })
@@ -50,7 +50,7 @@ export const TablesStripedDataTable = ({data}) => {
                 }} 
             />
             <div className="overflow-auto">
-                <table className="table table-striped text-center" id="tableStriped">
+                <table className="table table-striped text-center" id={`tableStriped${id}`}>
                     <thead>
                         <tr>
                             <th>ลำดับ</th>

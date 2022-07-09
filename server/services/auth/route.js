@@ -116,7 +116,7 @@ router.get('/checkToken', (req, res)=>{
     
     if (req.user_data) {
         const {user_type, user_id} = JSON.parse(JSON.stringify(req.user_data))
-        // console.log(user_data);
+        console.log(req.user_data);
         res.status(200).send({user_type, user_id})
     }else{
         res.status(401)

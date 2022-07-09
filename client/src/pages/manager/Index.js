@@ -15,6 +15,8 @@ import Notify from './Notify'
 import HomePageM from './HomePageM'
 import Bookmarks from './Bookmarks'
 import Calendar from './Calendar'
+import SchedualWork from './SchedualWork'
+import Location from './Location'
 
 const IndexManager = () => {
 
@@ -22,7 +24,11 @@ const IndexManager = () => {
         person: {
             status: false,
             id: 'person'
-        }
+        },
+        schedual: {
+            status: false,
+            id: 'schedual'
+        },
     });
    
     const navigate = useNavigate();
@@ -58,9 +64,9 @@ const IndexManager = () => {
                                     pathname.includes('/manager/leave')?<Leave/>:
                                     pathname.includes('/manager/request')?<Request/>:
                                     pathname.includes('/manager/repair')?<Repair/>:
-                                    pathname.includes('/manager/schedual_work')?<Calendar/>:
+                                    pathname.includes('/manager/schedual_work')?<SchedualWork/>:
                                     pathname.includes('/manager/notify')?<Notify/>:
-                                    pathname.includes('/manager/location')?<HomePageM/>:
+                                    pathname.includes('/manager/location')?<Location/>:
                                     <HomePageM/>
                                 }
                             </div>

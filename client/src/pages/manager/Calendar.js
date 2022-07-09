@@ -31,13 +31,21 @@ const Calendar = () => {
                 start: item['date_start'],
                 end: item['date_end'],
                 allDay: item['all_day'] === 1 ? true: false,
-                color: item['calendar_id'] >5 ? "red": "blue"
+                color: item['calendar_id'] >5 ? "red": null
             }
         })
-        setEvent([...data])
+        setEvent([...data, ])
+        // {
+        //     title:'unlimit',
+        //     daysOfWeek: [ '3' ], // these recurrent events move separately
+        //     startTime: '11:00:00',
+        //     endTime: '11:30:00',
+        //     color: 'red'
+        //   }
     }
 
     const handdleSelect = (info) =>{
+        console.log(info);
         showModal();
         setValues({...values,
             start: info.startStr,
@@ -82,25 +90,20 @@ const Calendar = () => {
     }
     return (
         <>
-            <div className="container-fluid">
-                <div className="">
-                    <FullCalendar
-                        plugins={[DayGridPlugin, timeGridPlugin,interactionPlugin]}
-                        classNames={['bg-red-400', 'bg-blue-500']}
-                        headerToolbar={{
-                            center: 'dayGridMonth,timeGridWeek,timeGridDay new',
-                        }}
-                        initialView="dayGridMonth"
-                        
-                        weekends={true}
-                        selectable={true}
-                        selectLongPressDelay= "1"
-                        select={handdleSelect}
-                        events={event}
-                        viewClassNames="max-h-screen"
-                    />
-                </div>
-            </div>
+            
+            <FullCalendar
+                plugins={[DayGridPlugin, timeGridPlugin,interactionPlugin]}
+                headerToolbar={{
+                    center: 'dayGridMonth,timeGridWeek,timeGridDay',
+                }}
+                initialView="dayGridMonth"
+                weekends={true}
+                selectable={true}
+                selectLongPressDelay= "1"
+                select={handdleSelect}
+                events={event}
+                eventDisplay="auto"
+            />
             <ModalCardConfirm confrimCallback={handleOk} cancleCallback={handleCancle} modalShow={isModal} modalHead={Modal.mHead} modalBody={Modal.mBody} setModalShow={setIsModal}/>
         </>
     )

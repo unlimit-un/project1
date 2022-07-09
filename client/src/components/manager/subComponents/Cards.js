@@ -48,3 +48,16 @@ export const CardFillColorNonFooter = ({contentBody, classCard, classBody,}) => 
   )
   
 }
+export const CardFillColorNonFooterShadow = ({contentBody, classCard, classBody,}) => {
+ 
+  return (
+      <>
+        <div className={`card shadow ${classCard}`}>
+          <div className={`card-body ${classBody}`}>
+            {contentBody}
+          </div>
+        </div>
+      </>
+  )
+  
+}
