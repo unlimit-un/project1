@@ -1,8 +1,9 @@
 import React, {useState} from 'react'
 import axios from "axios";
-import { InputGroupwitlabel } from '../components/FormElements';
+import { InputGroupWithLabel } from '../components/FormElements';
 import Swal from 'sweetalert2';
 import { Link , useNavigate } from 'react-router-dom';
+import { RegisterFncManager } from '../functions/AuthFunc';
 
 const Register = () => {
 
@@ -16,42 +17,6 @@ const Register = () => {
 
   })
   const navigate = useNavigate ();
-  const register_fnc = async (e) =>{
-    e.preventDefault();
-    const result = await axios.post(`http://localhost:3001/api/register_manager`,{
-      name: userData.name,
-      surname: userData.surname,
-      username: userData.username,
-      password: userData.password,
-      tel: userData.tel,
-      email: userData.email,
-      type: 'MANAGER'
-    }, 
-    {
-      headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-      },
-      withCredentials: true
-    }
-
-    ).catch( async (error)=>{
-        await Swal.fire({
-          title: "ผิดพลาด",
-          icon: "error",
-          text: `${error.response.data}`
-        })
-    })
-    if (result !== undefined &&result.status===200) {
-
-        await Swal.fire({
-        title: "สำเร็จ",
-        icon: "success"
-      }).then(()=>{
-        navigate('/login');
-      })
-  }
-  }
   
   const SetName = ({target:{value: val}})=>{
     setUserData({...userData,name: val})
@@ -78,13 +43,16 @@ const Register = () => {
         <div className="flex justify-center flex-column">
         <h1 className="text-center">ระบบลงทะเบียน</h1>
           <div className="flex flex-column mt-6">
-          <form onSubmit={register_fnc}>
-            <InputGroupwitlabel callback={SetName} id="input_name" label="ชื่อ"  placeholder="กรอกชื่อ" type="text" />
-            <InputGroupwitlabel callback={SetSurname} id="input_surname" label="สกุล" placeholder="กรอกสกุล" type="text"/>
-            <InputGroupwitlabel callback={SetUsername} id="input_username" label="ชื่อผู้ใช้งาน" placeholder="กรอกชื่อผู้ใช้งาน" type="text"/>
-            <InputGroupwitlabel callback={SetPassword} id="input_password" label="รหัสผ่าน" placeholder="กรอกรหัสผ่าน" type="password"/>
-            <InputGroupwitlabel callback={SetTel} id="input_tel" label="เบอร์โทร" placeholder="กรอกเบอร์โทร" type="text"/>
-            <InputGroupwitlabel callback={SetEmail} id="input_email" label="email" placeholder="email" type="email"/>
+          <form onSubmit={(e)=>{
+              e.preventDefault()
+              RegisterFncManager(userData, navigate)
+          }}>
+            <InputGroupWithLabel callback={SetName} id="input_name" label="ชื่อ"  placeholder="กรอกชื่อ" type="text" />
+            <InputGroupWithLabel callback={SetSurname} id="input_surname" label="สกุล" placeholder="กรอกสกุล" type="text"/>
+            <InputGroupWithLabel callback={SetUsername} id="input_username" label="ชื่อผู้ใช้งาน" placeholder="กรอกชื่อผู้ใช้งาน" type="text"/>
+            <InputGroupWithLabel callback={SetPassword} id="input_password" label="รหัสผ่าน" placeholder="กรอกรหัสผ่าน" type="password"/>
+            <InputGroupWithLabel callback={SetTel} id="input_tel" label="เบอร์โทร" placeholder="กรอกเบอร์โทร" type="text"/>
+            <InputGroupWithLabel callback={SetEmail} id="input_email" label="email" placeholder="email" type="email"/>
          
            
             <div className="flex justify-center">

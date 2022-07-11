@@ -1,6 +1,6 @@
 import { faBell, faCopy, faEye } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { Suspense, useEffect, useRef, useState } from 'react'
 import { SidebarRightManager } from '../../components/manager/SidebarM'
 import { Bandage } from '../../components/manager/subComponents/Bandage'
 import { CardFillColorNonFooter } from '../../components/manager/subComponents/Cards'
@@ -12,10 +12,6 @@ const Repair = () => {
     const ref = useRef(null)
     const [height, setHeight] = useState(0);
 
-    useEffect(() => {
-        setHeight(ref.current.clientHeight)
-    }, [])
-    
 
     const totalCard = (
         <div className="container-fulid">
@@ -56,18 +52,23 @@ const Repair = () => {
             </div>
         </div>
     )
-
     const [modalShow, setModalShow] = useState(false)
-
     const initial = {
-        thead:['ชื่อ', 'ประเภทการลา', 'เรื่อง', 'เริ่มลาวันที่', 'ถึงวันที่', 'สถานะ'],
+        thead:['ชื่อ', 'ประเภทการลา', 'เรื่อง', 'เริ่มลาวันที่', 'ถึงวันที่', 'สถานะ', ''],
         tbody:[
-            ['unlimit', 'ลากิจ', 'ไปทำธุระต่างจังหวัด', '3/7/2023', '5/7/2023', <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-success" text="ดำเนินการเสร็จสิ้น"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>],
-            ['unlimit', 'ลาพักร้อน', 'ลาไปเที่ยว', '6/7/2023', '12/7/2023', <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-danger" text="รอดำเนินการ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>],
-            ['unlimit', 'ลาป่วย', 'ป่วยไข้', '7/8/2023', '15/8/2023', <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-warning" text="กำลังดำเนินการ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>],
+            ['unlimit', 'ลากิจ', 'ไปทำธุระต่างจังหวัด', '3/7/2023', '5/7/2023', <Bandage classBandage=" bg-success" text="ดำเนินการเสร็จสิ้น"/>, <ModalButton icon={faEye} setModalShow={setModalShow} classBtn="btn btn-outline-primary w-full"/>],
+            ['unlimit', 'ลาพักร้อน', 'ลาไปเที่ยว', '6/7/2023', '12/7/2023', <Bandage classBandage="  bg-danger" text="รอดำเนินการ"/>, <ModalButton icon={faEye} setModalShow={setModalShow} classBtn="btn btn-outline-primary w-full"/>],
+            ['unlimit', 'ลาป่วย', 'ป่วยไข้', '7/8/2023', '15/8/2023', <Bandage classBandage="  bg-warning" text="กำลังดำเนินการ"/>, <ModalButton icon={faEye} setModalShow={setModalShow} classBtn="btn btn-outline-primary w-full"/>],
         ]
     }
+
+    
     const [dataTable, setDataTable] = useState(initial);
+
+    useEffect(() => {
+        setHeight(ref.current.clientHeight)
+        setDataTable(initial)
+    }, [])
 
     const handleFilterData = (text) =>{
         setDataTable({
@@ -84,9 +85,11 @@ const Repair = () => {
     }
     
     const tableLeave = (
-        <div className="container-fluid">
-            <TablesStripedDataTable data={dataTable}/>
-        </div>
+        <Suspense fallback={'... loading'}>
+            <div className="container-fluid">
+                <TablesStripedDataTable data={dataTable}/>
+            </div>
+        </Suspense>
     )
 
     const Modal = {

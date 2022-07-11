@@ -89,7 +89,7 @@ const Homepage = () => {
     <>
         <h1 className="text-2xl"><FontAwesomeIcon icon={faHome}/> หน้าหลัก</h1>
         <div className="row ">
-            <div className="col-lg-9 col-12"  ref={ref}>
+            <div className="col-lg-9 col-md-8 col-12"  ref={ref}>
                 <div className="row gap-y-5 mt-4">
                     <div className="col-md-4 col-12">
                         <CardFillColor colorBody="bg-emerald-400" colorFooter="!bg-emerald-500" title="20" subTitle="จำนวนพนักงาน" caption="ข้อมูลเพิ่มเติม"/>
@@ -152,7 +152,7 @@ const Homepage = () => {
                     </div>
                 </div>
             </div>
-            <div className="col-lg-3 p-0 my-4 d-lg-block d-none self-stretch ">
+            <div className="col-lg-3 col-md-4 col-12 p-0 my-4 self-stretch ">
                 <SidebarRightManager maxHeight={height}/>
             </div>
         </div>

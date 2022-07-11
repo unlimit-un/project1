@@ -32,6 +32,36 @@ export const LoginFunc = async (userData, navigate, pathname) => {
    
 }
 
+export const RegisterFncManager = async (userData, navigate) =>{
+  try {
+    const data = {
+      name: userData.name,
+      surname: userData.surname,
+      username: userData.username,
+      password: userData.password,
+      tel: userData.tel,
+      email: userData.email,
+      type: "MANAGER"
+    }
+    const result = await axiosPostNonAuth(`${ROOT_SERVER}/api/non_auth/register_manager`,data,)
+    if (result.status === 200) {
+      await Swal.fire({
+        title: "สำเร็จ",
+        icon: "success",
+        text: "กำลังเข้าสู่ระบบ"
+      }).then(()=>{
+        navigate('/login');
+      })
+    }
+  } catch (error) {
+    await Swal.fire({
+      title: "ผิดพลาด",
+      icon: "error",
+      text: `${error.response.data}`
+    })
+  }
+}
+
 export const checkAutoRedirectUser = async (navigate, pathname) =>{
   if (localStorage.getItem('user_token')) {
     try {

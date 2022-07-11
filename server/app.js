@@ -22,7 +22,7 @@ app.post('/api/non_auth/register_manager',  async (req, res)=>{
     try {
         const {username, password, name, surname, tel, email, type} = req.body;
         // console.log(username, password, name, surname, tel, email, type);
-
+        console.log({username, password, name, surname, tel, email, type});
         if (!(username && password && name && surname && tel && email && type)){
             res.status(400).send('data required');
             return false;

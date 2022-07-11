@@ -4,7 +4,7 @@ import {  faPlus, faUserCog, faUserPlus, faUserTie  } from '@fortawesome/free-so
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {Link, useParams} from 'react-router-dom'
 import { CardFillColorNonFooter } from '../../components/manager/subComponents/Cards'
-import { InputGroupwitlabel, SelectOptionWithLabel } from '../../components/FormElements'
+import { InputGroupWithLabel, SelectOptionWithLabel } from '../../components/FormElements'
 
 const ManageEmployee = ({title, dataSets}) => {
     
@@ -79,34 +79,34 @@ const InsEmp = ({title, options, optionsLocation}) => {
                         <div className="col-lg-9 col-md-8 col-12">
                             <div className="row">
                                 <div className="col-md-4 col-12">
-                                    <InputGroupwitlabel id="input_name" label="รหัสพนักงาน" type="text"/>
+                                    <InputGroupWithLabel id="input_name" label="รหัสพนักงาน" type="text"/>
                                 </div>
                                 <div className="col-md-4 col-12">
-                                    <InputGroupwitlabel id="input_name" label="ชื่อ" type="text"/>
+                                    <InputGroupWithLabel id="input_name" label="ชื่อ" type="text"/>
                                 </div>
                                 <div className="col-md-4 col-12">
-                                    <InputGroupwitlabel id="input_name" label="สกุล" type="text"/>
+                                    <InputGroupWithLabel id="input_name" label="สกุล" type="text"/>
                                 </div>
                                 <div className="col-md-6 col-12">
-                                    <InputGroupwitlabel id="input_name" label="ชื่อผู้ใช้งาน" type="text"/>
+                                    <InputGroupWithLabel id="input_name" label="ชื่อผู้ใช้งาน" type="text"/>
                                 </div>
                                 <div className="col-md-6 col-12">
-                                    <InputGroupwitlabel id="input_name" label="รหัสผ่าน" type="text"/>
+                                    <InputGroupWithLabel id="input_name" label="รหัสผ่าน" type="text"/>
                                 </div>
                                 <div className="col-md-6 col-12">
-                                    <InputGroupwitlabel id="input_name" label="อีเมล" type="text"/>
+                                    <InputGroupWithLabel id="input_name" label="อีเมล" type="text"/>
                                 </div>
                                 <div className="col-md-6 col-12">
-                                    <InputGroupwitlabel id="input_name" label="เบอร์ติดต่อ" type="text"/>
+                                    <InputGroupWithLabel id="input_name" label="เบอร์ติดต่อ" type="text"/>
                                 </div>
                                 <div className="col-md-4 col-12">
-                                    <SelectOptionWithLabel id="select_role"  options={optionsLocation} label="สถานที่ทำงาน"/>
+                                    <SelectOptionWithLabel id="select_location"  options_arr_obj={optionsLocation} label="สถานที่ทำงาน"/>
                                 </div>
                                 <div className="col-md-4 col-12">
-                                    <SelectOptionWithLabel id="select_role"  options={options} label="ประเภทงาน"/>
+                                    <SelectOptionWithLabel id="select_role"  options_arr_obj={options} label="ประเภทงาน"/>
                                 </div>
                                 <div className="col-md-4 col-12">
-                                    <InputGroupwitlabel id="input_name" label="เบอร์ติดต่อ" type="text" disable="disabled"/>
+                                    <InputGroupWithLabel id="input_name" label="เบอร์ติดต่อ" type="text" disable="disabled"/>
                                 </div>
                             </div>
                         </div>

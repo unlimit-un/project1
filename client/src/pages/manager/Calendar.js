@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 import FullCalendar from "@fullcalendar/react";
 import DayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -7,8 +7,9 @@ import interactionPlugin from "@fullcalendar/interaction"
 import { ModalCardConfirm } from "../../components/Modals";
 import { faCalendar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { InputGroupwitlabel } from '../../components/FormElements';
+import { InputGroupWithLabel } from '../../components/FormElements';
 import { createFullCalendar, getFullCalendar } from '../../functions/Calendar';
+import Spiner from '../../components/Spiner';
 const Calendar = () => {
     const [isModal, setIsModal] = useState(false);
     const [values, setValues] = useState({
@@ -83,7 +84,7 @@ const Calendar = () => {
                 
                 <p className="m-0">จากวันที่: {values.start}</p>
                 <p className="m-0">ถึงวันที่: {values.end}</p>
-                <InputGroupwitlabel label="หัวข้อ" id="title" callback={setTitle}/>
+                <InputGroupWithLabel label="หัวข้อ" id="title" callback={setTitle}/>
                  
             </>
         )

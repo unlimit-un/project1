@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState} from 'react'
+import React, { Suspense, useEffect, useState} from 'react'
 
 import Navbar from '../../components/manager/NavbarM'
 import {SidebarLeftManager} from '../../components/manager/SidebarM'
@@ -17,6 +17,7 @@ import Bookmarks from './Bookmarks'
 import Calendar from './Calendar'
 import SchedualWork from './SchedualWork'
 import Location from './Location'
+import Spiner from '../../components/Spiner'
 
 const IndexManager = () => {
 
@@ -47,16 +48,17 @@ const IndexManager = () => {
     return (
         <>
             <div className="bg-white min-h-screen">
-                <Navbar/>
+                <Suspense fallback={<Spiner/>}><Navbar/></Suspense>
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-lg-2 col-md-3 col-xs-12 ps-0 md:block hidden">
                             <div className="bg-blue-200 min-h-screen h-full">
-                                <SidebarLeftManager open={open} setOpen={setOpen}/>
+                            <Suspense fallback={<Spiner/>}><SidebarLeftManager open={open} setOpen={setOpen}/></Suspense>
                             </div>
                         </div>
                         <div className="col-lg-10 col-md-9 col-xs-12 px-0">
                             <div className="container-fluid my-3">
+                                <Suspense fallback={<Spiner/>}>
                                 {
                                     
                                     pathname.includes('/manager/manage_emp')?<ManageEmp/>:
@@ -69,11 +71,12 @@ const IndexManager = () => {
                                     pathname.includes('/manager/location')?<Location/>:
                                     <HomePageM/>
                                 }
+                                </Suspense>
                             </div>
                         </div>
                     </div>
                 </div>
-                <FooterM/>
+                <Suspense fallback={<Spiner/>}><FooterM/></Suspense>
             </div>
         </>
     )
