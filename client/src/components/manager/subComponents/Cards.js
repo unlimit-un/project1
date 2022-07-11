@@ -61,3 +61,17 @@ export const CardFillColorNonFooterShadow = ({contentBody, classCard, classBody,
   )
   
 }
+export const CardFillColorHeader = ({contentBody, classCard, classBody, classCardHeader, contentHeader}) => {
+ 
+  return (
+      <>
+        <div className={`card ${classCard}`}>
+          <div className={`card-header ${classCardHeader}`}>{contentHeader}</div>
+          <div className={`card-body ${classBody}`}>
+            {contentBody}
+          </div>
+        </div>
+      </>
+  )
+  
+}

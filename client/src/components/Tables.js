@@ -38,7 +38,8 @@ export const TablesStripedDataTable = ({data, id}) => {
     }).then(()=>{
         return $(`#tableStriped${id}`).dataTable({
             "dom": 'lrtip',
-            "bDestroy": true
+            "bDestroy": true,
+            scrollX: true,
         })
     })
     
@@ -50,7 +51,7 @@ export const TablesStripedDataTable = ({data, id}) => {
                 }} 
             />
             <div className="overflow-auto">
-                <table className="table table-striped text-center w-full" id={`tableStriped${id}`}>
+                <table className="table table-striped text-center whitespace-nowrap align-middle w-full" id={`tableStriped${id}`}>
                     <thead>
                         <tr>
                             <th>ลำดับ</th>

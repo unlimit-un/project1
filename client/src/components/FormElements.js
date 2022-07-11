@@ -40,7 +40,25 @@ export const InputGroupIconsSupfix = ({type, placeholder, callback, icon}) =>{
     )
 }
 
-export const InputGroupwitlabel= ({type, callback, id, label, disable}) =>{
+export const InputGroupWithLabel= ({type, callback, id, label, disable}) =>{
+    return (
+        <>
+            <div className="mb-3">
+              <label htmlFor={id} className="form-label">{label}</label>
+              <input 
+                    type={type}
+                    className="form-control" 
+                    id={id} 
+                    disabled={disable}
+                    required
+                    onChange={callback}
+                    autoComplete="off"
+              />
+            </div>
+        </>
+    )
+}
+export const TextAreawithlabel= ({type, callback, id, label, disable}) =>{
     return (
         <>
             <div className="mb-3">

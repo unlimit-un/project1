@@ -20,7 +20,7 @@ export const ModalCard = ({modalHead, modalBody, modalShow, setModalShow}) => {
             {modalBody}
         </Modal.Body>
         <Modal.Footer>
-            <Button onClick={()=>setModalShow(false)}>Close</Button>
+            <Button variant='outline-danger' onClick={()=>setModalShow(false)}>Close</Button>
         </Modal.Footer>
         </Modal>
     </>
@@ -28,6 +28,7 @@ export const ModalCard = ({modalHead, modalBody, modalShow, setModalShow}) => {
 }
 
 export const ModalCardConfirm = ({modalHead, modalBody, modalShow, setModalShow, confrimCallback, cancleCallback}) => {
+    
   return (
     <>
         <Modal
@@ -45,8 +46,8 @@ export const ModalCardConfirm = ({modalHead, modalBody, modalShow, setModalShow,
             {modalBody}
         </Modal.Body>
         <Modal.Footer>
-            <Button variant="secondary" onClick={async ()=>{await cancleCallback(); await setModalShow(false);}}>Close</Button>
-            <Button variant="primary" onClick={async ()=>{await confrimCallback(); await setModalShow(false);}}>OK</Button>
+            <Button variant="outline-danger" onClick={async ()=>{await cancleCallback(); await setModalShow(false);}}>Close</Button>
+            <Button variant="success" onClick={async ()=>{await confrimCallback(); await setModalShow(false);}}>OK</Button>
         </Modal.Footer>
         </Modal>
     </>
