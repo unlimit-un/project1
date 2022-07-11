@@ -33,7 +33,7 @@ const Material = () => {
           <div className="card card-body mt-4">
             <div className="flex flex-column justify-center">
               <h3>เพิ่มรายการวัสดุครุภัณฑ์</h3>
-              <from>
+              <form>
                   <div className="row" >
                     <div className="col-sm-4">
                       <label htmlFor="validationCustom01" className="from-label">รหัส </label>
@@ -58,7 +58,7 @@ const Material = () => {
                         <input  className="form-control" placeholder="" type="date"/> 
                     </div>
                   </div>
-              </from>
+              </form>
             </div>
             <div className="flex justify-start mt-4">
               <button className="!bg-blue-600  text-white text-xl rounded w-25 p-2 ">เพิ่ม</button>

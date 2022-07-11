@@ -50,7 +50,7 @@ export const TablesStripedDataTable = ({data, id}) => {
                 }} 
             />
             <div className="overflow-auto">
-                <table className="table table-striped text-center" id={`tableStriped${id}`}>
+                <table className="table table-striped text-center w-full" id={`tableStriped${id}`}>
                     <thead>
                         <tr>
                             <th>ลำดับ</th>

@@ -46,7 +46,7 @@ const Request = () => {
         tbody:[
             ['A233456', 'เบิกเครื่องมือซ้อม','3/7/2023', <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-success" text="อนุมัติ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>],
             ['A233457', 'ลาป่วย','6/7/2023', <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-danger" text="ไม่อนุมัติ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>],
-            ['A233458', 'ขอวัสดุไปทำงานเพิ่ม','7/8/2023', <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-warning" text="รออนุมัติ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>],
+            ['A233458', 'ขอวัสดุไปทำงานเพิ่ม','7/8/2023', <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-success" text="อนุมัติ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>],
         ]
     }
     const [dataTable, setDataTable] = useState(initial);
