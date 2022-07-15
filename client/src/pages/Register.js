@@ -47,12 +47,12 @@ const Register = () => {
               e.preventDefault()
               RegisterFncManager(userData, navigate)
           }}>
-            <InputGroupWithLabel callback={SetName} id="input_name" label="ชื่อ"  placeholder="กรอกชื่อ" type="text" />
-            <InputGroupWithLabel callback={SetSurname} id="input_surname" label="สกุล" placeholder="กรอกสกุล" type="text"/>
-            <InputGroupWithLabel callback={SetUsername} id="input_username" label="ชื่อผู้ใช้งาน" placeholder="กรอกชื่อผู้ใช้งาน" type="text"/>
-            <InputGroupWithLabel callback={SetPassword} id="input_password" label="รหัสผ่าน" placeholder="กรอกรหัสผ่าน" type="password"/>
-            <InputGroupWithLabel callback={SetTel} id="input_tel" label="เบอร์โทร" placeholder="กรอกเบอร์โทร" type="text"/>
-            <InputGroupWithLabel callback={SetEmail} id="input_email" label="email" placeholder="email" type="email"/>
+            <InputGroupWithLabel callback={e=>SetName(e)} id="input_name" label="ชื่อ"  placeholder="กรอกชื่อ" type="text" />
+            <InputGroupWithLabel callback={e=>SetSurname(e)} id="input_surname" label="สกุล" placeholder="กรอกสกุล" type="text"/>
+            <InputGroupWithLabel callback={e=>SetUsername(e)} id="input_username" label="ชื่อผู้ใช้งาน" placeholder="กรอกชื่อผู้ใช้งาน" type="text"/>
+            <InputGroupWithLabel callback={e=>SetPassword(e)} id="input_password" label="รหัสผ่าน" placeholder="กรอกรหัสผ่าน" type="password"/>
+            <InputGroupWithLabel callback={e=>SetTel(e)} id="input_tel" label="เบอร์โทร" placeholder="กรอกเบอร์โทร" type="text"/>
+            <InputGroupWithLabel callback={e=>SetEmail(e)} id="input_email" label="email" placeholder="email" type="email"/>
          
            
             <div className="flex justify-center">
