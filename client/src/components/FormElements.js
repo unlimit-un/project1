@@ -52,10 +52,7 @@ export const InputGroupWithLabel= ({type, callback, id, label, disable, placehol
                     disabled={disable}
                     required
                     placeholder={placeholder}
-                    onChange={({target:value})=>{
-
-                        callback()
-                    }}
+                    onChange={callback}
                     autoComplete="off"
               />
             </div>
