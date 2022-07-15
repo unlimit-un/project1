@@ -20,13 +20,13 @@ const Navbar = () => {
     const ref = useRef();
   return (
     <>
-        <nav className="navbar navbar-expand-lg bg-blue-400 sticky-top">
+        <nav className="navbar navbar-expand-lg bg-white sticky-top shadow-slate-300 shadow-md p-0">
             <div className="container-fluid">
-                <div className="row justify-between items-center w-full">
-                    <div className="col-7">
-                        <img src={Logo} alt="Logo.jpg" className="rounded-circle w-12 h-12"/>
+                <div className="row justify-between items-stretch w-full ">
+                    <div className="col-lg-2 col-3 px-0 py-0 bg-blue-50">
+                        <img src={Logo} alt="Logo.jpg" className="rounded-circle w-12 h-12 my-2 ms-3"/>
                     </div>
-                    <div className="col-5">
+                    <div className="col-lg-10 col-9 py-2">
                         <div className="flex flex-row items-center w-full justify-end">
                             {/* <div className="flex items-center">
                                 <p className="mb-0 ml-5 text-blue-100 bold md:text-2xl text-lg">Unlimit unarn</p>

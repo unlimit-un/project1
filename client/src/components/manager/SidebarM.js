@@ -28,16 +28,17 @@ export const SidebarLeftManager = ({ open, setOpen }) => {
 
     return (
         <>
-            <div className="bg-blue-200 min-h-screen h-full">
+            <div className="bg-blue-50 min-h-screen h-full ">
                 <div className="flex flex-col items-center">
                     <div className="flex flex-col items-center mt-4 mb-2">
-                        <img src={Logo} alt="profile.jpg" className="w-20 h-20 rounded-circle"/>
+                        <img src={Logo} alt="profile.jpg" className="w-20 h-20 rounded-circle shadow"/>
                         <p className="m-0 text-lg">Unlimit unarn</p>
+                        <small>หัวหน้างาน</small>
                     </div>
-                    <div className="container-fluid">
-                        <ul className="list-group bg-white  text-sm">
+                    <div className="w-full">
+                        <ul className=" text-sm m-0 p-0">
                             <LinkMenuM path="/manager/" icon={faHome} label="หน้าหลัก" />
-                            <li className="list-group-item p-0">
+                            <li className=" p-0">
                                 <div className="group">
                                     <button
                                         onClick={(e)=>onToggleMenuPerson(e)}
@@ -64,7 +65,7 @@ export const SidebarLeftManager = ({ open, setOpen }) => {
                             <LinkMenuM path="/manager/repair" icon={faBell} label="แจ้งซ่อม" />
                             <LinkMenuM path="/manager/material" icon={faScrewdriverWrench} label="วัสดุครุภัณฑ์" />
 
-                            <li className="list-group-item p-0">
+                            <li className=" p-0">
                                 <div className="group">
                                     <button
                                         onClick={(e)=>onToggleMenuSchedual(e)}
@@ -91,7 +92,7 @@ export const SidebarLeftManager = ({ open, setOpen }) => {
                             <LinkMenuM path="/manager/leave" icon={faClipboardList} label="ประวัติการลา" />
                             <LinkMenuM path="/manager/request" icon={faClipboardCheck} label="คำขออนุมัติ" />
                             <LinkMenuM path="/manager/location" icon={faBuilding} label="จัดการสถานที่" />
-                            <li className="list-group-item p-0 group  text-sm">
+                            <li className=" p-0 group  text-sm">
                                 <button onClick={()=>SignOutFunc(navigate)} className="p-2 px-3 text-gray-600 no-underline w-100 block group-hover:!text-white hover:bg-red-500 ease-in-out duration-300 text-left">
                                     <FontAwesomeIcon icon={faPowerOff} className="text-black group-hover:!text-white ease-in-out duration-300"/> ออกจากระบบ
                                 </button>

@@ -40,7 +40,7 @@ export const InputGroupIconsSupfix = ({type, placeholder, callback, icon}) =>{
     )
 }
 
-export const InputGroupWithLabel= ({type, callback, id, label, disable}) =>{
+export const InputGroupWithLabel= ({type, callback, id, label, disable, placeholder}) =>{
     return (
         <>
             <div className="mb-3">
@@ -51,7 +51,11 @@ export const InputGroupWithLabel= ({type, callback, id, label, disable}) =>{
                     id={id} 
                     disabled={disable}
                     required
-                    onChange={callback}
+                    placeholder={placeholder}
+                    onChange={({target:value})=>{
+
+                        callback()
+                    }}
                     autoComplete="off"
               />
             </div>
@@ -76,13 +80,13 @@ export const TextAreawithlabel= ({type, callback, id, label, disable}) =>{
         </>
     )
 }
-export const SelectOptionWithLabel= ({callback, id, label, options_arr_obj}) =>{
+export const SelectOptionWithLabel= ({callback, id, label, options_arr_obj, disabled}) =>{
    
     return (
         <>
             <div className="mb-3 flex flex-column">
               <label htmlFor={id} className="form-label">{label}</label>
-              <select id={id} className="form-control">
+              <select id={id} className="form-control" disabled={disabled}>
                 {
                     options_arr_obj.map((item, index)=>{
                         return(

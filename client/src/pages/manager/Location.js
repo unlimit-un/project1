@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { InputGroupwitlabel, SelectOptionWithLabel } from '../../components/FormElements'
+import { InputGroupWithLabel, SelectOptionWithLabel } from '../../components/FormElements'
 import { CardFillColorNonFooter, CardFillColorNonFooterShadow } from '../../components/manager/subComponents/Cards'
 import { ModalButton, ModalCard } from '../../components/Modals'
 import { TablesStripedDataTable } from '../../components/Tables'
@@ -10,14 +10,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 const Location = () => {
   const [name, setName] = useState('');
   const [showModal, setShowModal] = useState(false);
-  // const spacial_options = [
-  //     {value: '1', text: 'งานประชุม'},
-  //     {value: '2', text: 'งานเลี้ยงรุ่น'}
-  // ]
-  // const member = [
-  //     {value: '1', text: 'min'},
-  //     {value: '2', text: 'nik'}
-  // ]
   const dataTable = {
       thead:['ชื่อสถานที่',''],
       tbody:[
@@ -46,7 +38,7 @@ const Location = () => {
       ),
       mBody: (
           <>
-              <InputGroupwitlabel  label="ห้อง" />
+              <InputGroupWithLabel  label="ห้อง" />
               <div className="flex justify-end">
                   <button className="btn btn-outline-success w-1/4">เพิ่ม</button>
               </div>
@@ -64,11 +56,8 @@ const Location = () => {
               <hr />
               <div className="row">
                   <div className="col-md-6 col-12">
-                      <InputGroupwitlabel id="name" label="ชื่อสถานที่" type="text" callback={callback_name}/>
+                      <InputGroupWithLabel id="name" label="ชื่อสถานที่" type="text" callback={callback_name}/>
                   </div>
-                  {/* <div className="col-md-6 col-12">
-                      <SelectOptionWithLabel id="spacial_id" label="กิจกรรมพิเศษ" options_arr_obj={spacial_options}/>
-                  </div> */}
               </div>
               <div className="flex justify-end">
                   <button className="btn btn-outline-primary w-1/3">บันทึก</button>

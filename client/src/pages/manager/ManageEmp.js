@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Logo from '../../assets/Logo.jpg'
 import {  faPlus, faUserCog, faUserPlus, faUserTie  } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -59,7 +59,22 @@ const ManageEmployee = ({title, dataSets}) => {
     )
 }
 
-const InsEmp = ({title, options, optionsLocation}) => {
+const InsEmp = ({title, options, optionsLocation, optionsType}) => {
+    const [empData, setEmpData] = useState({
+        data:{
+            emp_id: '',
+            name: '',
+            surname: '',
+            username: '',
+            password: '',
+            email: '',
+            tel: '',
+            location_id: '',
+            role: '',
+            type_engineer:'',
+        },
+        type_engineer: "disabled"
+    })
     const template = (
         <div className="flex justify-content flex-col">
             <div className="flex justify-between items-center">
@@ -79,25 +94,25 @@ const InsEmp = ({title, options, optionsLocation}) => {
                         <div className="col-lg-9 col-md-8 col-12">
                             <div className="row">
                                 <div className="col-md-4 col-12">
-                                    <InputGroupWithLabel id="input_name" label="รหัสพนักงาน" type="text"/>
+                                    <InputGroupWithLabel id="input_emp_id" label="รหัสพนักงาน" type="text" placeholder="รหัสพนักงาน" />
                                 </div>
                                 <div className="col-md-4 col-12">
-                                    <InputGroupWithLabel id="input_name" label="ชื่อ" type="text"/>
+                                    <InputGroupWithLabel id="input_name" label="ชื่อ" type="text" placeholder="ชื่อ"/>
                                 </div>
                                 <div className="col-md-4 col-12">
-                                    <InputGroupWithLabel id="input_name" label="สกุล" type="text"/>
+                                    <InputGroupWithLabel id="input_surname" label="สกุล" type="text" placeholder="สกุล"/>
                                 </div>
                                 <div className="col-md-6 col-12">
-                                    <InputGroupWithLabel id="input_name" label="ชื่อผู้ใช้งาน" type="text"/>
+                                    <InputGroupWithLabel id="input_username" label="ชื่อผู้ใช้งาน" type="text" placeholder="ชื่อผู้ใช้งาน"/>
                                 </div>
                                 <div className="col-md-6 col-12">
-                                    <InputGroupWithLabel id="input_name" label="รหัสผ่าน" type="text"/>
+                                    <InputGroupWithLabel id="input_password" label="รหัสผ่าน" type="password" placeholder="รหัสผ่าน"/>
                                 </div>
                                 <div className="col-md-6 col-12">
-                                    <InputGroupWithLabel id="input_name" label="อีเมล" type="text"/>
+                                    <InputGroupWithLabel id="input_email" label="อีเมล" type="text" placeholder="อีเมล"/>
                                 </div>
                                 <div className="col-md-6 col-12">
-                                    <InputGroupWithLabel id="input_name" label="เบอร์ติดต่อ" type="text"/>
+                                    <InputGroupWithLabel id="input_tel" label="เบอร์ติดต่อ" type="text" placeholder="เบอร์ติดต่อ"/>
                                 </div>
                                 <div className="col-md-4 col-12">
                                     <SelectOptionWithLabel id="select_location"  options_arr_obj={optionsLocation} label="สถานที่ทำงาน"/>
@@ -106,7 +121,7 @@ const InsEmp = ({title, options, optionsLocation}) => {
                                     <SelectOptionWithLabel id="select_role"  options_arr_obj={options} label="ประเภทงาน"/>
                                 </div>
                                 <div className="col-md-4 col-12">
-                                    <InputGroupWithLabel id="input_name" label="เบอร์ติดต่อ" type="text" disable="disabled"/>
+                                    <SelectOptionWithLabel id="select_type_engineer" label="แผนกช่าง" disable="disabled" options_arr_obj={optionsType}/>
                                 </div>
                             </div>
                         </div>
@@ -142,6 +157,10 @@ function ManageEmp() {
         {value: "2", text: "ตึก B"},
         {value: "3", text: "ตึก C"},
     ]
+    const optionsType = [
+        {value: "1", text: "ช่างซ่อมทั่วไป"},
+        {value: "2", text: "ช่างอิเล็กทรอนิค"},
+    ]
     return (
         <> 
             <h1 className="text-2xl ms-4 mt-3"><FontAwesomeIcon icon={faUserCog}/> จัดการข้อมูลพนักงาน</h1>
@@ -149,7 +168,7 @@ function ManageEmp() {
                 page === "maid"? <ManageEmployee title="จัดการแม่บ้าน" dataSets={listGroup}/>:
                 page === "en"? <ManageEmployee title="จัดการช่างซ่อม" dataSets={listGroup}/>:
                 page === "os_en"? <ManageEmployee title="จัดการช่างซ่อมภายนอก" dataSets={listGroup}/>:
-                page === "ins"? <InsEmp title="เพิ่มพนักงานในระบบ" options={options} optionsLocation={optionsLocation}/>:null
+                page === "ins"? <InsEmp title="เพิ่มพนักงานในระบบ" options={options} optionsLocation={optionsLocation} optionsType={optionsType}/>:null
                 
             }
         </>

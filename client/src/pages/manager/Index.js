@@ -52,9 +52,7 @@ const IndexManager = () => {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-lg-2 col-md-3 col-xs-12 ps-0 md:block hidden">
-                            <div className="bg-blue-200 min-h-screen h-full">
                             <Suspense fallback={<Spiner/>}><SidebarLeftManager open={open} setOpen={setOpen}/></Suspense>
-                            </div>
                         </div>
                         <div className="col-lg-10 col-md-9 col-xs-12 px-0">
                             <div className="container-fluid my-3">
