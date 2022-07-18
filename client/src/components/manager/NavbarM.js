@@ -1,6 +1,7 @@
 import React, { useRef } from 'react'
 import Logo from '../../assets/Logo.jpg'
-import Demo from '../../assets/demo.jpg'
+
+import Demo from '../../assets/business-man.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faBell, faExclamationCircle, faUsers } from '@fortawesome/free-solid-svg-icons'
 import { Dropdown, DropdownButton } from 'react-bootstrap'
@@ -20,10 +21,10 @@ const Navbar = () => {
     const ref = useRef();
   return (
     <>
-        <nav className="navbar navbar-expand-lg bg-white sticky-top shadow-slate-300 shadow-md p-0">
+        <nav className="navbar navbar-expand-lg bg-blue-50 sticky-top shadow-slate-100 shadow-md p-0">
             <div className="container-fluid">
                 <div className="row justify-between items-stretch w-full ">
-                    <div className="col-lg-2 col-3 px-0 py-0 bg-blue-50">
+                    <div className="col-lg-2 col-3 px-0 py-0 bg-blue-0">
                         <img src={Logo} alt="Logo.jpg" className="rounded-circle w-12 h-12 my-2 ms-3"/>
                     </div>
                     <div className="col-lg-10 col-9 py-2">
@@ -51,7 +52,7 @@ const Navbar = () => {
                                         <ListGroupDropdownItem lists={listGroup}/>
                                     </Dropdown.Menu>
                                 </Dropdown>
-                                <img src={Demo} alt="Demo.jpg" className="rounded-circle w-12 h-12"/>
+                                <img src={Demo} alt="business-man.png" className="rounded-circle w-12 h-12"/>
                             </div>
                         </div>
                     </div>

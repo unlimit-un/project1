@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Logo from '../../assets/demo.jpg'
+import Logo from '../../assets/business-man.png'
 import { Collapse } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faHome, faScrewdriverWrench, faUserGear, faTable, faBell, faClipboardList, faClipboardCheck, faBuilding, faPowerOff, faExclamationCircle, faUsers } from "@fortawesome/free-solid-svg-icons";
@@ -30,13 +30,13 @@ export const SidebarLeftManager = ({ open, setOpen }) => {
         <>
             <div className="bg-blue-50 min-h-screen h-full ">
                 <div className="flex flex-col items-center">
-                    <div className="flex flex-col items-center mt-4 mb-2">
-                        <img src={Logo} alt="profile.jpg" className="w-20 h-20 rounded-circle shadow"/>
-                        <p className="m-0 text-lg">Unlimit unarn</p>
+                    <div className="flex flex-col items-center mt-4 mb-3">
+                        <img src={Logo} alt="business-man.png" className="w-20 h-20 rounded-circle shadow"/>
+                        <p className="m-2 text-lg">Unlimit unarn</p>
                         <small>หัวหน้างาน</small>
                     </div>
                     <div className="w-full">
-                        <ul className=" text-sm m-0 p-0">
+                        <ul className=" text-sm m-1 p-2">
                             <LinkMenuM path="/manager/" icon={faHome} label="หน้าหลัก" />
                             <li className=" p-0">
                                 <div className="group">
@@ -51,8 +51,8 @@ export const SidebarLeftManager = ({ open, setOpen }) => {
                                     </button>
                                 </div>
                                 <Collapse in={open.person.status}>
-                                    <div id={open.person.id} className="py-1">
-                                        <ul className=" px-0 ">
+                                    <div id={open.person.id} className="py-2">
+                                        <ul className=" px-3 ">
                                             <SubMenuItem label={"แม่บ้าน"} path="/manager/manage_emp/maid"/>
                                             <SubMenuItem label={"ช่างซ่อม"} path="/manager/manage_emp/en"/>
                                             <SubMenuItem label={"ช่างซ่อมภายนอก"} path="/manager/manage_emp/os_en"/>
@@ -78,8 +78,8 @@ export const SidebarLeftManager = ({ open, setOpen }) => {
                                     </button>
                                 </div>
                                 <Collapse in={open.schedual.status}>
-                                    <div id={open.schedual.id} className="py-1">
-                                        <ul className=" px-0 ">
+                                    <div id={open.schedual.id} className="py-2">
+                                        <ul className=" px-3 ">
                                             <SubMenuItem label={"ตารางงานทั้งหมด"} path="/manager/schedual_work/dashboard"/>
                                             <SubMenuItem label={"จัดการงานแม่บ้าน"} path="/manager/schedual_work/maid"/>
                                             <SubMenuItem label={"จัดงานกิจกรรมพิเศษ"} path="/manager/schedual_work/spacial"/>
