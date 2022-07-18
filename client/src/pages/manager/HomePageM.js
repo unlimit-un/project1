@@ -1,7 +1,7 @@
 import { faClipboardList, faHome, faLineChart } from '@fortawesome/free-solid-svg-icons'
 import React, { useEffect, useRef, useState } from 'react'
 import { CardFillColor } from '../../components/manager/subComponents/Cards'
-import {SidebarRightManager} from '../../components/manager/SidebarM'
+import {SidebarRightManager} from '../../components/SidebarM'
 import { checkAutoRedirectUser } from '../../functions/AuthFunc'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

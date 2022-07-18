@@ -1,15 +1,13 @@
 import React, { useRef } from 'react'
-import Logo from '../../assets/Logo.jpg'
-
-import Demo from '../../assets/business-man.png'
+import Logo from '../assets/Logo.jpg'
+import Demo from '../assets/business-man.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faBell, faExclamationCircle, faUsers } from '@fortawesome/free-solid-svg-icons'
-import { Dropdown, DropdownButton } from 'react-bootstrap'
-import { ListGroupDropdownItem, ListGroupFlushWithLink } from './subComponents/ListGroup'
-import DropdownItem from 'react-bootstrap/esm/DropdownItem'
+import { Dropdown } from 'react-bootstrap'
+import { ListGroupDropdownItem } from './manager/subComponents/ListGroup'
 import { Link } from 'react-router-dom'
 
-const Navbar = () => {
+export const NavbarManager = () => {
     // console.log(open.main_menu);
     const listGroup = [
         {title:"unlimit", icon: faUsers, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
@@ -62,5 +60,3 @@ const Navbar = () => {
     </>
   )
 }
-
-export default Navbar

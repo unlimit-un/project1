@@ -1,8 +1,8 @@
 
 import React, { Suspense, useEffect, useState} from 'react'
 
-import Navbar from '../../components/manager/NavbarM'
-import {SidebarLeftManager} from '../../components/manager/SidebarM'
+import { NavbarManager } from '../../components/NavbarM'
+import {SidebarLeftManager} from '../../components/SidebarM'
 import FooterM from '../../components/manager/FooterM'
 import { checkAutoRedirectUser } from '../../functions/AuthFunc'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -48,7 +48,7 @@ const IndexManager = () => {
     return (
         <>
             <div className="bg-white min-h-screen">
-                <Suspense fallback={<Spiner/>}><Navbar/></Suspense>
+                <Suspense fallback={<Spiner/>}><NavbarManager/></Suspense>
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-lg-2 col-md-3 col-xs-12 ps-0 md:block hidden">

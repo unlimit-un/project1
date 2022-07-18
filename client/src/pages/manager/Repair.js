@@ -1,7 +1,7 @@
 import { faBell, faCopy, faEye } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { Suspense, useEffect, useRef, useState } from 'react'
-import { SidebarRightManager } from '../../components/manager/SidebarM'
+import { SidebarRightManager } from '../../components/SidebarM'
 import { Bandage } from '../../components/manager/subComponents/Bandage'
 import { CardFillColorNonFooter } from '../../components/manager/subComponents/Cards'
 import { ModalCard, ModalButton } from '../../components/Modals'

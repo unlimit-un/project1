@@ -1,11 +1,11 @@
 import React from 'react'
-import Navbar from '../../components/manager/NavbarM'
-import { SidebarLeftManager } from '../../components/manager/SidebarM'
+import { NavbarManager } from '../../components/NavbarM'
+import { SidebarLeftManager } from '../../components/SidebarM'
 
 const Bookmarks = ({open, setOpen}) => {
   return (
     <>
-        <Navbar/>
+        <NavbarManager/>
         <SidebarLeftManager open={open} setOpen={setOpen}/>
     </>
   )

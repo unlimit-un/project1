@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Logo from '../../assets/business-man.png'
+import Logo from '../assets/business-man.png'
 import { Collapse } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faHome, faScrewdriverWrench, faUserGear, faTable, faBell, faClipboardList, faClipboardCheck, faBuilding, faPowerOff, faExclamationCircle, faUsers } from "@fortawesome/free-solid-svg-icons";
-import { LinkMenuM } from './LinkMenuM';
-import SubMenuItem from './SubMenuItem';
-import {SignOutFunc} from '../../functions/AuthFunc'
+import { LinkMenuM } from './manager/LinkMenuM';
+import SubMenuItem from './manager/SubMenuItem';
+import {SignOutFunc} from '../functions/AuthFunc'
 import { useNavigate } from 'react-router-dom';
-import { ListGroupFlushWithLink } from './subComponents/ListGroup';
+import { ListGroupFlushWithLink } from './manager/subComponents/ListGroup';
 
 export const SidebarLeftManager = ({ open, setOpen }) => {
     const navigate = useNavigate()
@@ -124,6 +124,123 @@ export const SidebarRightManager = ({maxHeight}) =>{
             <div className="card card-body" style={{maxHeight: `${maxHeight/16}rem`, overflow: "auto",}}>
                 <h5 className="mb-3 text-base"><FontAwesomeIcon icon={faExclamationCircle}/> รายการแจ้งซ่อม</h5>
                 <ListGroupFlushWithLink lists={listGroup}/>
+            </div>
+        </>
+    )
+}
+
+export const SidebarLeftMaid = ({ open, setOpen }) => {
+    const navigate = useNavigate()
+    const [classToggleWork, setClassToggleWork] = useState("");
+    const [classToggleActivity, setClassToggleActivity] = useState("");
+    const [classToggleLeave, setClassToggleLeave] = useState("");
+    
+
+    const onToggleMenuWork = (e) =>{
+        setOpen({...open, work:{status: !open.work.status}, activity: { status: false}, leave: { status: false}})
+        !open.work.status?setClassToggleWork("!text-white !bg-blue-500"): setClassToggleWork("")
+        setClassToggleActivity("")
+        setClassToggleLeave("")
+    }
+    const onToggleMenuActivity = (e) =>{
+        setOpen({...open, activity:{status: !open.activity.status}, work:{status: false}, leave: {status: false}})
+        !open.activity.status?setClassToggleActivity("!text-white !bg-blue-500"): setClassToggleActivity("")
+        setClassToggleWork("")
+        setClassToggleLeave("")
+    }
+    const onToggleMenuLeave = (e) =>{
+        setOpen({...open, leave:{status: !open.leave.status}, work:{status: false}, activity:{ status: false}})
+        !open.leave.status?setClassToggleLeave("!text-white !bg-blue-500"): setClassToggleLeave("")
+        setClassToggleWork("")
+        setClassToggleActivity("")
+    }
+
+    return (
+        <>
+            <div className="bg-blue-50 min-h-screen h-full ">
+                <div className="flex flex-col items-center">
+                    <div className="flex flex-col items-center mt-4 mb-3">
+                        <img src={Logo} alt="business-man.png" className="w-20 h-20 rounded-circle shadow"/>
+                        <p className="m-2 text-lg">min min</p>
+                        <small>แม่บ้าน</small>
+                    </div>
+                    <div className="w-full">
+                        <ul className=" text-sm m-1 p-2">
+                            <LinkMenuM path="/maid/" icon={faHome} label="หน้าหลัก" />
+                            <li className=" p-0">
+                                <div className="group">
+                                    <button
+                                        onClick={(e)=>onToggleMenuWork(e)}
+                                        aria-expanded = {open.work.status}
+                                        aria-controls = {open.work.id} 
+                                        className = {classToggleWork+" flex justify-between items-center w-100 p-2 px-3 text-start group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-300"}
+                                    >
+                                        <span><FontAwesomeIcon icon={faUserGear}/> ตารางเวร</span> 
+                                        <FontAwesomeIcon className="group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-100" icon={faAngleDown}/>
+                                    </button>
+                                </div>
+                                <Collapse in={open.work.status}>
+                                    <div id={open.work.id} className="py-2">
+                                        <ul className=" px-3 ">
+                                            <SubMenuItem label={"งานที่ต้องทำ"} path="/maid/work/todo"/>
+                                            <SubMenuItem label={"งานที่เสร็จแล้ว"} path="/maid/work/finish"/>
+                                        </ul>
+                                    </div>
+                                </Collapse>
+                            </li>
+                            <li className=" p-0">
+                                <div className="group">
+                                    <button
+                                        onClick={(e)=>onToggleMenuActivity(e)}
+                                        aria-expanded = {open.activity.status}
+                                        aria-controls = {open.activity.id} 
+                                        className = {classToggleActivity+" flex justify-between items-center w-100 p-2 px-3 text-start group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-300"}
+                                    >
+                                        <span><FontAwesomeIcon icon={faUserGear}/> ตารางกิจกรรม</span> 
+                                        <FontAwesomeIcon className="group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-100" icon={faAngleDown}/>
+                                    </button>
+                                </div>
+                                <Collapse in={open.activity.status}>
+                                    <div id={open.activity.id} className="py-2">
+                                        <ul className=" px-3 ">
+                                            <SubMenuItem label={"กิจกรรมที่ต้องทำ"} path="/maid/spacial/todo"/>
+                                            <SubMenuItem label={"งานกิจกรรมที่เสร็จแล้ว"} path="/maid/spacial/finish"/>
+                                        </ul>
+                                    </div>
+                                </Collapse>
+                            </li>
+                            <LinkMenuM path="/maid/urgent" icon={faBell} label="งานด่วน" />
+                            <li className=" p-0">
+                                <div className="group">
+                                    <button
+                                        onClick={(e)=>onToggleMenuLeave(e)}
+                                        aria-expanded = {open.leave.status}
+                                        aria-controls = {open.leave.id} 
+                                        className = {classToggleLeave+" flex justify-between items-center w-100 p-2 px-3 text-start group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-300"}
+                                    >
+                                        <span><FontAwesomeIcon icon={faTable}/> การลา</span> 
+                                        <FontAwesomeIcon className="group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-100" icon={faAngleDown}/>
+                                    </button>
+                                </div>
+                                <Collapse in={open.leave.status}>
+                                    <div id={open.leave.id} className="py-2">
+                                        <ul className=" px-3 ">
+                                            <SubMenuItem label={"คำขอการลา"} path="/maid/leave/request"/>
+                                            <SubMenuItem label={"ประวัติการลา"} path="/maid/leave/stat"/>
+                                        </ul>
+                                    </div>
+                                </Collapse>
+                            </li>
+                            <LinkMenuM path="/maid/repair" icon={faClipboardList} label="แจ้งซ่อม" />
+                            <LinkMenuM path="/maid/material" icon={faClipboardCheck} label="สั่งซื้อครุภัณฑ์" />
+                            <li className=" p-0 group  text-sm">
+                                <button onClick={()=>SignOutFunc(navigate)} className="p-2 px-3 text-gray-600 no-underline w-100 block group-hover:!text-white hover:bg-red-500 ease-in-out duration-300 text-left">
+                                    <FontAwesomeIcon icon={faPowerOff} className="text-black group-hover:!text-white ease-in-out duration-300"/> ออกจากระบบ
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </>
     )
