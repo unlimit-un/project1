@@ -3,7 +3,7 @@ import Logo from '../../assets/Logo.jpg'
 import {  faPlus, faUserCog, faUserPlus, faUserTie  } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {Link, useParams} from 'react-router-dom'
-import { CardFillColorNonFooter } from '../../components/manager/subComponents/Cards'
+import { CardFillColorNonFooter } from '../../components/Cards'
 import { InputGroupWithLabel, SelectOptionWithLabel } from '../../components/FormElements'
 
 const ManageEmployee = ({title, dataSets}) => {

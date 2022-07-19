@@ -1,9 +1,9 @@
 import React,{useState} from 'react'
 import {  faHome, faEye,faCopy} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { CardFillColorNonFooter } from '../../components/manager/subComponents/Cards'
+import { CardFillColorNonFooter } from '../../components/Cards'
 import { ModalCard,ModalButton } from '../../components/Modals'
-import { Bandage } from '../../components/manager/subComponents/Bandage'
+import { Bandage } from '../../components/Bandage'
 import { TablesStripedDataTable } from '../../components/Tables'
 
 

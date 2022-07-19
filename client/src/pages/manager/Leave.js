@@ -1,8 +1,8 @@
 import { faClipboardCheck, faCopy, faEye } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
-import { Bandage } from '../../components/manager/subComponents/Bandage'
-import { CardFillColorNonFooter } from '../../components/manager/subComponents/Cards'
+import { Bandage } from '../../components/Bandage'
+import { CardFillColorNonFooter } from '../../components/Cards'
 import { ModalButton, ModalCard } from '../../components/Modals'
 import { TablesStripedDataTable } from '../../components/Tables'
 

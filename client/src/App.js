@@ -15,18 +15,14 @@ import Notify from './pages/manager/Notify';
 import Bookmarks from './pages/manager/Bookmarks';
 import SchedualWork from './pages/manager/SchedualWork';
 import Location from './pages/manager/Location';
-import Index from './pages/maid/Index';
-import Activity from './pages/maid/Activity';
-import Urgent from './pages/maid/Urgent';
-import LeaveMaid from './pages/maid/Leave';
-import MaterialMaid from './pages/maid/Material';
-import RepairMaid from './pages/maid/Repair';
-import Work from './pages/maid/Work';
+import * as Maid from './pages/maid/ImportMaid';
 
 function App() {
   return (
     <>
       <div className="bg-gray-100 min-h-screen">
+
+        {/* Routing */}
         <Routes>
           <Route path='/' exac element={<HomePage/>}>
             <Route path='/login' element={<Login/>}/>
@@ -43,13 +39,14 @@ function App() {
             <Route path='/manager/location' element={<Location/>} /> 
             <Route path='/manager/schedual_work/:page' element={<SchedualWork/>} /> 
           </Route>
-          <Route path='/maid' exac element={<Index/>}>
-            <Route path='/maid/work/:page' element={<Work/>} /> 
-            <Route path='/maid/urgent' element={<Urgent/>} /> 
-            <Route path='/maid/repair' element={<RepairMaid/>} /> 
-            <Route path='/maid/material' element={<MaterialMaid/>} /> 
-            <Route path='/maid/leave/:page' element={<LeaveMaid/>} /> 
-            <Route path='/maid/spacial/:page' element={<Activity/>} /> 
+          <Route path='/maid' exac element={<Maid.Index/>}>
+            <Route path='/maid/work/:page' element={<Maid.Work/>} /> 
+            <Route path='/maid/urgent' element={<Maid.Urgent/>} /> 
+            <Route path='/maid/repair' element={<Maid.Repair/>} /> 
+            <Route path='/maid/material' element={<Maid.Material/>} /> 
+            <Route path='/maid/bookmarks' element={<Maid.BookMarks/>} /> 
+            <Route path='/maid/leave/:page' element={<Maid.Leave/>} /> 
+            <Route path='/maid/event/:page' element={<Maid.Event/>} /> 
           </Route>
           <Route path='/engineer' exac element={<HomepageE/>}/>
           <Route path='/forbidden' exac element={<PageForbidden/>}/>

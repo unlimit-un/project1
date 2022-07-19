@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { InputGroupWithLabel, SelectOptionWithLabel } from '../../components/FormElements'
-import { CardFillColorNonFooter, CardFillColorNonFooterShadow } from '../../components/manager/subComponents/Cards'
+import { CardFillColorNonFooter, CardFillColorNonFooterShadow } from '../../components/Cards'
 import { ModalButton, ModalCard } from '../../components/Modals'
 import { TablesStripedDataTable } from '../../components/Tables'
 import { faPencil, faTrash, faUsersGear } from '@fortawesome/free-solid-svg-icons'

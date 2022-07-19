@@ -1,13 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Logo from '../assets/business-man.png'
+import Logo from '../../assets/business-man.png'
 import { Collapse } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faHome, faScrewdriverWrench, faUserGear, faTable, faBell, faClipboardList, faClipboardCheck, faBuilding, faPowerOff, faExclamationCircle, faUsers } from "@fortawesome/free-solid-svg-icons";
-import { LinkMenuM } from './manager/LinkMenuM';
-import SubMenuItem from './manager/SubMenuItem';
-import {SignOutFunc} from '../functions/AuthFunc'
+import { LinkMenuM, SubMenuLink } from '../LinkMenuM';
+import {SignOutFunc} from '../../functions/AuthFunc'
 import { useNavigate } from 'react-router-dom';
-import { ListGroupFlushWithLink } from './manager/subComponents/ListGroup';
+import { ListGroupFlushWithLink } from '../ListGroup';
 
 export const SidebarLeftManager = ({ open, setOpen }) => {
     const navigate = useNavigate()
@@ -37,7 +36,7 @@ export const SidebarLeftManager = ({ open, setOpen }) => {
                     </div>
                     <div className="w-full">
                         <ul className=" text-sm m-1 p-2">
-                            <LinkMenuM path="/manager/" icon={faHome} label="หน้าหลัก" />
+                            <LinkMenuM path="/manager" icon={faHome} label="หน้าหลัก" />
                             <li className=" p-0">
                                 <div className="group">
                                     <button
@@ -53,10 +52,10 @@ export const SidebarLeftManager = ({ open, setOpen }) => {
                                 <Collapse in={open.person.status}>
                                     <div id={open.person.id} className="py-2">
                                         <ul className=" px-3 ">
-                                            <SubMenuItem label={"แม่บ้าน"} path="/manager/manage_emp/maid"/>
-                                            <SubMenuItem label={"ช่างซ่อม"} path="/manager/manage_emp/en"/>
-                                            <SubMenuItem label={"ช่างซ่อมภายนอก"} path="/manager/manage_emp/os_en"/>
-                                            <SubMenuItem label={"เพิ่มพนักงานในระบบ"} path="/manager/manage_emp/ins"/>
+                                            <SubMenuLink label={"แม่บ้าน"} path="/manager/manage_emp/maid"/>
+                                            <SubMenuLink label={"ช่างซ่อม"} path="/manager/manage_emp/en"/>
+                                            <SubMenuLink label={"ช่างซ่อมภายนอก"} path="/manager/manage_emp/os_en"/>
+                                            <SubMenuLink label={"เพิ่มพนักงานในระบบ"} path="/manager/manage_emp/ins"/>
                                         </ul>
                                     </div>
                                 </Collapse>
@@ -80,11 +79,11 @@ export const SidebarLeftManager = ({ open, setOpen }) => {
                                 <Collapse in={open.schedual.status}>
                                     <div id={open.schedual.id} className="py-2">
                                         <ul className=" px-3 ">
-                                            <SubMenuItem label={"ตารางงานทั้งหมด"} path="/manager/schedual_work/dashboard"/>
-                                            <SubMenuItem label={"จัดการงานแม่บ้าน"} path="/manager/schedual_work/maid"/>
-                                            <SubMenuItem label={"จัดงานกิจกรรมพิเศษ"} path="/manager/schedual_work/spacial"/>
-                                            <SubMenuItem label={"จัดการทีม"} path="/manager/schedual_work/team"/>
-                                            <SubMenuItem label={"จัดการงานด่วน"} path="/manager/schedual_work/urgent"/>
+                                            <SubMenuLink label={"ตารางงานทั้งหมด"} path="/manager/schedual_work/dashboard"/>
+                                            <SubMenuLink label={"จัดการงานแม่บ้าน"} path="/manager/schedual_work/maid"/>
+                                            <SubMenuLink label={"จัดงานกิจกรรมพิเศษ"} path="/manager/schedual_work/event"/>
+                                            <SubMenuLink label={"จัดการทีม"} path="/manager/schedual_work/team"/>
+                                            <SubMenuLink label={"จัดการงานด่วน"} path="/manager/schedual_work/urgent"/>
                                         </ul>
                                     </div>
                                 </Collapse>
@@ -137,19 +136,19 @@ export const SidebarLeftMaid = ({ open, setOpen }) => {
     
 
     const onToggleMenuWork = (e) =>{
-        setOpen({...open, work:{status: !open.work.status}, activity: { status: false}, leave: { status: false}})
+        setOpen({...open, work:{status: !open.work.status}, event: { status: false}, leave: { status: false}})
         !open.work.status?setClassToggleWork("!text-white !bg-blue-500"): setClassToggleWork("")
         setClassToggleActivity("")
         setClassToggleLeave("")
     }
     const onToggleMenuActivity = (e) =>{
-        setOpen({...open, activity:{status: !open.activity.status}, work:{status: false}, leave: {status: false}})
-        !open.activity.status?setClassToggleActivity("!text-white !bg-blue-500"): setClassToggleActivity("")
+        setOpen({...open, event:{status: !open.event.status}, work:{status: false}, leave: {status: false}})
+        !open.event.status?setClassToggleActivity("!text-white !bg-blue-500"): setClassToggleActivity("")
         setClassToggleWork("")
         setClassToggleLeave("")
     }
     const onToggleMenuLeave = (e) =>{
-        setOpen({...open, leave:{status: !open.leave.status}, work:{status: false}, activity:{ status: false}})
+        setOpen({...open, leave:{status: !open.leave.status}, work:{status: false}, event:{ status: false}})
         !open.leave.status?setClassToggleLeave("!text-white !bg-blue-500"): setClassToggleLeave("")
         setClassToggleWork("")
         setClassToggleActivity("")
@@ -166,7 +165,7 @@ export const SidebarLeftMaid = ({ open, setOpen }) => {
                     </div>
                     <div className="w-full">
                         <ul className=" text-sm m-1 p-2">
-                            <LinkMenuM path="/maid/" icon={faHome} label="หน้าหลัก" />
+                            <LinkMenuM path="/maid" icon={faHome} label="หน้าหลัก" />
                             <li className=" p-0">
                                 <div className="group">
                                     <button
@@ -182,8 +181,8 @@ export const SidebarLeftMaid = ({ open, setOpen }) => {
                                 <Collapse in={open.work.status}>
                                     <div id={open.work.id} className="py-2">
                                         <ul className=" px-3 ">
-                                            <SubMenuItem label={"งานที่ต้องทำ"} path="/maid/work/todo"/>
-                                            <SubMenuItem label={"งานที่เสร็จแล้ว"} path="/maid/work/finish"/>
+                                            <SubMenuLink label={"งานที่ต้องทำ"} path="/maid/work/todo"/>
+                                            <SubMenuLink label={"งานที่เสร็จแล้ว"} path="/maid/work/done"/>
                                         </ul>
                                     </div>
                                 </Collapse>
@@ -192,19 +191,19 @@ export const SidebarLeftMaid = ({ open, setOpen }) => {
                                 <div className="group">
                                     <button
                                         onClick={(e)=>onToggleMenuActivity(e)}
-                                        aria-expanded = {open.activity.status}
-                                        aria-controls = {open.activity.id} 
+                                        aria-expanded = {open.event.status}
+                                        aria-controls = {open.event.id} 
                                         className = {classToggleActivity+" flex justify-between items-center w-100 p-2 px-3 text-start group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-300"}
                                     >
                                         <span><FontAwesomeIcon icon={faUserGear}/> ตารางกิจกรรม</span> 
                                         <FontAwesomeIcon className="group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-100" icon={faAngleDown}/>
                                     </button>
                                 </div>
-                                <Collapse in={open.activity.status}>
-                                    <div id={open.activity.id} className="py-2">
+                                <Collapse in={open.event.status}>
+                                    <div id={open.event.id} className="py-2">
                                         <ul className=" px-3 ">
-                                            <SubMenuItem label={"กิจกรรมที่ต้องทำ"} path="/maid/spacial/todo"/>
-                                            <SubMenuItem label={"งานกิจกรรมที่เสร็จแล้ว"} path="/maid/spacial/finish"/>
+                                            <SubMenuLink label={"กิจกรรมที่ต้องทำ"} path="/maid/event/todo"/>
+                                            <SubMenuLink label={"งานกิจกรรมที่เสร็จแล้ว"} path="/maid/event/done"/>
                                         </ul>
                                     </div>
                                 </Collapse>
@@ -225,8 +224,8 @@ export const SidebarLeftMaid = ({ open, setOpen }) => {
                                 <Collapse in={open.leave.status}>
                                     <div id={open.leave.id} className="py-2">
                                         <ul className=" px-3 ">
-                                            <SubMenuItem label={"คำขอการลา"} path="/maid/leave/request"/>
-                                            <SubMenuItem label={"ประวัติการลา"} path="/maid/leave/stat"/>
+                                            <SubMenuLink label={"คำขอการลา"} path="/maid/leave/request"/>
+                                            <SubMenuLink label={"ประวัติการลา"} path="/maid/leave/stat"/>
                                         </ul>
                                     </div>
                                 </Collapse>

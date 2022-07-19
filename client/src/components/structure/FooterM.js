@@ -1,5 +1,5 @@
 import React from 'react'
-import ArticleFooter from './subComponents/ArticleFooter'
+import ArticleFooter from '../Article'
 
 function FooterM() {
   const content = `Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus consequatur laborum fuga quas ex facilis provident totam excepturi quis perferendis magni consequuntur porro saepe molestiae eaque deserunt, incidunt cupiditate a!`

@@ -1,9 +1,9 @@
 
 import React, { Suspense, useEffect, useState} from 'react'
 
-import { NavbarManager } from '../../components/NavbarM'
-import {SidebarLeftManager} from '../../components/SidebarM'
-import FooterM from '../../components/manager/FooterM'
+import { NavbarManager } from '../../components/structure/NavbarM'
+import {SidebarLeftManager} from '../../components/structure/SidebarM'
+import FooterM from '../../components/structure/FooterM'
 import { checkAutoRedirectUser } from '../../functions/AuthFunc'
 import { useLocation, useNavigate } from 'react-router-dom'
 import ManageEmp from './ManageEmp'

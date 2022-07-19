@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect, useState, useTransition } from 'react'
 import { InputGroupWithLabel, SelectOptionWithLabel } from '../../../components/FormElements'
-import { CardFillColorHeader, CardFillColorNonFooter, CardFillColorNonFooterShadow } from '../../../components/manager/subComponents/Cards'
+import { CardFillColorHeader, CardFillColorNonFooter, CardFillColorNonFooterShadow } from '../../../components/Cards'
 import { ModalButton, ModalCard, ModalCardConfirm } from '../../../components/Modals'
 import { TablesStripedDataTable } from '../../../components/Tables'
 import { faCalendarXmark, faCheck, faClipboardCheck, faXmark, faPencil, faPlus, faSearch, faTable, faTrash, faTrashAlt, faUsersGear } from '@fortawesome/free-solid-svg-icons'
@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Calendar from '../Calendar'
 import { Tab, Tabs } from 'react-bootstrap'
 import Spiner from '../../../components/Spiner'
-import { Bandage } from '../../../components/manager/subComponents/Bandage'
+import { Bandage } from '../../../components/Bandage'
 
 export const TeamManage = () =>{
     const [name, setName] = useState('');

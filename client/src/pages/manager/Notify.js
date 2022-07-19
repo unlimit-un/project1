@@ -1,7 +1,7 @@
 import { faBell, faUsers } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
-import { ListGroupDropdownItem, ListGroupFlushWithLink } from '../../components/manager/subComponents/ListGroup'
+import { ListGroupDropdownItem, ListGroupFlushWithLink } from '../../components/ListGroup'
 
 function Notify() {
     const listGroup = [
