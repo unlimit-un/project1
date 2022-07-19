@@ -1,8 +1,61 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { CardFillColorNonFooter, CardFillColorNonFooterShadow } from '../../components/Cards';
+import { TablesStripedDataTable } from '../../components/Tables';
+import { faCheckCircle, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Work = () => {
+  const [name,setName] = useState ('');
+  const dataTable = {
+    thead:['รหัส','รายละเอียดงาน','สถานที่','สถานะ'],
+    tbody:[
+      ['A','B','C',
+        <div className="flex justify-center gap-2">
+          <button className="btn btn-success"><FontAwesomeIcon icon={faCheckCircle}/></button>
+          <button className="btn btn-danger"><FontAwesomeIcon icon={faCircleXmark}/></button>
+        </div>
+    ]
+    ]
+  }
+  const datatTable1 ={
+    thead:['รหัส','รายละเอียดงาน','สถานที่','เวลาเข้า-ออก','สถานะ'],
+    tbody:[
+      ['A','B','C','12.00',
+        <div className="flex justify-center gap-2">
+          <button className="btn btn-success"><FontAwesomeIcon icon={faCheckCircle}/></button>
+          <button className="btn btn-danger"><FontAwesomeIcon icon={faCircleXmark}/></button>
+      </div>
+    ]
+    ]
+  }
+ 
+  const contentBody = (
+    <>
+        <div className="container-fluid">
+            <h1 className="text-xl"> รายการงาน</h1>
+            <hr />
+            <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStripedDataTable data={dataTable} id="_table1"/>}/>
+        </div>
+    </>
+  )
+  const contentBody1 = (
+    <>
+        <div className="container-fluid">
+          <h1 className="text-xl"> งานที่ทำเสร็จแล้ว</h1>
+            <hr />
+            <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStripedDataTable data={datatTable1} id="_table2"/>}/>
+        </div>
+    </>
+  )
   return (
-    <div>Work</div>
+    <>
+      <div className="mt-4">
+        <CardFillColorNonFooter contentBody={contentBody}/>
+      </div>
+      <div className="mt-4">
+        <CardFillColorNonFooter contentBody={contentBody1}/>
+      </div>
+  </>
   )
 }
 
