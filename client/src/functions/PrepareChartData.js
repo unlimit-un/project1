@@ -129,7 +129,7 @@ export const pre_dataPieChart = ( labels ,position, title, dataset ) =>{
           position: position,
         },
         title: {
-          display: true,
+          display: title?true:false,
           text: title,
         }
       },

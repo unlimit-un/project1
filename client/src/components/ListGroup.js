@@ -24,6 +24,25 @@ export const ListGroupFlushWithLink = ({lists}) => {
   )
 }
 
+export const ListGroupFlush = ({lists}) => {
+    return (
+        <>
+            <ul className="list-group list-group-flush" >
+                {
+                    lists.map((item, i)=>{
+                        return (
+                            <li className="list-group-item" key={i}>
+                                <p>{item.detail}</p>
+                            </li>
+                        )
+                    })
+                }
+                
+            </ul>
+        </>
+    )
+}
+
 export const ListGroupDropdownItem = ({lists}) => {
     return (
       <>

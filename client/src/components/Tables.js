@@ -40,6 +40,7 @@ export const TablesStripedDataTable = ({data, id}) => {
             "dom": 'lrtip',
             "bDestroy": true,
             scrollX: true,
+            autoWidth: false
         })
     })
     

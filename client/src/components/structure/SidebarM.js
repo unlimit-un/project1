@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import Logo from '../../assets/business-man.png'
 import { Collapse } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown, faHome, faScrewdriverWrench, faUserGear, faTable, faBell, faClipboardList, faClipboardCheck, faBuilding, faPowerOff, faExclamationCircle, faUsers } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDown, faHome, faScrewdriverWrench, faUserGear, faTable, faBell, faClipboardList, faClipboardCheck, faBuilding, faPowerOff, faExclamationCircle, faUsers, faWarning } from "@fortawesome/free-solid-svg-icons";
 import { LinkMenuM, SubMenuLink } from '../LinkMenuM';
 import {SignOutFunc} from '../../functions/AuthFunc'
 import { useNavigate } from 'react-router-dom';
@@ -240,6 +240,26 @@ export const SidebarLeftMaid = ({ open, setOpen }) => {
                         </ul>
                     </div>
                 </div>
+            </div>
+        </>
+    )
+}
+
+export const SidebarRightMaid = ({maxHeight}) =>{
+    const listGroup = [
+        {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
+        {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
+        {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
+        {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
+        {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
+        {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."}
+    ]
+    
+    return (
+        <>
+            <div className="card card-body" style={{maxHeight: `${maxHeight/16}rem`, overflow: "auto",}}>
+                <h5 className="mb-3 text-base"><FontAwesomeIcon icon={faWarning}/> รายการงานด่วน</h5>
+                <ListGroupFlushWithLink lists={listGroup}/>
             </div>
         </>
     )
