@@ -38,13 +38,10 @@ export const TablesStripedDataTable = ({data, id}) => {
             res();
         }).then(()=>{
             return $(`#tableStriped${id}`).dataTable({
-                "dom": 'lrtip',
+                "dom": '<lr><"c8tableBody"t><ip>',
                 "bDestroy": true,
-                scrollX: true,
-                autoWidth: false,
             })
         })
-    console.log(dataTable);
     return (
         <>
             <input type="search" className="form-control max-w-xs mb-2 ms-auto" placeholder="Search" autoComplete="off" id="serchDataTable" 
@@ -52,7 +49,6 @@ export const TablesStripedDataTable = ({data, id}) => {
                 dataTable.then(data=>data.fnFilter(value)) 
                 }} 
             />
-            <div className="overflow-auto">
                 <table className="table table-striped text-center whitespace-nowrap align-middle w-full" id={`tableStriped${id}`}>
                     <thead>
                         <tr>
@@ -77,7 +73,6 @@ export const TablesStripedDataTable = ({data, id}) => {
                         }
                     </tbody>
                 </table>
-            </div>
         </>
     )
 

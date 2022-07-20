@@ -8,6 +8,11 @@
     content: none !important;
 }
 
+.c8tableBody{
+    width:100%;
+    overflow-x:auto;
+}
+
 ::-webkit-scrollbar {
     width: 7px;
     height: 7px;              /* height of horizontal scrollbar ← You're missing this */
