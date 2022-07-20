@@ -12,7 +12,7 @@ const {pathname} = useLocation()
 
   const homepage = (
     <div className="flex flex-column justify-center text-center ">
-      <h1 className=""> Maintenance works and Housekeeper's works Management System </h1> <br/>
+ 
       <h1 className="text-blue-500">สร้างความมีประสิทธิภาพให้พนักงานของคุณด้วยเว็ปลงเวลาทำงานและจัดการตารางงานออนไลน์</h1><br/>
       <div className="">
         <h2 className=""><FontAwesomeIcon className="text-green-500" icon={faCheck}/>จัดการตารางพนักงาน</h2>

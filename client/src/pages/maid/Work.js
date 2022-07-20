@@ -14,7 +14,12 @@ const Work = () => {
           <button className="btn btn-success"><FontAwesomeIcon icon={faCheckCircle}/></button>
           <button className="btn btn-danger"><FontAwesomeIcon icon={faCircleXmark}/></button>
         </div>
-    ]
+    ],
+    ['C','D','E',
+      <div className="flex justify-center gap-2">
+      <button className="btn btn-success"><FontAwesomeIcon icon={faCheckCircle}/></button>
+      <button className="btn btn-danger"><FontAwesomeIcon icon={faCircleXmark}/></button>
+    </div>]
     ]
   }
   const datatTable1 ={
@@ -23,9 +28,12 @@ const Work = () => {
       ['A','B','C','12.00',
         <div className="flex justify-center gap-2">
           <button className="btn btn-success"><FontAwesomeIcon icon={faCheckCircle}/></button>
-          <button className="btn btn-danger"><FontAwesomeIcon icon={faCircleXmark}/></button>
       </div>
-    ]
+    ],
+    ['C','D','E',11.00,
+      <div className="flex justify-center gap-2">
+        <button className="btn btn-danger"><FontAwesomeIcon icon={faCircleXmark}/></button>
+      </div>]
     ]
   }
  
