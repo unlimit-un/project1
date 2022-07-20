@@ -1,15 +1,15 @@
-import React, { Suspense, useEffect, useState, useTransition } from 'react'
+import React, { lazy, Suspense, useEffect, useState, useTransition } from 'react'
 import { InputGroupWithLabel, SelectOptionWithLabel } from '../../../components/FormElements'
 import { CardFillColorHeader, CardFillColorNonFooter, CardFillColorNonFooterShadow } from '../../../components/Cards'
 import { ModalButton, ModalCard, ModalCardConfirm } from '../../../components/Modals'
-import { TablesStripedDataTable } from '../../../components/Tables'
 import { faCalendarXmark, faCheck, faClipboardCheck, faXmark, faPencil, faPlus, faSearch, faTable, faTrash, faTrashAlt, faUsersGear } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Calendar from '../Calendar'
 import { Tab, Tabs } from 'react-bootstrap'
 import Spiner from '../../../components/Spiner'
 import { Bandage } from '../../../components/Bandage'
-
+import { TablesStripedDataTable } from '../../../components/Tables'
+// const TablesStripedDataTable = lazy(()=> import('../../../components/Tables').then(module=> ({default: module.TablesStripedDataTable})))
 export const TeamManage = () =>{
     const [name, setName] = useState('');
     const [showModal, setShowModal] = useState(false);
@@ -127,9 +127,10 @@ export const SpacialWork = () =>{
                     <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
                     <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
                 </div>
-            ],
+            ]
         ]
     }
+    
     const contentBody = (
         <>
             <div className="container-fluid">
@@ -157,7 +158,7 @@ export const SpacialWork = () =>{
                 <div className="flex justify-end">
                     <button className="btn btn-outline-primary w-1/3">บันทึก</button>
                 </div>
-                <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStripedDataTable data={dataTable} id="_table1"/>}/>
+                <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStripedDataTable data={dataTable}/>}/>
             
             </div>
         </>

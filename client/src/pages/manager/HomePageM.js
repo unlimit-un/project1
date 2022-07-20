@@ -108,12 +108,12 @@ const Homepage = () => {
                     <div className="card-body row justify-content-stretch">
                         <div className="col-lg-4 col-md-5 col-12">
                             <div className="h-full card card-body">
-                                <PieChart data={dataChartRepair.data} options={dataChartRepair.options} height="250rem" />
+                                <PieChart data={dataChartRepair.data} options={dataChartRepair.options} height="40vh" />
                             </div>
                         </div>
                         <div className="col-lg-8 col-md-7 col-12">
                             <div className="h-full card card-body">
-                                <BarChart data={dataChartRepairBar.data} options={dataChartRepairBar.options} height="250rem" />
+                                <BarChart data={dataChartRepairBar.data} options={dataChartRepairBar.options} height="40vh" />
                             </div>
                         </div>
                     </div>
@@ -126,15 +126,15 @@ const Homepage = () => {
                         <div className="card-body row justify-content-stretch">
                             <div className="col-12">
                                 <div className="h-full">
-                                    <BarChart data={dataChartLeave.data} options={dataChartLeave.options}/>
+                                    <BarChart data={dataChartLeave.data} options={dataChartLeave.options} height="40vh"/>
                                 </div>
                             </div>
                             <div className="col-12 row mt-2">
                                 <div className="col-6">
-                                    <BarChart data={dataChartLeaveEngineer.data} options={dataChartLeaveEngineer.options} height="250rem" />
+                                    <BarChart data={dataChartLeaveEngineer.data} options={dataChartLeaveEngineer.options} height="40vh" />
                                 </div>
                                 <div className="col-6">
-                                    <BarChart data={dataChartLeaveMaid.data} options={dataChartLeaveMaid.options} height="250rem" />
+                                    <BarChart data={dataChartLeaveMaid.data} options={dataChartLeaveMaid.options} height="40vh" />
                                 </div>
                             </div>
                         </div>

@@ -19,7 +19,7 @@ const SchedualWork = () => {
                     {
                             page === 'dashboard'? <Suspense fallback={<Spiner/>}><Calendar/></Suspense>:
                             page === 'team'? <TeamManage/>:
-                            page === 'spacial'? <SpacialWork/>:
+                            page === 'event'? <SpacialWork/>:
                             page === 'maid'? <MaidDuty/>:
                             page === 'urgent'? <UrgentWork/>:
                             <PageUnderConstrunction/>

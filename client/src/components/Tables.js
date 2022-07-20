@@ -32,18 +32,19 @@ export const TablesStriped = ({data}) => {
 }
 
 export const TablesStripedDataTable = ({data, id}) => {
+
     const dataTable = new Promise((res, rej)=>{
-        $(`#tableStriped${id}`).dataTable().fnDestroy()
-        res();
-    }).then(()=>{
-        return $(`#tableStriped${id}`).dataTable({
-            "dom": 'lrtip',
-            "bDestroy": true,
-            scrollX: true,
-            autoWidth: false
+            $(`#tableStriped${id}`).dataTable().fnDestroy()
+            res();
+        }).then(()=>{
+            return $(`#tableStriped${id}`).dataTable({
+                "dom": 'lrtip',
+                "bDestroy": true,
+                scrollX: true,
+                autoWidth: false,
+            })
         })
-    })
-    
+    console.log(dataTable);
     return (
         <>
             <input type="search" className="form-control max-w-xs mb-2 ms-auto" placeholder="Search" autoComplete="off" id="serchDataTable" 

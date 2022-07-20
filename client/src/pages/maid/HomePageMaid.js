@@ -1,6 +1,6 @@
 import { faHome } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, lazy } from 'react'
 import { CardFillColorHeader, CardFillColorNonFooter } from '../../components/Cards'
 import { PieChart } from '../../components/Charts'
 import { ListGroupFlush } from '../../components/ListGroup'
@@ -29,7 +29,7 @@ const HomepageMaid = () => {
             ],
             borderWidth: 1,
         }]
-    const dataChartLeave = pre_dataPieChart(['เข้างาน', 'ลาป่วย', 'ลากิจ', 'ลาพักผ่อน'],'bottom','', dataSetChart)
+    const dataChartLeave = pre_dataPieChart(['เข้างาน', 'ลาป่วย', 'ลากิจ', 'ลาพักผ่อน'],'top','', dataSetChart)
 
     const todoCard = (
         <>
@@ -54,13 +54,13 @@ const HomepageMaid = () => {
     const static_leave = (
         <>
             <div className="row">
-                <div className="col-md-6 col-12">
+                <div className="col-md-7 col-12">
                     <div className="flex justify-center items-center h-full">
-                        <PieChart data={dataChartLeave.data} options={dataChartLeave.options}/>
+                        <PieChart data={dataChartLeave.data} options={dataChartLeave.options} height="50vh" width="100%"/>
                     </div>
                 </div>
-                <div className="col-md-6 col-12">
-                    <div className="flex gap-2 flex-column">
+                <div className="col-md-5 col-12">
+                    <div className="flex gap-2 flex-column justify-center">
                         <p className="m-0">ทำงานจริง:</p>
                         <div className="progress">
                             <div className="progress-bar w-[25%] !bg-green-500" role="progressbar" >25%</div>

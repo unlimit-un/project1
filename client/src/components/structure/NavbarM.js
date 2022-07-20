@@ -7,6 +7,40 @@ import { Dropdown } from 'react-bootstrap'
 import { ListGroupDropdownItem } from '../ListGroup'
 import { Link } from 'react-router-dom'
 
+export const NavbarHomepage = () =>{
+    return (
+        <nav className="navbar navbar-expand-lg navbar-light bg-blue-400">
+            <div className="container-fluid transition-all duration-300">
+                <Link to="/" className="text-3xl text-white nav-link hover:!text-pink-500 "> หน้าหลัก </Link>
+                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
+                </button>
+                <div className="collapse navbar-collapse flex justify-content-between" id="navbarNav">
+                    <ul className="navbar-nav">
+                        <li className="nav-item">
+                        <Link to="/" className="text-3xl text-white nav-link hover:!text-pink-500"> สถานที่ทั้งหมด </Link>
+                        </li>
+                        <li className="nav-item">
+                        <Link to="/" className="text-3xl text-white nav-link hover:!text-pink-500"> ต่อติด </Link>
+                        </li>
+                        <li className="nav-item">
+                        <Link to="/" className="text-3xl text-white nav-link hover:!text-pink-500"> เกี่ยวกับ </Link>
+                        </li>
+                    </ul>
+                    <ul className="navbar-nav">
+                        <li className="nav-item">
+                        <Link to="/login" className="text-3xl text-white nav-link hover:!text-pink-500"> เข้าสู่ระบบ </Link>
+                        </li>
+                        <li className="nav-item">
+                        <Link to="/register" className="text-3xl text-white nav-link hover:!text-pink-500"> สมัครสมาชิก </Link>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    )
+}
+
 export const NavbarManager = () => {
     // console.log(open.main_menu);
     const listGroup = [

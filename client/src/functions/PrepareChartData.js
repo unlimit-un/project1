@@ -47,6 +47,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
             propagate: true
           }
         },
+        maintainAspectRatio: false
       };
     const data = {
         labels,
@@ -89,6 +90,7 @@ export const pre_dataBarChart = ( labels ,position, title, dataset ) =>{
           propagate: true
         }
       },
+      maintainAspectRatio: false
     };
   const data = {
       labels,
