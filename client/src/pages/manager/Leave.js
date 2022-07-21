@@ -13,7 +13,7 @@ const Leave = () => {
             <div className="container-fluid">
                 <Suspense fallback={<Spiner/>}>
                     {
-                            page === 'leave_type'? <SubMenu.LeaveType/>:
+                            page === 'type'? <SubMenu.LeaveType/>:
                             page === 'dashboard'?<SubMenu.Leave/>: 
                             null
                     }
