@@ -1,13 +1,20 @@
 import { faClipboardList, faHome, faLineChart } from '@fortawesome/free-solid-svg-icons'
-import React, { useEffect, useRef, useState } from 'react'
-import { CardFillColor } from '../../components/Cards'
+import React, { Suspense, useEffect, useRef, useState } from 'react'
+// import { CardFillColor } from '../../components/Cards'
 import {SidebarRightManager} from '../../components/structure/SidebarM'
 import { checkAutoRedirectUser } from '../../functions/AuthFunc'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { BarChart, PieChart } from '../../components/Charts'
+// import { BarChart, PieChart } from '../../components/Charts'
 import { pre_dataBarChart, pre_dataPieChart } from '../../functions/PrepareChartData'
-import { TablesStriped } from '../../components/Tables'
+// import { TablesStriped } from '../../components/Tables'
+
+import { Skeleton, Spiner } from '../../components/Loading'
+import { lazily } from 'react-lazily'
+
+const {CardFillColor} = lazily(()=>import('../../components/Cards'));
+const {BarChart, PieChart} = lazily(()=>import('../../components/Charts'));
+const { TablesStriped }  = lazily(()=>import('../../components/Tables'));
 
 const Homepage = () => {
     
@@ -92,13 +99,19 @@ const Homepage = () => {
             <div className="col-lg-9 col-md-8 col-12"  ref={ref}>
                 <div className="row gap-y-5 mt-4">
                     <div className="col-md-4 col-12">
-                        <CardFillColor colorBody="bg-emerald-400" colorFooter="!bg-emerald-500" title="20" subTitle="จำนวนพนักงาน" caption="ข้อมูลเพิ่มเติม"/>
+                        <Suspense fallback={<Skeleton/>}>
+                            <CardFillColor colorBody="bg-emerald-400" colorFooter="!bg-emerald-500" title="20" subTitle="จำนวนพนักงาน" caption="ข้อมูลเพิ่มเติม"/>
+                        </Suspense>
                     </div>
                     <div className="col-md-4 col-12">
-                        <CardFillColor colorBody="bg-purple-400" colorFooter="!bg-purple-500" title="10" subTitle="จำนวนแม่บ้าน" caption="ข้อมูลเพิ่มเติม"/>
+                        <Suspense fallback={<Skeleton/>}>
+                            <CardFillColor colorBody="bg-purple-400" colorFooter="!bg-purple-500" title="10" subTitle="จำนวนแม่บ้าน" caption="ข้อมูลเพิ่มเติม"/>
+                        </Suspense>
                     </div>
                     <div className="col-md-4 col-12">
-                        <CardFillColor colorBody="bg-slate-400" colorFooter="!bg-slate-500" title="10" subTitle="จำนวนช่าง" caption="ข้อมูลเพิ่มเติม"/>
+                        <Suspense fallback={<Skeleton/>}>
+                            <CardFillColor colorBody="bg-slate-400" colorFooter="!bg-slate-500" title="10" subTitle="จำนวนช่าง" caption="ข้อมูลเพิ่มเติม"/>
+                        </Suspense>
                     </div>
                 </div>
                 <div className="card my-3">
@@ -108,12 +121,16 @@ const Homepage = () => {
                     <div className="card-body row justify-content-stretch">
                         <div className="col-lg-4 col-md-5 col-12">
                             <div className="h-full card card-body">
-                                <PieChart data={dataChartRepair.data} options={dataChartRepair.options} height="40vh" />
+                                <Suspense fallback={<Spiner/>}>
+                                    <PieChart data={dataChartRepair.data} options={dataChartRepair.options} height="40vh" />
+                                </Suspense>
                             </div>
                         </div>
                         <div className="col-lg-8 col-md-7 col-12">
                             <div className="h-full card card-body">
-                                <BarChart data={dataChartRepairBar.data} options={dataChartRepairBar.options} height="40vh" />
+                                <Suspense fallback={<Spiner/>}>
+                                    <BarChart data={dataChartRepairBar.data} options={dataChartRepairBar.options} height="40vh" />
+                                </Suspense>
                             </div>
                         </div>
                     </div>
@@ -126,15 +143,21 @@ const Homepage = () => {
                         <div className="card-body row justify-content-stretch">
                             <div className="col-12">
                                 <div className="h-full">
-                                    <BarChart data={dataChartLeave.data} options={dataChartLeave.options} height="40vh"/>
+                                    <Suspense fallback={<Spiner/>}>
+                                        <BarChart data={dataChartLeave.data} options={dataChartLeave.options} height="40vh"/>
+                                    </Suspense>
                                 </div>
                             </div>
                             <div className="col-12 row mt-2">
                                 <div className="col-6">
-                                    <BarChart data={dataChartLeaveEngineer.data} options={dataChartLeaveEngineer.options} height="40vh" />
+                                    <Suspense fallback={<Spiner/>}>
+                                        <BarChart data={dataChartLeaveEngineer.data} options={dataChartLeaveEngineer.options} height="40vh" />
+                                    </Suspense>
                                 </div>
                                 <div className="col-6">
-                                    <BarChart data={dataChartLeaveMaid.data} options={dataChartLeaveMaid.options} height="40vh" />
+                                    <Suspense fallback={<Spiner/>}>
+                                        <BarChart data={dataChartLeaveMaid.data} options={dataChartLeaveMaid.options} height="40vh" />
+                                    </Suspense>
                                 </div>
                             </div>
                         </div>
@@ -147,7 +170,9 @@ const Homepage = () => {
                             </h1>
                         </div>
                         <div className="card-body">
-                            <TablesStriped data={dataTableModel}/>
+                            <Suspense fallback={<Skeleton/>}>
+                                <TablesStriped data={dataTableModel}/>
+                            </Suspense>
                         </div>
                     </div>
                 </div>

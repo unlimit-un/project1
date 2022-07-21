@@ -8,21 +8,47 @@ import {SignOutFunc} from '../../functions/AuthFunc'
 import { useNavigate } from 'react-router-dom';
 import { ListGroupFlushWithLink } from '../ListGroup';
 
-export const SidebarLeftManager = ({ open, setOpen }) => {
+export const SidebarLeftManager = () => {
+    const [open, setOpen] = useState({
+        person: {
+            status: false,
+            id: 'person'
+        },
+        schedual: {
+            status: false,
+            id: 'schedual'
+        },
+        leave: {
+            status: false,
+            id: 'leave'
+        },
+    });
     const navigate = useNavigate()
     const [classTogglePerson, setClassTogglePerson] = useState("");
     const [classToggleSchedual, setClassToggleSchedual] = useState("");
+    const [classToggleLeave, setClassToggleLeave] = useState("");
     
+    useEffect(()=>{
+        open.person.status?setClassTogglePerson("!text-white !bg-blue-500"): setClassTogglePerson("")
+        open.schedual.status?setClassToggleSchedual("!text-white !bg-blue-500"): setClassToggleSchedual("")
+        open.leave.status?setClassToggleLeave("!text-white !bg-blue-500"): setClassToggleLeave("")
+    },[open])    
+    
+    const resetDropDown = (e) =>{
+        setOpen({...open, person:{status: false}, schedual: { status: false}, leave: { status: false}})
+    }
 
     const onToggleMenuPerson = (e) =>{
-        setOpen({...open, person:{status: !open.person.status}, schedual: { status: false}})
-        !open.person.status?setClassTogglePerson("!text-white !bg-blue-500"): setClassTogglePerson("")
-        setClassToggleSchedual("")
+        setOpen({...open, person:{status: !open.person.status}, schedual: { status: false}, leave:{status: false}})
+        
     }
     const onToggleMenuSchedual = (e) =>{
-        setOpen({...open, schedual:{status: !open.schedual.status}, person:{status: false}})
-        !open.schedual.status?setClassToggleSchedual("!text-white !bg-blue-500"): setClassToggleSchedual("")
-        setClassTogglePerson("")
+        setOpen({...open, schedual:{status: !open.schedual.status}, person:{status: false}, leave:{status: false}})
+        
+    }
+    const onToggleMenuLeave = (e) =>{
+        setOpen({...open, leave:{status: !open.leave.status}, person:{status: false}, schedual:{status: false}})
+        
     }
 
     return (
@@ -36,7 +62,7 @@ export const SidebarLeftManager = ({ open, setOpen }) => {
                     </div>
                     <div className="w-full">
                         <ul className=" text-sm m-1 p-2">
-                            <LinkMenuM path="/manager" icon={faHome} label="หน้าหลัก" />
+                            <LinkMenuM path="/manager" icon={faHome} label="หน้าหลัก" resetDropDown={resetDropDown}/>
                             <li className=" p-0">
                                 <div className="group">
                                     <button
@@ -46,7 +72,7 @@ export const SidebarLeftManager = ({ open, setOpen }) => {
                                         className = {classTogglePerson+" flex justify-between items-center w-100 p-2 px-3 text-start group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-300"}
                                     >
                                         <span><FontAwesomeIcon icon={faUserGear}/> พนักงาน</span> 
-                                        <FontAwesomeIcon className="group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-100" icon={faAngleDown}/>
+                                        <FontAwesomeIcon className={`group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-100 ${open.person.status?'rotate-180 ':'rotate-0 '}`} icon={faAngleDown}/>
                                     </button>
                                 </div>
                                 <Collapse in={open.person.status}>
@@ -56,13 +82,14 @@ export const SidebarLeftManager = ({ open, setOpen }) => {
                                             <SubMenuLink label={"ช่างซ่อม"} path="/manager/manage_emp/en"/>
                                             <SubMenuLink label={"ช่างซ่อมภายนอก"} path="/manager/manage_emp/os_en"/>
                                             <SubMenuLink label={"เพิ่มพนักงานในระบบ"} path="/manager/manage_emp/ins"/>
+                                            <SubMenuLink label={"เพิ่มแผนกช่างซ่อม"} path="/manager/manage_emp/dept"/>
                                         </ul>
                                     </div>
                                 </Collapse>
                             </li>
                             
-                            <LinkMenuM path="/manager/repair" icon={faBell} label="แจ้งซ่อม" />
-                            <LinkMenuM path="/manager/material" icon={faScrewdriverWrench} label="วัสดุครุภัณฑ์" />
+                            <LinkMenuM path="/manager/repair" icon={faBell} label="แจ้งซ่อม" resetDropDown={resetDropDown}/>
+                            <LinkMenuM path="/manager/material" icon={faScrewdriverWrench} label="วัสดุครุภัณฑ์" resetDropDown={resetDropDown}/>
 
                             <li className=" p-0">
                                 <div className="group">
@@ -73,7 +100,7 @@ export const SidebarLeftManager = ({ open, setOpen }) => {
                                         className = {classToggleSchedual+" flex justify-between items-center w-100 p-2 px-3 text-start group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-300"}
                                     >
                                         <span><FontAwesomeIcon icon={faTable}/> งานและกิจกรรม</span> 
-                                        <FontAwesomeIcon className="group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-100" icon={faAngleDown}/>
+                                        <FontAwesomeIcon className={`group-hover:!text-white group-hover:bg-blue-500 transition-all ease-in-out duration-100 ${open.schedual.status?'rotate-180 ':'rotate-0'}`} icon={faAngleDown}/>
                                     </button>
                                 </div>
                                 <Collapse in={open.schedual.status}>
@@ -88,9 +115,29 @@ export const SidebarLeftManager = ({ open, setOpen }) => {
                                     </div>
                                 </Collapse>
                             </li>
-                            <LinkMenuM path="/manager/leave" icon={faClipboardList} label="ประวัติการลา" />
-                            <LinkMenuM path="/manager/request" icon={faClipboardCheck} label="คำขออนุมัติ" />
-                            <LinkMenuM path="/manager/location" icon={faBuilding} label="จัดการสถานที่" />
+                            <li className=" p-0">
+                                <div className="group">
+                                    <button
+                                        onClick={(e)=>onToggleMenuLeave(e)}
+                                        aria-expanded = {open.leave.status}
+                                        aria-controls = {open.leave.id} 
+                                        className = {classToggleLeave+" flex justify-between items-center w-100 p-2 px-3 text-start group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-300"}
+                                    >
+                                        <span><FontAwesomeIcon icon={faClipboardList}/> การลา</span> 
+                                        <FontAwesomeIcon className={`group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-100 ${open.leave.status?'rotate-180 ':'rotate-0'}`} icon={faAngleDown}/>
+                                    </button>
+                                </div>
+                                <Collapse in={open.leave.status}>
+                                    <div id={open.leave.id} className="py-2">
+                                        <ul className=" px-3 ">
+                                            <SubMenuLink label={"ข้อมูลการลา"} path="/manager/leave/dashboard"/>
+                                            <SubMenuLink label={"ประเภทการลา"} path="/manager/leave/type"/>
+                                        </ul>
+                                    </div>
+                                </Collapse>
+                            </li>
+                            <LinkMenuM path="/manager/request" icon={faClipboardCheck} label="คำขออนุมัติ" resetDropDown={resetDropDown}/>
+                            <LinkMenuM path="/manager/location" icon={faBuilding} label="จัดการสถานที่" resetDropDown={resetDropDown}/>
                             <li className=" p-0 group  text-sm">
                                 <button onClick={()=>SignOutFunc(navigate)} className="p-2 px-3 text-gray-600 no-underline w-100 block group-hover:!text-white hover:bg-red-500 ease-in-out duration-300 text-left">
                                     <FontAwesomeIcon icon={faPowerOff} className="text-black group-hover:!text-white ease-in-out duration-300"/> ออกจากระบบ
@@ -128,30 +175,43 @@ export const SidebarRightManager = ({maxHeight}) =>{
     )
 }
 
-export const SidebarLeftMaid = ({ open, setOpen }) => {
+export const SidebarLeftMaid = () => {
+    const [open, setOpen] = useState({
+        work: {
+            status: false,
+            id: 'work'
+        },
+        event: {
+            status: false,
+            id: 'event'
+        },
+        leave: {
+            status: false,
+            id: 'leave'
+        }
+    });
     const navigate = useNavigate()
     const [classToggleWork, setClassToggleWork] = useState("");
     const [classToggleActivity, setClassToggleActivity] = useState("");
     const [classToggleLeave, setClassToggleLeave] = useState("");
     
+    useEffect(()=>{
+        open.work.status?setClassToggleWork("!text-white !bg-blue-500") : setClassToggleWork("")
+        open.event.status?setClassToggleActivity("!text-white !bg-blue-500") : setClassToggleActivity("")
+        open.leave.status?setClassToggleLeave("!text-white !bg-blue-500") : setClassToggleLeave("")
+    },[open])
 
     const onToggleMenuWork = (e) =>{
-        setOpen({...open, work:{status: !open.work.status}, event: { status: false}, leave: { status: false}})
-        !open.work.status?setClassToggleWork("!text-white !bg-blue-500"): setClassToggleWork("")
-        setClassToggleActivity("")
-        setClassToggleLeave("")
+        setOpen({...open, work:{status: !open.work.status}, event: { status: false}, leave: {status: false}})
     }
     const onToggleMenuActivity = (e) =>{
         setOpen({...open, event:{status: !open.event.status}, work:{status: false}, leave: {status: false}})
-        !open.event.status?setClassToggleActivity("!text-white !bg-blue-500"): setClassToggleActivity("")
-        setClassToggleWork("")
-        setClassToggleLeave("")
     }
     const onToggleMenuLeave = (e) =>{
         setOpen({...open, leave:{status: !open.leave.status}, work:{status: false}, event:{ status: false}})
-        !open.leave.status?setClassToggleLeave("!text-white !bg-blue-500"): setClassToggleLeave("")
-        setClassToggleWork("")
-        setClassToggleActivity("")
+    }
+    const resetDropDown = (e) =>{
+        setOpen({...open, work:{status: false}, event: { status: false}, leave: { status: false}})
     }
 
     return (
@@ -165,7 +225,7 @@ export const SidebarLeftMaid = ({ open, setOpen }) => {
                     </div>
                     <div className="w-full">
                         <ul className=" text-sm m-1 p-2">
-                            <LinkMenuM path="/maid" icon={faHome} label="หน้าหลัก" />
+                            <LinkMenuM path="/maid" icon={faHome} label="หน้าหลัก" resetDropDown={resetDropDown}/>
                             <li className=" p-0">
                                 <div className="group">
                                     <button
@@ -208,7 +268,7 @@ export const SidebarLeftMaid = ({ open, setOpen }) => {
                                     </div>
                                 </Collapse>
                             </li>
-                            <LinkMenuM path="/maid/urgent" icon={faBell} label="งานด่วน" />
+                            <LinkMenuM path="/maid/urgent" icon={faBell} label="งานด่วน" resetDropDown={resetDropDown} />
                             <li className=" p-0">
                                 <div className="group">
                                     <button
@@ -230,8 +290,8 @@ export const SidebarLeftMaid = ({ open, setOpen }) => {
                                     </div>
                                 </Collapse>
                             </li>
-                            <LinkMenuM path="/maid/repair" icon={faClipboardList} label="แจ้งซ่อม" />
-                            <LinkMenuM path="/maid/material" icon={faClipboardCheck} label="สั่งซื้อครุภัณฑ์" />
+                            <LinkMenuM path="/maid/repair" icon={faClipboardList} label="แจ้งซ่อม" resetDropDown={resetDropDown}/>
+                            <LinkMenuM path="/maid/material" icon={faClipboardCheck} label="สั่งซื้อครุภัณฑ์" resetDropDown={resetDropDown}/>
                             <li className=" p-0 group  text-sm">
                                 <button onClick={()=>SignOutFunc(navigate)} className="p-2 px-3 text-gray-600 no-underline w-100 block group-hover:!text-white hover:bg-red-500 ease-in-out duration-300 text-left">
                                     <FontAwesomeIcon icon={faPowerOff} className="text-black group-hover:!text-white ease-in-out duration-300"/> ออกจากระบบ

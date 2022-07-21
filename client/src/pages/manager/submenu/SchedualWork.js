@@ -6,7 +6,7 @@ import { faCalendarXmark, faCheck, faClipboardCheck, faXmark, faPencil, faPlus, 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Calendar from '../Calendar'
 import { Tab, Tabs } from 'react-bootstrap'
-import Spiner from '../../../components/Spiner'
+import {Spiner} from '../../../components/Loading'
 import { Bandage } from '../../../components/Bandage'
 import { TablesStripedDataTable } from '../../../components/Tables'
 // const TablesStripedDataTable = lazy(()=> import('../../../components/Tables').then(module=> ({default: module.TablesStripedDataTable})))

@@ -9,7 +9,7 @@ import { faCalendar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { InputGroupWithLabel } from '../../components/FormElements';
 import { createFullCalendar, getFullCalendar } from '../../functions/Calendar';
-import Spiner from '../../components/Spiner';
+import {Spiner} from '../../components/Loading';
 const Calendar = () => {
     const [isModal, setIsModal] = useState(false);
     const [values, setValues] = useState({

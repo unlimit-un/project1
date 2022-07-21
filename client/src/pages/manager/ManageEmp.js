@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import Logo from '../../assets/Logo.jpg'
-import {  faPlus, faUserCog, faUserPlus, faUserTie  } from '@fortawesome/free-solid-svg-icons'
+import {  faPencil, faPlus, faSave, faTrash, faUserCog, faUserPlus, faUserTie  } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {Link, useParams} from 'react-router-dom'
 import { CardFillColorNonFooter } from '../../components/Cards'
 import { InputGroupWithLabel, SelectOptionWithLabel } from '../../components/FormElements'
+import { TablesStripedDataTable } from '../../components/Tables'
 
 const ManageEmployee = ({title, dataSets}) => {
     
@@ -137,6 +138,64 @@ const InsEmp = ({title, options, optionsLocation, optionsType}) => {
     )
 }
 
+const Dept = ({title, arr_obj_location}) =>{
+    const initial = {
+        thead:['รหัสแผนก', 'ชื่อแผนก', 'สถานที่', 'วันที่เพิ่มข้อมูล', ''],
+        tbody:[
+            ['DEPT220', 'ช่างทั่วไป', 'ตึก A', '3/7/2023', <div className="flex justify-center gap-2">
+            <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
+            <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
+        </div>],
+            ['DEPT200', 'ช่างอิเล็กทรอนิกส์', 'ตึก A', '6/7/2023', <div className="flex justify-center gap-2">
+            <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
+            <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
+        </div>],
+        ]
+      } 
+    const [dataTable, setDataTable] = useState(initial);
+    const tableForm = (
+        <div className="container-fluid">
+            <TablesStripedDataTable data={dataTable}/>
+        </div>
+    )
+  
+    const template = (
+        <div className="flex justify-content flex-col">
+            <div className="flex justify-between items-center">
+                <h2 className="text-lg m-0"><FontAwesomeIcon icon={faUserPlus}/> {title}</h2>
+            </div>
+            <hr />
+            <div className="flex flex-col gap-2 max-h-screen overflow-auto">
+                <div className="container-fluid">
+                    <div className="row">
+                        <div className="col-md-4 col-12">
+                            <InputGroupWithLabel id="input_emp_id" label="รหัสแผนก" type="text" placeholder="รหัสแผนก" />
+                        </div>
+                        <div className="col-md-4 col-12">
+                            <InputGroupWithLabel id="input_emp_id" label="แผนกช่างซ่อม" type="text" placeholder="แผนกช่างซ่อม" />
+                        </div>
+                        <div className="col-md-4 col-12">
+                            <SelectOptionWithLabel id="input_emp_id" label="สถานที่" options_arr_obj={arr_obj_location} />
+                        </div>
+                    </div>
+                    <div className="flex justify-end">
+                        <button className="btn btn-success w-1/4" ><FontAwesomeIcon icon={faSave}/> บันทึก</button>
+                    </div>
+                    <div className="mt-3">
+                        <CardFillColorNonFooter contentBody={tableForm}/>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    )   
+
+    return(
+        <>
+            <CardFillColorNonFooter contentBody={template} />
+        </>
+    )
+}
+
 
 function ManageEmp() {
     const {page} = useParams();
@@ -168,7 +227,8 @@ function ManageEmp() {
                 page === "maid"? <ManageEmployee title="จัดการแม่บ้าน" dataSets={listGroup}/>:
                 page === "en"? <ManageEmployee title="จัดการช่างซ่อม" dataSets={listGroup}/>:
                 page === "os_en"? <ManageEmployee title="จัดการช่างซ่อมภายนอก" dataSets={listGroup}/>:
-                page === "ins"? <InsEmp title="เพิ่มพนักงานในระบบ" options={options} optionsLocation={optionsLocation} optionsType={optionsType}/>:null
+                page === "ins"? <InsEmp title="เพิ่มพนักงานในระบบ" options={options} optionsLocation={optionsLocation} optionsType={optionsType}/>:
+                page === "dept"? <Dept title="เพิ่มแผนกช่างซ่อม" arr_obj_location={optionsLocation}/>:null
                 
             }
         </>

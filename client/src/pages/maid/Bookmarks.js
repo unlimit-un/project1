@@ -1,9 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { NavbarManager } from '../../components/structure/NavbarM'
 import { SidebarLeftMaid } from '../../components/structure/SidebarM'
 
-const Bookmarks = ({open, setOpen}) => {
+const Bookmarks = () => {
+  const [open, setOpen] = useState({
+    work: {
+        status: false,
+        id: 'work'
+    },
+    event: {
+        status: false,
+        id: 'event'
+    },
+    leave: {
+        status: false,
+        id: 'leave'
+    }
+});
   return (
     <>
         <NavbarManager/>
