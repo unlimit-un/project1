@@ -1,4 +1,4 @@
-import { faWarning } from '@fortawesome/free-solid-svg-icons';
+import { faWarning,faPencil,faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React,{useState} from 'react'
 import { CardFillColorNonFooter, CardFillColorNonFooterShadow } from '../../components/Cards';
@@ -9,7 +9,12 @@ const Urgent = () => {
   const dataTable = {
     thead:['รหัส','รายละเอียดงาน','สถานที่','เวลา'],
     tbody:[
-      ['A','B','C','11.00']
+      ['A','B','C','11.00',
+      <div className="flex justify-center gap-2">
+        <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
+        <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
+    </div>
+    ]
     ]
   }
  

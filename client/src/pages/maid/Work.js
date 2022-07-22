@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { CardFillColorNonFooter, CardFillColorNonFooterShadow } from '../../components/Cards';
 import { TablesStripedDataTable } from '../../components/Tables';
-import { faCheckCircle, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faCircleXmark,faPencil,faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Work = () => {
@@ -13,13 +13,22 @@ const Work = () => {
         <div className="flex justify-center gap-2">
           <button className="btn btn-success"><FontAwesomeIcon icon={faCheckCircle}/></button>
           <button className="btn btn-danger"><FontAwesomeIcon icon={faCircleXmark}/></button>
-        </div>
+        </div>,
+        <div className="flex justify-center gap-2">
+          <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
+          <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
+       </div>
     ],
     ['C','D','E',
       <div className="flex justify-center gap-2">
-      <button className="btn btn-success"><FontAwesomeIcon icon={faCheckCircle}/></button>
-      <button className="btn btn-danger"><FontAwesomeIcon icon={faCircleXmark}/></button>
-    </div>]
+        <button className="btn btn-success"><FontAwesomeIcon icon={faCheckCircle}/></button>
+        <button className="btn btn-danger"><FontAwesomeIcon icon={faCircleXmark}/></button>
+     </div>,
+      <div className="flex justify-center gap-2">
+        <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
+        <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
+      </div>
+    ]
     ]
   }
   const datatTable1 ={

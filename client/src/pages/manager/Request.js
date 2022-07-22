@@ -1,10 +1,11 @@
-import React,{useState} from 'react'
-import {  faHome, faEye,faCopy} from '@fortawesome/free-solid-svg-icons'
+import React,{Suspense, useState} from 'react'
+import {  faHome, faEye,faCopy,faPencil,faTrash} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { CardFillColorNonFooter } from '../../components/Cards'
 import { ModalCard,ModalButton } from '../../components/Modals'
 import { Bandage } from '../../components/Bandage'
 import { TablesStripedDataTable } from '../../components/Tables'
+import { Skeleton } from '../../components/Loading'
 
 
 
@@ -44,14 +45,30 @@ const Request = () => {
     const initial = {
         thead:['รหัสคำขอ', 'เรื่อง', 'วันที่แจ้ง','สถานะ'],
         tbody:[
-            ['A233456', 'เบิกเครื่องมือซ้อม','3/7/2023', <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-success" text="อนุมัติ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>],
-            ['A233457', 'ลาป่วย','6/7/2023', <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-danger" text="ไม่อนุมัติ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>],
-            ['A233458', 'ขอวัสดุไปทำงานเพิ่ม','7/8/2023', <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-success" text="อนุมัติ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>],
+            ['A233456', 'เบิกเครื่องมือซ้อม','3/7/2023', <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-success" text="อนุมัติ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>
+                ,<div className="flex justify-center gap-2">
+                    <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
+                    <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
+                </div>
+            ],
+            ['A233457', 'ลาป่วย','6/7/2023', <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-danger" text="ไม่อนุมัติ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>
+                ,<div className="flex justify-center gap-2">
+                    <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
+                    <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
+                </div>
+            ],
+            ['A233458', 'ขอวัสดุไปทำงานเพิ่ม','7/8/2023', <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-success" text="อนุมัติ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>
+                ,<div className="flex justify-center gap-2">
+                    <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
+                    <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
+                </div>
+            ],
         ]
     }
+
     const [dataTable, setDataTable] = useState(initial);
 
-    const handleFilterData1 = (text)=>{
+    const handleFilterDatas = (text)=>{
         setDataTable({
                 ...initial,
                 tbody: initial.tbody.filter(item =>{
@@ -110,27 +127,27 @@ const Request = () => {
          <div className="container-fluid">
             <div className="row items-stretch gap-y-2">
                 <div className="col-md-4  col-12">
-                    <button className="w-full h-full" onClick={(handleFilterData1)=>('ทั้งหมด')}>
+                    <button className="w-full h-full" onClick={()=>handleFilterDatas('ทั้งหมด')}>
                         <CardFillColorNonFooter classBody="bg-green-500 hover:bg-green-500 transition-all duration-300 rounded" contentBody={acceptCard} classCard="text-white transition-all duration-300 hover:-translate-y-3 h-full"/>
                     </button>
                 </div>
                 <div className="col-md-4  col-12">
-                    <button className="w-full h-full" onClick={(handleFilterData1)=>('อนุมัติ')}>
+                    <button className="w-full h-full" onClick={()=>handleFilterDatas('อนุมัติ')}>
                         <CardFillColorNonFooter classBody="bg-blue-600 hover:bg-blue-500 transition-all duration-300 rounded" contentBody={totalCard} classCard="text-white transition-all duration-300 hover:-translate-y-3 h-full"/>
                     </button>
                 </div>
                 <div className="col-md-4  col-12">
-                    <button className="w-full h-full" onClick={(handleFilterData1)=>('รออนุมัติ')}>
+                    <button className="w-full h-full" onClick={()=>handleFilterDatas('รออนุมัติ')}>
                         <CardFillColorNonFooter classBody="bg-yellow-400 hover:bg-yellow-500 transition-all duration-300 rounded" contentBody={waitingCard} classCard="text-white transition-all duration-300 hover:-translate-y-3 h-full"/>
                     </button>
                 </div>
                 <div className="col-md-6 col-12">
-                    <button className="w-full h-full" onClick={(handleFilterData1)=>('คำขอที่อนุมัติ')}>
+                    <button className="w-full h-full" onClick={()=>handleFilterDatas('คำขอที่อนุมัติ')}>
                         <CardFillColorNonFooter classBody="bg-violet-600 hover:bg-violet-500 transition-all duration-300 rounded" contentBody={approveCard} classCard="text-white transition-all duration-300 hover:-translate-y-3 h-full"/>
                     </button>
                 </div>
                 <div className="col-md-6 col-12">
-                    <button className="w-full h-full" onClick={(handleFilterData1)=>('คำขอที่ไม่อนุมัติ')}>
+                    <button className="w-full h-full" onClick={()=>handleFilterDatas('คำขอที่ไม่อนุมัติ')}>
                         <CardFillColorNonFooter classBody="bg-red-600 hover:bg-red-500 transition-all duration-300 rounded" contentBody={disapprovedCard} classCard="text-white transition-all duration-300 hover:-translate-y-3 h-full"/>
                     </button>
                 </div>

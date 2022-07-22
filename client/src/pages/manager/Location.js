@@ -11,9 +11,14 @@ const Location = () => {
   const [name, setName] = useState('');
   const [showModal, setShowModal] = useState(false);
   const dataTable = {
-      thead:['ชื่อสถานที่',''],
+      thead:['ชื่อสถานที่','',''],
       tbody:[
-          ['A', <ModalButton text="จัดการสมาชิก" setModalShow={setShowModal} classBtn="btn btn-info text-white"/>]
+          ['A', <ModalButton text="จัดการสมาชิก" setModalShow={setShowModal} classBtn="btn btn-info text-white"/>
+            ,<div className="flex justify-center gap-2">
+                <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
+                <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
+            </div>
+          ]
       ]
   }
   const dataTableModal = {

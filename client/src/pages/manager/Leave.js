@@ -1,9 +1,12 @@
 import { faClipboardCheck, } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { Suspense, useState } from 'react'
+import { lazily } from 'react-lazily'
 import { useParams } from 'react-router-dom'
-import {Spiner} from '../../components/Loading'
+import {Skeleton, Spiner} from '../../components/Loading'
 import * as SubMenu from './submenu/Leave'
+
+// const {LeaveType, Leaves} = lazily(()=>import('./submenu/Leave'));
 
 const Leave = () => {
     const {page} = useParams();
@@ -11,13 +14,11 @@ const Leave = () => {
     return (
         <>
             <div className="container-fluid">
-                <Suspense fallback={<Spiner/>}>
                     {
-                            page === 'type'? <SubMenu.LeaveType/>:
-                            page === 'dashboard'?<SubMenu.Leave/>: 
+                            page === 'type'? <Suspense fallback={<Skeleton/>}><SubMenu.LeaveType/></Suspense>:
+                            page === 'dashboard'?<Suspense fallback={<Skeleton/>}><SubMenu.Leave/></Suspense>: 
                             null
                     }
-                </Suspense>
             </div>
         </>
     )

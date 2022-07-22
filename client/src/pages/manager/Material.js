@@ -1,25 +1,89 @@
-import { faScrewdriverWrench } from '@fortawesome/free-solid-svg-icons'
+import { faScrewdriverWrench,faPencil,faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
-import { TablesStripedDataTable } from '../../components/Tables'
+import React, { Suspense } from 'react'
+import { lazily } from 'react-lazily'
+import { Skeleton } from '../../components/Loading'
+// import { TablesStripedDataTable } from '../../components/Tables'
+
+const {TablesStripedDataTable} = lazily(()=>import('../../components/Tables'));
 
 const Material = () => {
 
   const dataTableModel = {
-      thead:['รหัสครุภัณฑ์', 'รายการ', 'จำนวน', 'วันที่นำเข้า', 'คนที่สั่ง', 'สถานะบุคคล'],
+      thead:['รหัสครุภัณฑ์', 'รายการ', 'จำนวน', 'วันที่นำเข้า', 'คนที่สั่ง', 'สถานะบุคคล',''],
       tbody:[
-          ['A3264', 'โต๊ะไม้ขนาด 100*80', '2', '12/02/65', 'Unlimit unarn', 'หัวหน้างาน'],
-          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'],
-          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'],
-          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'],
-          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'],
-          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'],
-          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'],
-          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'],
-          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'],
-          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'],
-          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'],
-          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'],
+          ['A3264', 'โต๊ะไม้ขนาด 100*80', '2', '12/02/65', 'Unlimit unarn', 'หัวหน้างาน'
+            ,<div className="flex justify-center gap-2">
+                <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
+                <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
+            </div>
+          ],
+          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'
+            ,<div className="flex justify-center gap-2">
+              <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
+              <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
+            </div>
+          ],
+          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'
+            ,<div className="flex justify-center gap-2">
+              <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
+              <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
+            </div>
+          ],
+          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'
+            ,<div className="flex justify-center gap-2">
+              <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
+              <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
+            </div>
+          ],
+          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'
+            ,<div className="flex justify-center gap-2">
+              <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
+              <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
+            </div>
+          ],
+          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'
+            ,<div className="flex justify-center gap-2">
+              <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
+              <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
+            </div>
+          ],
+          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'
+            ,<div className="flex justify-center gap-2">
+              <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
+              <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
+            </div>
+          ],
+          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'
+            ,<div className="flex justify-center gap-2">
+              <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
+              <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
+            </div>
+          ],
+          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'
+            ,<div className="flex justify-center gap-2">
+              <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
+              <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
+            </div>
+          ],
+          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'
+            ,<div className="flex justify-center gap-2">
+              <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
+              <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
+            </div>
+          ],
+          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'
+            ,<div className="flex justify-center gap-2">
+              <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
+              <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
+            </div>
+          ],
+          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'
+            ,<div className="flex justify-center gap-2">
+              <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
+              <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
+            </div>
+          ],
       ]
   }
   return (
@@ -28,7 +92,9 @@ const Material = () => {
         <div className="container-fluid">
 
           <div className="card card-body mt-4">
+            <Suspense fallback= {<Skeleton/>}> 
               <TablesStripedDataTable data={dataTableModel}/>
+            </Suspense>  
           </div>
           <div className="card card-body mt-4">
             <div className="flex flex-column justify-center">

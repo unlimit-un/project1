@@ -1,4 +1,4 @@
-import { faClipboardList, faEye, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faClipboardList, faEye, faPlus,faTrash,faPencil } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
 import { Bandage } from '../../components/Bandage'
@@ -42,9 +42,24 @@ const Leave = () => {
   const initial = {
     thead:['หัวเรื่อง', 'ประเภทการลา', 'รายละเอียด', 'เริ่มลาวันที่', 'ถึงวันที่', 'สถานะ'],
     tbody:[
-        ['เดินทางต่างจังหวัด', 'ลากิจ', 'ไปทำธุระต่างจังหวัด', '3/7/2023', '5/7/2023', <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-success" text="อนุมัติ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>],
-        ['ลาเที่ยว', 'ลาพักร้อน', 'เที่ยวต่างจังหวัดกับครอบครัว', '6/7/2023', '12/7/2023', <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-danger" text="ไม่อนุมัติ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>],
-        ['ไม่สบาย', 'ลาป่วย', 'ไข้สูง ตัวร้อน', '7/8/2023', '15/8/2023', <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-warning" text="รออนุมัติ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>],
+        ['เดินทางต่างจังหวัด', 'ลากิจ', 'ไปทำธุระต่างจังหวัด', '3/7/2023', '5/7/2023',<div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-success" text="อนุมัติ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>,
+          <div className="flex justify-center gap-2">
+            <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
+            <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
+          </div>
+        ],
+        ['ลาเที่ยว', 'ลาพักร้อน', 'เที่ยวต่างจังหวัดกับครอบครัว', '6/7/2023', '12/7/2023', <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-danger" text="ไม่อนุมัติ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>,
+          <div className="flex justify-center gap-2">
+            <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
+            <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
+         </div>
+        ],
+        ['ไม่สบาย', 'ลาป่วย', 'ไข้สูง ตัวร้อน', '7/8/2023', '15/8/2023', <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-warning" text="รออนุมัติ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>,
+          <div className="flex justify-center gap-2">
+            <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
+            <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
+         </div>
+        ],
     ]
   } 
   const [dataTable, setDataTable] = useState(initial);

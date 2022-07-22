@@ -8,6 +8,7 @@ import { checkAutoRedirectUser, SignOutFunc } from '../../functions/AuthFunc'
 const HomepageE = () => {
     const navigate = useNavigate();
     const {pathname} = useLocation();
+    
     useEffect(()=>{
         checkAutoRedirectUser(navigate, pathname)
     },[])

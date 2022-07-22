@@ -1,11 +1,16 @@
-import { faBell, faCopy, faEye } from '@fortawesome/free-solid-svg-icons'
+import { faBell, faCopy, faEye,faPencil,faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { Suspense, useEffect, useRef, useState } from 'react'
 import { SidebarRightManager } from '../../components/structure/SidebarM'
 import { Bandage } from '../../components/Bandage'
-import { CardFillColorNonFooter } from '../../components/Cards'
+// import { CardFillColorNonFooter } from '../../components/Cards'
 import { ModalCard, ModalButton } from '../../components/Modals'
-import { TablesStripedDataTable } from '../../components/Tables'
+// import { TablesStripedDataTable } from '../../components/Tables'
+import { lazily } from 'react-lazily'
+import { Skeleton } from '../../components/Loading'
+
+const {TablesStripedDataTable} = lazily(()=>import('../../components/Tables'));
+const {CardFillColorNonFooter} = lazily(()=>import('../../components/Cards'));
 
 const Repair = () => {
 
@@ -54,11 +59,26 @@ const Repair = () => {
     )
     const [modalShow, setModalShow] = useState(false)
     const initial = {
-        thead:['ชื่อ', 'ประเภทการลา', 'เรื่อง', 'เริ่มลาวันที่', 'ถึงวันที่', 'สถานะ', ''],
+        thead:['ชื่อ', 'ประเภทการลา', 'เรื่อง', 'เริ่มลาวันที่', 'ถึงวันที่', 'สถานะ', '',''],
         tbody:[
-            ['unlimit', 'ลากิจ', 'ไปทำธุระต่างจังหวัด', '3/7/2023', '5/7/2023', <Bandage classBandage=" bg-success" text="ดำเนินการเสร็จสิ้น"/>, <ModalButton icon={faEye} setModalShow={setModalShow} classBtn="btn btn-outline-primary w-full"/>],
-            ['unlimit', 'ลาพักร้อน', 'ลาไปเที่ยว', '6/7/2023', '12/7/2023', <Bandage classBandage="  bg-danger" text="รอดำเนินการ"/>, <ModalButton icon={faEye} setModalShow={setModalShow} classBtn="btn btn-outline-primary w-full"/>],
-            ['unlimit', 'ลาป่วย', 'ป่วยไข้', '7/8/2023', '15/8/2023', <Bandage classBandage="  bg-warning" text="กำลังดำเนินการ"/>, <ModalButton icon={faEye} setModalShow={setModalShow} classBtn="btn btn-outline-primary w-full"/>],
+            ['unlimit', 'ลากิจ', 'ไปทำธุระต่างจังหวัด', '3/7/2023', '5/7/2023', <Bandage classBandage=" bg-success" text="ดำเนินการเสร็จสิ้น"/>, <ModalButton icon={faEye} setModalShow={setModalShow} classBtn="btn btn-outline-primary w-full"/>
+                ,<div className="flex justify-center gap-2">
+                    <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
+                    <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
+                </div>
+            ],
+            ['unlimit', 'ลาพักร้อน', 'ลาไปเที่ยว', '6/7/2023', '12/7/2023', <Bandage classBandage="  bg-danger" text="รอดำเนินการ"/>, <ModalButton icon={faEye} setModalShow={setModalShow} classBtn="btn btn-outline-primary w-full"/>
+                ,<div className="flex justify-center gap-2">
+                    <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
+                    <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
+                </div>
+            ],
+            ['unlimit', 'ลาป่วย', 'ป่วยไข้', '7/8/2023', '15/8/2023', <Bandage classBandage="  bg-warning" text="กำลังดำเนินการ"/>, <ModalButton icon={faEye} setModalShow={setModalShow} classBtn="btn btn-outline-primary w-full"/>
+                ,<div className="flex justify-center gap-2">
+                    <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
+                    <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
+                </div>
+            ]
         ]
     }
 
@@ -136,22 +156,31 @@ const Repair = () => {
                         <div className="row items-stretch gap-y-2">
                             <div className="col-lg-3 col-md-6 col-12">
                                 <button className="w-full h-full" onClick={()=>handleFilterData('ทั้งหมด')}>
-                                    <CardFillColorNonFooter classBody="bg-blue-400 hover:bg-blue-500 transition-all duration-300 rounded" contentBody={totalCard} classCard="text-white transition-all duration-300 hover:-translate-y-3 w-full h-full"/>
+                                    <Suspense fallback={<Skeleton/>}>
+                                        <CardFillColorNonFooter classBody="bg-blue-400 hover:bg-blue-500 transition-all duration-300 rounded" contentBody={totalCard} classCard="text-white transition-all duration-300 hover:-translate-y-3 w-full h-full"/>
+                                    </Suspense>
+                                    
                                 </button>
                             </div>
                             <div className="col-lg-3 col-md-6 col-12">
                                 <button className="w-full h-full" onClick={()=>handleFilterData('ดำเนินการเสร็จสิ้น')}>
-                                    <CardFillColorNonFooter classBody="bg-green-400 hover:bg-green-500 transition-all duration-300 rounded" contentBody={successCard} classCard="text-white transition-all duration-300 hover:-translate-y-3 w-full h-full"/>
+                                    <Suspense fallback={<Skeleton/>}>
+                                        <CardFillColorNonFooter classBody="bg-green-400 hover:bg-green-500 transition-all duration-300 rounded" contentBody={successCard} classCard="text-white transition-all duration-300 hover:-translate-y-3 w-full h-full"/>
+                                    </Suspense>
                                 </button>
                             </div>
                             <div className="col-lg-3 col-md-6 col-12">
                                 <button className="w-full h-full" onClick={()=>handleFilterData('กำลังดำเนินการ')}>
-                                    <CardFillColorNonFooter classBody="bg-yellow-400 hover:bg-yellow-500 transition-all duration-300 rounded" contentBody={processCard} classCard="transition-all duration-300 hover:-translate-y-3 w-full h-full"/>
+                                    <Suspense fallback={<Skeleton/>}>
+                                        <CardFillColorNonFooter classBody="bg-yellow-400 hover:bg-yellow-500 transition-all duration-300 rounded" contentBody={processCard} classCard="transition-all duration-300 hover:-translate-y-3 w-full h-full"/>
+                                    </Suspense>
                                 </button>
                             </div>
                             <div className="col-lg-3 col-md-6 col-12">
                                 <button className="w-full h-full" onClick={()=>handleFilterData('รอดำเนินการ')}>
-                                    <CardFillColorNonFooter classBody="bg-red-400 hover:bg-red-500 transition-all duration-300 rounded" contentBody={waitingCard} classCard="text-white transition-all duration-300 hover:-translate-y-3 w-full h-full"/>
+                                    <Suspense fallback={<Skeleton/>}>
+                                        <CardFillColorNonFooter classBody="bg-red-400 hover:bg-red-500 transition-all duration-300 rounded" contentBody={waitingCard} classCard="text-white transition-all duration-300 hover:-translate-y-3 w-full h-full"/>
+                                    </Suspense>
                                 </button>
                             </div>
                         </div>
