@@ -1,11 +1,15 @@
-import React, { useState } from 'react'
+import React, { Suspense, useState } from 'react'
 import { InputGroupWithLabel, SelectOptionWithLabel } from '../../components/FormElements'
 import { CardFillColorNonFooter, CardFillColorNonFooterShadow } from '../../components/Cards'
-import { ModalButton, ModalCard } from '../../components/Modals'
-import { TablesStripedDataTable } from '../../components/Tables'
+// import { ModalButton, ModalCard } from '../../components/Modals'
+// import { TablesStripedDataTable } from '../../components/Tables'
 import { faPencil, faTrash, faUsersGear } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Skeleton } from '../../components/Loading'
+import { lazily } from 'react-lazily'
 
+const {TablesStripedDataTable} = lazily(()=>import('../../components/Tables'));
+const {ModalButton, ModalCard} = lazily(()=>import('../../components/Modals'));
 
 const Location = () => {
   const [name, setName] = useState('');
@@ -73,8 +77,11 @@ const Location = () => {
   )
   return (
       <>
-          <CardFillColorNonFooter contentBody={contentBody}/>
-          <ModalCard modalShow={showModal} setModalShow={setShowModal} modalBody={Modal.mBody} modalHead={Modal.mHead}/>
+        <Suspense fallback={<Skeleton/>}>
+            <CardFillColorNonFooter contentBody={contentBody}/>
+            <ModalCard modalShow={showModal} setModalShow={setShowModal} modalBody={Modal.mBody} modalHead={Modal.mHead}/>
+        </Suspense>
+         
       </>
   )
 }

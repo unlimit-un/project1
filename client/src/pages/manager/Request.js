@@ -1,4 +1,4 @@
-import React,{Suspense, useState} from 'react'
+import React,{Suspense, useEffect, useRef, useState} from 'react'
 import {  faHome, faEye,faCopy,faPencil,faTrash} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { CardFillColorNonFooter } from '../../components/Cards'
@@ -10,6 +10,9 @@ import { Skeleton } from '../../components/Loading'
 
 
 const Request = () => {
+
+    
+
     const acceptCard =(
        <div className="container-fulid">
             <p className="text-3xl m-0 text-start">112</p>
@@ -22,7 +25,7 @@ const Request = () => {
             <p className="text-3xl m-0 text-end">ที่ยังไม่เปิด</p>
         </div>
     )
-    const waitingCard =(
+    const waitingCards =(
         <div className="container-fulid">
             <p className="text-3xl m-0 text-start">0</p>
             <p className="text-3xl m-0 text-end">อื่นๆ</p>
@@ -67,7 +70,7 @@ const Request = () => {
     }
 
     const [dataTable, setDataTable] = useState(initial);
-
+    
     const handleFilterDatas = (text)=>{
         setDataTable({
                 ...initial,
@@ -138,7 +141,7 @@ const Request = () => {
                 </div>
                 <div className="col-md-4  col-12">
                     <button className="w-full h-full" onClick={()=>handleFilterDatas('รออนุมัติ')}>
-                        <CardFillColorNonFooter classBody="bg-yellow-400 hover:bg-yellow-500 transition-all duration-300 rounded" contentBody={waitingCard} classCard="text-white transition-all duration-300 hover:-translate-y-3 h-full"/>
+                        <CardFillColorNonFooter classBody="bg-yellow-400 hover:bg-yellow-500 transition-all duration-300 rounded" contentBody={waitingCards} classCard="text-white transition-all duration-300 hover:-translate-y-3 h-full"/>
                     </button>
                 </div>
                 <div className="col-md-6 col-12">
