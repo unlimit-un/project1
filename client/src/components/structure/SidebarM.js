@@ -285,7 +285,7 @@ export const SidebarLeftMaid = () => {
                                     <div id={open.leave.id} className="py-2">
                                         <ul className=" px-3 ">
                                             <SubMenuLink label={"คำขอการลา"} path="/maid/leave/request"/>
-                                            <SubMenuLink label={"ประวัติการลา"} path="/maid/leave/stat"/>
+                                            <SubMenuLink label={"ประวัติการลา"} path="/maid/leave/history"/>
                                         </ul>
                                     </div>
                                 </Collapse>

@@ -45,8 +45,12 @@ const Repair = () => {
     thead:['ปัญหา', 'สถานที่', 'ห้อง', 'วันที่แจ้ง', 'สถานะ', ''],
     tbody:[
         ['อ่างล้างหน้าแตก', 'ตึก A', 'A202', '3/7/2023', 
-        <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-success" text="อนุมัติ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>, 
-        <div className="flex justify-center gap-2"><FontAwesomeIcon icon={faPencil} className="text-green-500"/><FontAwesomeIcon className="text-danger" icon={faTrashAlt}/></div>],
+          <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-success" text="อนุมัติ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>, 
+          <div className="flex justify-center gap-2">
+            <FontAwesomeIcon icon={faPencil} className="text-warning"/>
+            <FontAwesomeIcon className="text-danger" icon={faTrashAlt}/>
+          </div>
+        ],
         
     ]
   } 
@@ -83,7 +87,9 @@ const Repair = () => {
   return (
     <>
         <h1 className="text-2xl"><FontAwesomeIcon icon={faScrewdriverWrench}/> แจ้งซ่อม</h1>
-        <ModalButton icon={faPlus} text="ยื่นเรื่องซ่อม" classBtn="bg-green-500 text-white " setModalShow={setModalShow}/>
+          <div className="flex justify-end">
+            <ModalButton icon={faPlus} text="ยื่นเรื่องซ่อม" classBtn="btn btn-outline-primary" setModalShow={setModalShow}/>
+          </div>
         <div className="mt-3">
           <CardFillColorNonFooterShadow contentBody={tableLeave}/>
         </div>

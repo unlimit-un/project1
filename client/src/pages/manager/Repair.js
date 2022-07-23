@@ -9,6 +9,8 @@ import { ModalCard, ModalButton } from '../../components/Modals'
 import { lazily } from 'react-lazily'
 import { Skeleton } from '../../components/Loading'
 
+
+
 const {TablesStripedDataTable} = lazily(()=>import('../../components/Tables'));
 const {CardFillColorNonFooter} = lazily(()=>import('../../components/Cards'));
 
@@ -105,11 +107,11 @@ const Repair = () => {
     }
     
     const tableLeave = (
-        <Suspense fallback={'... loading'}>
-            <div className="container-fluid">
+        <div className="container-fluid">
+            <Suspense fallback={'... loading'}>
                 <TablesStripedDataTable data={dataTable}/>
-            </div>
-        </Suspense>
+            </Suspense>
+        </div>
     )
 
     const Modal = {
@@ -185,7 +187,9 @@ const Repair = () => {
                             </div>
                         </div>
                         <div className="mt-3">
-                            <CardFillColorNonFooter contentBody={tableLeave} />
+                            <Suspense fallback={<Skeleton/>}>
+                                <CardFillColorNonFooter contentBody={tableLeave} />
+                            </Suspense>
                         </div>
                     </div>
                     <div className="col-lg-3 col-md-4 col-12">

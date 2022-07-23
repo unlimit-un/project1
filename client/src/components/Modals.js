@@ -61,7 +61,7 @@ export const ModalButton = ({setModalShow, icon, text ,classBtn}) =>{
     return (
         <>
             {
-                icon?<button className={classBtn} onClick={()=>setModalShow(true)}><FontAwesomeIcon icon={icon}/>{text}</button>:
+                icon?<button className={classBtn} onClick={()=>setModalShow(true)}><FontAwesomeIcon icon={icon}/> {text}</button>:
                 <button className={classBtn} onClick={()=>setModalShow(true)}>{text}</button>
             
             }

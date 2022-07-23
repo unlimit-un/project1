@@ -13,6 +13,10 @@
     overflow-x:auto;
 }
 
+.MuiTable-root{
+    border: "1px solid red" !important
+}
+
 ::-webkit-scrollbar {
     width: 7px;
     height: 7px;              /* height of horizontal scrollbar ← You're missing this */

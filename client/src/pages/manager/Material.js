@@ -3,99 +3,36 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { Suspense } from 'react'
 import { lazily } from 'react-lazily'
 import { Skeleton } from '../../components/Loading'
-// import { TablesStripedDataTable } from '../../components/Tables'
-
-const {TablesStripedDataTable} = lazily(()=>import('../../components/Tables'));
-
+import EditDelete from '../../components/EditDelete'
+import { CardFillColorNonFooter } from '../../components/Cards'
+// import { FilterTable } from '../../components/Tables'
+const { MuiTable } = lazily(()=>import('../../components/Tables'))
 const Material = () => {
 
-  const dataTableModel = {
-      thead:['รหัสครุภัณฑ์', 'รายการ', 'จำนวน', 'วันที่นำเข้า', 'คนที่สั่ง', 'สถานะบุคคล',''],
-      tbody:[
-          ['A3264', 'โต๊ะไม้ขนาด 100*80', '2', '12/02/65', 'Unlimit unarn', 'หัวหน้างาน'
-            ,<div className="flex justify-center gap-2">
-                <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
-                <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
-            </div>
-          ],
-          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'
-            ,<div className="flex justify-center gap-2">
-              <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
-              <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
-            </div>
-          ],
-          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'
-            ,<div className="flex justify-center gap-2">
-              <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
-              <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
-            </div>
-          ],
-          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'
-            ,<div className="flex justify-center gap-2">
-              <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
-              <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
-            </div>
-          ],
-          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'
-            ,<div className="flex justify-center gap-2">
-              <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
-              <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
-            </div>
-          ],
-          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'
-            ,<div className="flex justify-center gap-2">
-              <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
-              <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
-            </div>
-          ],
-          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'
-            ,<div className="flex justify-center gap-2">
-              <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
-              <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
-            </div>
-          ],
-          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'
-            ,<div className="flex justify-center gap-2">
-              <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
-              <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
-            </div>
-          ],
-          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'
-            ,<div className="flex justify-center gap-2">
-              <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
-              <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
-            </div>
-          ],
-          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'
-            ,<div className="flex justify-center gap-2">
-              <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
-              <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
-            </div>
-          ],
-          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'
-            ,<div className="flex justify-center gap-2">
-              <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
-              <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
-            </div>
-          ],
-          ['E4514','ก็อกน้ำ', '4', '13/02/65', 'Unlimit unarn', 'หัวหน้างาน'
-            ,<div className="flex justify-center gap-2">
-              <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
-              <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
-            </div>
-          ],
-      ]
-  }
+  const data = [
+    { id: "A3264", list_name: 'โต๊ะไม้ขนาด 100*80', count:2, import_date:'12/02/65', import_person:'Unlimit unarn', status_person:'หัวหน้างาน', ED:<EditDelete/> },
+    { id: "A3264", list_name: 'โต๊ะไม้ขนาด 100*80', count:2, import_date:'12/02/65', import_person:'Unlimit unarn', status_person:'หัวหน้างาน', ED:<EditDelete/> },
+    { id: "A3264", list_name: 'โต๊ะไม้ขนาด 100*80', count:2, import_date:'12/02/65', import_person:'Unlimit unarn', status_person:'หัวหน้างาน', ED:<EditDelete/> },
+    { id: "A3264", list_name: 'โต๊ะไม้ขนาด 100*80', count:2, import_date:'12/02/65', import_person:'Unlimit unarn', status_person:'หัวหน้างาน', ED:<EditDelete/> },
+  ];
+
+  const classTable="float-right"
+  const columns = [
+    {title: "รหัสครุภัณฑ์",field: "id"},
+    {title: "รายการ",field: "list_name"},
+    {title: "จำนวน",field: "count"},
+    {title: "วันที่นำเข้า",field: "import_date"},
+    {title: "คนที่สั่ง",field: "import_person"},
+    {title: "สถานะบุคคล",field: "status_person"},
+    {title: "",field: "ED"},
+  ];
   return (
     <>
         <h1 className="text-2xl"><FontAwesomeIcon icon={faScrewdriverWrench}/> วัสดุครุภัณฑ์</h1>
         <div className="container-fluid">
-
-          <div className="card card-body mt-4">
-            <Suspense fallback= {<Skeleton/>}> 
-              <TablesStripedDataTable data={dataTableModel}/>
-            </Suspense>  
-          </div>
+          <Suspense fallback= {<Skeleton/>}> 
+            <CardFillColorNonFooter contentBody={<MuiTable data={data} columns={columns}/>}/>
+          </Suspense>  
           <div className="card card-body mt-4">
             <div className="flex flex-column justify-center">
               <h3>เพิ่มรายการวัสดุครุภัณฑ์</h3>
