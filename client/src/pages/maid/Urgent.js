@@ -1,9 +1,12 @@
 import { faWarning,faPencil,faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React,{useState} from 'react'
-import { CardFillColorNonFooter, CardFillColorNonFooterShadow } from '../../components/Cards';
+import React,{useState,Suspense} from 'react'
+import { CardFillColorNonFooter } from '../../components/Cards';
 import { TablesStriped } from '../../components/Tables';
+import { Skeleton } from '../../components/Loading'
+import { lazily } from 'react-lazily';
 
+const { CardFillColorNonFooterShadow } =lazily(()=>import('../../components/Cards'))
 const Urgent = () => {
   const [name,setName] = useState(''); 
   const dataTable = {
@@ -23,8 +26,9 @@ const Urgent = () => {
           <div className="container-fluid">
               <h1 className="text-xl"><FontAwesomeIcon icon={faWarning}/> งานด่วน</h1>
               <hr />
-             
-              <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStriped data={dataTable} id="_table1"/>}/>
+              <Suspense fallback={<Skeleton/>}>
+                <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStriped data={dataTable} id="_table1"/>}/>
+              </Suspense>
           </div>
       </>
   )

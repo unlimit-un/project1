@@ -1,12 +1,14 @@
 import { faClipboardList, faEye, faPencil, faPlus, faScrewdriverWrench, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useState } from 'react'
+import React, { useState,Suspense } from 'react'
 import { Bandage } from '../../components/Bandage'
-import { CardFillColorNonFooterShadow } from '../../components/Cards'
 import { InputGroupWithLabel, RadioInline, SelectOptionWithLabel, TextAreawithlabel } from '../../components/FormElements'
 import { ModalButton, ModalCardConfirm } from '../../components/Modals'
 import { TablesStriped } from '../../components/Tables'
+import { Skeleton } from '../../components/Loading'
+import { lazily } from 'react-lazily'
 
+const { CardFillColorNonFooterShadow } =lazily(()=>import('../../components/Cards'))
 const Repair = () => {
   const [modalShow, setModalShow] = useState(false);
   const optionsLocation = [
@@ -91,7 +93,9 @@ const Repair = () => {
             <ModalButton icon={faPlus} text="ยื่นเรื่องซ่อม" classBtn="btn btn-outline-primary" setModalShow={setModalShow}/>
           </div>
         <div className="mt-3">
-          <CardFillColorNonFooterShadow contentBody={tableLeave}/>
+          <Suspense fallback={<Skeleton/>}>
+            <CardFillColorNonFooterShadow contentBody={tableLeave}/>
+          </Suspense>
         </div>
         
 

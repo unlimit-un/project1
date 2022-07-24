@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
-import { CardFillColorNonFooter, CardFillColorNonFooterShadow } from '../../components/Cards';
+import React, { useState,Suspense } from 'react'
+import { CardFillColorNonFooter } from '../../components/Cards';
 import { TablesStriped } from '../../components/Tables';
 import { faCheckCircle, faCircleXmark,faPencil,faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Skeleton } from '../../components/Loading'
+import { lazily } from 'react-lazily';
 
+const { CardFillColorNonFooterShadow } =lazily(()=>import('../../components/Cards'))
 const Work = () => {
   const [name,setName] = useState ('');
   const dataTable = {
@@ -51,7 +54,9 @@ const Work = () => {
         <div className="container-fluid">
             <h1 className="text-xl"> รายการงาน</h1>
             <hr />
-            <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStriped data={dataTable} id="_table1"/>}/>
+              <Suspense fallback={<Skeleton/>}>
+                <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStriped data={dataTable} id="_table1"/>}/>
+              </Suspense>
         </div>
     </>
   )
@@ -60,7 +65,9 @@ const Work = () => {
         <div className="container-fluid">
           <h1 className="text-xl"> งานที่ทำเสร็จแล้ว</h1>
             <hr />
-            <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStriped data={datatTable1} id="_table2"/>}/>
+            <Suspense fallback={<Skeleton/>}>
+              <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStriped data={datatTable1} id="_table2"/>}/>
+            </Suspense>
         </div>
     </>
   )

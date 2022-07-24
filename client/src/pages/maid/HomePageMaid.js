@@ -1,12 +1,16 @@
 import { faHome } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useEffect, useRef, useState, lazy } from 'react'
-import { CardFillColorHeader, CardFillColorNonFooter } from '../../components/Cards'
-import { PieChart } from '../../components/Charts'
+import React, { useEffect, useRef, useState, lazy, Suspense } from 'react'
+import { CardFillColorHeader } from '../../components/Cards'
 import { ListGroupFlush } from '../../components/ListGroup'
 import { SidebarRightMaid } from '../../components/structure/SidebarM'
 import { pre_dataPieChart } from '../../functions/PrepareChartData'
+import { Skeleton,Spiner } from '../../components/Loading'
+import { lazily } from "react-lazily";
 
+
+const { CardFillColorNonFooter } = lazily(()=>import('../../components/Cards'))
+const { PieChart } =lazily(()=>import('../../components/Charts'))
 const HomepageMaid = () => {
 
     const [height, setHeight] = useState(0);
@@ -56,7 +60,9 @@ const HomepageMaid = () => {
             <div className="row">
                 <div className="col-md-7 col-12">
                     <div className="flex justify-center items-center h-full">
-                        <PieChart data={dataChartLeave.data} options={dataChartLeave.options} height="50vh" width="100%"/>
+                        <Suspense fallback={<Spiner/>}>
+                            <PieChart data={dataChartLeave.data} options={dataChartLeave.options} height="50vh" width="100%"/>
+                        </Suspense>
                     </div>
                 </div>
                 <div className="col-md-5 col-12">
@@ -95,10 +101,14 @@ const HomepageMaid = () => {
                 <div className="col-lg-9 col-md-8 col-12" ref={ref}>
                     <div className="row ">
                         <div className="col-lg-7 col-md-6 col-12">
-                            <CardFillColorNonFooter contentBody={todoCard}/>
+                            <Suspense fallback={<Skeleton/>}>
+                                <CardFillColorNonFooter contentBody={todoCard}/>
+                            </Suspense>
                         </div>
                         <div className="col-lg-5 col-md-6 col-12">
-                            <CardFillColorNonFooter contentBody={todayCard} classBody="flex justify-center gap-3"/>
+                            <Suspense fallback={<Skeleton/>}>
+                                <CardFillColorNonFooter contentBody={todayCard} classBody="flex justify-center gap-3"/>
+                            </Suspense>
                         </div>
                         <div className="col-12 mt-3">
                             <CardFillColorHeader contentBody={static_leave} contentHeader="สถิติการลา"/>

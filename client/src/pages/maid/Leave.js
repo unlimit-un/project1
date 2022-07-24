@@ -1,12 +1,14 @@
 import { faClipboardList, faEye, faPlus,faTrash,faPencil } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useState } from 'react'
+import React, { useState,Suspense } from 'react'
 import { Bandage } from '../../components/Bandage'
-import { CardFillColorNonFooterShadow } from '../../components/Cards'
 import { InputGroupWithLabel, RadioInline, SelectOptionWithLabel, TextAreawithlabel } from '../../components/FormElements'
 import { ModalButton, ModalCardConfirm } from '../../components/Modals'
 import { TablesStriped } from '../../components/Tables'
+import { Skeleton } from '../../components/Loading'
+import { lazily } from 'react-lazily'
 
+const { CardFillColorNonFooterShadow } =lazily(()=>import('../../components/Cards'))
 const Leave = () => {
   const [modalShow, setModalShow] = useState(false);
   const Modal = {
@@ -97,7 +99,9 @@ const Leave = () => {
         <h1 className="text-2xl"><FontAwesomeIcon icon={faClipboardList}/> การลา</h1>
         <ModalButton icon={faPlus} text="ยื่นเรื่องการลา" classBtn="bg-green-500 text-white " setModalShow={setModalShow}/>
         <div className="mt-3">
-          <CardFillColorNonFooterShadow contentBody={tableLeave}/>
+          <Suspense fallback={<Skeleton/>}>
+            <CardFillColorNonFooterShadow contentBody={tableLeave}/>
+          </Suspense>
         </div>
         
 

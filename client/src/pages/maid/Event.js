@@ -1,9 +1,11 @@
 import { faCheckCircle, faCircleXmark, faHome } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useState } from 'react'
-import { CardFillColorNonFooterShadow } from '../../components/Cards'
+import React, { useState,Suspense } from 'react'
 import { TablesStriped } from '../../components/Tables'
+import { Skeleton } from '../../components/Loading'
+import { lazily } from 'react-lazily'
 
+const { CardFillColorNonFooterShadow } =lazily(()=>import('../../components/Cards'))
 const Event = () => {
 
   const [dataTable, setDataTable] = useState({
@@ -53,10 +55,14 @@ const Event = () => {
     <h1 className="text-2xl"><FontAwesomeIcon icon={faHome}/> งานกิจกรรมที่ทำเสร็จแล้ว</h1>
     <div className="row ">
       <div className="col-12">
-        <CardFillColorNonFooterShadow contentBody={workList}/>
+        <Suspense fallback={<Skeleton/>}>
+          <CardFillColorNonFooterShadow contentBody={workList}/>
+        </Suspense>
       </div>
       <div className="col-12 mt-3">
-        <CardFillColorNonFooterShadow contentBody={doneList}/>
+        <Suspense fallback={<Skeleton/>}>
+          <CardFillColorNonFooterShadow contentBody={doneList}/>
+        </Suspense>
       </div>
     </div>
     </>
