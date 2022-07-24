@@ -1,15 +1,22 @@
 import React,{Suspense, useEffect, useRef, useState} from 'react'
 import {  faHome, faEye,faCopy,faPencil,faTrash} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { CardFillColorNonFooter } from '../../components/Cards'
+// import { CardFillColorNonFooter } from '../../components/Cards'
 import { ModalCard,ModalButton } from '../../components/Modals'
 import { Bandage } from '../../components/Bandage'
-import { TablesStriped } from '../../components/Tables'
+// import { MuiTable  } from '../../components/Tables'
 import { Skeleton } from '../../components/Loading'
+import EditDelete from '../../components/EditDelete'
+import { SidebarRightManager } from '../../components/structure/SidebarM'
+import { lazily } from 'react-lazily'
 
-
+const {MuiTable} = lazily(()=>import('../../components/Tables'));
+const {CardFillColorNonFooter} = lazily(()=>import('../../components/Cards'));
 
 const Request = () => {
+
+    // const ref = useRef(null)
+    // const [height, setHeight] = useState(0);
 
     
 
@@ -45,48 +52,39 @@ const Request = () => {
     )
 
     const [modalShow,setModalShow] = useState(false)
-    const initial = {
-        thead:['รหัสคำขอ', 'เรื่อง', 'วันที่แจ้ง','สถานะ'],
-        tbody:[
-            ['A233456', 'เบิกเครื่องมือซ้อม','3/7/2023', <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-success" text="อนุมัติ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>
-                ,<div className="flex justify-center gap-2">
-                    <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
-                    <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
-                </div>
-            ],
-            ['A233457', 'ลาป่วย','6/7/2023', <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-danger" text="ไม่อนุมัติ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>
-                ,<div className="flex justify-center gap-2">
-                    <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
-                    <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
-                </div>
-            ],
-            ['A233458', 'ขอวัสดุไปทำงานเพิ่ม','7/8/2023', <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-success" text="อนุมัติ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>
-                ,<div className="flex justify-center gap-2">
-                    <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
-                    <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
-                </div>
-            ],
+
+    const MuiTableData = {
+        data:[
+            {id: 'A233456', subject:"เบิกเครื่องมือซ้อม", date:"3/7/2023",status:"processing", ED:<EditDelete/>, view:<ModalButton classBtn="btn btn-outline-primary" setModalShow={setModalShow} icon={faEye}/> },
+        ],
+        columns: [
+            {title: "",field: "ED"},
+            {title: "รหัสพนักงาน",field: "id",  },
+            {title: "เรื่อง",field: "subject",  },
+            {title: "วันที่แจ้ง",field: "date", },
+            {title: "สถานะ",field: "status", 
+                lookup:{
+                    waiting: <Bandage classBandage="bg-warning text-dark" text="รอดำเนินการ"/>, 
+                    processing:<Bandage classBandage="bg-primary" text="กำลังดำเนินการ"/>,
+                    success:<Bandage classBandage="bg-success" text="ดำเนินการเสร็จสิ้น"/>, 
+                    deny:<Bandage classBandage="bg-danger" text="ปฏิเสธ"/>,
+                    unable:<Bandage classBandage="bg-red-600 text-dark" text="ไม่สามารถดำเนินการได้"/>,
+                }
+            },
+            {title: "",field: "view"},
         ]
     }
 
-    const [dataTable, setDataTable] = useState(initial);
-    
-    const handleFilterDatas = (text)=>{
-        setDataTable({
-                ...initial,
-                tbody: initial.tbody.filter(item =>{
-                if (item[5].props.children[0].props.text === text ) {
-                    return item
-                }else if(text === 'ทั้งหมด'){
-                    return item
-                }  
-            })
-        })
-    }
+    // useEffect(() => {
+    //     setHeight(ref.current.clientHeight)
+    //     console.log(height);
+    // }, [height])
 
     const tableRequest = (
         <div className="container-fulid">
-            <TablesStriped data={dataTable}/>
+            <Suspense fallback={<Skeleton/>}>
+                <MuiTable data={MuiTableData.data} columns={MuiTableData.columns} title=""/>
+            </Suspense>
         </div>
     )
 
@@ -116,7 +114,7 @@ const Request = () => {
                             <li>ช่างซ่อม</li>
                             <li>เบิกเครื่องมือซ้อม</li>
                             <li>3/7/2023</li>
-                            <li><Bandage classBandage="bg-success !w-1/4" text="อนุมัติ"/></li>
+                            <li><Bandage classBandage="bg-primary" text="กำลังดำเนินการ"/></li>
                         </ul>
                     </div>
                 </div>
@@ -129,35 +127,42 @@ const Request = () => {
          <h1 className="text-2xl"><FontAwesomeIcon icon={faHome}/> หน้าหลัก</h1>
          <div className="container-fluid">
             <div className="row items-stretch gap-y-2">
-                <div className="col-md-4  col-12">
-                    <button className="w-full h-full" onClick={()=>handleFilterDatas('ทั้งหมด')}>
-                        <CardFillColorNonFooter classBody="bg-green-500 hover:bg-green-500 transition-all duration-300 rounded" contentBody={acceptCard} classCard="text-white transition-all duration-300 hover:-translate-y-3 h-full"/>
-                    </button>
-                </div>
-                <div className="col-md-4  col-12">
-                    <button className="w-full h-full" onClick={()=>handleFilterDatas('อนุมัติ')}>
-                        <CardFillColorNonFooter classBody="bg-blue-600 hover:bg-blue-500 transition-all duration-300 rounded" contentBody={totalCard} classCard="text-white transition-all duration-300 hover:-translate-y-3 h-full"/>
-                    </button>
-                </div>
-                <div className="col-md-4  col-12">
-                    <button className="w-full h-full" onClick={()=>handleFilterDatas('รออนุมัติ')}>
-                        <CardFillColorNonFooter classBody="bg-yellow-400 hover:bg-yellow-500 transition-all duration-300 rounded" contentBody={waitingCards} classCard="text-white transition-all duration-300 hover:-translate-y-3 h-full"/>
-                    </button>
-                </div>
-                <div className="col-md-6 col-12">
-                    <button className="w-full h-full" onClick={()=>handleFilterDatas('คำขอที่อนุมัติ')}>
-                        <CardFillColorNonFooter classBody="bg-violet-600 hover:bg-violet-500 transition-all duration-300 rounded" contentBody={approveCard} classCard="text-white transition-all duration-300 hover:-translate-y-3 h-full"/>
-                    </button>
-                </div>
-                <div className="col-md-6 col-12">
-                    <button className="w-full h-full" onClick={()=>handleFilterDatas('คำขอที่ไม่อนุมัติ')}>
-                        <CardFillColorNonFooter classBody="bg-red-600 hover:bg-red-500 transition-all duration-300 rounded" contentBody={disapprovedCard} classCard="text-white transition-all duration-300 hover:-translate-y-3 h-full"/>
-                    </button>
-                </div>
+                <div className="col-md-4 col-12">
+                     <Suspense fallback={<Skeleton/>}>
+                        <CardFillColorNonFooter classBody="bg-blue-400  rounded" contentBody={acceptCard} classCard="text-white "/>
+                     </Suspense>
+                 </div>
+                 <div className="col-md-4 col-12">
+                        <Suspense fallback={<Skeleton/>}>
+                            <CardFillColorNonFooter classBody="bg-green-400  rounded" contentBody={totalCard} classCard="text-white "/>
+                        </Suspense>
+                 </div>
+                    <div className="col-md-4 col-12">
+                         <Suspense fallback={<Skeleton/>}>
+                            <CardFillColorNonFooter classBody="bg-yellow-400  rounded" contentBody={waitingCards} classCard=""/>
+                         </Suspense>
+                     </div>
+                    {/* <div className="col-lg-6 col-12"> */}
+                        <div className="col-md-4 col-12">
+                                <Suspense fallback={<Skeleton/>}>
+                                    <CardFillColorNonFooter classBody="bg-red-400  rounded" contentBody={approveCard} classCard="text-white "/>
+                                </Suspense>
+                        </div>
+                        <div className="col-md-4 col-12">
+                                <Suspense fallback={<Skeleton/>}>
+                                    <CardFillColorNonFooter classBody="bg-red-400  rounded" contentBody={disapprovedCard} classCard="text-white "/>
+                                </Suspense>
+                        </div>
+                 {/* </div> */}
             </div>
             <div className="mt-3">
-                <CardFillColorNonFooter contentBody={tableRequest}/>
+                <Suspense fallback={<Skeleton/>}>
+                    <CardFillColorNonFooter contentBody={tableRequest}/>
+                </Suspense>
             </div>
+            {/* <div className="col-md-4 col-12">
+                <SidebarRightManager maxHeight={height}/>
+            </div> */}
          </div>
          {/* modal */}
          <ModalCard modalShow={modalShow} setModalShow={setModalShow} modalBody={Modal.mBody} modalHead={Modal.mHead}/>

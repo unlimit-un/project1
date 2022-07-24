@@ -8,7 +8,9 @@ import Calendar from '../Calendar'
 import { Tab, Tabs } from 'react-bootstrap'
 import {Spiner} from '../../../components/Loading'
 import { Bandage } from '../../../components/Bandage'
-import { TablesStriped } from '../../../components/Tables'
+import { MuiTable, TablesStriped } from '../../../components/Tables'
+import EditDelete from '../../../components/EditDelete'
+
 // const TablesStriped = lazy(()=> import('../../../components/Tables').then(module=> ({default: module.TablesStriped})))
 export const TeamManage = () =>{
     const [name, setName] = useState('');
@@ -21,23 +23,24 @@ export const TeamManage = () =>{
         {value: '1', text: 'min'},
         {value: '2', text: 'nik'}
     ]
-    const dataTable = {
-        thead:['ชื่อทีม', 'กิจกรรมพิเศษ', ''],
-        tbody:[
-            ['A','งานประชุม', <ModalButton text="จัดการสมาชิก" setModalShow={setShowModal} classBtn="btn btn-info text-white"/>]
+    const MuiTableData = {
+        data:[
+            {name_teem: 'A', special_events:'งานประชุม',ED:<EditDelete/>, view:<ModalButton text="จัดการสมาชิก" setModalShow={setShowModal} classBtn="btn btn-info text-white"/>},
+        ],
+        columns:[
+           {title:"ชื่อทีม",field:"name_teem"},
+           {title:"งานประชุม",field:"special_events"},
+           {title: "",field: "view"}
         ]
     }
     const dataTableModal = {
-        thead:['ชื่อ', 'ตำแหน่ง', ''],
-        tbody:[
-            [
-                'unlimit unarn',
-                'ช่างซ่อม',
-                <div className="flex justify-center gap-2">
-                    <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
-                    <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
-                </div>
-            ]
+        data:[
+            {name: "unlimit unarn", position: "ช่างซ่อม",ED:<EditDelete/>}
+        ],
+        columns:[
+            {title:"ชื่อ",field:"name"},
+            {title:"ตำแหน่ง",field:"position"},
+            {title:"",field:"ED"} 
         ]
     }
 
@@ -53,7 +56,8 @@ export const TeamManage = () =>{
                 <div className="flex justify-end">
                     <button className="btn btn-outline-success w-1/4">เพิ่ม</button>
                 </div>
-                <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStriped data={dataTableModal} id="_table2"/>}/>
+                
+                <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<MuiTable data={dataTableModal.data} columns={dataTableModal.columns} title=""/>}/>
             </>
         )
     }
@@ -76,7 +80,7 @@ export const TeamManage = () =>{
                 <div className="flex justify-end">
                     <button className="btn btn-outline-primary w-1/3">บันทึก</button>
                 </div>
-                <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStriped data={dataTable} id="_table1"/>}/>
+                <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<MuiTable data={MuiTableData.data} columns={MuiTableData.columns} title=""/>}/>
             </div>
         </>
     )
@@ -115,19 +119,16 @@ export const SpacialWork = () =>{
     }
 
     const dataTable = {
-        thead:['กิจกรรมพิเศษ', 'สถานที่', 'ห้อง', 'จากวันที่', 'ถึงวันที่',''],
-        tbody:[
-            [
-                'งานประชุม',
-                'ตึกA', 
-                'A202', 
-                '2022-07-04 06:00:00', 
-                '2022-07-04 08:00:00', 
-                <div className="flex justify-center gap-2">
-                    <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
-                    <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
-                </div>
-            ]
+        data:[
+            {special_events:"งานประชุม",location:"ตึกA",room:"A202",date_Start:'2022-07-04 06:00:00',date_End:'2022-07-04 08:00:00',ED:<EditDelete/>}
+        ],
+        columns:[
+            {title:"กิจกรรมพิเศษ",field:"special_events"},
+            {title:"สถานที่",field:"location"},
+            {title:"ห้อง",field:"room"},
+            {title:"จากวันที่",field:"date_Start"},
+            {title:"ถึงวันที่",field:"date_End"},
+            {title:"",field:"ED"}
         ]
     }
     
@@ -158,7 +159,7 @@ export const SpacialWork = () =>{
                 <div className="flex justify-end">
                     <button className="btn btn-outline-primary w-1/3">บันทึก</button>
                 </div>
-                <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStriped data={dataTable}/>}/>
+                <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<MuiTable data={dataTable.data} columns={dataTable.columns} title=""/>}/>
             
             </div>
         </>
@@ -206,18 +207,15 @@ export const MaidDuty = () =>{
     }
 
     const dataTable = {
-        thead:['แม่บ้าน', 'วันที่ทำงาน', 'เวลาเริ่มงาน', 'เวลาเสร็จสิ้นงาน', ''],
-        tbody:[
-            [
-                'Unlimit unarn',
-                'วันจันทร์', 
-                '08:00:00', 
-                '16:00:00', 
-                <div className="flex justify-center gap-2">
-                    <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
-                    <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
-                </div>
-            ],
+        data:[
+            {maid:"Unlimit unarn",day:"วันจันทร์",date_start:"08:00:00",date_end:"16:00:00",ED:<EditDelete/>}
+        ],
+        columns:[
+            {title:"แม่บ้าน",field:"maid"},
+            {title:"วันที่ทำงาน",field:"day"},
+            {title:"เวลาเริ่มงาน",field:"date_start"},
+            {title:"เวลาเสร็จสิ้นงาน",field:"date_end"},
+            {title:"",field:"ED"},
         ]
     }
     
@@ -245,7 +243,7 @@ export const MaidDuty = () =>{
                 <div className="flex justify-end">
                     <button className="btn btn-outline-primary w-1/3">บันทึก</button>
                 </div>
-                <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStriped data={dataTable} id="_table1"/>}/>
+                <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<MuiTable data={dataTable.data} columns={dataTable.columns} title="ตารางเวร"/>}/>
             
             </div>
         </>
@@ -254,26 +252,23 @@ export const MaidDuty = () =>{
 
     const [showModal, setShowModal] = useState(false)
     const dataTableDutyAssign = {
-        thead:['แม่บ้าน', 'วันที่ทำงาน', 'เวลาเริ่มงาน', 'เวลาเสร็จสิ้นงาน', ''],
-        tbody:[
-            [
-                'Unlimit unarn',
-                'วันจันทร์', 
-                '08:00:00', 
-                '16:00:00', 
-                <div className="flex gap-2">
-                    <ModalButton setModalShow={setShowModal} icon={faPlus} classBtn="text-white bg-green-500 hover:bg-green-400 p-2 rounded-circle"/>
-                    <button className="text-white bg-amber-500 hover:bg-amber-400 p-2 rounded-circle"><FontAwesomeIcon  icon={faPencil} /></button>
-                    <button className="text-white bg-red-500 hover:bg-red-400 p-2 rounded-circle"><FontAwesomeIcon  icon={faTrashAlt} /></button>
-                </div>
-            ],
+        data:[
+            {maid:"Unlimit unarn",day:"วันจันทร์",date_start:"08:00:00",date_end:"16:00:00",ED:<EditDelete/>,view:<ModalButton classBtn={"btn btn-success"} setModalShow={setShowModal} icon={faPlus}/>}
+        ],
+        columns:[
+            {title:"แม่บ้าน",field:"maid"},
+            {title:"วันที่ทำงาน",field:"day"},
+            {title:"เวลาเริ่มงาน",field:"date_start"},
+            {title:"เวลาเสร็จสิ้นงาน",field:"date_end"},
+            {title:"",field:"ED"},
+            {title:"",field:"view"}
         ]
     }
 
     const contentDutyAssign = (
         <>
             <div className="container-fluid">
-                <h1 className="text-xl"><FontAwesomeIcon icon={faTable}/> จัดการตารางเวรแม่บ้าน</h1>
+                <h1 className="text-xl"><FontAwesomeIcon icon={faTable}/> จัดการงานแม่บ้าน</h1>
                 <hr />
                 <div className="row items-center">
                     <div className="col-md-8 col-12">
@@ -286,12 +281,7 @@ export const MaidDuty = () =>{
                 
                 <CardFillColorHeader 
                     contentHeader={<h1 className="text-lg m-0">รายชื่อพนักงาน</h1>} 
-                    contentBody={
-                        <TablesStriped 
-                            data={dataTableDutyAssign} 
-                            id="_table2"
-                        />
-                    }
+                    contentBody={<MuiTable data={dataTableDutyAssign.data} columns={dataTableDutyAssign.columns} title=""/>}
                 />
             
             </div>
@@ -309,6 +299,16 @@ export const MaidDuty = () =>{
                     <button className="text-white bg-red-500 hover:bg-red-400 p-2 rounded-circle"><FontAwesomeIcon  icon={faTrashAlt} /></button>
                 </div>
             ],
+        ],
+        data:[
+            {building:"A",room:"A202",description:"กวาด เช็ด ถู",ED:<EditDelete/>}
+        ],
+        columns:[
+            {title:"ตึก",field:"building"},
+            {title:"ห้อง",field:"room"},
+            {title:"รายละเอียดงาน",field:"description"},
+            {title:"",field:"ED"}
+            
         ]
     }
     const room_options = [
@@ -352,10 +352,7 @@ export const MaidDuty = () =>{
                     <button className="btn btn-success md:w-1/3 w-full">บันทึก</button>
                 </div>
                 <CardFillColorHeader contentHeader={<h5 className="m-0">งานทั้งหมด</h5>} contentBody={
-                    <TablesStriped 
-                        data={dataTableModal} 
-                        id="_tableModal"
-                    />
+                    <MuiTable data={dataTableModal.data} columns={dataTableModal.columns} title=""/>
                 }/>
             </>
         )
@@ -364,24 +361,31 @@ export const MaidDuty = () =>{
 
     // duty check
     const dataTableDutyCheck = {
-        thead:['แม่บ้าน', 'รายละเอียดงาน', 'วัน', 'เวลาเริ่มงาน', 'เวลาที่เสร็จสิ้นงาน', 'เวลาที่กำหนด', 'ตึก', 'ห้อง', 'สถานะ', ''],
-        tbody:[
-            [
-                'Unlimit unarn',
-                'ปัดกวาดเช็ดถู', 
-                'จันทร์', 
-                '08:00:00', 
-                '16:00:00', 
-                '15:45:00', 
-                'ตึก A', 
-                'A202', 
-                <Bandage classBandage="bg-amber-500" text="รอดำเนินการ"/>, 
-                <div className="flex gap-2">
-                    <button className="text-white bg-green-500 hover:bg-green-400 p-2 rounded-circle"><FontAwesomeIcon  icon={faCheck} /></button>
-                    <button className="text-white bg-red-500 hover:bg-red-400 p-2 rounded-circle"><FontAwesomeIcon  icon={faXmark} /></button>
-                </div>
-            ],
+        data:[
+            {maid:"Unlimit unarn",description:"ปัดกวาดเช็ดถู",day:"จันทร์",date_start:"08:00:00",date_end:"16:00:00",date_time:"15:45:00",building:"ตึก A",room:"A202",status:"processing" }
+        ],
+        columns:[
+            {title:"แม่บ้าน",field:"maid"},
+            {title:"รายละเอียดงาน",field:"description"},
+            {title:"วัน",field:"day"},
+            {title:"เวลาเริ่มงาน",field:"date_start"},
+            {title:"เวลาที่เสร็จสิ้นงาน",field:"date_end"},
+            {title:"เวลาที่กำหนด",field:"date_time"},
+            {title:"ตึก",field:"building"},
+            {title:"ห้อง",field:"room"},
+            {title: "สถานะ",field: "status", 
+                lookup:{
+                    waiting: <Bandage classBandage="bg-warning text-dark" text="รอดำเนินการ"/>, 
+                    processing:<Bandage classBandage="bg-primary" text="กำลังดำเนินการ"/>,
+                    success:<Bandage classBandage="bg-success" text="ดำเนินการเสร็จสิ้น"/>, 
+                    deny:<Bandage classBandage="bg-danger" text="ปฏิเสธ"/>,
+                    unable:<Bandage classBandage="bg-red-600 text-dark" text="ไม่สามารถดำเนินการได้"/>,
+                }
+            }
+            ,{title:"",field:"view"}
         ]
+
+
     }
     const contentDutyCheck = (
         <>
@@ -391,10 +395,7 @@ export const MaidDuty = () =>{
                 <CardFillColorHeader 
                     contentHeader={<h1 className="text-lg m-0">รายชื่อพนักงาน</h1>} 
                     contentBody={
-                        <TablesStriped 
-                            data={dataTableDutyCheck} 
-                            id="_tableDutyCheck"
-                        />
+                        <MuiTable data={dataTableDutyCheck.data} columns={dataTableDutyCheck.columns} title=""/>
                     }
                 />
             
@@ -453,18 +454,15 @@ export const UrgentWork = () =>{
     ]
 
     const dataTableDutyCheck = {
-        thead:['พนักงานที่ไม่สะดวก', 'พนักงานที่แทน', 'ประเภทงาน', 'งานที่เปลี่ยน', ''],
-        tbody:[
-            [
-                'Unlimit unarn',
-                'Nik', 
-                'งานพิเศษ',
-                'ทีม A งานเลี้ยงรุ่น', 
-                <div className="flex gap-2">
-                    <button className="text-white bg-green-500 hover:bg-green-400 p-2 rounded-circle"><FontAwesomeIcon  icon={faCheck} /></button>
-                    <button className="text-white bg-red-500 hover:bg-red-400 p-2 rounded-circle"><FontAwesomeIcon  icon={faXmark} /></button>
-                </div>
-            ],
+        data:[
+            {unwell_staff:"Unlimit unarn",replacement_worker:"Nik",job_type:"งานพิเศษ",job_change:"ทีม A งานเลี้ยงรุ่น",ED:<EditDelete/>}
+        ],
+        columns:[
+            {title:"พนักงานที่ไม่สะดวก",field:"unwell_staff"},
+            {title:"พนักงานที่แทน",field:"replacement_worker"},
+            {title:"ประเภทงาน",field:"job_type"},
+            {title:"งานที่เปลี่ยน",field:"job_change"},
+            {title:"",field:"ED"}
         ]
     }
     return(
@@ -492,7 +490,7 @@ export const UrgentWork = () =>{
                 </div>
             </div>
             <div className="mt-3">
-                <CardFillColorNonFooter contentBody={<TablesStriped data={dataTableDutyCheck} id="_table"/>}/>
+                <CardFillColorNonFooter contentBody={<MuiTable data={dataTableDutyCheck.data} columns={dataTableDutyCheck.columns} title=""/>}/>
             </div>
         </div>
         </>

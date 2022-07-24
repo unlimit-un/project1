@@ -1,11 +1,16 @@
-import React, { useState } from 'react'
+import React, { Suspense, useState } from 'react'
 import { CardFillColorNonFooter } from '../../../components/Cards'
 import { InputGroupWithLabel, SelectOptionWithLabel } from '../../../components/FormElements'
-import { TablesStriped } from '../../../components/Tables'
+// import { MuiTable, TablesStriped } from '../../../components/Tables'
 import Logo from '../../../assets/Logo.jpg'
 import {  faPencil, faPlus, faSave, faTrash,faUserPlus, faUserTie  } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {Link} from 'react-router-dom'
+import EditDelete from '../../../components/EditDelete'
+import { Skeleton } from '@mui/material'
+import { lazily } from 'react-lazily'
+
+const {MuiTable} = lazily(()=>import('../../../components/Tables'));
 
 export const ManageEmployee = ({title, dataSets}) => {
     const template = (
@@ -137,26 +142,23 @@ export const InsEmp = ({title, options, optionsLocation, optionsType}) => {
 }
 
 export const Dept = ({title, arr_obj_location}) =>{
-    const initial = {
-        thead:['รหัสแผนก', 'ชื่อแผนก', 'สถานที่', 'วันที่เพิ่มข้อมูล', ''],
-        tbody:[
-            ['DEPT220', 'ช่างทั่วไป', 'ตึก A', '3/7/2023', <div className="flex justify-center gap-2">
-            <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
-            <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
-        </div>],
-            ['DEPT200', 'ช่างอิเล็กทรอนิกส์', 'ตึก A', '6/7/2023', <div className="flex justify-center gap-2">
-            <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
-            <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
-        </div>],
+    const MuiTableData = {
+        data: [
+            {id_dept: 'DEPT220',name_dept:"ช่างทั่วไป",location:"ตึก A",date:"3/7/2023",ED:<EditDelete/>},
+            {id_dept: 'DEPT200',name_dept:"ช่างอิเล็กทรอนิกส์",location:"ตึก A",date:"6/7/2023",ED:<EditDelete/>}
+        ],
+        columns: [
+            {title: "รหัสแผนก",field: "id_dept"},
+            {title: "ชื่อแผนก",field: "name_dept"},
+            {title: "สถานที่",field: "location"},
+            {title: "วันที่เพิ่มข้อมูล",field: "date"},
+            {title: "",field: "ED"}
         ]
-      } 
-    const [dataTable, setDataTable] = useState(initial);
-    const tableForm = (
-        <div className="container-fluid">
-            <TablesStriped data={dataTable}/>
-        </div>
-    )
-  
+
+    }
+
+    
+
     const template = (
         <div className="flex justify-content flex-col">
             <div className="flex justify-between items-center">
@@ -179,9 +181,6 @@ export const Dept = ({title, arr_obj_location}) =>{
                     <div className="flex justify-end">
                         <button className="btn btn-success w-1/4" ><FontAwesomeIcon icon={faSave}/> บันทึก</button>
                     </div>
-                    <div className="mt-3">
-                        <CardFillColorNonFooter contentBody={tableForm}/>
-                    </div>
                 </div>
             </div>
         </div> 
@@ -189,7 +188,13 @@ export const Dept = ({title, arr_obj_location}) =>{
 
     return(
         <>
-            <CardFillColorNonFooter contentBody={template} />
+            <CardFillColorNonFooter contentBody={template}/>
+           <div className="mt-4">
+                <Suspense fallback={<Skeleton/>}>
+                    <CardFillColorNonFooter contentBody={<MuiTable data={MuiTableData.data} columns={MuiTableData.columns} title=""/>} />
+                </Suspense>
+           </div>
+            
         </>
     )
 }

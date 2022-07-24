@@ -1,42 +1,40 @@
 import React, { Suspense, useState } from 'react'
 import { InputGroupWithLabel, SelectOptionWithLabel } from '../../components/FormElements'
-import { CardFillColorNonFooter, CardFillColorNonFooterShadow } from '../../components/Cards'
+// import { CardFillColorNonFooter, CardFillColorNonFooterShadow } from '../../components/Cards'
 // import { ModalButton, ModalCard } from '../../components/Modals'
-// import { TablesStriped } from '../../components/Tables'
 import { faPencil, faTrash, faUsersGear } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Skeleton } from '../../components/Loading'
 import { lazily } from 'react-lazily'
+import EditDelete from '../../components/EditDelete'
+// import { MuiTable } from '../../components/Tables'
 
-const {TablesStriped} = lazily(()=>import('../../components/Tables'));
+const {MuiTable} = lazily(()=>import('../../components/Tables'));
 const {ModalButton, ModalCard} = lazily(()=>import('../../components/Modals'));
+const {CardFillColorNonFooter, CardFillColorNonFooterShadow} = lazily(()=>import('../../components/Cards'));
 
 const Location = () => {
   const [name, setName] = useState('');
   const [showModal, setShowModal] = useState(false);
   const dataTable = {
-      thead:['ชื่อสถานที่','',''],
-      tbody:[
-          ['A', <ModalButton text="จัดการสมาชิก" setModalShow={setShowModal} classBtn="btn btn-info text-white"/>
-            ,<div className="flex justify-center gap-2">
-                <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
-                <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
-            </div>
-          ]
+      data:[
+        {name:"A",ED:<EditDelete/>,view:<ModalButton text="จัดการสมาชิก" setModalShow={setShowModal} classBtn="btn btn-info text-white"/>}
+      ],
+      columns:[
+        {title:"ชื่อสถานที่",field:"name"},
+        {title:"",field:"ED"},
+        {title:"",field:"view"}
       ]
   }
   const dataTableModal = {
-      thead:['ชื่อห้อง', ''],
-      tbody:[
-          [
-              'A1',
-              
-              <div className="flex justify-center gap-2">
-                  <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
-                  <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
-              </div>
-          ]
+      data:[
+        {names:"A1",ED:<EditDelete/>}
+      ],
+      columns:[
+        {title:"ชื่อห้อง",field:"names"},
+        {title:"",field:"ED"}
       ]
+
   }
 
   const Modal = {
@@ -51,7 +49,9 @@ const Location = () => {
               <div className="flex justify-end">
                   <button className="btn btn-outline-success w-1/4">เพิ่ม</button>
               </div>
-              <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStriped data={dataTableModal} id="_table2"/>}/>
+              <Suspense fallback={<Skeleton/>}>
+                <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<MuiTable data={dataTableModal.data} columns={dataTableModal.columns} title=""/>}/>
+              </Suspense>
           </>
       )
   }
@@ -71,7 +71,10 @@ const Location = () => {
               <div className="flex justify-end">
                   <button className="btn btn-outline-primary w-1/3">บันทึก</button>
               </div>
-              <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStriped data={dataTable} id="_table1"/>}/>
+              <Suspense fallback={<Skeleton/>}>
+                <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<MuiTable data={dataTable.data} columns={dataTable.columns} title=""/>}/>
+              </Suspense>
+              
           </div>
       </>
   )
