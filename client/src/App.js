@@ -7,6 +7,7 @@ import HomepageE from './pages/engineer/HomepageE';
 import { PageForbidden, PageNotFound, PageUnderConstrunction} from './pages/PageError';
 import * as Manager from './pages/manager/ImportManager'
 import * as Maid from './pages/maid/ImportMaid';
+import * as En from './pages/engineer/ImportEn';
 
 function App() {
   return (
@@ -39,7 +40,15 @@ function App() {
             <Route path='/maid/leave/:page' element={<Maid.Leave/>} /> 
             <Route path='/maid/event/:page' element={<Maid.Event/>} /> 
           </Route>
-          <Route path='/engineer' exac element={<HomepageE/>}/>
+          <Route path='/engineer' exac element={<En.Index/>}>
+              <Route path='/engineer/work/:page' element={<En.Work/>} /> 
+              <Route path='/engineer/urgent' element={<En.Urgent/>} /> 
+              <Route path='/engineer/repair' element={<En.Repair/>} /> 
+              <Route path='/engineer/material' element={<En.Material/>} /> 
+              <Route path='/engineer/bookmarks' element={<En.Bookmarks/>} /> 
+              <Route path='/engineer/leave/:page' element={<En.Leave/>} /> 
+              <Route path='/engineer/event/:page' element={<En.Event/>} /> 
+          </Route>
           <Route path='/forbidden' exac element={<PageForbidden/>}/>
           <Route path='/under_construction' exac element={<PageUnderConstrunction/>}/>
           <Route path='*' element={<PageNotFound/>}/>

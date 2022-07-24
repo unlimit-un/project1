@@ -324,3 +324,152 @@ export const SidebarRightMaid = ({maxHeight}) =>{
         </>
     )
 }
+
+export const SidebarLeftEn = () => {
+    const [open, setOpen] = useState({
+        work: {
+            status: false,
+            id: 'work'
+        },
+        event: {
+            status: false,
+            id: 'event'
+        },
+        leave: {
+            status: false,
+            id: 'leave'
+        }
+    });
+    const navigate = useNavigate()
+    const [classToggleWork, setClassToggleWork] = useState("");
+    const [classToggleActivity, setClassToggleActivity] = useState("");
+    const [classToggleLeave, setClassToggleLeave] = useState("");
+    
+    useEffect(()=>{
+        open.work.status?setClassToggleWork("!text-white !bg-blue-500") : setClassToggleWork("")
+        open.event.status?setClassToggleActivity("!text-white !bg-blue-500") : setClassToggleActivity("")
+        open.leave.status?setClassToggleLeave("!text-white !bg-blue-500") : setClassToggleLeave("")
+    },[open])
+
+    const onToggleMenuWork = (e) =>{
+        setOpen({...open, work:{status: !open.work.status}, event: { status: false}, leave: {status: false}})
+    }
+    const onToggleMenuActivity = (e) =>{
+        setOpen({...open, event:{status: !open.event.status}, work:{status: false}, leave: {status: false}})
+    }
+    const onToggleMenuLeave = (e) =>{
+        setOpen({...open, leave:{status: !open.leave.status}, work:{status: false}, event:{ status: false}})
+    }
+    const resetDropDown = (e) =>{
+        setOpen({...open, work:{status: false}, event: { status: false}, leave: { status: false}})
+    }
+
+    return (
+        <>
+            <div className="bg-blue-50 min-h-screen h-full ">
+                <div className="flex flex-col items-center">
+                    <div className="flex flex-col items-center mt-4 mb-3">
+                        <img src={Logo} alt="business-man.png" className="w-20 h-20 rounded-circle shadow"/>
+                        <p className="m-2 text-lg">nik nik</p>
+                        <small className='text-center'>ช่างซ่อม<br/>(ช่างซ่อมทั่วไป)</small>
+                    </div>
+                    <div className="w-full">
+                        <ul className=" text-sm m-1 p-2">
+                            <LinkMenuM path="/engineer" icon={faHome} label="หน้าหลัก" resetDropDown={resetDropDown}/>
+                            <li className=" p-0">
+                                <div className="group">
+                                    <button
+                                        onClick={(e)=>onToggleMenuWork(e)}
+                                        aria-expanded = {open.work.status}
+                                        aria-controls = {open.work.id} 
+                                        className = {classToggleWork+" flex justify-between items-center w-100 p-2 px-3 text-start group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-300"}
+                                    >
+                                        <span><FontAwesomeIcon icon={faUserGear}/> งาน</span> 
+                                        <FontAwesomeIcon className="group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-100" icon={faAngleDown}/>
+                                    </button>
+                                </div>
+                                <Collapse in={open.work.status}>
+                                    <div id={open.work.id} className="py-2">
+                                        <ul className=" px-3 ">
+                                            <SubMenuLink label={"งานในแผนก"} path="/engineer/work/dept"/>
+                                            <SubMenuLink label={"งานของฉัน"} path="/engineer/work/todo"/>
+                                        </ul>
+                                    </div>
+                                </Collapse>
+                            </li>
+                            <li className=" p-0">
+                                <div className="group">
+                                    <button
+                                        onClick={(e)=>onToggleMenuActivity(e)}
+                                        aria-expanded = {open.event.status}
+                                        aria-controls = {open.event.id} 
+                                        className = {classToggleActivity+" flex justify-between items-center w-100 p-2 px-3 text-start group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-300"}
+                                    >
+                                        <span><FontAwesomeIcon icon={faUserGear}/> ตารางกิจกรรม</span> 
+                                        <FontAwesomeIcon className="group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-100" icon={faAngleDown}/>
+                                    </button>
+                                </div>
+                                <Collapse in={open.event.status}>
+                                    <div id={open.event.id} className="py-2">
+                                        <ul className=" px-3 ">
+                                            <SubMenuLink label={"กิจกรรมที่ต้องทำ"} path="/engineer/event/todo"/>
+                                            <SubMenuLink label={"งานกิจกรรมที่เสร็จแล้ว"} path="/engineer/event/done"/>
+                                        </ul>
+                                    </div>
+                                </Collapse>
+                            </li>
+                            <LinkMenuM path="/engineer/urgent" icon={faBell} label="งานด่วน" resetDropDown={resetDropDown} />
+                            <li className=" p-0">
+                                <div className="group">
+                                    <button
+                                        onClick={(e)=>onToggleMenuLeave(e)}
+                                        aria-expanded = {open.leave.status}
+                                        aria-controls = {open.leave.id} 
+                                        className = {classToggleLeave+" flex justify-between items-center w-100 p-2 px-3 text-start group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-300"}
+                                    >
+                                        <span><FontAwesomeIcon icon={faTable}/> การลา</span> 
+                                        <FontAwesomeIcon className="group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-100" icon={faAngleDown}/>
+                                    </button>
+                                </div>
+                                <Collapse in={open.leave.status}>
+                                    <div id={open.leave.id} className="py-2">
+                                        <ul className=" px-3 ">
+                                            <SubMenuLink label={"คำขอการลา"} path="/engineer/leave/request"/>
+                                            <SubMenuLink label={"ประวัติการลา"} path="/engineer/leave/history"/>
+                                        </ul>
+                                    </div>
+                                </Collapse>
+                            </li>
+                            <LinkMenuM path="/engineer/material" icon={faClipboardCheck} label="สั่งซื้อครุภัณฑ์" resetDropDown={resetDropDown}/>
+                            <li className=" p-0 group  text-sm">
+                                <button onClick={()=>SignOutFunc(navigate)} className="p-2 px-3 text-gray-600 no-underline w-100 block group-hover:!text-white hover:bg-red-500 ease-in-out duration-300 text-left">
+                                    <FontAwesomeIcon icon={faPowerOff} className="text-black group-hover:!text-white ease-in-out duration-300"/> ออกจากระบบ
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </>
+    )
+}
+
+export const SidebarRightEn = ({maxHeight}) =>{
+    const listGroup = [
+        {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
+        {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
+        {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
+        {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
+        {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
+        {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."}
+    ]
+    
+    return (
+        <>
+            <div className="card card-body" style={{maxHeight: `${maxHeight/16}rem`, overflow: "auto",}}>
+                <h5 className="mb-3 text-base"><FontAwesomeIcon icon={faWarning}/> รายการงานด่วน</h5>
+                <ListGroupFlushWithLink lists={listGroup}/>
+            </div>
+        </>
+    )
+}

@@ -6,18 +6,10 @@ import { checkAutoRedirectUser, SignOutFunc } from '../../functions/AuthFunc'
 
 
 const HomepageE = () => {
-    const navigate = useNavigate();
-    const {pathname} = useLocation();
     
-    useEffect(()=>{
-        checkAutoRedirectUser(navigate, pathname)
-    },[])
     return (
         <>
-            <h1>Engineer</h1>
-            <button onClick={()=>SignOutFunc(navigate)} className="p-2 px-3 text-gray-600 no-underline w-100 block group-hover:!text-white hover:bg-red-500 ease-in-out duration-300 text-left">
-                <FontAwesomeIcon icon={faPowerOff} className="text-black group-hover:!text-white ease-in-out duration-300"/> ออกจากระบบ
-            </button>
+            <h1>Homepage</h1>
         </>
         
     )
