@@ -54,15 +54,31 @@ export const ModalCardConfirm = ({modalHead, modalBody, modalShow, setModalShow,
   )
 }
 
-export const ModalButton = ({setModalShow, icon, text ,classBtn}) =>{
+export const ModalButton = ({setModalShow, icon, text ,classBtn, callback}) =>{
     if (!classBtn) {
         classBtn = 'btn btn-outline-primary !text-sm w-1/2'
     }
     return (
         <>
             {
-                icon?<button className={classBtn} onClick={()=>setModalShow(true)}><FontAwesomeIcon icon={icon}/> {text}</button>:
-                <button className={classBtn} onClick={()=>setModalShow(true)}>{text}</button>
+                icon?<button 
+                    className={classBtn} 
+                    onClick={async()=>{
+                        await callback()
+                        await setModalShow(true)
+                    }}>
+                        <FontAwesomeIcon icon={icon}/> {text}
+                        
+                    </button>:
+                    <button 
+                        className={classBtn} 
+                        onClick={async ()=>{
+                            await callback()
+                            await setModalShow(true)
+                        }}
+                    >
+                        {text}
+                    </button>
             
             }
         </>

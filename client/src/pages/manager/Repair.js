@@ -1,4 +1,4 @@
-import { faBell, faCopy, faEye,faPencil,faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faBell, faCopy, faEye,faPencil,faPlus,faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { Suspense, useEffect, useRef, useState } from 'react'
 import { SidebarRightManager } from '../../components/structure/SidebarM'
@@ -61,45 +61,7 @@ const Repair = () => {
         </div>
     )
     const [modalShow, setModalShow] = useState(false)
-   
-
-    const MuiTableData = {
-        data:[
-            {issue: 'อ่างล้างหน้าพัง', notify_person:"unlimit unarn", date:"2022-02-21", location:"ตึก A", room:"A202", status:"processing", ED:<EditDelete/>, view:<ModalButton classBtn="btn btn-outline-primary" setModalShow={setModalShow} icon={faEye}/> },
-        ],
-        columns: [
-            {title: "",field: "ED"},
-            {title: "ปัญหา",field: "issue",  },
-            {title: "ผู้แจ้ง",field: "notify_person",  },
-            {title: "วันที่แจ้ง",field: "date", },
-            {title: "สถานที่",field: "location", },
-            {title: "ห้อง",field: "room", },
-            {title: "สถานะ",field: "status", 
-                lookup:{
-                    waiting: <Bandage classBandage="bg-warning text-dark" text="รอดำเนินการ"/>, 
-                    processing:<Bandage classBandage="bg-primary" text="กำลังดำเนินการซ่อม"/>,
-                    success:<Bandage classBandage="bg-success" text="ดำเนินการเสร็จสิ้น"/>, 
-                    deny:<Bandage classBandage="bg-danger" text="ปฏิเสธ"/>,
-                    unable:<Bandage classBandage="bg-red-600 text-dark" text="ไม่สามารถดำเนินการได้"/>,
-                }
-            },
-            {title: "",field: "view"},
-        ]
-    }
-
-    useEffect(() => {
-        setHeight(ref.current.clientHeight)
-        console.log(height);
-    }, [height])
-    const tableLeave = (
-        <div className="container-fluid">
-            <Suspense fallback={<Skeleton/>}>
-                <MuiTable data={MuiTableData.data} columns={MuiTableData.columns} title=""/>
-            </Suspense>
-        </div>
-    )
-
-    const Modal = {
+    const [modal, setModal] = useState({
         mHead: (
             <>
                 <h1 className="m-0 text-2xl"><FontAwesomeIcon icon={faCopy}/> รายละเอียดการแจ้งซ่อม</h1>
@@ -131,7 +93,96 @@ const Repair = () => {
                 </div>
             </>
         )
+    })
+    const [assignWork, setAssignWork] = useState([])
+    const handleCheck = (value) =>{
+        setAssignWork([
+            ...assignWork,
+            value
+        ])
     }
+    const handleUnCheck = (value) =>{
+        setAssignWork([
+            ...assignWork.filter(item=>item!== value??item)
+        ])
+    }
+    const handleView = () =>{
+        setModal({
+            mHead: (
+                <>
+                    <h1 className="m-0 text-2xl"><FontAwesomeIcon icon={faCopy}/> รายละเอียดการแจ้งซ่อม</h1>
+                </>
+            ),
+            mBody: (
+                <>
+                    <div className="row">
+                        <div className="col-lg-3 col-md-4 col-12">
+                            <ul>
+                                <li>ปัญหา</li>
+                                <li>ผู้แจ้ง</li>
+                                <li>วันที่แจ้ง</li>
+                                <li>สถานที่</li>
+                                <li>ห้อง</li>
+                                <li>สถานะ</li>
+                            </ul>
+                        </div>
+                        <div className="col-lg-9 col-md-8 col-12">
+                            <ul className="gap-2">
+                                <li>อ่างล้างหน้าพัง</li>
+                                <li>unlimit unarn</li>
+                                <li>2022-02-21</li>
+                                <li>ตึก A</li>
+                                <li>A202</li>
+                                <li><Bandage classBandage="bg-primary" text="กำลังดำเนินการซ่อม"/></li>
+                            </ul>
+                        </div>
+                    </div>
+                </>
+            )
+        })
+    }
+
+    const MuiTableData = {
+        data:[
+            {checkbox: <input className="accent-pink-300 focus:accent-pink-500" type="checkbox" value="1" onClick={({target,target:{value}})=>target.checked?handleCheck(value):handleUnCheck(value)} />,issue: 'อ่างล้างหน้าพัง', notify_person:"unlimit unarn", date:"2022-02-21", location:"ตึก A", room:"A202", status:"processing", ED:<EditDelete/>, view:<ModalButton callback={handleView} classBtn="btn btn-outline-primary" setModalShow={setModalShow} icon={faEye}/> },
+            {checkbox: <input className="accent-pink-300 focus:accent-pink-500" type="checkbox" value="2" onClick={({target,target:{value}})=>target.checked?handleCheck(value):handleUnCheck(value)} />,issue: 'โต๊ะหัก', notify_person:"unlimit unarn", date:"2022-02-21", location:"ตึก A", room:"A202", status:"success", ED:<EditDelete/>, view:<ModalButton callback={handleView} classBtn="btn btn-outline-primary" setModalShow={setModalShow} icon={faEye}/> },
+        ],
+        columns: [
+            {title: "",field: "checkbox", },
+            {title: "ปัญหา",field: "issue", },
+            {title: "ผู้แจ้ง",field: "notify_person",},
+            {title: "วันที่แจ้ง",field: "date",},
+            {title: "สถานที่",field: "location", },
+            {title: "ห้อง",field: "room", },
+            {title: "สถานะ",field: "status", 
+                lookup:{
+                    waiting: <Bandage classBandage="bg-warning text-dark" text="รอดำเนินการ"/>, 
+                    processing:<Bandage classBandage="bg-primary" text="กำลังดำเนินการซ่อม"/>,
+                    success:<Bandage classBandage="bg-success" text="ดำเนินการเสร็จสิ้น"/>, 
+                    deny:<Bandage classBandage="bg-danger" text="ปฏิเสธ"/>,
+                    unable:<Bandage classBandage="bg-red-600 text-dark" text="ไม่สามารถดำเนินการได้"/>,
+                }
+            },
+            {title: "",field: "view"},
+            {title: "",field: "ED"},
+        ]
+    }
+
+    useEffect(() => {
+        setHeight(ref.current.clientHeight)
+    }, [height])
+    
+    const tableLeave = (
+        <div className="container-fluid">
+            <div className="flex justify-end">
+                <button className="btn btn-success"><FontAwesomeIcon icon={faPlus}/> มอบหมายงาน</button>
+            </div>
+            <Suspense fallback={<Skeleton/>}>
+                <MuiTable data={MuiTableData.data} columns={MuiTableData.columns} title="ตารางแจ้งซ่อม" selection={true} setStateSelect={setAssignWork}/>
+            </Suspense>
+        </div>
+    )
+    
     return (
         <>
             <h1 className="text-2xl"><FontAwesomeIcon icon={faBell}/> จัดการข้อมูลการแจ้งซ่อม</h1>
@@ -173,7 +224,7 @@ const Repair = () => {
             </div>
 
             {/* modal */}
-            <ModalCard modalShow={modalShow} setModalShow={setModalShow} modalBody={Modal.mBody} modalHead={Modal.mHead}/>
+            <ModalCard modalShow={modalShow} setModalShow={setModalShow} modalBody={modal.mBody} modalHead={modal.mHead}/>
         </>
     )
 }

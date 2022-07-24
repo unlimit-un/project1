@@ -1,16 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
 // import MaterialTable from "material-table";
 import { forwardRef } from 'react';
-import ReactDOM from "react-dom";
 import MaterialTable from "material-table";
-import { TableCell } from '@mui/material';
 import { TablePagination, } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import { 
-    AddBox, ArrowDownward, Check, ChevronLeft, ChevronRight, Clear, DeleteOutline, Edit, FilterList,
-    FirstPage, LastPage, Remove, SaveAlt, Search, ViewColumn
+    AddBox, ArrowDownward, Check, ChevronLeft, ChevronRight, Clear, DeleteOutline, Edit,
+    FirstPage, LastPage, Remove, SaveAlt, Search, Sort, ViewColumn
 } from '@material-ui/icons';
-import { TextAreawithlabel } from './FormElements';
 
 export const TablesStriped = ({data, id}) => {
   return (
@@ -53,7 +49,7 @@ export const TablesStripedDataTable = ({data, id}) => {
 
 
 
-export const MuiTable = ({columns, data, title}) =>{
+export const MuiTable = ({columns, data, title, selection, setStateSelect}) =>{
   
   const PatchedPagination = (props) =>{
     const {
@@ -88,7 +84,7 @@ export const MuiTable = ({columns, data, title}) =>{
     DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
     Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
     Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-    Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
+    Filter: forwardRef((props, ref) => <Sort {...props} ref={ref} />),
     FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
     LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
     NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
@@ -114,13 +110,10 @@ export const MuiTable = ({columns, data, title}) =>{
             options={{
               filtering:true,
               headerStyle:{
-                width:"100%",
                 whiteSpace: "nowrap"
               },
               cellStyle:{
-                width:"100%",
-              }
-              
+              },
             }}
             title={title}
           />
