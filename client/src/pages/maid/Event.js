@@ -2,7 +2,7 @@ import { faCheckCircle, faCircleXmark, faHome } from '@fortawesome/free-solid-sv
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
 import { CardFillColorNonFooterShadow } from '../../components/Cards'
-import { TablesStripedDataTable } from '../../components/Tables'
+import { TablesStriped } from '../../components/Tables'
 
 const Event = () => {
 
@@ -39,12 +39,12 @@ const Event = () => {
 
   const workList = (
       <div className="container-fluid">
-          <TablesStripedDataTable data={dataTable} id="workTable"/>
+          <TablesStriped data={dataTable} id="workTable"/>
       </div>
   )
   const doneList = (
       <div className="container-fluid">
-          <TablesStripedDataTable data={doneTable} id="doneTable"/>
+          <TablesStriped data={doneTable} id="doneTable"/>
       </div>
   )
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { CardFillColorNonFooter, CardFillColorNonFooterShadow } from '../../components/Cards';
-import { TablesStripedDataTable } from '../../components/Tables';
+import { TablesStriped } from '../../components/Tables';
 import { faCheckCircle, faCircleXmark,faPencil,faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -51,7 +51,7 @@ const Work = () => {
         <div className="container-fluid">
             <h1 className="text-xl"> รายการงาน</h1>
             <hr />
-            <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStripedDataTable data={dataTable} id="_table1"/>}/>
+            <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStriped data={dataTable} id="_table1"/>}/>
         </div>
     </>
   )
@@ -60,7 +60,7 @@ const Work = () => {
         <div className="container-fluid">
           <h1 className="text-xl"> งานที่ทำเสร็จแล้ว</h1>
             <hr />
-            <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStripedDataTable data={datatTable1} id="_table2"/>}/>
+            <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStriped data={datatTable1} id="_table2"/>}/>
         </div>
     </>
   )

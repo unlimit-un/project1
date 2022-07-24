@@ -5,13 +5,14 @@ import { SidebarRightManager } from '../../components/structure/SidebarM'
 import { Bandage } from '../../components/Bandage'
 // import { CardFillColorNonFooter } from '../../components/Cards'
 import { ModalCard, ModalButton } from '../../components/Modals'
-// import { TablesStripedDataTable } from '../../components/Tables'
+// import { TablesStriped } from '../../components/Tables'
 import { lazily } from 'react-lazily'
 import { Skeleton } from '../../components/Loading'
+import EditDelete from '../../components/EditDelete'
 
 
 
-const {TablesStripedDataTable} = lazily(()=>import('../../components/Tables'));
+const {MuiTable} = lazily(()=>import('../../components/Tables'));
 const {CardFillColorNonFooter} = lazily(()=>import('../../components/Cards'));
 
 const Repair = () => {
@@ -60,56 +61,40 @@ const Repair = () => {
         </div>
     )
     const [modalShow, setModalShow] = useState(false)
-    const initial = {
-        thead:['ชื่อ', 'ประเภทการลา', 'เรื่อง', 'เริ่มลาวันที่', 'ถึงวันที่', 'สถานะ', '',''],
-        tbody:[
-            ['unlimit', 'ลากิจ', 'ไปทำธุระต่างจังหวัด', '3/7/2023', '5/7/2023', <Bandage classBandage=" bg-success" text="ดำเนินการเสร็จสิ้น"/>, <ModalButton icon={faEye} setModalShow={setModalShow} classBtn="btn btn-outline-primary w-full"/>
-                ,<div className="flex justify-center gap-2">
-                    <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
-                    <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
-                </div>
-            ],
-            ['unlimit', 'ลาพักร้อน', 'ลาไปเที่ยว', '6/7/2023', '12/7/2023', <Bandage classBandage="  bg-danger" text="รอดำเนินการ"/>, <ModalButton icon={faEye} setModalShow={setModalShow} classBtn="btn btn-outline-primary w-full"/>
-                ,<div className="flex justify-center gap-2">
-                    <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
-                    <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
-                </div>
-            ],
-            ['unlimit', 'ลาป่วย', 'ป่วยไข้', '7/8/2023', '15/8/2023', <Bandage classBandage="  bg-warning" text="กำลังดำเนินการ"/>, <ModalButton icon={faEye} setModalShow={setModalShow} classBtn="btn btn-outline-primary w-full"/>
-                ,<div className="flex justify-center gap-2">
-                    <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
-                    <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
-                </div>
-            ]
+   
+
+    const MuiTableData = {
+        data:[
+            {issue: 'อ่างล้างหน้าพัง', notify_person:"unlimit unarn", date:"2022-02-21", location:"ตึก A", room:"A202", status:"processing", ED:<EditDelete/>, view:<ModalButton classBtn="btn btn-outline-primary" setModalShow={setModalShow} icon={faEye}/> },
+        ],
+        columns: [
+            {title: "",field: "ED"},
+            {title: "ปัญหา",field: "issue",  },
+            {title: "ผู้แจ้ง",field: "notify_person",  },
+            {title: "วันที่แจ้ง",field: "date", },
+            {title: "สถานที่",field: "location", },
+            {title: "ห้อง",field: "room", },
+            {title: "สถานะ",field: "status", 
+                lookup:{
+                    waiting: <Bandage classBandage="bg-warning text-dark" text="รอดำเนินการ"/>, 
+                    processing:<Bandage classBandage="bg-primary" text="กำลังดำเนินการซ่อม"/>,
+                    success:<Bandage classBandage="bg-success" text="ดำเนินการเสร็จสิ้น"/>, 
+                    deny:<Bandage classBandage="bg-danger" text="ปฏิเสธ"/>,
+                    unable:<Bandage classBandage="bg-red-600 text-dark" text="ไม่สามารถดำเนินการได้"/>,
+                }
+            },
+            {title: "",field: "view"},
         ]
     }
 
-    
-    const [dataTable, setDataTable] = useState(initial);
-
     useEffect(() => {
         setHeight(ref.current.clientHeight)
-        setDataTable(initial)
-    }, [])
-
-    const handleFilterData = (text) =>{
-        setDataTable({
-                ...initial, 
-                tbody:  initial.tbody.filter(item =>{
-                    console.log(item);
-                if ( item[5].props.children[0].props.text === text ) {
-                    return item
-                }else if(text === 'ทั้งหมด'){
-                    return item
-                }
-            })
-        })
-    }
-    
+        console.log(height);
+    }, [height])
     const tableLeave = (
         <div className="container-fluid">
-            <Suspense fallback={'... loading'}>
-                <TablesStripedDataTable data={dataTable}/>
+            <Suspense fallback={<Skeleton/>}>
+                <MuiTable data={MuiTableData.data} columns={MuiTableData.columns} title=""/>
             </Suspense>
         </div>
     )
@@ -125,24 +110,22 @@ const Repair = () => {
                 <div className="row">
                     <div className="col-lg-3 col-md-4 col-12">
                         <ul>
-                            <li>รหัสพนักงาน</li>
-                            <li>ชื่อ - นามสกุล</li>
-                            <li>แม่บ้าน / ช่าง</li>
-                            <li>ประเภทการลา</li>
-                            <li>รายละเอียดการลา</li>
-                            <li>ลาวันที่ - ถึงวันที่</li>
+                            <li>ปัญหา</li>
+                            <li>ผู้แจ้ง</li>
+                            <li>วันที่แจ้ง</li>
+                            <li>สถานที่</li>
+                            <li>ห้อง</li>
                             <li>สถานะ</li>
                         </ul>
                     </div>
                     <div className="col-lg-9 col-md-8 col-12">
                         <ul className="gap-2">
-                            <li>3456123</li>
+                            <li>อ่างล้างหน้าพัง</li>
                             <li>unlimit unarn</li>
-                            <li>ช่างซ่อม</li>
-                            <li>ลากิจ</li>
-                            <li>ไปธุระต่างจังหวัด</li>
-                            <li>1/02/65 - 3/02/65</li>
-                            <li><Bandage classBandage="bg-success !w-1/4" text="อนุมัติ"/></li>
+                            <li>2022-02-21</li>
+                            <li>ตึก A</li>
+                            <li>A202</li>
+                            <li><Bandage classBandage="bg-primary" text="กำลังดำเนินการซ่อม"/></li>
                         </ul>
                     </div>
                 </div>
@@ -157,33 +140,24 @@ const Repair = () => {
                     <div className="col-lg-9 col-md-8 col-12" ref={ref}>
                         <div className="row items-stretch gap-y-2">
                             <div className="col-lg-3 col-md-6 col-12">
-                                <button className="w-full h-full" onClick={()=>handleFilterData('ทั้งหมด')}>
-                                    <Suspense fallback={<Skeleton/>}>
-                                        <CardFillColorNonFooter classBody="bg-blue-400 hover:bg-blue-500 transition-all duration-300 rounded" contentBody={totalCard} classCard="text-white transition-all duration-300 hover:-translate-y-3 w-full h-full"/>
-                                    </Suspense>
-                                    
-                                </button>
+                                <Suspense fallback={<Skeleton/>}>
+                                    <CardFillColorNonFooter classBody="bg-blue-400  rounded" contentBody={totalCard} classCard="text-white "/>
+                                </Suspense>
                             </div>
                             <div className="col-lg-3 col-md-6 col-12">
-                                <button className="w-full h-full" onClick={()=>handleFilterData('ดำเนินการเสร็จสิ้น')}>
-                                    <Suspense fallback={<Skeleton/>}>
-                                        <CardFillColorNonFooter classBody="bg-green-400 hover:bg-green-500 transition-all duration-300 rounded" contentBody={successCard} classCard="text-white transition-all duration-300 hover:-translate-y-3 w-full h-full"/>
-                                    </Suspense>
-                                </button>
+                                <Suspense fallback={<Skeleton/>}>
+                                    <CardFillColorNonFooter classBody="bg-green-400  rounded" contentBody={successCard} classCard="text-white "/>
+                                </Suspense>
                             </div>
                             <div className="col-lg-3 col-md-6 col-12">
-                                <button className="w-full h-full" onClick={()=>handleFilterData('กำลังดำเนินการ')}>
-                                    <Suspense fallback={<Skeleton/>}>
-                                        <CardFillColorNonFooter classBody="bg-yellow-400 hover:bg-yellow-500 transition-all duration-300 rounded" contentBody={processCard} classCard="transition-all duration-300 hover:-translate-y-3 w-full h-full"/>
-                                    </Suspense>
-                                </button>
+                                <Suspense fallback={<Skeleton/>}>
+                                    <CardFillColorNonFooter classBody="bg-yellow-400  rounded" contentBody={processCard} classCard=""/>
+                                </Suspense>
                             </div>
                             <div className="col-lg-3 col-md-6 col-12">
-                                <button className="w-full h-full" onClick={()=>handleFilterData('รอดำเนินการ')}>
-                                    <Suspense fallback={<Skeleton/>}>
-                                        <CardFillColorNonFooter classBody="bg-red-400 hover:bg-red-500 transition-all duration-300 rounded" contentBody={waitingCard} classCard="text-white transition-all duration-300 hover:-translate-y-3 w-full h-full"/>
-                                    </Suspense>
-                                </button>
+                                <Suspense fallback={<Skeleton/>}>
+                                    <CardFillColorNonFooter classBody="bg-red-400  rounded" contentBody={waitingCard} classCard="text-white "/>
+                                </Suspense>
                             </div>
                         </div>
                         <div className="mt-3">

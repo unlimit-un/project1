@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { CardFillColorNonFooter } from '../../components/Cards'
 import { ModalCard,ModalButton } from '../../components/Modals'
 import { Bandage } from '../../components/Bandage'
-import { TablesStripedDataTable } from '../../components/Tables'
+import { TablesStriped } from '../../components/Tables'
 import { Skeleton } from '../../components/Loading'
 
 
@@ -86,7 +86,7 @@ const Request = () => {
 
     const tableRequest = (
         <div className="container-fulid">
-            <TablesStripedDataTable data={dataTable}/>
+            <TablesStriped data={dataTable}/>
         </div>
     )
 

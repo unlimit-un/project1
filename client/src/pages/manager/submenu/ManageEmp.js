@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { CardFillColorNonFooter } from '../../../components/Cards'
 import { InputGroupWithLabel, SelectOptionWithLabel } from '../../../components/FormElements'
-import { TablesStripedDataTable } from '../../../components/Tables'
+import { TablesStriped } from '../../../components/Tables'
 import Logo from '../../../assets/Logo.jpg'
 import {  faPencil, faPlus, faSave, faTrash,faUserPlus, faUserTie  } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -153,7 +153,7 @@ export const Dept = ({title, arr_obj_location}) =>{
     const [dataTable, setDataTable] = useState(initial);
     const tableForm = (
         <div className="container-fluid">
-            <TablesStripedDataTable data={dataTable}/>
+            <TablesStriped data={dataTable}/>
         </div>
     )
   

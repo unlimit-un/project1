@@ -2,7 +2,7 @@ import { faWarning,faPencil,faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React,{useState} from 'react'
 import { CardFillColorNonFooter, CardFillColorNonFooterShadow } from '../../components/Cards';
-import { TablesStripedDataTable } from '../../components/Tables';
+import { TablesStriped } from '../../components/Tables';
 
 const Urgent = () => {
   const [name,setName] = useState(''); 
@@ -24,7 +24,7 @@ const Urgent = () => {
               <h1 className="text-xl"><FontAwesomeIcon icon={faWarning}/> งานด่วน</h1>
               <hr />
              
-              <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStripedDataTable data={dataTable} id="_table1"/>}/>
+              <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStriped data={dataTable} id="_table1"/>}/>
           </div>
       </>
   )

@@ -5,7 +5,7 @@ import { Bandage } from '../../components/Bandage'
 import { CardFillColorNonFooterShadow } from '../../components/Cards'
 import { InputGroupWithLabel, RadioInline, SelectOptionWithLabel, TextAreawithlabel } from '../../components/FormElements'
 import { ModalButton, ModalCardConfirm } from '../../components/Modals'
-import { TablesStripedDataTable } from '../../components/Tables'
+import { TablesStriped } from '../../components/Tables'
 
 const Repair = () => {
   const [modalShow, setModalShow] = useState(false);
@@ -80,7 +80,7 @@ const Repair = () => {
         <div className="ms-auto w-1/4 text-end text-xl">
           <SelectOptionWithLabel id="leave" label="สถานะ" options_arr_obj={arr_obj} callback={handleFilterData}/>
         </div>
-          <TablesStripedDataTable data={dataTable}/>
+          <TablesStriped data={dataTable}/>
       </div>
   )
 

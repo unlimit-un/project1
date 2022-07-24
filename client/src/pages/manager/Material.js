@@ -1,4 +1,4 @@
-import { faScrewdriverWrench,faPencil,faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faScrewdriverWrench,faPencil,faTrash, faSave } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { Suspense } from 'react'
 import { lazily } from 'react-lazily'
@@ -16,7 +16,6 @@ const Material = () => {
     { id: "A3264", list_name: 'โต๊ะไม้ขนาด 100*80', count:2, import_date:'12/02/65', import_person:'Unlimit unarn', status_person:'หัวหน้างาน', ED:<EditDelete/> },
   ];
 
-  const classTable="float-right"
   const columns = [
     {title: "รหัสครุภัณฑ์",field: "id"},
     {title: "รายการ",field: "list_name"},
@@ -31,7 +30,7 @@ const Material = () => {
         <h1 className="text-2xl"><FontAwesomeIcon icon={faScrewdriverWrench}/> วัสดุครุภัณฑ์</h1>
         <div className="container-fluid">
           <Suspense fallback= {<Skeleton/>}> 
-            <CardFillColorNonFooter contentBody={<MuiTable data={data} columns={columns}/>}/>
+            <CardFillColorNonFooter contentBody={<MuiTable data={data} columns={columns} title="ตารางวัสดุครุภัณฑ์"/>}/>
           </Suspense>  
           <div className="card card-body mt-4">
             <div className="flex flex-column justify-center">
@@ -63,8 +62,8 @@ const Material = () => {
                   </div>
               </form>
             </div>
-            <div className="flex justify-start mt-4">
-              <button className="!bg-blue-600  text-white text-xl rounded w-25 p-2 ">เพิ่ม</button>
+            <div className="flex justify-end mt-4">
+              <button className="btn btn-success w-25"><FontAwesomeIcon icon={faSave}/> เพิ่ม</button>
             </div>
           </div>
         </div>

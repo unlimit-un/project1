@@ -7,7 +7,7 @@ import { CardFillColorNonFooter } from '../../../components/Cards';
 import { InputGroupWithLabel, SelectOptionWithLabel } from '../../../components/FormElements';
 import { Skeleton } from '../../../components/Loading';
 import { ModalCard, ModalButton } from '../../../components/Modals';
-import { TablesStripedDataTable } from '../../../components/Tables';
+import { TablesStriped } from '../../../components/Tables';
 
 
 export const LeaveType = () => {
@@ -28,7 +28,7 @@ export const LeaveType = () => {
     const tableForm = (
         <div className="container-fluid">
            
-                <TablesStripedDataTable data={dataTable}/>
+                <TablesStriped data={dataTable}/>
         
             
         </div>
@@ -148,7 +148,7 @@ export const Leave = () => {
     
     const tableLeave = (
         <div className="container-fluid">
-            <TablesStripedDataTable data={dataTable}/>
+            <TablesStriped data={dataTable}/>
         </div>
     )
 

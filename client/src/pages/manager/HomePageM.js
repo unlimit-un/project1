@@ -1,20 +1,16 @@
 import { faClipboardList, faHome, faLineChart } from '@fortawesome/free-solid-svg-icons'
 import React, { Suspense, useEffect, useRef, useState } from 'react'
-// import { CardFillColor } from '../../components/Cards'
 import {SidebarRightManager} from '../../components/structure/SidebarM'
 import { checkAutoRedirectUser } from '../../functions/AuthFunc'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import { BarChart, PieChart } from '../../components/Charts'
 import { pre_dataBarChart, pre_dataPieChart } from '../../functions/PrepareChartData'
-// import { TablesStriped } from '../../components/Tables'
-
 import { Skeleton, Spiner } from '../../components/Loading'
 import { lazily } from 'react-lazily'
 
 const {CardFillColor} = lazily(()=>import('../../components/Cards'));
 const {BarChart, PieChart} = lazily(()=>import('../../components/Charts'));
-const { TablesStriped }  = lazily(()=>import('../../components/Tables'));
+const { MuiTable }  = lazily(()=>import('../../components/Tables'));
 
 const Homepage = () => {
     
@@ -77,12 +73,17 @@ const Homepage = () => {
             setHeight(ref.current.clientHeight)
         }
     },[])
-
-    const dataTableModel = {
-        thead:['ลำดับ', 'ชื่อ', 'ราคา', 'จำนวน'],
-        tbody:[
-            ['1', 'โต๊ะไม้ขนาด 100*80', '1,020', '2'],
-            ['2', 'ก็อกน้ำ', '120', '4'],
+    
+    const MuiTableData = {
+        data:[
+            { order: 1, name: "โต๊ะไม้ขนาด 100*80", price: '1,020', count:2, },
+            { order: 2, name: "ก็อกน้ำ", price: '120', count:2, },
+        ],
+        columns: [
+            {title: "ลำดับ",field: "order"},
+            {title: "ชื่อ",field: "name"},
+            {title: "ราคา",field: "price",  type: 'numeric' },
+            {title: "จำนวน",field: "count", type: 'numeric' },
         ]
     }
 
@@ -171,7 +172,7 @@ const Homepage = () => {
                         </div>
                         <div className="card-body">
                             <Suspense fallback={<Skeleton/>}>
-                                <TablesStriped data={dataTableModel}/>
+                                <MuiTable data={MuiTableData.data} columns={MuiTableData.columns} title=""/>
                             </Suspense>
                         </div>
                     </div>

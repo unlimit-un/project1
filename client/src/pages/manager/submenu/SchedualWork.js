@@ -8,8 +8,8 @@ import Calendar from '../Calendar'
 import { Tab, Tabs } from 'react-bootstrap'
 import {Spiner} from '../../../components/Loading'
 import { Bandage } from '../../../components/Bandage'
-import { TablesStripedDataTable } from '../../../components/Tables'
-// const TablesStripedDataTable = lazy(()=> import('../../../components/Tables').then(module=> ({default: module.TablesStripedDataTable})))
+import { TablesStriped } from '../../../components/Tables'
+// const TablesStriped = lazy(()=> import('../../../components/Tables').then(module=> ({default: module.TablesStriped})))
 export const TeamManage = () =>{
     const [name, setName] = useState('');
     const [showModal, setShowModal] = useState(false);
@@ -53,7 +53,7 @@ export const TeamManage = () =>{
                 <div className="flex justify-end">
                     <button className="btn btn-outline-success w-1/4">เพิ่ม</button>
                 </div>
-                <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStripedDataTable data={dataTableModal} id="_table2"/>}/>
+                <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStriped data={dataTableModal} id="_table2"/>}/>
             </>
         )
     }
@@ -76,7 +76,7 @@ export const TeamManage = () =>{
                 <div className="flex justify-end">
                     <button className="btn btn-outline-primary w-1/3">บันทึก</button>
                 </div>
-                <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStripedDataTable data={dataTable} id="_table1"/>}/>
+                <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStriped data={dataTable} id="_table1"/>}/>
             </div>
         </>
     )
@@ -158,7 +158,7 @@ export const SpacialWork = () =>{
                 <div className="flex justify-end">
                     <button className="btn btn-outline-primary w-1/3">บันทึก</button>
                 </div>
-                <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStripedDataTable data={dataTable}/>}/>
+                <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStriped data={dataTable}/>}/>
             
             </div>
         </>
@@ -245,7 +245,7 @@ export const MaidDuty = () =>{
                 <div className="flex justify-end">
                     <button className="btn btn-outline-primary w-1/3">บันทึก</button>
                 </div>
-                <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStripedDataTable data={dataTable} id="_table1"/>}/>
+                <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStriped data={dataTable} id="_table1"/>}/>
             
             </div>
         </>
@@ -287,7 +287,7 @@ export const MaidDuty = () =>{
                 <CardFillColorHeader 
                     contentHeader={<h1 className="text-lg m-0">รายชื่อพนักงาน</h1>} 
                     contentBody={
-                        <TablesStripedDataTable 
+                        <TablesStriped 
                             data={dataTableDutyAssign} 
                             id="_table2"
                         />
@@ -352,7 +352,7 @@ export const MaidDuty = () =>{
                     <button className="btn btn-success md:w-1/3 w-full">บันทึก</button>
                 </div>
                 <CardFillColorHeader contentHeader={<h5 className="m-0">งานทั้งหมด</h5>} contentBody={
-                    <TablesStripedDataTable 
+                    <TablesStriped 
                         data={dataTableModal} 
                         id="_tableModal"
                     />
@@ -391,7 +391,7 @@ export const MaidDuty = () =>{
                 <CardFillColorHeader 
                     contentHeader={<h1 className="text-lg m-0">รายชื่อพนักงาน</h1>} 
                     contentBody={
-                        <TablesStripedDataTable 
+                        <TablesStriped 
                             data={dataTableDutyCheck} 
                             id="_tableDutyCheck"
                         />
@@ -492,7 +492,7 @@ export const UrgentWork = () =>{
                 </div>
             </div>
             <div className="mt-3">
-                <CardFillColorNonFooter contentBody={<TablesStripedDataTable data={dataTableDutyCheck} id="_table"/>}/>
+                <CardFillColorNonFooter contentBody={<TablesStriped data={dataTableDutyCheck} id="_table"/>}/>
             </div>
         </div>
         </>

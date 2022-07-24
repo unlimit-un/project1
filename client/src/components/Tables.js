@@ -2,16 +2,17 @@ import React, { useEffect, useRef, useState } from 'react'
 // import MaterialTable from "material-table";
 import { forwardRef } from 'react';
 import ReactDOM from "react-dom";
-import MaterialTable, { MaterialTableProps } from "material-table";
-
-import { TableCell, TablePagination, TablePaginationProps } from '@material-ui/core';
+import MaterialTable from "material-table";
+import { TableCell } from '@mui/material';
+import { TablePagination, } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { 
     AddBox, ArrowDownward, Check, ChevronLeft, ChevronRight, Clear, DeleteOutline, Edit, FilterList,
     FirstPage, LastPage, Remove, SaveAlt, Search, ViewColumn
 } from '@material-ui/icons';
+import { TextAreawithlabel } from './FormElements';
 
-export const TablesStriped = ({data}) => {
+export const TablesStriped = ({data, id}) => {
   return (
     <>
     
@@ -52,7 +53,7 @@ export const TablesStripedDataTable = ({data, id}) => {
 
 
 
-export const MuiTable = ({columns, data}) =>{
+export const MuiTable = ({columns, data, title}) =>{
   
   const PatchedPagination = (props) =>{
     const {
@@ -107,10 +108,21 @@ export const MuiTable = ({columns, data}) =>{
             icons={tableIcons}
             components={{
               Pagination: PatchedPagination,
-              Cell: <TableCell align='center'/>
             }}
-            style={{boxShadow:"none", textAlign: "center"}}
-            title="ตารางวัสดุครุภัณฑ์"
+            style={{boxShadow:"none"}}
+            
+            options={{
+              filtering:true,
+              headerStyle:{
+                width:"100%",
+                whiteSpace: "nowrap"
+              },
+              cellStyle:{
+                width:"100%",
+              }
+              
+            }}
+            title={title}
           />
       </>
   )

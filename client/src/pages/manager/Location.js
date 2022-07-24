@@ -2,13 +2,13 @@ import React, { Suspense, useState } from 'react'
 import { InputGroupWithLabel, SelectOptionWithLabel } from '../../components/FormElements'
 import { CardFillColorNonFooter, CardFillColorNonFooterShadow } from '../../components/Cards'
 // import { ModalButton, ModalCard } from '../../components/Modals'
-// import { TablesStripedDataTable } from '../../components/Tables'
+// import { TablesStriped } from '../../components/Tables'
 import { faPencil, faTrash, faUsersGear } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Skeleton } from '../../components/Loading'
 import { lazily } from 'react-lazily'
 
-const {TablesStripedDataTable} = lazily(()=>import('../../components/Tables'));
+const {TablesStriped} = lazily(()=>import('../../components/Tables'));
 const {ModalButton, ModalCard} = lazily(()=>import('../../components/Modals'));
 
 const Location = () => {
@@ -51,7 +51,7 @@ const Location = () => {
               <div className="flex justify-end">
                   <button className="btn btn-outline-success w-1/4">เพิ่ม</button>
               </div>
-              <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStripedDataTable data={dataTableModal} id="_table2"/>}/>
+              <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStriped data={dataTableModal} id="_table2"/>}/>
           </>
       )
   }
@@ -71,7 +71,7 @@ const Location = () => {
               <div className="flex justify-end">
                   <button className="btn btn-outline-primary w-1/3">บันทึก</button>
               </div>
-              <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStripedDataTable data={dataTable} id="_table1"/>}/>
+              <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStriped data={dataTable} id="_table1"/>}/>
           </div>
       </>
   )
