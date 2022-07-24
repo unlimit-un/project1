@@ -3,19 +3,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useEffect, useRef, useState, lazy, Suspense } from 'react'
 import { CardFillColorHeader } from '../../components/Cards'
 import { ListGroupFlush } from '../../components/ListGroup'
-import { SidebarRightMaid } from '../../components/structure/SidebarM'
 import { pre_dataPieChart } from '../../functions/PrepareChartData'
 import { Skeleton,Spiner } from '../../components/Loading'
 import { lazily } from "react-lazily";
 
-
 const { CardFillColorNonFooter } = lazily(()=>import('../../components/Cards'))
 const { PieChart } =lazily(()=>import('../../components/Charts'))
+const { SidebarRightMaid } =lazily(()=>import('../../components/structure/SidebarM'))
+
 const HomepageMaid = () => {
 
     const [height, setHeight] = useState(0);
     const ref = useRef(null)
-
     const dataSetChart = [{
             // label: 'Dataset 1',
             data: [20,30, 25, 10],
@@ -89,11 +88,10 @@ const HomepageMaid = () => {
         </>
     )
 
-    useEffect(()=>{
-        if (ref !== null) {
-            setHeight(ref.current.clientHeight)
-        }
-    },[])
+    useEffect(() => {
+        setHeight(ref.current.clientHeight)
+    }, [height])
+    
     return (
         <>
             <h1 className="text-2xl"><FontAwesomeIcon icon={faHome}/> หน้าหลัก</h1>
@@ -116,7 +114,7 @@ const HomepageMaid = () => {
                     </div>
                 </div>
                 <div className="col-lg-3 col-md-4 col-12">
-                    <SidebarRightMaid maxHeight={height}/>
+                    <Suspense fallback={<Skeleton/>}><SidebarRightMaid maxHeight={height}/></Suspense>
                 </div>
             </div>
         </>
