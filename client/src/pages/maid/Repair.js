@@ -4,9 +4,10 @@ import React, { useState,Suspense } from 'react'
 import { Bandage } from '../../components/Bandage'
 import { InputGroupWithLabel, RadioInline, SelectOptionWithLabel, TextAreawithlabel } from '../../components/FormElements'
 import { ModalButton, ModalCardConfirm } from '../../components/Modals'
-import { TablesStriped } from '../../components/Tables'
+import { MuiTable, TablesStriped } from '../../components/Tables'
 import { Skeleton } from '../../components/Loading'
 import { lazily } from 'react-lazily'
+import EditDelete from '../../components/EditDelete'
 
 const { CardFillColorNonFooterShadow } =lazily(()=>import('../../components/Cards'))
 const Repair = () => {
@@ -43,34 +44,41 @@ const Repair = () => {
     </>
   }
 
-  const initial = {
-    thead:['ปัญหา', 'สถานที่', 'ห้อง', 'วันที่แจ้ง', 'สถานะ', ''],
-    tbody:[
-        ['อ่างล้างหน้าแตก', 'ตึก A', 'A202', '3/7/2023', 
-          <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-success" text="อนุมัติ"/><ModalButton icon={faEye} setModalShow={setModalShow} callback={()=>{}} /></div>, 
-          <div className="flex justify-center gap-2">
-            <FontAwesomeIcon icon={faPencil} className="text-warning"/>
-            <FontAwesomeIcon className="text-danger" icon={faTrashAlt}/>
-          </div>
-        ],
-        
+  const dataTable = {
+   data:[
+      {problem:"อ่างล้างหน้าแตก",location:"ตึก A",room:"A202",date_time:"3/7/2023",status:"success",ED:<EditDelete/>,view:<ModalButton icon={faEye} setModalShow={setModalShow} callback={()=>{}} />}
+    ],
+    columns:[
+      {title:"ปัญหา",field:"problem"},
+      {title:"สถานที่",field:"location"},
+      {title:"ห้อง",field:"room"},
+      {title:"วันที่แจ้ง",field:"date_time"},
+      {title:"สถานะ",field:"status",
+        lookup:{
+          success:<Bandage classBandage="bg-success" text="ดำเนินการเสร็จสิ้น"/>, 
+          processing:<Bandage classBandage="bg-primary" text="กำลังดำเนินการ"/>,
+          deny:<Bandage classBandage="bg-danger" text="ปฏิเสธ"/>,
+          
+        }
+      },
+      {title:"",field:"ED"},
+      {title:"",field:"view"},
     ]
+
   } 
-  const [dataTable, setDataTable] = useState(initial);
- 
-  const arr_obj = [
-    {value:'ทั้งหมด', text:'สถานะทั้งหมด'},
-    {value:'อนุมัติ', text:'อนุมัติ'},
-    {value:'รออนุมัติ', text:'รออนุมัติ'},
-    {value:'ไม่อนุมัติ', text:'ไม่อนุมัติ'},
-  ]
+  // const arr_obj = [
+  //   {value:'ทั้งหมด', text:'สถานะทั้งหมด'},
+  //   {value:'อนุมัติ', text:'อนุมัติ'},
+  //   {value:'รออนุมัติ', text:'รออนุมัติ'},
+  //   {value:'ไม่อนุมัติ', text:'ไม่อนุมัติ'},
+  // ]
 
   const tableLeave = (
       <div className="container-fluid">
-        <div className="ms-auto w-1/4 text-end text-xl">
+        {/* <div className="ms-auto w-1/4 text-end text-xl">
           <SelectOptionWithLabel id="leave" label="สถานะ" options_arr_obj={arr_obj} />
-        </div>
-          <TablesStriped data={dataTable}/>
+        </div> */}
+          <MuiTable data={dataTable.data} columns={dataTable.columns} title=""/>
       </div>
   )
 
@@ -78,7 +86,7 @@ const Repair = () => {
     <>
         <h1 className="text-2xl"><FontAwesomeIcon icon={faScrewdriverWrench}/> แจ้งซ่อม</h1>
           <div className="flex justify-end">
-            <ModalButton icon={faPlus} text="ยื่นเรื่องซ่อม" classBtn="btn btn-outline-primary" setModalShow={setModalShow}/>
+            <ModalButton icon={faPlus} text="ยื่นเรื่องซ่อม" classBtn="btn btn-outline-primary" setModalShow={setModalShow} callback ={()=>{}}/>
           </div>
         <div className="mt-3">
           <Suspense fallback={<Skeleton/>}>
