@@ -21,8 +21,8 @@ const Event = () => {
       {title:"ถึงวันที่",field:"date_end"},
       {title:"สถานะ",field:"status",
         lookup:{
-          success:<Bandage classBandage="bg-success" text="ดำเนินการเสร็จสิ้น"/>, 
-          deny:<Bandage classBandage="bg-danger" text="ปฏิเสธ"/>,
+          success:"ดำเนินการเสร็จสิ้น", 
+          deny:"ปฏิเสธ",
           
         }
       },
@@ -41,8 +41,8 @@ const Event = () => {
       {title:"ถึงวันที่",field:"date_end"},
       {title:"สถานะ",field:"status",
         lookup:{
-          success:<Bandage classBandage="bg-success" text="ดำเนินการเสร็จสิ้น"/>, 
-          deny:<Bandage classBandage="bg-danger" text="ปฏิเสธ"/>,
+          success:"ดำเนินการเสร็จสิ้น", 
+          deny:"ปฏิเสธ",
           
         }
       },

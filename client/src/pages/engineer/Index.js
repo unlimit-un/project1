@@ -27,7 +27,6 @@ const Index = () => {
                                     pathname.includes('/engineer/event')?<En.Event/>:
                                     pathname.includes('/engineer/urgent')?<En.Urgent/>:
                                     pathname.includes('/engineer/leave')?<En.Leave/>:
-                                    pathname.includes('/engineer/repair')?<En.Repair/>:
                                     pathname.includes('/engineer/material')?<En.Material/>:
                                     pathname.includes('/engineer/notify')?<En.Notify/>:
                                     <En.Homepage/>

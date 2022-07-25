@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { NavbarManager } from '../../components/structure/NavbarM'
+import { NavbarMaid } from '../../components/structure/NavbarM'
 import { SidebarLeftMaid } from '../../components/structure/SidebarM'
 
 const Bookmarks = () => {
@@ -20,7 +20,7 @@ const Bookmarks = () => {
 });
   return (
     <>
-        <NavbarManager/>
+        <NavbarMaid/>
         <SidebarLeftMaid open={open} setOpen={setOpen}/>
     </>
   )

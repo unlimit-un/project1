@@ -40,7 +40,7 @@ const Material = () => {
                           <li>2022-02-21</li>
                           <li>ตึก A</li>
                           <li>A202</li>
-                          <li><Bandage classBandage="bg-primary" text="กำลังดำเนินการซ่อม"/></li>
+                          <li>"กำลังดำเนินการซ่อม"</li>
                       </ul>
                   </div>
               </div>
@@ -61,9 +61,9 @@ const Material = () => {
         {title: "วันที่นำเข้า",field: "import_date", },
         {title: "สถานะ",field: "status", 
             lookup:{
-                waiting: <Bandage classBandage="bg-warning text-dark" text="รออนุมัติ"/>, 
-                accept:<Bandage classBandage="bg-success" text="อนุมัติ"/>, 
-                deny:<Bandage classBandage="bg-danger" text="ไม่อนุมัติ"/>,
+                waiting: "รออนุมัติ", 
+                accept:"อนุมัติ", 
+                deny:"ไม่อนุมัติ",
             }
         },
         {title: "",field: "view"},
@@ -144,7 +144,7 @@ const handleView = (setModal) =>{
                           <li>2022-02-21</li>
                           <li>ตึก A</li>
                           <li>A202</li>
-                          <li><Bandage classBandage="bg-primary" text="กำลังดำเนินการ"/></li>
+                          <li>"กำลังดำเนินการ"</li>
                       </ul>
                   </div>
               </div>

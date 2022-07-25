@@ -87,7 +87,7 @@ const Repair = () => {
                             <li>2022-02-21</li>
                             <li>ตึก A</li>
                             <li>A202</li>
-                            <li><Bandage classBandage="bg-primary" text="กำลังดำเนินการซ่อม"/></li>
+                            <li>"กำลังดำเนินการซ่อม"</li>
                         </ul>
                     </div>
                 </div>
@@ -133,7 +133,7 @@ const Repair = () => {
                                 <li>2022-02-21</li>
                                 <li>ตึก A</li>
                                 <li>A202</li>
-                                <li><Bandage classBandage="bg-primary" text="กำลังดำเนินการซ่อม"/></li>
+                                <li>"กำลังดำเนินการซ่อม"</li>
                             </ul>
                         </div>
                     </div>
@@ -156,11 +156,11 @@ const Repair = () => {
             {title: "ห้อง",field: "room", },
             {title: "สถานะ",field: "status", 
                 lookup:{
-                    waiting: <Bandage classBandage="bg-warning text-dark" text="รอดำเนินการ"/>, 
-                    processing:<Bandage classBandage="bg-primary" text="กำลังดำเนินการซ่อม"/>,
-                    success:<Bandage classBandage="bg-success" text="ดำเนินการเสร็จสิ้น"/>, 
-                    deny:<Bandage classBandage="bg-danger" text="ปฏิเสธ"/>,
-                    unable:<Bandage classBandage="bg-red-600 text-dark" text="ไม่สามารถดำเนินการได้"/>,
+                    waiting: "รอดำเนินการ", 
+                    processing:"กำลังดำเนินการซ่อม",
+                    success:"ดำเนินการเสร็จสิ้น", 
+                    deny:"ปฏิเสธ",
+                    unable:"ไม่สามารถดำเนินการได้",
                 }
             },
             {title: "",field: "view"},

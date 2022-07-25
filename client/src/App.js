@@ -42,8 +42,7 @@ function App() {
           </Route>
           <Route path='/engineer' exac element={<En.Index/>}>
               <Route path='/engineer/work/:page' element={<En.Work/>} /> 
-              <Route path='/engineer/urgent' element={<En.Urgent/>} /> 
-              <Route path='/engineer/repair' element={<En.Repair/>} /> 
+              <Route path='/engineer/urgent' element={<En.Urgent/>} />
               <Route path='/engineer/material' element={<En.Material/>} /> 
               <Route path='/engineer/bookmarks' element={<En.Bookmarks/>} /> 
               <Route path='/engineer/leave/:page' element={<En.Leave/>} /> 

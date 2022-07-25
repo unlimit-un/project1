@@ -467,7 +467,7 @@ export const SidebarRightEn = ({maxHeight}) =>{
     return (
         <>
             <div className="card card-body" style={{maxHeight: `${maxHeight/16}rem`, overflow: "auto",}}>
-                <h5 className="mb-3 text-base"><FontAwesomeIcon icon={faWarning}/> รายการงานด่วน</h5>
+                <h5 className="mb-3 text-base"><FontAwesomeIcon icon={faWarning}/> งานในแผนก</h5>
                 <ListGroupFlushWithLink lists={listGroup}/>
             </div>
         </>

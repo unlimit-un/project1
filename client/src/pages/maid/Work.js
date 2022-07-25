@@ -21,8 +21,8 @@ const Work = () => {
       {title:"สถานที่",field:"location"},
       {title:"สถานะ",field:"status",
            lookup:{
-              success:<Bandage classBandage="bg-success" text="ดำเนินการเสร็จสิ้น"/>, 
-              deny:<Bandage classBandage="bg-danger" text="ปฏิเสธ"/>,
+              success:"ดำเนินการเสร็จสิ้น", 
+              deny:"ปฏิเสธ",
               
           }
       },
@@ -40,8 +40,8 @@ const Work = () => {
       {title:"เวลาเข้า-ออก",field:"date_time"},
       {title:"สถานะ",field:"status",
           lookup:{
-            success:<Bandage classBandage="bg-success" text="ดำเนินการเสร็จสิ้น"/>, 
-            deny:<Bandage classBandage="bg-danger" text="ปฏิเสธ"/>,
+            success:"ดำเนินการเสร็จสิ้น", 
+            deny:"ปฏิเสธ",
            
           }
       },

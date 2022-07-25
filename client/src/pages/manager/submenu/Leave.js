@@ -134,11 +134,11 @@ export const Leave = () => {
             {title:"ถึงวันที่",field:"date_end"},
             {title:"สถานะ",field:"status",
                 lookup:{
-                    waiting: <Bandage classBandage="bg-warning text-dark" text="รอดำเนินการ"/>, 
-                    processing:<Bandage classBandage="bg-primary" text="กำลังดำเนินการ"/>,
-                    success:<Bandage classBandage="bg-success" text="ดำเนินการเสร็จสิ้น"/>, 
-                    deny:<Bandage classBandage="bg-danger" text="ปฏิเสธ"/>,
-                    unable:<Bandage classBandage="bg-red-600 text-dark" text="ไม่สามารถดำเนินการได้"/>,
+                    waiting: "รอดำเนินการ", 
+                    processing:"กำลังดำเนินการ",
+                    success:"ดำเนินการเสร็จสิ้น", 
+                    deny:"ปฏิเสธ",
+                    unable:"ไม่สามารถดำเนินการได้",
                 }
         },
             {title:"",field:"view"},
@@ -186,7 +186,7 @@ export const Leave = () => {
                             <li>ลากิจ</li>
                             <li>ไปธุระต่างจังหวัด</li>
                             <li>1/02/65 - 3/02/65</li>
-                            <li><Bandage classBandage="bg-primary" text="กำลังดำเนินการ"/></li>
+                            <li>"กำลังดำเนินการ"</li>
                         </ul>
                     </div>
                 </div>

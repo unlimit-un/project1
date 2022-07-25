@@ -46,7 +46,7 @@ const Repair = () => {
 
   const dataTable = {
    data:[
-      {problem:"อ่างล้างหน้าแตก",location:"ตึก A",room:"A202",date_time:"3/7/2023",status:"success",ED:<EditDelete/>,view:<ModalButton icon={faEye} setModalShow={setModalShow} callback={()=>{}} />}
+      {problem:"อ่างล้างหน้าแตก",location:"ตึก A",room:"A202",date_time:"3/7/2023",status:"success",ED:<EditDelete/>,view:<ModalButton icon={faEye} setModalShow={setModalShow} callback={()=>{}}/>}
     ],
     columns:[
       {title:"ปัญหา",field:"problem"},
@@ -55,10 +55,10 @@ const Repair = () => {
       {title:"วันที่แจ้ง",field:"date_time"},
       {title:"สถานะ",field:"status",
         lookup:{
-          success:<Bandage classBandage="bg-success" text="ดำเนินการเสร็จสิ้น"/>, 
-          processing:<Bandage classBandage="bg-primary" text="กำลังดำเนินการ"/>,
-          deny:<Bandage classBandage="bg-danger" text="ปฏิเสธ"/>,
-          
+          success:"ดำเนินการเสร็จสิ้น", 
+          processing:"กำลังดำเนินการ",
+          deny:"ปฏิเสธ",
+          waiting:"รอดำเนินการ",
         }
       },
       {title:"",field:"ED"},

@@ -4,7 +4,7 @@ import React, { useState,Suspense } from 'react'
 import { Bandage } from '../../components/Bandage'
 import { InputGroupWithLabel, RadioInline, SelectOptionWithLabel, TextAreawithlabel } from '../../components/FormElements'
 import { ModalButton, ModalCardConfirm } from '../../components/Modals'
-import { TablesStriped } from '../../components/Tables'
+import { MuiTable, TablesStriped } from '../../components/Tables'
 import { Skeleton } from '../../components/Loading'
 import { lazily } from 'react-lazily'
 import EditDelete from '../../components/EditDelete'
@@ -12,7 +12,7 @@ import EditDelete from '../../components/EditDelete'
 const { CardFillColorNonFooterShadow } =lazily(()=>import('../../components/Cards'))
 const Leave = () => {
   const [modalShow, setModalShow] = useState(false);
-  const Modal = {
+  const [modal, setModal] = useState({
     mHead: <h1 className="m-0 text-2xl"><FontAwesomeIcon icon={faClipboardList}/> ยื่นเรื่องการลา</h1>,
     mBody:<>
       <div className="container-fluid">
@@ -40,56 +40,42 @@ const Leave = () => {
         </form>
       </div>
     </>
-  }
+  })
 
-  const initial = {
-    thead:['หัวเรื่อง', 'ประเภทการลา', 'รายละเอียด', 'เริ่มลาวันที่', 'ถึงวันที่', 'สถานะ'],
-    tbody:[
-        ['เดินทางต่างจังหวัด', 'ลากิจ', 'ไปทำธุระต่างจังหวัด', '3/7/2023', '5/7/2023',<div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-success" text="อนุมัติ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>,
-          <div className="flex justify-center gap-2">
-            <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
-            <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
-          </div>
-        ]
+  const MuiTableData = {
+    data:[
+        {title:"ลาป่วย", type:"ลาป่วย", detail:"มีไข้สูง นอนโรงพยาบาล", date_start:"2022-10-21", date_end:"2022-10-23",status: "waiting", ED:<EditDelete/>, view:<ModalButton callback={()=>handleView(setModal)} classBtn="btn btn-outline-primary" setModalShow={setModalShow} icon={faEye}/> },
     ],
-    // data:[
-    //   {heading:"",leave_type:"",description:"",date_start:"",date_end:"",status:"success",ED:<EditDelete/>,view:<ModalButton callback={handleFilterData} classBtn="btn btn-outline-primary" setModalShow={setModalShow} icon={faEye}/>},
-    // ]
-  } 
-  const [dataTable, setDataTable] = useState(initial);
+    columns: [
+      {title: "",field: "ED"},
+      {title: "หัวเรื่อง",field: "title", },
+      {title: "ประเภทการลา",field: "type",},
+      {title: "รายละเอียด",field: "detail",},
+      {title: "เริ่มลาวันที่",field: "date_start", },
+      {title: "ถึงวันที่",field: "date_end", },
+      {title: "สถานะ",field: "status", 
+        lookup:{
+          waiting: "รออนุมัติ", 
+          accept:"อนุมัติ", 
+          deny:"ไม่อนุมัติ",
+        }
+      },
+      {title: "",field: "view"},
+    ]
+}
  
-  const handleFilterData = (text) =>{
-      setDataTable({
-              ...initial, 
-              tbody:  initial.tbody.filter(item =>{
-              if ( item[5].props.children[0].props.text === text ) {
-                  return item
-              }else if(text === 'ทั้งหมด'){
-                  return item
-              }
-          })
-      })
-  }
-  const arr_obj = [
-    {value:'ทั้งหมด', text:'สถานะทั้งหมด'},
-    {value:'อนุมัติ', text:'อนุมัติ'},
-    {value:'รออนุมัติ', text:'รออนุมัติ'},
-    {value:'ไม่อนุมัติ', text:'ไม่อนุมัติ'},
-  ]
-
   const tableLeave = (
       <div className="container-fluid">
-        <div className="ms-auto w-1/4 text-end text-xl">
-          <SelectOptionWithLabel id="leave" label="สถานะ" options_arr_obj={arr_obj} callback={handleFilterData}/>
-        </div>
-          <TablesStriped data={dataTable}/>
+          <MuiTable data={MuiTableData.data} columns={MuiTableData.columns} title="ข้อมูลการลา"/>
       </div>
   )
 
   return (
     <>
         <h1 className="text-2xl"><FontAwesomeIcon icon={faClipboardList}/> การลา</h1>
-        <ModalButton icon={faPlus} text="ยื่นเรื่องการลา" classBtn="bg-green-500 text-white " setModalShow={setModalShow}/>
+        <div className="flex justify-end">
+          <ModalButton icon={faPlus} text="ยื่นเรื่องการลา" classBtn="btn btn-outline-primary" setModalShow={setModalShow} callback={()=>{}}/>
+        </div>
         <div className="mt-3">
           <Suspense fallback={<Skeleton/>}>
             <CardFillColorNonFooterShadow contentBody={tableLeave}/>
@@ -98,9 +84,41 @@ const Leave = () => {
         
 
         {/* modal */}
-        <ModalCardConfirm modalShow={modalShow} setModalShow={setModalShow} modalHead={Modal.mHead} modalBody={Modal.mBody} btnOkText="บันทึก" />
+        <ModalCardConfirm modalShow={modalShow} setModalShow={setModalShow} modalHead={modal.mHead} modalBody={modal.mBody} btnOkText="บันทึก" />
     </>
   )
+}
+
+const handleView = (setModal) =>{
+  setModal({
+    mHead: <h1 className="m-0 text-2xl"><FontAwesomeIcon icon={faClipboardList}/> ยื่นเรื่องการลา</h1>,
+    mBody:<>
+      <div className="container-fluid">
+        <form>
+          <div className="row">
+            <div className="col-12">
+              <InputGroupWithLabel id="title" label="หัวข้อการลา" placeholder="หัวข้อการลา" />
+            </div>
+            <div className="col-12">
+              <p className="m-0">ประเภทการลา</p>
+              <RadioInline id="affair" label="ลากิจ" value="0" name="leave"/>
+              <RadioInline id="sick" label="ลาป่วย" value="0" name="leave"/>
+              <RadioInline id="vacation" label="ลาพักผ่อน" value="0" name="leave"/>
+            </div>
+            <div className="col-md-6 col-12">
+              <InputGroupWithLabel id="date_start" type="date" label="ลาวันที่"/>
+            </div>
+            <div className="col-md-6 col-12">
+              <InputGroupWithLabel id="date_end" type="date" label="ถึงวันที่"/>
+            </div>
+            <div className="col-12">
+              <TextAreawithlabel id="description" label="รายละเอียดการลา"/>
+            </div>
+          </div>
+        </form>
+      </div>
+    </>
+  })
 }
 
 export default Leave
