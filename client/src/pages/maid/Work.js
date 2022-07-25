@@ -1,51 +1,51 @@
 import React, { useState,Suspense } from 'react'
 import { CardFillColorNonFooter } from '../../components/Cards';
-import { TablesStriped } from '../../components/Tables';
+import { MuiTable, TablesStriped } from '../../components/Tables';
 import { faCheckCircle, faCircleXmark,faPencil,faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Skeleton } from '../../components/Loading'
 import { lazily } from 'react-lazily';
+import EditDelete from '../../components/EditDelete';
+import { Bandage } from '../../components/Bandage';
 
 const { CardFillColorNonFooterShadow } =lazily(()=>import('../../components/Cards'))
 const Work = () => {
   const [name,setName] = useState ('');
   const dataTable = {
-    thead:['รหัส','รายละเอียดงาน','สถานที่','สถานะ'],
-    tbody:[
-      ['A','B','C',
-        <div className="flex justify-center gap-2">
-          <button className="btn btn-success"><FontAwesomeIcon icon={faCheckCircle}/></button>
-          <button className="btn btn-danger"><FontAwesomeIcon icon={faCircleXmark}/></button>
-        </div>,
-        <div className="flex justify-center gap-2">
-          <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
-          <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
-       </div>
+    data:[
+      {id:"A",description:"B",location:"C",status:"success",ED:<EditDelete/>}
     ],
-    ['C','D','E',
-      <div className="flex justify-center gap-2">
-        <button className="btn btn-success"><FontAwesomeIcon icon={faCheckCircle}/></button>
-        <button className="btn btn-danger"><FontAwesomeIcon icon={faCircleXmark}/></button>
-     </div>,
-      <div className="flex justify-center gap-2">
-        <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
-        <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
-      </div>
-    ]
+    columns:[
+      {title:"รหัส",field:"id"},
+      {title:"รายละเอียดงาน",field:"description"},
+      {title:"สถานที่",field:"location"},
+      {title:"สถานะ",field:"status",
+           lookup:{
+              success:<Bandage classBandage="bg-success" text="ดำเนินการเสร็จสิ้น"/>, 
+              deny:<Bandage classBandage="bg-danger" text="ปฏิเสธ"/>,
+              
+          }
+      },
+      {title:"",field:"ED"}
     ]
   }
   const datatTable1 ={
-    thead:['รหัส','รายละเอียดงาน','สถานที่','เวลาเข้า-ออก','สถานะ'],
-    tbody:[
-      ['A','B','C','12.00',
-        <div className="flex justify-center gap-2">
-          <button className="btn btn-success"><FontAwesomeIcon icon={faCheckCircle}/></button>
-      </div>
+    data:[
+      {id:"A",description:"B",location:"C",date_time:"12.00",status:"deny"}
     ],
-    ['C','D','E',11.00,
-      <div className="flex justify-center gap-2">
-        <button className="btn btn-danger"><FontAwesomeIcon icon={faCircleXmark}/></button>
-      </div>]
+    columns:[
+      {title:"รหัส",field:"id"},
+      {title:"รายละเอียดงาน",field:"description"},
+      {title:"สถานที่",field:"location"},
+      {title:"เวลาเข้า-ออก",field:"date_time"},
+      {title:"สถานะ",field:"status",
+          lookup:{
+            success:<Bandage classBandage="bg-success" text="ดำเนินการเสร็จสิ้น"/>, 
+            deny:<Bandage classBandage="bg-danger" text="ปฏิเสธ"/>,
+           
+          }
+      },
+
     ]
   }
  
@@ -55,7 +55,7 @@ const Work = () => {
             <h1 className="text-xl"> รายการงาน</h1>
             <hr />
               <Suspense fallback={<Skeleton/>}>
-                <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStriped data={dataTable} id="_table1"/>}/>
+                <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<MuiTable data={dataTable.data} columns={dataTable.columns} title=""/>}/>
               </Suspense>
         </div>
     </>
@@ -66,7 +66,7 @@ const Work = () => {
           <h1 className="text-xl"> งานที่ทำเสร็จแล้ว</h1>
             <hr />
             <Suspense fallback={<Skeleton/>}>
-              <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<TablesStriped data={datatTable1} id="_table2"/>}/>
+              <CardFillColorNonFooterShadow classCard="mt-4" contentBody={<MuiTable data={datatTable1.data} columns={datatTable1.columns} title=""/>}/>
             </Suspense>
         </div>
     </>

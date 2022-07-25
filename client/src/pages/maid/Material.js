@@ -144,7 +144,7 @@ const handleView = (setModal) =>{
                           <li>2022-02-21</li>
                           <li>ตึก A</li>
                           <li>A202</li>
-                          <li><Bandage classBandage="bg-primary" text="กำลังดำเนินการซ่อม"/></li>
+                          <li><Bandage classBandage="bg-primary" text="กำลังดำเนินการ"/></li>
                       </ul>
                   </div>
               </div>

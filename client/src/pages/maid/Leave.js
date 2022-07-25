@@ -7,6 +7,7 @@ import { ModalButton, ModalCardConfirm } from '../../components/Modals'
 import { TablesStriped } from '../../components/Tables'
 import { Skeleton } from '../../components/Loading'
 import { lazily } from 'react-lazily'
+import EditDelete from '../../components/EditDelete'
 
 const { CardFillColorNonFooterShadow } =lazily(()=>import('../../components/Cards'))
 const Leave = () => {
@@ -49,20 +50,11 @@ const Leave = () => {
             <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
             <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
           </div>
-        ],
-        ['ลาเที่ยว', 'ลาพักร้อน', 'เที่ยวต่างจังหวัดกับครอบครัว', '6/7/2023', '12/7/2023', <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-danger" text="ไม่อนุมัติ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>,
-          <div className="flex justify-center gap-2">
-            <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
-            <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
-         </div>
-        ],
-        ['ไม่สบาย', 'ลาป่วย', 'ไข้สูง ตัวร้อน', '7/8/2023', '15/8/2023', <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-warning" text="รออนุมัติ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>,
-          <div className="flex justify-center gap-2">
-            <button className="text-warning"><FontAwesomeIcon icon={faPencil}/></button>
-            <button className="text-danger"><FontAwesomeIcon icon={faTrash}/></button>
-         </div>
-        ],
-    ]
+        ]
+    ],
+    // data:[
+    //   {heading:"",leave_type:"",description:"",date_start:"",date_end:"",status:"success",ED:<EditDelete/>,view:<ModalButton callback={handleFilterData} classBtn="btn btn-outline-primary" setModalShow={setModalShow} icon={faEye}/>},
+    // ]
   } 
   const [dataTable, setDataTable] = useState(initial);
  

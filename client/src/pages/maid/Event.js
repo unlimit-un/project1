@@ -1,52 +1,62 @@
 import { faCheckCircle, faCircleXmark, faHome } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState,Suspense } from 'react'
-import { TablesStriped } from '../../components/Tables'
+import { MuiTable, TablesStriped } from '../../components/Tables'
 import { Skeleton } from '../../components/Loading'
 import { lazily } from 'react-lazily'
+import { Bandage } from '../../components/Bandage'
 
 const { CardFillColorNonFooterShadow } =lazily(()=>import('../../components/Cards'))
 const Event = () => {
 
   const [dataTable, setDataTable] = useState({
-    thead:['รหัส', 'รายละเอียดงาน', 'สถานที่', 'เริ่มวันที่', 'ถึงวันที่', 'สถานะ'],
-    tbody:[
-      [
-        'A315434', 'ทำความสะอาด', 'ตึกA A202', '3/7/2023', '5/7/2023', 
-        <div className="flex justify-center gap-2">
-          <button className="btn btn-success"><FontAwesomeIcon icon={faCheckCircle}/></button>
-          <button className="btn btn-danger"><FontAwesomeIcon icon={faCircleXmark}/></button>
-        </div>
-      ],
-      [
-        'A315435', 'ทำความสะอาด', 'ตึกA A202', '3/7/2023', '5/7/2023', 
-        <div className="flex justify-center gap-2">
-          <button className="btn btn-success"><FontAwesomeIcon icon={faCheckCircle}/></button>
-          <button className="btn btn-danger"><FontAwesomeIcon icon={faCircleXmark}/></button>
-        </div>
-      ],
+    data:[
+      {id:"A315434",description:"ทำความสะอาด",location:"ตึกA A202",date_start:"3/7/2023",date_end:"5/7/2023",status:"success"}
+    ],
+    columns:[
+      {title:"รหัส",field:"id"},
+      {title:"รายละเอียดงาน",field:"description"},
+      {title:"สถานที่",field:"location"},
+      {title:"เริ่มวันที่",field:"date_start"},
+      {title:"ถึงวันที่",field:"date_end"},
+      {title:"สถานะ",field:"status",
+        lookup:{
+          success:<Bandage classBandage="bg-success" text="ดำเนินการเสร็จสิ้น"/>, 
+          deny:<Bandage classBandage="bg-danger" text="ปฏิเสธ"/>,
+          
+        }
+      },
     ]
+
   } );
   const [doneTable, setDoneTable] = useState({
-    thead:['รหัส', 'รายละเอียดงาน', 'สถานที่', 'เริ่มวันที่', 'ถึงวันที่', 'สถานะ'],
-    tbody:[
-      [
-        'A315433', 'ทำความสะอาด', 'ตึกA A202', '3/7/2023', '5/7/2023', 
-        <div className="flex justify-center gap-2">
-          <button className="btn btn-success" disabled><FontAwesomeIcon icon={faCheckCircle}/></button>
-        </div>
-      ],
+    data:[
+      {id:"A315434",description:"ทำความสะอาด",location:"ตึกA A202",date_start:"3/7/2023",date_end:"5/7/2023",status:"success"}
+    ],
+    columns:[
+      {title:"รหัส",field:"id"},
+      {title:"รายละเอียดงาน",field:"description"},
+      {title:"สถานที่",field:"location"},
+      {title:"เริ่มวันที่",field:"date_start"},
+      {title:"ถึงวันที่",field:"date_end"},
+      {title:"สถานะ",field:"status",
+        lookup:{
+          success:<Bandage classBandage="bg-success" text="ดำเนินการเสร็จสิ้น"/>, 
+          deny:<Bandage classBandage="bg-danger" text="ปฏิเสธ"/>,
+          
+        }
+      },
     ]
   } );
 
   const workList = (
       <div className="container-fluid">
-          <TablesStriped data={dataTable} id="workTable"/>
+          <MuiTable data={dataTable.data} columns={dataTable.columns} title="งานที่ต้องทำ"/>
       </div>
   )
   const doneList = (
       <div className="container-fluid">
-          <TablesStriped data={doneTable} id="doneTable"/>
+          <MuiTable data={doneTable.data} columns={doneTable.columns} title="งานที่ทำเสร็จ"/>
       </div>
   )
 

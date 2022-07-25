@@ -47,7 +47,7 @@ const Repair = () => {
     thead:['ปัญหา', 'สถานที่', 'ห้อง', 'วันที่แจ้ง', 'สถานะ', ''],
     tbody:[
         ['อ่างล้างหน้าแตก', 'ตึก A', 'A202', '3/7/2023', 
-          <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-success" text="อนุมัติ"/><ModalButton icon={faEye} setModalShow={setModalShow} /></div>, 
+          <div className="flex justify-around items-baseline gap-2 text-center"><Bandage classBandage="bg-success" text="อนุมัติ"/><ModalButton icon={faEye} setModalShow={setModalShow} callback={()=>{}} /></div>, 
           <div className="flex justify-center gap-2">
             <FontAwesomeIcon icon={faPencil} className="text-warning"/>
             <FontAwesomeIcon className="text-danger" icon={faTrashAlt}/>
@@ -58,18 +58,6 @@ const Repair = () => {
   } 
   const [dataTable, setDataTable] = useState(initial);
  
-  const handleFilterData = (text) =>{
-      setDataTable({
-              ...initial, 
-              tbody:  initial.tbody.filter(item =>{
-              if ( item[4].props.children[0].props.text === text ) {
-                  return item
-              }else if(text === 'ทั้งหมด'){
-                  return item
-              }
-          })
-      })
-  }
   const arr_obj = [
     {value:'ทั้งหมด', text:'สถานะทั้งหมด'},
     {value:'อนุมัติ', text:'อนุมัติ'},
@@ -80,7 +68,7 @@ const Repair = () => {
   const tableLeave = (
       <div className="container-fluid">
         <div className="ms-auto w-1/4 text-end text-xl">
-          <SelectOptionWithLabel id="leave" label="สถานะ" options_arr_obj={arr_obj} callback={handleFilterData}/>
+          <SelectOptionWithLabel id="leave" label="สถานะ" options_arr_obj={arr_obj} />
         </div>
           <TablesStriped data={dataTable}/>
       </div>
