@@ -6,7 +6,7 @@ import Logo from '../../../assets/Logo.jpg'
 import {  faPencil, faPlus, faSave, faTrash,faUserPlus, faUserTie  } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {Link} from 'react-router-dom'
-import EditDelete from '../../../components/EditDelete'
+import { EditDelete } from '../../../components/EditDelete'
 import { Skeleton } from '@mui/material'
 import { lazily } from 'react-lazily'
 

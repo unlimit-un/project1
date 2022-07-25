@@ -9,7 +9,7 @@ import { Tab, Tabs } from 'react-bootstrap'
 import {Spiner} from '../../../components/Loading'
 import { Bandage } from '../../../components/Bandage'
 import { MuiTable, TablesStriped } from '../../../components/Tables'
-import EditDelete from '../../../components/EditDelete'
+import { EditDelete } from '../../../components/EditDelete'
 
 // const TablesStriped = lazy(()=> import('../../../components/Tables').then(module=> ({default: module.TablesStriped})))
 export const TeamManage = () =>{

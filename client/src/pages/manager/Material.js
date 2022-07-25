@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { Suspense } from 'react'
 import { lazily } from 'react-lazily'
 import { Skeleton } from '../../components/Loading'
-import EditDelete from '../../components/EditDelete'
+import { EditDelete } from '../../components/EditDelete'
 import { CardFillColorNonFooter } from '../../components/Cards'
 // import { FilterTable } from '../../components/Tables'
 const { MuiTable } = lazily(()=>import('../../components/Tables'))

@@ -40,7 +40,7 @@ export const InputGroupIconsSupfix = ({type, placeholder, callback, icon}) =>{
     )
 }
 
-export const InputGroupWithLabel= ({type, callback, id, label, disable, placeholder}) =>{
+export const InputGroupWithLabel= ({type, callback, id, label, disable, placeholder, defaultValue}) =>{
     return (
         <>
             <div className="mb-3">
@@ -54,6 +54,7 @@ export const InputGroupWithLabel= ({type, callback, id, label, disable, placehol
                     placeholder={placeholder}
                     onChange={callback}
                     autoComplete="off"
+                    defaultValue={defaultValue}
               />
             </div>
         </>

@@ -4,7 +4,7 @@ import React, { Suspense, useState,useEffect,useRef } from 'react'
 import { lazily } from 'react-lazily';
 import { Bandage } from '../../../components/Bandage';
 // import { CardFillColorNonFooter } from '../../../components/Cards';
-import EditDelete from '../../../components/EditDelete';
+import { EditDelete } from '../../../components/EditDelete';
 import { InputGroupWithLabel, SelectOptionWithLabel } from '../../../components/FormElements';
 import { Skeleton } from '../../../components/Loading';
 import { ModalCard, ModalButton } from '../../../components/Modals';
@@ -28,7 +28,7 @@ export const LeaveType = () => {
             {title: "วันที่เพิ่มข้อมูล",field: "date"},
             {title: "",field: "ED"}
         ]
-        } 
+    } 
     // const [dataTable, setDataTable] = useState(initial);
     const tableForm = (
         <div className="container-fluid">

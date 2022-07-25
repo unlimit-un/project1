@@ -8,7 +8,7 @@ import { ModalCard, ModalButton } from '../../components/Modals'
 // import { TablesStriped } from '../../components/Tables'
 import { lazily } from 'react-lazily'
 import { Skeleton } from '../../components/Loading'
-import EditDelete from '../../components/EditDelete'
+import { EditDelete } from '../../components/EditDelete'
 
 
 

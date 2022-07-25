@@ -6,7 +6,7 @@ import { ModalCard,ModalButton } from '../../components/Modals'
 import { Bandage } from '../../components/Bandage'
 // import { MuiTable  } from '../../components/Tables'
 import { Skeleton } from '../../components/Loading'
-import EditDelete from '../../components/EditDelete'
+import { EditDelete } from '../../components/EditDelete'
 import { SidebarRightManager } from '../../components/structure/SidebarM'
 import { lazily } from 'react-lazily'
 

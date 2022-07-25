@@ -10,6 +10,9 @@ export const ModalCard = ({modalHead, modalBody, modalShow, setModalShow}) => {
             onHide={()=>setModalShow(false)}
             size="lg"
             centered
+            contentClassName="transition-all duration-500"
+            className="transition-all duration-500"
+            dialogClassName="transition-all duration-500"
         >
         <Modal.Header closeButton>
             <Modal.Title>
@@ -54,7 +57,7 @@ export const ModalCardConfirm = ({modalHead, modalBody, modalShow, setModalShow,
   )
 }
 
-export const ModalButton = ({setModalShow, icon, text ,classBtn, callback}) =>{
+export const ModalButton = ({setModalShow, icon, text ,classBtn, callback, modalShow}) =>{
     if (!classBtn) {
         classBtn = 'btn btn-outline-primary !text-sm w-1/2'
     }

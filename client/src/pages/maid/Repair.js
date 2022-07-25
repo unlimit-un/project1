@@ -7,7 +7,7 @@ import { ModalButton, ModalCardConfirm } from '../../components/Modals'
 import { MuiTable, TablesStriped } from '../../components/Tables'
 import { Skeleton } from '../../components/Loading'
 import { lazily } from 'react-lazily'
-import EditDelete from '../../components/EditDelete'
+import { EditDelete } from '../../components/EditDelete'
 
 const { CardFillColorNonFooterShadow } =lazily(()=>import('../../components/Cards'))
 const Repair = () => {

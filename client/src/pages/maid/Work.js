@@ -5,7 +5,7 @@ import { faCheckCircle, faCircleXmark,faPencil,faTrash } from '@fortawesome/free
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Skeleton } from '../../components/Loading'
 import { lazily } from 'react-lazily';
-import EditDelete from '../../components/EditDelete';
+import { EditDelete } from '../../components/EditDelete';
 import { Bandage } from '../../components/Bandage';
 
 const { CardFillColorNonFooterShadow } =lazily(()=>import('../../components/Cards'))
