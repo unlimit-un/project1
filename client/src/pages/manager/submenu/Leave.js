@@ -123,7 +123,7 @@ export const Leave = () => {
 
     const datainitial = {
         data:[
-            {name: 'unlimit', leave_type:"ลากิจ unarn", subject:"ไปทำธุระต่างจังหวัด", date_start:"3/7/2023", date_end:"5/7/2023", status:"processing", ED:<EditDelete/>, view:<ModalButton classBtn="btn btn-outline-primary" setModalShow={setModalShow} icon={faEye}/> },
+            {name: 'unlimit', leave_type:"ลากิจ unarn", subject:"ไปทำธุระต่างจังหวัด", date_start:"3/7/2023", date_end:"5/7/2023", status:"processing", ED:<EditDelete/>, view:<ModalButton classBtn="btn btn-outline-primary" setModalShow={setModalShow} callback={()=>{}} icon={faEye}/> },
         ],
         columns:[
             {title:"",field:"ED"},
