@@ -1,4 +1,4 @@
-import { faEye } from '@fortawesome/free-solid-svg-icons'
+import { faCheckCircle, faEye } from '@fortawesome/free-solid-svg-icons'
 import React, { Suspense, useState } from 'react'
 // import { CardFillColorNonFooter } from '../../components/Cards'
 import { Skeleton } from '../../../components/Loading'
@@ -14,7 +14,7 @@ export const Workdept = () => {
   const [modalShow, setModalShow] = useState(false)
   const datatableworkdapt = {
       data:[
-        {id:"A102",description:"ซ่อมไฟ",location:"ตึก A",room:"A305",date_time:"26/7/2565",view:<ModalButton classBtn="btn btn-outline-primary" setModalShow={setModalShow} callback={()=>{}} icon={faEye}/>},
+        {id:"A102",description:"ซ่อมไฟ",location:"ตึก A",room:"A305",date_time:"26/7/2565",view:<button className="btn btn-success "><FontAwesomeIcon icon={faCheckCircle}/></button>},
       ],
       columns:[
         {title:"รหัส",field:"id"},
@@ -41,14 +41,6 @@ export const Workdept = () => {
     ),
     mBody:(
       <>
-        <div className="row">
-          <div className="col-12">
-            
-              <button className="btn btn-success w-1/4" >ยืนยัน</button>
-              <button className="btn btn-danger w-1/4" >ยกเลิก</button>
-            
-          </div>
-        </div>
       </>
     )
   }
@@ -59,10 +51,6 @@ export const Workdept = () => {
         </Suspense>
           
           <ModalCard modalShow={modalShow} setModalShow={setModalShow} modalBody={Modal.mBody} modalHead={Modal.mHead}/>
-        <div>
-          <button className="btn btn-success w-1/4" >ยืนยัน</button>
-          <button className="btn btn-danger w-1/4" >ยกเลิก</button>
-      </div>
     </>
   )
 }
