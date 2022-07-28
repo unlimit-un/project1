@@ -268,17 +268,7 @@ export const MaidDuty = () =>{
     const contentDutyAssign = (
         <>
             <div className="container-fluid">
-                <h1 className="text-xl"><FontAwesomeIcon icon={faTable}/> จัดการงานแม่บ้าน</h1>
-                <hr />
-                <div className="row items-center">
-                    <div className="col-md-8 col-12">
-                        <SelectOptionWithLabel id="date_id" label="วันที่ทำเวร" options_arr_obj={days_options}/>
-                    </div>
-                    <div className="col-md-4 col-12">
-                        <button className="btn btn-outline-primary w-full mt-3"><FontAwesomeIcon icon={faSearch}/> ค้นหา</button>
-                    </div>
-                </div>
-                
+                <h1 className="text-xl"><FontAwesomeIcon icon={faTable}/> จัดการงานแม่บ้าน</h1>                
                 <CardFillColorHeader 
                     contentHeader={<h1 className="text-lg m-0">รายชื่อพนักงาน</h1>} 
                     contentBody={<MuiTable data={dataTableDutyAssign.data} columns={dataTableDutyAssign.columns} title=""/>}

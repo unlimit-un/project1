@@ -7,6 +7,7 @@ import { LinkMenuM, SubMenuLink } from '../LinkMenuM';
 import {SignOutFunc} from '../../functions/AuthFunc'
 import { useNavigate } from 'react-router-dom';
 import { ListGroupFlushWithLink } from '../ListGroup';
+import { axiosGet } from '../../functions/AxiosCustom';
 
 export const SidebarLeftManager = () => {
     const [open, setOpen] = useState({
@@ -27,6 +28,24 @@ export const SidebarLeftManager = () => {
     const [classTogglePerson, setClassTogglePerson] = useState("");
     const [classToggleSchedual, setClassToggleSchedual] = useState("");
     const [classToggleLeave, setClassToggleLeave] = useState("");
+    const [userData, setUserData] = useState({});
+
+    const ROOT_SERVER =`http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}`;
+    
+    const LoadUsername = async () =>{
+        try {
+            const {data:{user_id}} = await axiosGet(`${ROOT_SERVER}/api/checkToken`);
+            const {data} = await axiosGet(`${ROOT_SERVER}/api/manager/getUserData?user_id=${user_id}`);
+            
+            return data;
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    useEffect(()=>{
+        console.log(LoadUsername());
+    },[])
     
     useEffect(()=>{
         open.person.status?setClassTogglePerson("!text-white !bg-blue-500"): setClassTogglePerson("")
@@ -241,8 +260,8 @@ export const SidebarLeftMaid = () => {
                                 <Collapse in={open.work.status}>
                                     <div id={open.work.id} className="py-2">
                                         <ul className=" px-3 ">
-                                            <SubMenuLink label={"งานที่ต้องทำ"} path="/maid/work/todo"/>
-                                            <SubMenuLink label={"งานที่เสร็จแล้ว"} path="/maid/work/done"/>
+                                            <SubMenuLink label={"ตารางเวร"} path="/maid/work/schedule"/>
+                                            <SubMenuLink label={"งาน"} path="/maid/work/todo"/>
                                         </ul>
                                     </div>
                                 </Collapse>

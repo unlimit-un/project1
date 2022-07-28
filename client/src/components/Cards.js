@@ -75,3 +75,17 @@ export const CardFillColorHeader = ({contentBody, classCard, classBody, classCar
   )
   
 }
+
+export const EmptyCard = ({contentBody, classCard, classBody,}) => {
+ 
+  return (
+      <>
+        <div className={`${classCard}`}>
+          <div className={`${classBody}`}>
+            {contentBody}
+          </div>
+        </div>
+      </>
+  )
+  
+}
