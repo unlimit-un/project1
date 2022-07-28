@@ -7,9 +7,9 @@ import { LinkMenuM, SubMenuLink } from '../LinkMenuM';
 import {SignOutFunc} from '../../functions/AuthFunc'
 import { useNavigate } from 'react-router-dom';
 import { ListGroupFlushWithLink } from '../ListGroup';
-import { axiosGet } from '../../functions/AxiosCustom';
 import * as EngineerController from '../../controllers/engineer/UserControllers'
 import * as MaidControllers from '../../controllers/maid/UserControllers'
+import * as ManagerController from '../../controllers/manager/UserControllers'
 
 export const SidebarLeftManager = () => {
     const [open, setOpen] = useState({
@@ -30,25 +30,16 @@ export const SidebarLeftManager = () => {
     const [classTogglePerson, setClassTogglePerson] = useState("");
     const [classToggleSchedual, setClassToggleSchedual] = useState("");
     const [classToggleLeave, setClassToggleLeave] = useState("");
-    const [userData, setUserData] = useState({});
-
+    const [userData, setUserData] = useState({})
     
-
-    const ROOT_SERVER =`http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}`;
-    
-    const LoadUsername = async () =>{
-        try {
-            const {data:{user_id}} = await axiosGet(`${ROOT_SERVER}/api/checkToken`);
-            const {data} = await axiosGet(`${ROOT_SERVER}/api/manager/getUserData?user_id=${user_id}`);
-            
-            return data;
-        } catch (error) {
-            console.error(error)
-        }
+    const loadUserData = async () =>{
+        const userData = await ManagerController.getUserData();
+        setUserData(userData[0])
+        console.log(userData[0]);
     }
 
     useEffect(()=>{
-        console.log(LoadUsername());
+        loadUserData();
     },[])
     
     useEffect(()=>{
@@ -80,7 +71,7 @@ export const SidebarLeftManager = () => {
                 <div className="flex flex-col items-center">
                     <div className="flex flex-col items-center mt-4 mb-3">
                         <img src={Logo} alt="business-man.png" className="w-20 h-20 rounded-circle shadow"/>
-                        <p className="m-2 text-lg">Unlimit unarn</p>
+                        <p className="m-2 text-lg">{userData['manager_name']} {userData['manager_surname']}</p>
                         <small>หัวหน้างาน</small>
                     </div>
                     <div className="w-full">
