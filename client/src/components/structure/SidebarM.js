@@ -8,6 +8,7 @@ import {SignOutFunc} from '../../functions/AuthFunc'
 import { useNavigate } from 'react-router-dom';
 import { ListGroupFlushWithLink } from '../ListGroup';
 import { axiosGet } from '../../functions/AxiosCustom';
+import * as EngineerController from '../../controllers/engineer/UserControllers'
 
 export const SidebarLeftManager = () => {
     const [open, setOpen] = useState({
@@ -29,6 +30,8 @@ export const SidebarLeftManager = () => {
     const [classToggleSchedual, setClassToggleSchedual] = useState("");
     const [classToggleLeave, setClassToggleLeave] = useState("");
     const [userData, setUserData] = useState({});
+
+    
 
     const ROOT_SERVER =`http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}`;
     
@@ -363,7 +366,18 @@ export const SidebarLeftEn = () => {
     const [classToggleWork, setClassToggleWork] = useState("");
     const [classToggleActivity, setClassToggleActivity] = useState("");
     const [classToggleLeave, setClassToggleLeave] = useState("");
-    
+    const [userData, setUserData] = useState({})
+
+    const LoadUserData = async () =>{
+        const userData = await EngineerController.getUserData();
+        setUserData(userData[0]);
+        console.log(userData[0]);
+    }
+
+    useEffect(()=>{
+        LoadUserData();
+    },[])
+
     useEffect(()=>{
         open.work.status?setClassToggleWork("!text-white !bg-blue-500") : setClassToggleWork("")
         open.event.status?setClassToggleActivity("!text-white !bg-blue-500") : setClassToggleActivity("")
@@ -389,8 +403,8 @@ export const SidebarLeftEn = () => {
                 <div className="flex flex-col items-center">
                     <div className="flex flex-col items-center mt-4 mb-3">
                         <img src={Logo} alt="business-man.png" className="w-20 h-20 rounded-circle shadow"/>
-                        <p className="m-2 text-lg">nik nik</p>
-                        <small className='text-center'>ช่างซ่อม<br/>(ช่างซ่อมทั่วไป)</small>
+                        <p className="m-2 text-lg">{userData['engineer_name']} {userData['engineer_surname']}</p>
+                        <small className='text-center'>ช่างซ่อม<br/>{userData['dept_name']}</small>
                     </div>
                     <div className="w-full">
                         <ul className=" text-sm m-1 p-2">
