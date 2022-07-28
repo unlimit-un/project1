@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { ListGroupFlushWithLink } from '../ListGroup';
 import { axiosGet } from '../../functions/AxiosCustom';
 import * as EngineerController from '../../controllers/engineer/UserControllers'
+import * as MaidControllers from '../../controllers/maid/UserControllers'
 
 export const SidebarLeftManager = () => {
     const [open, setOpen] = useState({
@@ -216,6 +217,17 @@ export const SidebarLeftMaid = () => {
     const [classToggleWork, setClassToggleWork] = useState("");
     const [classToggleActivity, setClassToggleActivity] = useState("");
     const [classToggleLeave, setClassToggleLeave] = useState("");
+    const [userdata ,setUserData] = useState({})
+
+    const loadUserData = async () =>{
+        const userData = await MaidControllers.GetUserData();
+        setUserData(userData[0])
+    }
+    
+   
+    useEffect(()=>{
+        loadUserData();
+    },[])
     
     useEffect(()=>{
         open.work.status?setClassToggleWork("!text-white !bg-blue-500") : setClassToggleWork("")
@@ -242,7 +254,7 @@ export const SidebarLeftMaid = () => {
                 <div className="flex flex-col items-center">
                     <div className="flex flex-col items-center mt-4 mb-3">
                         <img src={Logo} alt="business-man.png" className="w-20 h-20 rounded-circle shadow"/>
-                        <p className="m-2 text-lg">min min</p>
+                        <p className="m-2 text-lg">{userdata['maid_name']} {userdata['maid_surname']} </p>
                         <small>แม่บ้าน</small>
                     </div>
                     <div className="w-full">
