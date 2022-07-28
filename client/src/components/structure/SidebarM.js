@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { ListGroupFlushWithLink } from '../ListGroup';
 import * as EngineerController from '../../controllers/engineer/UserControllers'
 import * as MaidControllers from '../../controllers/maid/UserControllers'
-import * as ManagerController from '../../controllers/manager/UserControllers'
+import * as ManagerController from '../../controllers/manager/UsersControllers'
 
 export const SidebarLeftManager = () => {
     const [open, setOpen] = useState({
