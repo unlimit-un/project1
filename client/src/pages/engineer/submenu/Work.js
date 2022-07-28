@@ -1,4 +1,4 @@
-import { faCheckCircle, faEye } from '@fortawesome/free-solid-svg-icons'
+import { faCheckCircle, faEye, faXmark } from '@fortawesome/free-solid-svg-icons'
 import React, { Suspense, useState } from 'react'
 // import { CardFillColorNonFooter } from '../../components/Cards'
 import { Skeleton } from '../../../components/Loading'
@@ -31,26 +31,13 @@ export const Workdept = () => {
         <MuiTable data={datatableworkdapt.data} columns={datatableworkdapt.columns} title="รายการงานแผนก"/>
     </Suspense>
     
-  )
-
-  const Modal = {
-    mHead:(
-      <>
-        <div></div>
-      </>
-    ),
-    mBody:(
-      <>
-      </>
-    )
-  }
+  ) 
+  
   return (
     <>
         <Suspense fallback={<Skeleton/>}>
           <CardFillColorNonFooter contentBody={tableworkdapt}/>
         </Suspense>
-          
-          <ModalCard modalShow={modalShow} setModalShow={setModalShow} modalBody={Modal.mBody} modalHead={Modal.mHead}/>
     </>
   )
 }
@@ -58,7 +45,13 @@ export const Workdept = () => {
 export const Work = () => {
     const datatablework = {
         data:[
-          {id:"A102",description:"ซ่อมไฟ",location:"ตึก A",room:"A305",date_time:"26/7/2565",status:"processing"},
+          {id:"A102",description:"ซ่อมไฟ",location:"ตึก A",room:"A305",date_time:"26/7/2565",status:"processing"
+            ,view:
+            <div className="flex gap-2">
+                <button className="btn btn-success "><FontAwesomeIcon icon={faCheckCircle}/></button>
+                <button className="btn btn-danger "><FontAwesomeIcon icon={faXmark}/></button>
+            </div>
+          },
         ],
         columns:[
           {title:"รหัส",field:"id"},
@@ -72,7 +65,8 @@ export const Work = () => {
               success:"ดำเนินการเสร็จสิ้น", 
               unable:"ไม่สามารถดำเนินการได้",
             }
-          }
+          },
+          {title:"",field:"view"}
         ]
     }
 
