@@ -105,5 +105,7 @@ app.post('/api/non_auth/login', async (req, res)=>{
 
 app.use('/api', auth, require('./services/auth/route'))
 app.use('/api/manager', auth, require('./services/other/manager/router'))
+app.use('/api/engineer', auth, require('./services/other/engineer/router'))
+app.use('/api/maid', auth, require('./services/other/maid/router'))
  
 module.exports = app; 
