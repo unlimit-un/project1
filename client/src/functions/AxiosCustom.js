@@ -1,5 +1,5 @@
 import axios from "axios";
-
+export const ROOT_SERVER =`http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}`
 export const axiosGet = async (uri) =>{
     const data = await axios.get(
         `${uri}`, 
