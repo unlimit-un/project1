@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { pre_dataBarChart, pre_dataPieChart } from '../../functions/PrepareChartData'
 import { Skeleton, Spiner } from '../../components/Loading'
 import { lazily } from 'react-lazily'
+import { getNotifyRepairBarChart, getNotifyRepairPieChart } from '../../controllers/manager/HomeController'
 
 const {CardFillColor} = lazily(()=>import('../../components/Cards'));
 const {BarChart, PieChart} = lazily(()=>import('../../components/Charts'));
@@ -24,24 +25,62 @@ const Homepage = () => {
     const {pathname} = useLocation();
 
     const ref = useRef(null)
+    const [pieChartDataSets, setPieChartDataSets] = useState([])
+    const [labelPieChart, setLabelPieChart] = useState([])
 
-    useEffect(() => {
-    
-        checkAutoRedirectUser(navigate, pathname);
-        setDataSetsRepair([
+    const loadPieChart = async () =>{
+        const pieChartData = await getNotifyRepairPieChart();
+        setLabelPieChart([...pieChartData.map(item=>item.note)])
+        setPieChartDataSets([
             {
-                label: 'รายการที่ซ่อมเสร็จแล้ว',
+                data: [...pieChartData.map(item=>item.count)],
+                backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(255, 159, 64, 0.2)',
+                ],
+                borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(255, 159, 64, 1)',
+                ],
+                borderWidth: 1,
+            }
+        ])
+        
+
+        
+    }
+
+    const loadBarChartRepair = async () =>{
+        const barChartData = await getNotifyRepairBarChart();
+        const countData =barChartData.map(item=>item.count);
+        const label = barChartData.map(item=>item.note);
+        console.log(barChartData);
+        let arr = []
+        for (let i = 0; i < label.length; i++) {
+            arr.push({
+                label: label[i],
                 data: arr_data.data.map((data)=> data + Math.random()*100),
                 borderColor: 'rgb(255, 99, 132)',
                 backgroundColor: 'rgba(255, 99, 132, 0.5)',
-            },
-            {
-                label: 'รายการที่รอดำเนินการ',
-                data: arr_data.data.map((data)=> data + Math.random()*100),
-                borderColor: 'rgb(53, 162, 235)',
-                backgroundColor: 'rgba(53, 162, 235, 0.5)',
-            },
-        ])
+            })
+        }
+        console.log(arr);
+        setDataSetsRepair(arr)
+    }
+
+    useEffect(() => {
+        checkAutoRedirectUser(navigate, pathname);
+
+        loadPieChart();
+        loadBarChartRepair();
         setDataSetsLeaveRole(
             [{
                 label: 'ลาป่วย',
@@ -91,7 +130,7 @@ const Homepage = () => {
     const dataChartLeave = pre_dataBarChart(labels,'top','สถิติการลาของสมาชิกทั้งหมด')
     const dataChartLeaveEngineer = pre_dataBarChart(labels,'top','สถิติการลาของช่าง', dataSetsLeaveRole)
     const dataChartLeaveMaid = pre_dataBarChart(labels,'top','สถิติการลาของแม่บ้าน', dataSetsLeaveRole)
-    const dataChartRepair = pre_dataPieChart(['รายการที่ซ่อมเสร็จแล้ว', 'รายการที่กำลังดำเนินการ',],'top','แผนภูมิการซ่อมทั้งหมด')
+    const dataChartRepair = pre_dataPieChart(labelPieChart,'top','แผนภูมิการซ่อมทั้งหมด', pieChartDataSets)
     const dataChartRepairBar = pre_dataBarChart(labels,'top','แผนภูมิการซ่อมทั้งหมด', dataSetsRepair)
   return (
     <>

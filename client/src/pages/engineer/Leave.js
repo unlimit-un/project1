@@ -7,7 +7,8 @@ import { ModalButton, ModalCardConfirm } from '../../components/Modals'
 import { MuiTable, TablesStriped } from '../../components/Tables'
 import { Skeleton } from '../../components/Loading'
 import { lazily } from 'react-lazily'
-import { EditDelete } from '../../components/EditDelete'
+import { Delete } from '../../components/EditDelete'
+import { getLeaveData } from '../../controllers/engineer/LeaveControllers'
 
 const { CardFillColorNonFooterShadow } =lazily(()=>import('../../components/Cards'))
 const Leave = () => {
@@ -43,26 +44,26 @@ const Leave = () => {
   })
 
   const MuiTableData = {
-    data:[
-        {title:"ลาป่วย", type:"ลาป่วย", detail:"มีไข้สูง นอนโรงพยาบาล", date_start:"2022-10-21", date_end:"2022-10-23",status: "waiting", ED:<EditDelete/>, view:<ModalButton callback={()=>handleView(setModal)} classBtn="btn btn-outline-primary" setModalShow={setModalShow} icon={faEye}/> },
-    ],
-    columns: [
-      {title: "",field: "ED"},
-      {title: "หัวเรื่อง",field: "title", },
-      {title: "ประเภทการลา",field: "type",},
-      {title: "รายละเอียด",field: "detail",},
-      {title: "เริ่มลาวันที่",field: "date_start", },
-      {title: "ถึงวันที่",field: "date_end", },
-      {title: "สถานะ",field: "status", 
-        lookup:{
-          waiting: "รออนุมัติ", 
-          accept:"อนุมัติ", 
-          deny:"ไม่อนุมัติ",
-        }
-      },
-      {title: "",field: "view"},
-    ]
-}
+      data:[
+          {title:"ลาป่วย", type:"ลาป่วย", detail:"มีไข้สูง นอนโรงพยาบาล", date_start:"2022-10-21", date_end:"2022-10-23",status: "waiting", ED:<Delete/>, view:<ModalButton callback={()=>handleView(setModal)} classBtn="btn btn-outline-primary" setModalShow={setModalShow} icon={faEye}/> },
+      ],
+      columns: [
+        {title: "",field: "ED"},
+        {title: "หัวเรื่อง",field: "title", },
+        {title: "ประเภทการลา",field: "type",},
+        {title: "รายละเอียด",field: "detail",},
+        {title: "เริ่มลาวันที่",field: "date_start", },
+        {title: "ถึงวันที่",field: "date_end", },
+        {title: "สถานะ",field: "status", 
+          lookup:{
+            waiting: "รออนุมัติ", 
+            accept:"อนุมัติ", 
+            deny:"ไม่อนุมัติ",
+          }
+        },
+        {title: "",field: "view"},
+      ]
+  }
  
   const tableLeave = (
       <div className="container-fluid">
