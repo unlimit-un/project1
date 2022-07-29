@@ -1,6 +1,6 @@
 import { faClipboardList, faEye, faPlus,faTrash,faPencil } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useState,Suspense } from 'react'
+import React, { useState,Suspense, useEffect } from 'react'
 import { Bandage } from '../../components/Bandage'
 import { InputGroupWithLabel, RadioInline, SelectOptionWithLabel, TextAreawithlabel } from '../../components/FormElements'
 import { ModalButton, ModalCardConfirm } from '../../components/Modals'
@@ -43,9 +43,30 @@ const Leave = () => {
     </>
   })
 
+  const [leaveData, setLeaveData] = useState([])
+
+  const loadLeaveData = async () =>{
+    const leaveData = await getLeaveData()
+    setLeaveData(leaveData)
+  }
+  
+  useEffect(()=>{
+    loadLeaveData();
+  },[])
+
   const MuiTableData = {
       data:[
-          {title:"ลาป่วย", type:"ลาป่วย", detail:"มีไข้สูง นอนโรงพยาบาล", date_start:"2022-10-21", date_end:"2022-10-23",status: "waiting", ED:<Delete/>, view:<ModalButton callback={()=>handleView(setModal)} classBtn="btn btn-outline-primary" setModalShow={setModalShow} icon={faEye}/> },
+        leaveData.map(item=>{
+          return {
+            title:item['title'], 
+            type:item['leave_type_name'], 
+            detail:item['description'], 
+            date_start:item['date_start'], 
+            date_end:item['date_end'],
+            status:item['note'],
+            ED:<Delete/>, 
+            view:<ModalButton callback={()=>handleView(setModal)} classBtn="btn btn-outline-primary" setModalShow={setModalShow} icon={faEye}/> }
+        })
       ],
       columns: [
         {title: "",field: "ED"},

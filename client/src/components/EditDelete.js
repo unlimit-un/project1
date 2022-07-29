@@ -14,11 +14,11 @@ export const EditDelete = ({EditFnc, DeleteFnc, setModalShow}) => {
   )
 }
 
-export const Delete = () =>{
+export const Delete = ({DeleteFnc}) =>{
   return (
     <>
         <div className="flex justify-center gap-2">
-            <button className="text-danger"><FontAwesomeIcon icon={faTrashAlt}/></button>
+            <button className="text-danger" onClick={()=>{DeleteFnc()}}><FontAwesomeIcon icon={faTrashAlt}/></button>
         </div>
     </>
   )
