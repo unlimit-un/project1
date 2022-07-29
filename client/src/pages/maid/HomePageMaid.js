@@ -6,6 +6,7 @@ import { ListGroupFlush } from '../../components/ListGroup'
 import { pre_dataPieChart } from '../../functions/PrepareChartData'
 import { Skeleton,Spiner } from '../../components/Loading'
 import { lazily } from "react-lazily";
+import {GetLeavepiechart} from '../../controllers/maid/HomeControllers'
 
 const { CardFillColorNonFooter } = lazily(()=>import('../../components/Cards'))
 const { PieChart } =lazily(()=>import('../../components/Charts'))
@@ -15,24 +16,41 @@ const HomepageMaid = () => {
 
     const [height, setHeight] = useState(0);
     const ref = useRef(null)
-    const dataSetChart = [{
-            // label: 'Dataset 1',
-            data: [20,30, 25, 10],
-            backgroundColor: [
-              'rgba(34, 197, 94, 0.2)',
-              'rgba(99, 102, 241, 0.2)',
-              'rgba(236, 72, 153, 0.2)',
-              'rgba(217, 119, 6, 0.2)',
-            ],
-            borderColor: [
-              'rgba(34, 197, 94, 1)',
-              'rgba(99, 102, 241, 1)',
-              'rgba(236, 72, 153, 1)',
-              'rgba(217, 119, 6, 1)',
-            ],
-            borderWidth: 1,
-        }]
-    const dataChartLeave = pre_dataPieChart(['เข้างาน', 'ลาป่วย', 'ลากิจ', 'ลาพักผ่อน'],'top','', dataSetChart)
+    const [piechartdatasets , setPieChartDataSets] = useState ();
+    const [labelpiechart , setLabelPieChart] = useState ();
+    const loadpiechart =  async() =>{
+        const PieChartData = await GetLeavepiechart();
+        console.log(PieChartData);
+        const leavecount = PieChartData.map ((item)=>{
+            return item.count
+
+        })
+        const labelpiechartdata = PieChartData.map((item)=>{
+           return item.leave_type_name
+        })
+        setLabelPieChart(labelpiechartdata)
+        setPieChartDataSets (
+            [{
+                // label: 'Dataset 1',
+                data: leavecount,
+                backgroundColor: [
+                  'rgba(34, 197, 94, 0.2)',
+                  'rgba(99, 102, 241, 0.2)',
+                  'rgba(236, 72, 153, 0.2)',
+                  'rgba(217, 119, 6, 0.2)',
+                ],
+                borderColor: [
+                  'rgba(34, 197, 94, 1)',
+                  'rgba(99, 102, 241, 1)',
+                  'rgba(236, 72, 153, 1)',
+                  'rgba(217, 119, 6, 1)',
+                ],
+                borderWidth: 1,
+            }]
+        )
+       
+    }
+    const dataChartLeave = pre_dataPieChart(labelpiechart,'top','', piechartdatasets)
 
     const todoCard = (
         <>
@@ -87,7 +105,10 @@ const HomepageMaid = () => {
             </div>
         </>
     )
-
+    
+    useEffect(()=>{
+        loadpiechart();
+    },[])
     useEffect(() => {
         setHeight(ref.current.clientHeight)
     }, [height])
