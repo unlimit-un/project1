@@ -1,5 +1,5 @@
 
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler, BarElement, ArcElement} from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler, BarElement, ArcElement, defaults} from 'chart.js';
 
   ChartJS.register(
     CategoryScale,
@@ -13,7 +13,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
     Legend,
     Filler
   );
-
+  defaults.font.family = 'Kanit';
   export const pre_dataLineChart = ( labels ,position, title, dataset ) =>{
     const demoDatasets = [
         {
@@ -88,7 +88,7 @@ export const pre_dataBarChart = ( labels ,position, title, dataset ) =>{
         },
         filler: {
           propagate: true
-        }
+        },
       },
       maintainAspectRatio: false
     };

@@ -1,6 +1,5 @@
 import React from 'react'
 import { Bar, Line, Pie } from "react-chartjs-2";
-
 export const LineChart = ({ data, options, height, width }) => {
   return (
     <div style={{height:`${height}`, minWidth:`${width}`}}>
