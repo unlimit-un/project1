@@ -1,6 +1,7 @@
 import {axiosGet, axiosPost, ROOT_SERVER} from '../../functions/AxiosCustom';
 import swal from 'sweetalert2'
 import { icon } from '@fortawesome/fontawesome-svg-core';
+import Swal from 'sweetalert2';
 
 export const GetLeaveData = async ()=>{
     try {
@@ -21,10 +22,10 @@ export const getleaveDataByid = async(leave_id)=>{
         
     }
 }
-export const insertLeave = async (fromdata)=>{
+export const insertLeave = async (formdata)=>{
     try {
         const {data:{user_id}} = await axiosGet(`${ROOT_SERVER}/api/checkToken`);
-        const result = await axiosPost(`${ROOT_SERVER}/api/maid/insertLeave`,{...fromdata,user_id});
+        const result = await axiosPost(`${ROOT_SERVER}/api/maid/insertLeave`,{...formdata,user_id});
         await swal.fire({
             title:"สำเร็จ",
             icon:"success",
@@ -52,6 +53,36 @@ export const getLeaveType = async ()=>{
     } catch (error) {
      
         
-    }
-
  }
+}
+export const delectLeaveByid = async (formdata)=>{
+    console.log(formdata);
+    try {
+        return Swal.fire({
+            title: 'ต้องการลบข้อมูลหรือไม่',
+            showCancelButton: true,
+            confirmButtonText: 'ใช่',
+            denyButtonText: 'ไม่ใช' ,
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+                await axiosPost(`${ROOT_SERVER}/api/maid/delectLeave`,{...formdata});
+                await Swal.fire({
+                    title: "สำเร็จ",
+                    icon: "success",
+                    text: "ลบข้อมูลสำเร็จ"
+                })
+                return true
+            }else{
+                return false
+            }
+          })
+    // return data;
+    } catch (error) {
+        await swal.fire({
+            title:"ผิดพลาด",
+            icon:"error",
+            text:error.response.data
+        })
+        
+    }
+}

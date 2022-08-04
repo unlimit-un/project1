@@ -19,7 +19,7 @@ const { CardFillColorNonFooterShadow, EmptyCard } =lazily(()=>import('../../../c
 export const Todo = () => {
     const dataTable = {
         data:[
-          {id:"A",description:"B",location:"C",status:"success",ED:<EditDelete/>}
+          {id:"A",description:"B",location:"C",status:"success",ED:<EditDelete />}
         ],
         columns:[
           {title:"รหัส",field:"id"},

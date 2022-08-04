@@ -8,7 +8,7 @@ import { MuiTable, TablesStriped } from '../../components/Tables'
 import { Skeleton } from '../../components/Loading'
 import { lazily } from 'react-lazily'
 import { Delete } from '../../components/EditDelete'
-import { GetLeaveData, getleaveDataByid, getLeaveType, insertLeave } from '../../controllers/maid/LeaveControllers'
+import { GetLeaveData, getleaveDataByid, getLeaveType, insertLeave,delectLeaveByid } from '../../controllers/maid/LeaveControllers'
 import { delectleaveData } from '../../controllers/maid/LeaveControllers' 
 
 const { CardFillColorNonFooterShadow } =lazily(()=>import('../../components/Cards'))
@@ -55,7 +55,12 @@ const MuiTableData = {
         date_start:item["date_start"], 
         date_end:item["date_end"],
         status:item["note"], 
-        ED:<Delete DeleteFnc={delectleaveData}/>, 
+        ED:<Delete DeleteFnc={async()=>{
+          const bool= await delectLeaveByid({leave_id:item[`leave_id`]})
+          if (bool) {
+            loadleaveData()
+          }
+        }}/>, 
         view:<ModalButton callback={()=>handleView(setModal,item[`leave_id`] )} classBtn="btn btn-outline-primary" setModalShow={setModalShowLeaveDetail} icon={faEye}/>
       }
     })
