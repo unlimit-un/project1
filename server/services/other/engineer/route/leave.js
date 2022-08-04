@@ -80,6 +80,40 @@ router.post('/insertLeave', async (req, res)=>{
             INSERT INTO ${"`leave`"}(leave_type_id, engineer_id, title, description, date_start, date_end)
             VALUES(${escape(leave_type)}, ${escape(user_id)}, ${escape(title)}, ${escape(description)}, ${escape(date_start)}, ${escape(date_end)})
         `);
+        
+        //type of data will return [{column_name: data}] 
+        const [{manager_id}] = await db.query(`
+            SELECT l.manager_id FROM engineer AS en
+            LEFT JOIN location AS l ON en.location_id = l.location_id    
+        `); 
+
+        const {insertId} = result
+
+        //insert to notify
+        await db.query(`
+            INSERT INTO notify(manager_id, engineer_id, leave_id, status_engineer)
+            VALUES(${escape(manager_id)}, ${escape(user_id)}, ${escape(insertId)}, 1)
+        `);
+
+        res.status(200).send(result)
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
+})
+
+router.post('/deleteLeaveById', async (req, res)=>{
+    try {
+        // รับตัวแปรจาก FE
+        const { leave_id } = req.body
+        if (!leave_id) {
+            res.status(400).send('data is required!')
+            return false;
+        }
+
+        const result = await db.query(`
+            DELETE FROM ${"`leave`"} WHERE leave_id = ${escape(leave_id)}
+        `);
 
         res.status(200).send(result)
     } catch (error) {

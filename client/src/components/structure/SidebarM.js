@@ -198,16 +198,11 @@ export const SidebarLeftMaid = () => {
         event: {
             status: false,
             id: 'event'
-        },
-        leave: {
-            status: false,
-            id: 'leave'
         }
     });
     const navigate = useNavigate()
     const [classToggleWork, setClassToggleWork] = useState("");
     const [classToggleActivity, setClassToggleActivity] = useState("");
-    const [classToggleLeave, setClassToggleLeave] = useState("");
     const [userdata ,setUserData] = useState({})
 
     const loadUserData = async () =>{
@@ -223,20 +218,16 @@ export const SidebarLeftMaid = () => {
     useEffect(()=>{
         open.work.status?setClassToggleWork("!text-white !bg-blue-500") : setClassToggleWork("")
         open.event.status?setClassToggleActivity("!text-white !bg-blue-500") : setClassToggleActivity("")
-        open.leave.status?setClassToggleLeave("!text-white !bg-blue-500") : setClassToggleLeave("")
     },[open])
 
     const onToggleMenuWork = (e) =>{
-        setOpen({...open, work:{status: !open.work.status}, event: { status: false}, leave: {status: false}})
+        setOpen({...open, work:{status: !open.work.status}, event: { status: false}})
     }
     const onToggleMenuActivity = (e) =>{
-        setOpen({...open, event:{status: !open.event.status}, work:{status: false}, leave: {status: false}})
-    }
-    const onToggleMenuLeave = (e) =>{
-        setOpen({...open, leave:{status: !open.leave.status}, work:{status: false}, event:{ status: false}})
+        setOpen({...open, event:{status: !open.event.status}, work:{status: false}})
     }
     const resetDropDown = (e) =>{
-        setOpen({...open, work:{status: false}, event: { status: false}, leave: { status: false}})
+        setOpen({...open, work:{status: false}, event: { status: false}})
     }
 
     return (
@@ -294,27 +285,7 @@ export const SidebarLeftMaid = () => {
                                 </Collapse>
                             </li>
                             <LinkMenuM path="/maid/urgent" icon={faBell} label="งานด่วน" resetDropDown={resetDropDown} />
-                            <li className=" p-0">
-                                <div className="group">
-                                    <button
-                                        onClick={(e)=>onToggleMenuLeave(e)}
-                                        aria-expanded = {open.leave.status}
-                                        aria-controls = {open.leave.id} 
-                                        className = {classToggleLeave+" flex justify-between items-center w-100 p-2 px-3 text-start group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-300"}
-                                    >
-                                        <span><FontAwesomeIcon icon={faTable}/> การลา</span> 
-                                        <FontAwesomeIcon className="group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-100" icon={faAngleDown}/>
-                                    </button>
-                                </div>
-                                <Collapse in={open.leave.status}>
-                                    <div id={open.leave.id} className="py-2">
-                                        <ul className=" px-3 ">
-                                            <SubMenuLink label={"คำขอการลา"} path="/maid/leave/request"/>
-                                            <SubMenuLink label={"ประวัติการลา"} path="/maid/leave/history"/>
-                                        </ul>
-                                    </div>
-                                </Collapse>
-                            </li>
+                            <LinkMenuM path="/maid/leave" icon={faTable} label="การลา" resetDropDown={resetDropDown} />
                             <LinkMenuM path="/maid/repair" icon={faClipboardList} label="แจ้งซ่อม" resetDropDown={resetDropDown}/>
                             <LinkMenuM path="/maid/material" icon={faClipboardCheck} label="สั่งซื้อครุภัณฑ์" resetDropDown={resetDropDown}/>
                             <li className=" p-0 group  text-sm">
@@ -359,16 +330,11 @@ export const SidebarLeftEn = () => {
         event: {
             status: false,
             id: 'event'
-        },
-        leave: {
-            status: false,
-            id: 'leave'
         }
     });
     const navigate = useNavigate()
     const [classToggleWork, setClassToggleWork] = useState("");
     const [classToggleActivity, setClassToggleActivity] = useState("");
-    const [classToggleLeave, setClassToggleLeave] = useState("");
     const [userData, setUserData] = useState({})
 
     const LoadUserData = async () =>{
@@ -384,17 +350,13 @@ export const SidebarLeftEn = () => {
     useEffect(()=>{
         open.work.status?setClassToggleWork("!text-white !bg-blue-500") : setClassToggleWork("")
         open.event.status?setClassToggleActivity("!text-white !bg-blue-500") : setClassToggleActivity("")
-        open.leave.status?setClassToggleLeave("!text-white !bg-blue-500") : setClassToggleLeave("")
     },[open])
 
     const onToggleMenuWork = (e) =>{
-        setOpen({...open, work:{status: !open.work.status}, event: { status: false}, leave: {status: false}})
+        setOpen({...open, work:{status: !open.work.status}, event: { status: false}})
     }
     const onToggleMenuActivity = (e) =>{
-        setOpen({...open, event:{status: !open.event.status}, work:{status: false}, leave: {status: false}})
-    }
-    const onToggleMenuLeave = (e) =>{
-        setOpen({...open, leave:{status: !open.leave.status}, work:{status: false}, event:{ status: false}})
+        setOpen({...open, event:{status: !open.event.status}, work:{status: false}})
     }
     const resetDropDown = (e) =>{
         setOpen({...open, work:{status: false}, event: { status: false}, leave: { status: false}})
@@ -455,27 +417,7 @@ export const SidebarLeftEn = () => {
                                 </Collapse>
                             </li>
                             <LinkMenuM path="/engineer/urgent" icon={faBell} label="งานด่วน" resetDropDown={resetDropDown} />
-                            <li className=" p-0">
-                                <div className="group">
-                                    <button
-                                        onClick={(e)=>onToggleMenuLeave(e)}
-                                        aria-expanded = {open.leave.status}
-                                        aria-controls = {open.leave.id} 
-                                        className = {classToggleLeave+" flex justify-between items-center w-100 p-2 px-3 text-start group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-300"}
-                                    >
-                                        <span><FontAwesomeIcon icon={faTable}/> การลา</span> 
-                                        <FontAwesomeIcon className="group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-100" icon={faAngleDown}/>
-                                    </button>
-                                </div>
-                                <Collapse in={open.leave.status}>
-                                    <div id={open.leave.id} className="py-2">
-                                        <ul className=" px-3 ">
-                                            <SubMenuLink label={"คำขอการลา"} path="/engineer/leave/request"/>
-                                            <SubMenuLink label={"ประวัติการลา"} path="/engineer/leave/history"/>
-                                        </ul>
-                                    </div>
-                                </Collapse>
-                            </li>
+                            <LinkMenuM path="/engineer/leave" icon={faTable} label="การลา" resetDropDown={resetDropDown} />
                             <LinkMenuM path="/engineer/material" icon={faClipboardCheck} label="สั่งซื้อครุภัณฑ์" resetDropDown={resetDropDown}/>
                             <li className=" p-0 group  text-sm">
                                 <button onClick={()=>SignOutFunc(navigate)} className="p-2 px-3 text-gray-600 no-underline w-100 block group-hover:!text-white hover:bg-red-500 ease-in-out duration-300 text-left">

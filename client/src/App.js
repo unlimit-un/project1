@@ -37,7 +37,7 @@ function App() {
             <Route path='/maid/repair' element={<Maid.Repair/>} /> 
             <Route path='/maid/material' element={<Maid.Material/>} /> 
             <Route path='/maid/bookmarks' element={<Maid.BookMarks/>} /> 
-            <Route path='/maid/leave/:page' element={<Maid.Leave/>} /> 
+            <Route path='/maid/leave' element={<Maid.Leave/>} /> 
             <Route path='/maid/event/:page' element={<Maid.Event/>} /> 
           </Route>
           <Route path='/engineer' exac element={<En.Index/>}>
@@ -45,7 +45,7 @@ function App() {
               <Route path='/engineer/urgent' element={<En.Urgent/>} />
               <Route path='/engineer/material' element={<En.Material/>} /> 
               <Route path='/engineer/bookmarks' element={<En.Bookmarks/>} /> 
-              <Route path='/engineer/leave/:page' element={<En.Leave/>} /> 
+              <Route path='/engineer/leave' element={<En.Leave/>} /> 
               <Route path='/engineer/event/:page' element={<En.Event/>} /> 
           </Route>
           <Route path='/forbidden' exac element={<PageForbidden/>}/>
