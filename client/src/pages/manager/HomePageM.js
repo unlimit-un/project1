@@ -7,8 +7,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { pre_dataBarChart, pre_dataPieChart } from '../../functions/PrepareChartData'
 import { Skeleton, Spiner } from '../../components/Loading'
 import { lazily } from 'react-lazily'
-import { getLeaveBarChart, getLeaveRoleEngineerBarChart, getLeaveRoleMaidBarChart, getNotifyRepairBarChart, getNotifyRepairPieChart, getOrderMaterialTableDashboard } from '../../controllers/manager/HomeController'
+import { getCountMaidByManagerId, getLeaveBarChart, getLeaveRoleEngineerBarChart, getLeaveRoleMaidBarChart, getNotifyRepairBarChart, getNotifyRepairPieChart, getOrderMaterialTableDashboard } from '../../controllers/manager/HomeController'
 import { ArrayColor, ArrayColorAlpha } from '../../utils/ArrayColor'
+// import {BarChart, PieChart} from '../../components/Charts'
 
 const {CardFillColor} = lazily(()=>import('../../components/Cards'));
 const {BarChart, PieChart} = lazily(()=>import('../../components/Charts'));
@@ -41,6 +42,8 @@ const Homepage = () => {
             {title: "วันที่นำแจ้ง",field: "order_date"},
         ]
     });
+    const [countMaid, setCountMaid] = useState(0);
+    const [countEngineer, setCountEngineer] = useState(0);
 
     const loadPieChart = async () =>{
         const pieChartData = await getNotifyRepairPieChart();
@@ -236,16 +239,21 @@ const Homepage = () => {
         })
     }
 
+    const loadCountMaid = async () =>{
+        const countMaid = await getCountMaidByManagerId();
+
+    }
+
     useEffect(() => {
         checkAutoRedirectUser(navigate, pathname);
 
         loadPieChart();
-        loadBarChartRepair();
-        loadBarChartLeave();
         loadBarChartLeaveRoleEn();
         loadBarChartLeaveRoleMaid();
+        loadBarChartLeave();
+        loadBarChartRepair();
         loadTableOrderMaterial();
-
+        
         if (ref !== null) {
             setHeight(ref.current.clientHeight)
         }
@@ -256,7 +264,7 @@ const Homepage = () => {
     const dataChartLeaveEngineer = pre_dataBarChart(labels,'top','สถิติการลาของช่าง', dataSetsLeaveRoleEn) // success 
     const dataChartLeaveMaid = pre_dataBarChart(labels,'top','สถิติการลาของแม่บ้าน', dataSetsLeaveRoleMaid) // success 
     const dataChartRepair = pre_dataPieChart(labelPieChart,'top','แผนภูมิการซ่อมทั้งหมด', pieChartDataSets) // success
-    const dataChartRepairBar = pre_dataBarChart(labels,'top','แผนภูมิการซ่อมทั้งหมด', dataSetsRepair) // success
+    // const dataChartRepairBar = pre_dataBarChart(labels,'top','แผนภูมิการซ่อมทั้งหมด', dataSetsRepair) // success
 
     return (
         <>
@@ -295,7 +303,7 @@ const Homepage = () => {
                             <div className="col-lg-8 col-md-7 col-12">
                                 <div className="h-full card card-body">
                                     <Suspense fallback={<Spiner/>}>
-                                        <BarChart data={dataChartRepairBar.data} options={dataChartRepairBar.options} height="40vh" />
+                                        <BarChart data={pre_dataBarChart(labels,'top','แผนภูมิการซ่อมทั้งหมด', dataSetsRepair).data} options={pre_dataBarChart(labels,'top','แผนภูมิการซ่อมทั้งหมด', dataSetsRepair).options} height="40vh" />
                                     </Suspense>
                                 </div>
                             </div>

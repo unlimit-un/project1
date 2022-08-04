@@ -8,51 +8,53 @@ import { MuiTable, TablesStriped } from '../../components/Tables'
 import { Skeleton } from '../../components/Loading'
 import { lazily } from 'react-lazily'
 import { Delete } from '../../components/EditDelete'
-import { deleteLeaveData, getLeaveData, getLeaveDataById } from '../../controllers/engineer/LeaveControllers'
+import { deleteLeaveData, getLeaveData, getLeaveDataById, getLeaveType, insertLeave } from '../../controllers/engineer/LeaveControllers'
 
 const { CardFillColorNonFooterShadow } =lazily(()=>import('../../components/Cards'))
 const Leave = () => {
   const [modalShow, setModalShow] = useState(false);
   const [modalShowLeaveDetail, setModalShowLeaveDetail] = useState(false);
   const [modal, setModal] = useState({
-    mHead: <h1 className="m-0 text-2xl"><FontAwesomeIcon icon={faClipboardList}/> ยื่นเรื่องการลา</h1>,
-    mBody:<>
-      <div className="container-fluid">
-        <form>
-          <div className="row">
-            <div className="col-12">
-              <InputGroupWithLabel id="title" label="หัวข้อการลา" placeholder="หัวข้อการลา" />
-            </div>
-            <div className="col-12">
-              <p className="m-0">ประเภทการลา</p>
-              <RadioInline id="affair" label="ลากิจ" value="0" name="leave"/>
-              <RadioInline id="sick" label="ลาป่วย" value="0" name="leave"/>
-              <RadioInline id="vacation" label="ลาพักผ่อน" value="0" name="leave"/>
-            </div>
-            <div className="col-md-6 col-12">
-              <InputGroupWithLabel id="date_start" type="date" label="ลาวันที่"/>
-            </div>
-            <div className="col-md-6 col-12">
-              <InputGroupWithLabel id="date_end" type="date" label="ถึงวันที่"/>
-            </div>
-            <div className="col-12">
-              <TextAreawithlabel id="description" label="รายละเอียดการลา"/>
-            </div>
-          </div>
-        </form>
-      </div>
-    </>
+    mHead: <></>,
+    mBody: <></>
   })
-
+  const [radioLeaveType, setRadioLeaveType] = useState([])
   const [leaveData, setLeaveData] = useState([])
-
+  
+  const [insertTitle, setInsertTitle] = useState('')
+  const [insertLeaveType, setInsertLeaveType] = useState('')
+  const [insertDateStart, setInsertDateStart] = useState('')
+  const [insertDateEnd, setInsertDateEnd] = useState('')
+  const [insertDescription, setInsertDescription] = useState('')
+  
   const loadLeaveData = async () =>{
     const leaveData = await getLeaveData()
     setLeaveData(leaveData)
   }
-  
+
+  const setTitle = ({target:{value}}) =>setInsertTitle(value)
+  const setLeaveType = ({target:{value}}) =>setInsertLeaveType(value)
+  const setDateStart = ({target:{value}}) =>setInsertDateStart(value)
+  const setDateEnd = ({target:{value}}) =>setInsertDateEnd(value)
+  const setDescription = ({target:{value}}) =>setInsertDescription(value)
+  const formData = {
+    title: insertTitle,
+    leave_type: insertLeaveType,
+    date_start: insertDateStart,
+    date_end: insertDateEnd,
+    description: insertDescription
+  }
+
+  const loadLeaveType = async() =>{
+    const leaveType = await getLeaveType();
+    setRadioLeaveType(
+      leaveType.map((item, i)=><RadioInline key={i} callback={setLeaveType} id={`radio${item['leave_type_id']}`} label={item['leave_type_name']} value={item['leave_type_id']} name="leave"/>)
+    )
+  }
+
   useEffect(()=>{
     loadLeaveData();
+    loadLeaveType();
   },[])
 
   const MuiTableData = {
@@ -92,12 +94,46 @@ const Leave = () => {
           <MuiTable data={MuiTableData.data} columns={MuiTableData.columns} title="ข้อมูลการลา"/>
       </div>
   )
+  const handleShowModalInsert = async () =>{
+    setInsertTitle('')
+    setInsertLeaveType('')
+    setInsertDateStart('')
+    setInsertDateEnd('')
+    setInsertDescription('')
+    setModal({
+      mHead: <h1 className="m-0 text-2xl"><FontAwesomeIcon icon={faClipboardList}/> ยื่นเรื่องการลา</h1>,
+      mBody:<>
+        <div className="container-fluid">
+          <form>
+            <div className="row">
+              <div className="col-12">
+                <InputGroupWithLabel id="title" label="หัวข้อการลา" placeholder="หัวข้อการลา" callback={setTitle}/>
+              </div>
+              <div className="col-12">
+                <p className="m-0">ประเภทการลา</p>
+                {radioLeaveType}
+              </div>
+              <div className="col-md-6 col-12">
+                <InputGroupWithLabel id="date_start" type="date" label="ลาวันที่" callback={setDateStart}/>
+              </div>
+              <div className="col-md-6 col-12">
+                <InputGroupWithLabel id="date_end" type="date" label="ถึงวันที่" callback={setDateEnd} />
+              </div>
+              <div className="col-12">
+                <TextAreawithlabel id="description" label="รายละเอียดการลา" callback={setDescription}/>
+              </div>
+            </div>
+          </form>
+        </div>
+      </>
+    })
+  }
 
   return (
     <>
         <h1 className="text-2xl"><FontAwesomeIcon icon={faClipboardList}/> การลา</h1>
         <div className="flex justify-end">
-          <ModalButton icon={faPlus} text="ยื่นเรื่องการลา" classBtn="btn btn-outline-primary" setModalShow={setModalShow} callback={()=>{}}/>
+          <ModalButton icon={faPlus} text="ยื่นเรื่องการลา" classBtn="btn btn-outline-primary" setModalShow={setModalShow} callback={()=>{handleShowModalInsert()}}/>
         </div>
         <div className="mt-3">
           <Suspense fallback={<Skeleton/>}>
@@ -107,14 +143,24 @@ const Leave = () => {
         
 
         {/* modal */}
-        <ModalCardConfirm modalShow={modalShow} setModalShow={setModalShow} modalHead={modal.mHead} modalBody={modal.mBody} btnOkText="บันทึก" />
+        <ModalCardConfirm 
+          cancleCallback={()=>{}} 
+          confrimCallback={async ()=>{
+              await insertLeave(formData)
+              await loadLeaveData()
+            }
+          } 
+          modalShow={modalShow} 
+          setModalShow={setModalShow} 
+          modalHead={modal.mHead} 
+          modalBody={modal.mBody} 
+          btnOkText="บันทึก" />
         <ModalCard modalShow={modalShowLeaveDetail} setModalShow={setModalShowLeaveDetail} modalHead={modal.mHead} modalBody={modal.mBody} />
     </>
   )
 }
 
 const handleView = async (setModal, leave_id) =>{
-  
   const [leaveData] = await getLeaveDataById(leave_id)
   const [date_reg, time_reg] = leaveData['time_reg'].split(/[\sT\s.]/);
   setModal({
@@ -135,5 +181,7 @@ const handleView = async (setModal, leave_id) =>{
     </>
   })
 }
+
+
 
 export default Leave

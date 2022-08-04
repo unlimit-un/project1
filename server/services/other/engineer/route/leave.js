@@ -48,4 +48,44 @@ router.get('/getLeaveDataById', async (req, res)=>{
     }
 })
 
+router.get('/getLeaveType', async (req, res)=>{
+    try {
+        const result = await db.query(`
+            SELECT lt.* FROM leave_type AS lt
+            LEFT JOIN manager AS m ON m.manager_id = lt.manager_id
+            LEFT JOIN location AS lo ON lo.manager_id = m.manager_id
+            LEFT JOIN engineer AS e ON e.location_id = lo.location_id
+            WHERE e.engineer_id = ${escape(req.query['engineer_id'])}
+        `);
+        if (result.length > 0) {
+            res.status(200).send(result)
+        }else{
+            res.sendStatus(500)
+        }
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
+})
+
+router.post('/insertLeave', async (req, res)=>{
+    try {
+        const {title, leave_type, date_start, date_end, description, user_id} = req.body
+        if (!(title && leave_type && date_start && date_end && description && user_id)) {
+            res.status(400).send('data is required!')
+            return false;
+        }
+
+        const result = await db.query(`
+            INSERT INTO ${"`leave`"}(leave_type_id, engineer_id, title, description, date_start, date_end)
+            VALUES(${escape(leave_type)}, ${escape(user_id)}, ${escape(title)}, ${escape(description)}, ${escape(date_start)}, ${escape(date_end)})
+        `);
+
+        res.status(200).send(result)
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
+})
+
 module.exports = router
