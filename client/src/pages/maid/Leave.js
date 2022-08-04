@@ -45,48 +45,6 @@ const fromdata ={
   description:insertDescription
 }
 console.log(fromdata);
-const MuiTableData = {
-  data:[
-    ...leaveData.map(item=>{
-       return{
-        title:item["title"], 
-        type:item["leave_type_name"], 
-        detail:item["description"], 
-        date_start:item["date_start"], 
-        date_end:item["date_end"],
-        status:item["note"], 
-        ED:<Delete DeleteFnc={async()=>{
-          const bool= await delectLeaveByid({leave_id:item[`leave_id`]})
-          if (bool) {
-            loadleaveData()
-          }
-        }}/>, 
-        view:<ModalButton callback={()=>handleView(setModal,item[`leave_id`] )} classBtn="btn btn-outline-primary" setModalShow={setModalShowLeaveDetail} icon={faEye}/>
-      }
-    })
-  ],
-  columns: [
-    {title: "",field: "ED"},
-    {title: "หัวเรื่อง",field: "title", },
-    {title: "ประเภทการลา",field: "type",},
-    {title: "รายละเอียด",field: "detail",},
-    {title: "เริ่มลาวันที่",field: "date_start", },
-    {title: "ถึงวันที่",field: "date_end", },
-    {title: "สถานะ",field: "status", 
-      lookup:{
-        waiting: "รออนุมัติ", 
-        accept:"อนุมัติ", 
-        deny:"ไม่อนุมัติ",
-      }
-    },
-    {title: "",field: "view"},
-  ]
-}
-const tableLeave = (
-  <div className="container-fluid">
-      <MuiTable data={MuiTableData.data} columns={MuiTableData.columns} title="ข้อมูลการลา"/>
-  </div>
-)
   const loadleaveData = async() =>{
     const leaveData = await GetLeaveData();
     setLeaveData(leaveData)
@@ -96,8 +54,6 @@ const tableLeave = (
     console.log(leavetype);
     setRadioLeaveType(leavetype.map((item ,i)=><RadioInline key={i} callback={setLeaveType} id= {`radio${item['leave_type_id']}`} label={item['leave_type_name']} value={item['leave_type_id']} name="leave"/>)
     )
-    
-
   }
   
   useEffect(()=>{
@@ -139,8 +95,48 @@ const tableLeave = (
       </>
     })
   }
-  
-
+  const MuiTableData = {
+    data:[
+      ...leaveData.map(item=>{
+         return{
+          title:item["title"], 
+          type:item["leave_type_name"], 
+          detail:item["description"], 
+          date_start:item["date_start"], 
+          date_end:item["date_end"],
+          status:item["note"], 
+          ED:<Delete DeleteFnc={async()=>{
+            const bool = await delectLeaveByid({leave_id:item[`leave_id`]})
+            if (bool) {
+              loadleaveData()
+            }
+          }}/>, 
+          view:<ModalButton callback={()=>handleView(setModal,item[`leave_id`] )} classBtn="btn btn-outline-primary" setModalShow={setModalShowLeaveDetail} icon={faEye}/>
+        }
+      })
+    ],
+    columns: [
+      {title: "",field: "ED"},
+      {title: "หัวเรื่อง",field: "title", },
+      {title: "ประเภทการลา",field: "type",},
+      {title: "รายละเอียด",field: "detail",},
+      {title: "เริ่มลาวันที่",field: "date_start", },
+      {title: "ถึงวันที่",field: "date_end", },
+      {title: "สถานะ",field: "status", 
+        lookup:{
+          waiting: "รออนุมัติ", 
+          accept:"อนุมัติ", 
+          deny:"ไม่อนุมัติ",
+        }
+      },
+      {title: "",field: "view"},
+    ]
+  }
+  const tableLeave = (
+    <div className="container-fluid">
+        <MuiTable data={MuiTableData.data} columns={MuiTableData.columns} title="ข้อมูลการลา"/>
+    </div>
+  )
   return (
     <>
         <h1 className="text-2xl"><FontAwesomeIcon icon={faClipboardList}/> การลา</h1>
