@@ -7,6 +7,7 @@ import { pre_dataPieChart } from '../../functions/PrepareChartData'
 import { Skeleton,Spiner } from '../../components/Loading'
 import { lazily } from "react-lazily";
 import { SidebarRightEn } from '../../components/structure/SidebarM'
+import { convertNumberToLongEng } from '../../functions/ConvertDate'
 
 const { CardFillColorNonFooter } = lazily(()=>import('../../components/Cards'))
 const { PieChart } =lazily(()=>import('../../components/Charts'))
@@ -44,7 +45,7 @@ const HomepageE = () => {
         <>
             <div className="card shadow-slate-300 shadow-[5px_5px] md:w-auto lg:w-full">
                 <div className="card-header !bg-red-500 text-white text-center">
-                    <p className="m-0 card-title">{new Date()}</p>
+                    <p className="m-0 card-title">{convertNumberToLongEng(new Date().getMonth())}</p>
                 </div>
                 <div className="card-body text-center">
                     <h1 className="font-extrabold">25</h1>

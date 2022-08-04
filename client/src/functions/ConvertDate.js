@@ -21,3 +21,11 @@ export const convertNumberToLongEng = (numberMonth) =>{
     numberMonth === 9? 'September': numberMonth === 10?'October': numberMonth === 11? 'November':
     numberMonth === 12? 'December': ''
 }
+
+export const convertNumberToThai = (numberMonth) =>{
+    return numberMonth === 1 ? 'มกราคม': numberMonth === 2? 'กุมภาพันธ์':
+    numberMonth === 3? 'มีนาคม': numberMonth === 4?'เมษายน': numberMonth === 5? 'พฤษภาคม':
+    numberMonth === 6? 'มิถุนายน': numberMonth === 7?'กรกฎาคม': numberMonth === 8? 'สิงหาคม':
+    numberMonth === 9? 'กันยายน': numberMonth === 10?'Oct': numberMonth === 11? 'พฤษจิกายน':
+    numberMonth === 12? 'ธันวาคม': ''
+}
