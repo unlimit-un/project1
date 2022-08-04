@@ -44,7 +44,7 @@ const HomepageE = () => {
         <>
             <div className="card shadow-slate-300 shadow-[5px_5px] md:w-auto lg:w-full">
                 <div className="card-header !bg-red-500 text-white text-center">
-                    <p className="m-0 card-title">December</p>
+                    <p className="m-0 card-title">{new Date()}</p>
                 </div>
                 <div className="card-body text-center">
                     <h1 className="font-extrabold">25</h1>
