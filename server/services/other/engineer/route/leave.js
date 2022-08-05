@@ -2,6 +2,31 @@ const router = require('express').Router();
 const { escape } = require('mysql2');
 const db = require('../../../../config/database');
 
+router.get('/getleavepiechart', async (req, res)=>{
+    
+    try {
+
+        const [{manager_id}] = await db.query(`
+            SELECT l.manager_id FROM engineer AS en
+            LEFT JOIN location AS l ON en.location_id = l.location_id    
+            WHERE en.engineer_id = ${escape(req.query['user_id'])}
+        `); 
+
+        const result = await db.query(`
+            SELECT lt.*, COUNT(l.engineer_id) AS count FROM leave_type AS lt
+            LEFT JOIN (SELECT * FROM  ${"`leave`"} WHERE engineer_id =${escape(req.query['user_id'])} ) AS l ON l.leave_type_id = lt.leave_type_id
+            WHERE manager_id = ${escape(manager_id)}
+            GROUP BY lt.leave_type_id
+        `);
+       
+        res.status(200).send(result)
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
+   
+})
+
 router.get('/getLeaveData', async (req, res)=>{
     try {
         const result = await db.query(`
@@ -13,11 +38,7 @@ router.get('/getLeaveData', async (req, res)=>{
             INNER JOIN leave_type AS lt ON lt.leave_type_id = l.leave_type_id
             WHERE engineer_id = ${escape(req.query['user_id'])}
         `);
-        if (result.length > 0) {
             res.status(200).send(result)
-        }else{
-            res.sendStatus(500)
-        }
     } catch (error) {
         console.log(error);
         res.sendStatus(500)
@@ -37,11 +58,7 @@ router.get('/getLeaveDataById', async (req, res)=>{
             INNER JOIN engineer AS en ON en.engineer_id = l.engineer_id
             WHERE leave_id = ${escape(req.query['leave_id'])}
         `);
-        if (result.length > 0) {
-            res.status(200).send(result)
-        }else{
-            res.sendStatus(500)
-        }
+        res.status(200).send(result)
     } catch (error) {
         console.log(error);
         res.sendStatus(500)
@@ -57,11 +74,8 @@ router.get('/getLeaveType', async (req, res)=>{
             LEFT JOIN engineer AS e ON e.location_id = lo.location_id
             WHERE e.engineer_id = ${escape(req.query['engineer_id'])}
         `);
-        if (result.length > 0) {
+
             res.status(200).send(result)
-        }else{
-            res.sendStatus(500)
-        }
     } catch (error) {
         console.log(error);
         res.sendStatus(500)
@@ -85,6 +99,7 @@ router.post('/insertLeave', async (req, res)=>{
         const [{manager_id}] = await db.query(`
             SELECT l.manager_id FROM engineer AS en
             LEFT JOIN location AS l ON en.location_id = l.location_id    
+            WHERE en.engineer_id = ${escape(user_id)}
         `); 
 
         const {insertId} = result
