@@ -7,6 +7,8 @@ import { pre_dataPieChart } from '../../functions/PrepareChartData'
 import { Skeleton,Spiner } from '../../components/Loading'
 import { lazily } from "react-lazily";
 import {GetLeavepiechart} from '../../controllers/maid/HomeControllers'
+import { convertNumberToLongEng, convertNumberToThai } from '../../functions/ConvertDate'
+import { ArrayColor, ArrayColorAlpha } from '../../utils/ArrayColor'
 
 const { CardFillColorNonFooter } = lazily(()=>import('../../components/Cards'))
 const { PieChart } =lazily(()=>import('../../components/Charts'))
@@ -20,36 +22,14 @@ const HomepageMaid = () => {
     const [piechartdatasets , setPieChartDataSets] = useState ();
     const [labelpiechart , setLabelPieChart] = useState ();
     const loadpiechart =  async() =>{
-        const PieChartData = await GetLeavepiechart();
-        console.log(PieChartData);
-        const leavecount = PieChartData.map ((item)=>{
-            return item.count
-
-        })
-        const labelpiechartdata = PieChartData.map((item)=>{
-           return item.leave_type_name
-        })
-        setLabelPieChart(labelpiechartdata)
-        setPieChartDataSets (
-            [{
-                // label: 'Dataset 1',
-                data: leavecount,
-                backgroundColor: [
-                  'rgba(34, 197, 94, 0.2)',
-                  'rgba(99, 102, 241, 0.2)',
-                  'rgba(236, 72, 153, 0.2)',
-                  'rgba(217, 119, 6, 0.2)',
-                ],
-                borderColor: [
-                  'rgba(34, 197, 94, 1)',
-                  'rgba(99, 102, 241, 1)',
-                  'rgba(236, 72, 153, 1)',
-                  'rgba(217, 119, 6, 1)',
-                ],
-                borderWidth: 1,
-            }]
-        )
-       
+        const pieChartData = await GetLeavepiechart();
+        setLabelPieChart([...pieChartData.map(item=>item['leave_type_name'])]);
+        setPieChartDataSets([{
+            data:[...pieChartData.map(item=>item['count'])],
+            backgroundColor: [...pieChartData.map((item,i)=>ArrayColorAlpha[i])],
+            borderColor: [...pieChartData.map((item,i)=>ArrayColor[i])],
+            borderWidth: 1,
+        }])
     }
     const dataChartLeave = pre_dataPieChart(labelpiechart,'top','', piechartdatasets)
 
@@ -61,15 +41,15 @@ const HomepageMaid = () => {
     )
     const todayCard = (
         <>
-            <div className="card shadow-slate-300 shadow-[5px_5px] md:w-auto lg:w-full">
+            <div className="card shadow-slate-300 shadow-[5px_5px] w-full">
                 <div className="card-header !bg-red-500 text-white text-center">
-                    <p className="m-0 card-title">December</p>
+                    <p className="m-0 card-title">{convertNumberToLongEng(new Date().getMonth())}</p>
                 </div>
                 <div className="card-body text-center">
-                    <h1 className="font-extrabold">25</h1>
+                    <h1 className="font-extrabold">{new Date().getDate()}</h1>
                 </div>
             </div>
-            <p className="lg:inline-block hidden">วันที่ 25 ธันวาคม พ.ศ.2565</p>
+            <p className="lg:inline-block hidden">{`วันที่ ${new Date().getDate()} ${convertNumberToThai(new Date().getMonth())} พ.ศ ${new Date().getFullYear()+543}`}</p>
         </>
     )
 

@@ -5,23 +5,19 @@ const db = require('../../../../config/database');
 router.get('/getleavepiechart', async (req, res)=>{
     
     try {
-        const result = await db.query(`
-        SELECT
-            COUNT(*) AS count,
-            leave_type_name
-        FROM ${"`leave`"} 
-            INNER JOIN leave_type AS lt ON leave.leave_type_id  = lt.leave_type_id 
-        WHERE
-            maid_id = ${escape(req.query[`user_id`])}
-        GROUP BY
-            leave_type_name
-        `);
-     
-       if (result.length > 0) {
+        const [{manager_id}] = await db.query(
+           `SELECT l.manager_id FROM maid AS m
+            LEFT JOIN location AS l ON m.location_id = l.location_id    
+            WHERE m.maid_id = ${escape(req.query['user_id'])}`
+        ); 
+
+        const result = await db.query(
+           ` SELECT lt.*, COUNT(l.maid_id) AS count FROM leave_type AS lt
+            LEFT JOIN (SELECT * FROM  ${"`leave`"} WHERE maid_id =${escape(req.query['user_id'])} ) AS l ON l.leave_type_id = lt.leave_type_id
+            WHERE manager_id = ${escape(manager_id)}
+            GROUP BY lt.leave_type_id`
+        );
         res.status(200).send(result)
-       }else{
-        res.sendStatus(500)
-       }
     } catch (error) {
         console.log(error);
         res.sendStatus(500)
@@ -43,12 +39,7 @@ router.get('/getleaveData', async (req, res)=>{
             maid_id= ${escape(req.query[`user_id`])}
 
         `);
-     
-       if (result.length > 0) {
         res.status(200).send(result)
-       }else{
-        res.sendStatus(500)
-       }
     } catch (error) {
         console.log(error);
         res.sendStatus(500)
@@ -71,12 +62,7 @@ router.get('/getleaveDataByid', async (req, res)=>{
             leave_id = ${escape(req.query[`leave_id`])}
 
         `);
-     
-       if (result.length > 0) {
         res.status(200).send(result)
-       }else{
-        res.sendStatus(500)
-       }
     } catch (error) {
         console.log(error);
         res.sendStatus(500)
@@ -94,11 +80,7 @@ router.get('/getLeaveType', async (req, res)=>{
         WHERE ma.maid_id = ${escape(req.query[`maid_id`])}
         `);
      
-       if (result.length > 0) {
         res.status(200).send(result)
-       }else{
-        res.sendStatus(500)
-       }
     } catch (error) {
         console.log(error);
         res.sendStatus(500)
