@@ -1,9 +1,11 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import axios from "axios";
 import { InputGroupWithLabel } from '../components/FormElements';
 import Swal from 'sweetalert2';
 import { Link , useNavigate } from 'react-router-dom';
 import { RegisterFncManager } from '../functions/AuthFunc';
+import Resizer from 'react-image-file-resizer'
+import DemoImage from "../assets/business-man.png";
 
 const Register = () => {
 
@@ -13,10 +15,11 @@ const Register = () => {
     username: '',
     password: '',
     tel: '',
-    email: ''
-
+    email: '',
+    image: {}
   })
-  const navigate = useNavigate ();
+  const [preview, setPreview] = useState()
+  const navigate = useNavigate()
   
   const SetName = ({target:{value: val}})=>{
     setUserData({...userData,name: val})
@@ -36,6 +39,47 @@ const Register = () => {
   const SetEmail= ({target:{value: val}})=>{
     setUserData({...userData,email: val})
    }
+  const SetImage= ({target:{files}})=>{
+    let fileInput = false;
+    if (files[0]) {
+      fileInput = true;
+    }
+    if (fileInput) {
+      try {
+        Resizer.imageFileResizer(
+          files[0],
+          200,
+          200,
+          "JPEG",
+          100,
+          0,
+          (uri) => {
+            console.log(uri);
+            setUserData({...userData,image: uri})
+          },
+          "file",
+          150,
+          150
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    
+   }
+  
+  useEffect(()=>{
+    
+    if (userData.image.size !== undefined) {
+      const render = new FileReader();
+      render.onloadend = () =>{
+        setPreview(render.result)
+      }
+      render.readAsDataURL(userData.image)
+    }else{
+      setPreview(null)
+    }
+  },[userData.image])
 
   return (
     <> 
@@ -45,6 +89,7 @@ const Register = () => {
           <div className="flex flex-column mt-6">
           <form onSubmit={(e)=>{
               e.preventDefault()
+              console.log(userData);
               RegisterFncManager(userData, navigate)
           }}>
             <InputGroupWithLabel callback={SetName} id="input_name" label="ชื่อ"  placeholder="กรอกชื่อ" type="text" />
@@ -53,14 +98,19 @@ const Register = () => {
             <InputGroupWithLabel callback={SetPassword} id="input_password" label="รหัสผ่าน" placeholder="กรอกรหัสผ่าน" type="password"/>
             <InputGroupWithLabel callback={SetTel} id="input_tel" label="เบอร์โทร" placeholder="กรอกเบอร์โทร" type="text"/>
             <InputGroupWithLabel callback={SetEmail} id="input_email" label="email" placeholder="email" type="email"/>
-         
+            <InputGroupWithLabel callback={SetImage} id="input_file" label="รูปภาพ" placeholder="file" type="file"/>
+            <div className="max-h-60 overflow-auto shadow-lg">
+              <div className="flex justify-center py-3">
+                <img src={preview?preview:DemoImage} alt={preview}/>
+              </div>
+            </div>
            
             <div className="flex justify-center">
-              <button className="!bg-red-600 text-white rounded-full p-3">ยืนยัน</button>
+              <button className="btn btn-primary mt-3">ยืนยัน</button>
             </div>
           </form>
           <div className="flex justify-center mt-2">
-            <Link to="/login" className="text-danger mx-auto"> มีบัญชีอยู่แล้ว เข้าสู่ระบบ </Link>
+            <Link to="/login" className="text-info mx-auto"> มีบัญชีอยู่แล้ว เข้าสู่ระบบ </Link>
           </div>
           </div>
          </div>

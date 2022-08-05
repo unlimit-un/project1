@@ -1,5 +1,6 @@
 import Swal from "sweetalert2"
 import { axiosGet, axiosPost, axiosPostNonAuth } from "./AxiosCustom";
+import axios from 'axios'
 
 const ROOT_SERVER =`http://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}`;
 
@@ -34,25 +35,30 @@ export const LoginFunc = async (userData, navigate, pathname) => {
 
 export const RegisterFncManager = async (userData, navigate) =>{
   try {
-    const data = {
-      name: userData.name,
-      surname: userData.surname,
-      username: userData.username,
-      password: userData.password,
-      tel: userData.tel,
-      email: userData.email,
-      type: "MANAGER"
+    if (userData.image.size > 0) {
+      const formData = new FormData();
+      formData.append("name", userData.name);
+      formData.append("surname", userData.surname);
+      formData.append("username", userData.username);
+      formData.append("password", userData.password);
+      formData.append("tel",  userData.tel);
+      formData.append("email", userData.email);
+      formData.append("image", userData.image);
+      formData.append("type", "MANAGER");
+      
+      const result = await  axios.post(`${ROOT_SERVER}/api/non_auth/register_manager`,formData,
+        {headers: {"Content-Type": "multipart/form-data"}})
+      if (result.status === 200) {
+        await Swal.fire({
+          title: "สำเร็จ",
+          icon: "success",
+          text: "กำลังเข้าสู่ระบบ"
+        }).then(()=>{
+          navigate('/login');
+        })
+      }
     }
-    const result = await axiosPostNonAuth(`${ROOT_SERVER}/api/non_auth/register_manager`,data,)
-    if (result.status === 200) {
-      await Swal.fire({
-        title: "สำเร็จ",
-        icon: "success",
-        text: "กำลังเข้าสู่ระบบ"
-      }).then(()=>{
-        navigate('/login');
-      })
-    }
+    
   } catch (error) {
     await Swal.fire({
       title: "ผิดพลาด",

@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const multer = require('multer');
 
 require('dotenv').config();
 const bcrypt = require('bcryptjs');
@@ -7,7 +8,8 @@ const { escape } = require('mysql2')
 
 const db = require('./config/database');
 const jwt = require('jsonwebtoken')
-const auth = require('./middleware/verify_token')
+const auth = require('./middleware/verify_token');
+const { upload, uploadFile } = require('./services/other/upload');
 const app = express();
 // const origin = process.env.NODE_ENV === 'development'? "http://localhost:3000": "http://192.168.43.201:3000";
 
@@ -18,12 +20,14 @@ app.use(cors({
 
 app.use(express.json());
 
-app.post('/api/non_auth/register_manager',  async (req, res)=>{
+
+app.post('/api/non_auth/register_manager', uploadFile, async (req, res)=>{
     try {
+        console.log(req.file);
         const {username, password, name, surname, tel, email, type} = req.body;
         // console.log(username, password, name, surname, tel, email, type);
         console.log({username, password, name, surname, tel, email, type});
-        if (!(username && password && name && surname && tel && email && type)){
+        if (!(username && password && name && surname && tel && email && type && req.file.filename)){
             res.status(400).send('data required');
             return false;
         }
@@ -37,17 +41,19 @@ app.post('/api/non_auth/register_manager',  async (req, res)=>{
 
         const bcryptPassword = await bcrypt.hash(password, 10);
         const result = await db.query(`
-            INSERT INTO manager(manager_name, manager_surname, manager_username, manager_password, manager_tel, manager_email) 
+            INSERT INTO manager(manager_name, manager_surname, manager_username, manager_password, manager_tel, manager_email, manager_img) 
             VALUES(
                 ${escape(name)}, 
                 ${escape(surname)}, 
                 ${escape(username)}, 
                 ${escape(bcryptPassword)}, 
                 ${escape(tel)}, 
-                ${escape(email)}
+                ${escape(email)},
+                ${escape(req.file.filename)}
                 )
             `);
         if (result) {
+            
             res.status(200).send('insert manager success');
         }else{
             res.sendStatus(400)
@@ -102,6 +108,8 @@ app.post('/api/non_auth/login', async (req, res)=>{
         console.log(error);
     }
 })
+
+app.post('/api/non_auth/uploadFile', uploadFile, upload)
 
 app.use('/api', auth, require('./services/auth/route'))
 app.use('/api/manager', auth, require('./services/other/manager/router'))
