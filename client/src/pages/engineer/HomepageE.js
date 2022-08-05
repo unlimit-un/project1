@@ -13,7 +13,6 @@ import { ArrayColor, ArrayColorAlpha } from '../../utils/ArrayColor'
 
 const { CardFillColorNonFooter } = lazily(()=>import('../../components/Cards'))
 const { PieChart } =lazily(()=>import('../../components/Charts'))
-const { SidebarRightMaid } =lazily(()=>import('../../components/structure/SidebarM'))
 
 const HomepageE = () => {
     const [height, setHeight] = useState(0);
@@ -23,7 +22,6 @@ const HomepageE = () => {
 
     const loadPieChart = async() =>{
         const pieChartData = await getleavepiechart();
-        console.log(pieChartData);
         setLabelPieChart([...pieChartData.map(item=>item['leave_type_name'])]);
         setPieChartDataSets([{
             data:[...pieChartData.map(item=>item['count'])],
@@ -94,7 +92,6 @@ const HomepageE = () => {
     },[])
     useEffect(() => {
         setHeight(ref.current.clientHeight)
-        
     }, [height])
     
     return (
