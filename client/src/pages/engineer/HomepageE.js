@@ -7,7 +7,9 @@ import { pre_dataPieChart } from '../../functions/PrepareChartData'
 import { Skeleton,Spiner } from '../../components/Loading'
 import { lazily } from "react-lazily";
 import { SidebarRightEn } from '../../components/structure/SidebarM'
-import { convertNumberToLongEng } from '../../functions/ConvertDate'
+import { convertNumberToLongEng, convertNumberToThai } from '../../functions/ConvertDate'
+import { getleavepiechart } from '../../controllers/engineer/HomeControllers'
+import { ArrayColor, ArrayColorAlpha } from '../../utils/ArrayColor'
 
 const { CardFillColorNonFooter } = lazily(()=>import('../../components/Cards'))
 const { PieChart } =lazily(()=>import('../../components/Charts'))
@@ -15,25 +17,23 @@ const { SidebarRightMaid } =lazily(()=>import('../../components/structure/Sideba
 
 const HomepageE = () => {
     const [height, setHeight] = useState(0);
+    const [piechartdatasets , setPieChartDataSets] = useState ([]);
+    const [labelpiechart , setLabelPieChart] = useState ([]);
     const ref = useRef(null)
-    const dataSetChart = [{
-            // label: 'Dataset 1',
-            data: [20,30, 25, 10],
-            backgroundColor: [
-              'rgba(34, 197, 94, 0.2)',
-              'rgba(99, 102, 241, 0.2)',
-              'rgba(236, 72, 153, 0.2)',
-              'rgba(217, 119, 6, 0.2)',
-            ],
-            borderColor: [
-              'rgba(34, 197, 94, 1)',
-              'rgba(99, 102, 241, 1)',
-              'rgba(236, 72, 153, 1)',
-              'rgba(217, 119, 6, 1)',
-            ],
+
+    const loadPieChart = async() =>{
+        const pieChartData = await getleavepiechart();
+        console.log(pieChartData);
+        setLabelPieChart([...pieChartData.map(item=>item['leave_type_name'])]);
+        setPieChartDataSets([{
+            data:[...pieChartData.map(item=>item['count'])],
+            backgroundColor: [...pieChartData.map((item,i)=>ArrayColorAlpha[i])],
+            borderColor: [...pieChartData.map((item,i)=>ArrayColor[i])],
             borderWidth: 1,
-        }]
-    const dataChartLeave = pre_dataPieChart(['เข้างาน', 'ลาป่วย', 'ลากิจ', 'ลาพักผ่อน'],'top','', dataSetChart)
+        }])
+    }
+   
+    const dataChartLeave = pre_dataPieChart(labelpiechart,'top','', piechartdatasets)
 
     const todoCard = (
         <>
@@ -43,15 +43,15 @@ const HomepageE = () => {
     )
     const todayCard = (
         <>
-            <div className="card shadow-slate-300 shadow-[5px_5px] md:w-auto lg:w-full">
+            <div className="card shadow-slate-300 shadow-[5px_5px] w-full">
                 <div className="card-header !bg-red-500 text-white text-center">
                     <p className="m-0 card-title">{convertNumberToLongEng(new Date().getMonth())}</p>
                 </div>
                 <div className="card-body text-center">
-                    <h1 className="font-extrabold">25</h1>
+                    <h1 className="font-extrabold">{new Date().getDate()}</h1>
                 </div>
             </div>
-            <p className="lg:inline-block hidden">วันที่ 25 ธันวาคม พ.ศ.2565</p>
+            <p className="lg:inline-block hidden">{`วันที่ ${new Date().getDate()} ${convertNumberToThai(new Date().getMonth())} พ.ศ.${new Date().getFullYear()+543}`}</p>
         </>
     )
 
@@ -88,9 +88,13 @@ const HomepageE = () => {
             </div>
         </>
     )
-
+    
+    useEffect(()=>{
+        loadPieChart();
+    },[])
     useEffect(() => {
         setHeight(ref.current.clientHeight)
+        
     }, [height])
     
     return (
