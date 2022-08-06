@@ -84,10 +84,7 @@ export const SelectOptionWithLabel= ({callback, id, label, options_arr_obj, disa
         <>
             <div className="mb-3 flex flex-column">
               <label htmlFor={id} className="form-label">{label}</label>
-              <select id={id} className="form-select" disabled={disabled} onChange={({target:{value}})=>{
-                console.log(value);
-                callback(value)
-              }}>
+              <select id={id} className="form-select" disabled={disabled} onChange={callback}>
                 {
                     options_arr_obj.map((item, index)=>{
                         return(
