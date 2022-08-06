@@ -14,6 +14,23 @@ export const axiosGet = async (uri) =>{
     return data;
 }
 
+export const axiosGetImage = async (uri) =>{
+    const data = await axios.get(
+        `${uri}`, 
+        {
+            headers: {
+                'Content-Type': 'image/jpeg',
+                'Accept': 'application/json',
+                'authorization': `Bearer ${localStorage.getItem('user_token')}`
+                
+            },
+            responseType: "blob"
+        }
+    )
+    
+    return data;
+}
+
 export const axiosPost = async (uri, obj_data) =>{
     const data = await axios.post(
         `${uri}`,

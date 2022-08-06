@@ -9,12 +9,23 @@ router.get('/getUserData', async (req, res)=>{
             FROM manager
             WHERE manager_id = ${escape(req.query['user_id'])}
         `);
-     
-       if (result.length > 0) {
+        res.sendFile(`/${result[0]['manager_img']}`, {root: 'public'})
         res.status(200).send(result)
-       }else{
+    } catch (error) {
+        console.log(error);
         res.sendStatus(500)
-       }
+    }
+   
+})
+
+router.get('/getImageOfUser', async (req, res)=>{
+    try {
+        const result = await db.query(`
+            SELECT manager_img 
+            FROM manager
+            WHERE manager_id = ${escape(req.query['user_id'])}
+        `);
+        res.status(200).sendFile(`/${result[0]['manager_img']}`, {root: 'public'})
     } catch (error) {
         console.log(error);
         res.sendStatus(500)

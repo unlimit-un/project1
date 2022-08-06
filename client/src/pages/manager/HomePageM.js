@@ -47,100 +47,89 @@ const Homepage = () => {
 
     const loadPieChart = async () =>{
         const pieChartData = await getNotifyRepairPieChart();
-        setLabelPieChart([...pieChartData.map(item=>item.note)])
-        setPieChartDataSets([
-            {
-                data: [...pieChartData.map(item=>item.count)],
-                backgroundColor: [
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(54, 162, 235, 0.2)',
-                  'rgba(255, 206, 86, 0.2)',
-                  'rgba(153, 102, 255, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(255, 159, 64, 0.2)',
-                ],
-                borderColor: [
-                  'rgba(255, 99, 132, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(255, 206, 86, 1)',
-                  'rgba(153, 102, 255, 1)',
-                  'rgba(75, 192, 192, 1)',
-                  'rgba(255, 159, 64, 1)',
-                ],
-                borderWidth: 1,
-            }
-        ])
+        if (pieChartData !== undefined) {
+            setLabelPieChart([...pieChartData.map(item=>item.note)])
+            setPieChartDataSets([
+                {
+                    data: [...pieChartData.map(item=>item.count)],
+                    backgroundColor: [...pieChartData.map((item, i)=> ArrayColorAlpha[i])],
+                    borderColor: [...pieChartData.map((item, i)=> ArrayColor[i])],
+                    borderWidth: 1,
+                }
+            ])
+        }else{
+            setLabelPieChart(['ไม่พบข้อมูล'])
+            setPieChartDataSets([
+                {
+                    data: [1],
+                    backgroundColor: [ArrayColorAlpha[0]],
+                    borderColor: [ ArrayColor[0]],
+                    borderWidth: 1
+                }
+            ])
+        }
     }
 
     const loadBarChartRepair = async () =>{
         const barChartData = await getNotifyRepairBarChart();
-        
-        const prepare = [{
-            label: 'รอหัวหน้าดำเนินการ',
-            data: barChartData.map(item=>{
-                if (item.length === 0) {
-                    return [{count: 0}]
-                }else{
-                    const count = item.filter(ele=>ele.note === 'รอหัวหน้าดำเนินการ'??ele)
-                    return count
-                }
-            }).map(item=>item.length === 0 ? 0:item[0]['count']),
-            borderColor: 'rgb(255, 99, 132)',
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
-        },
-        {
-            label: 'อนุมัติ',
-            data: barChartData.map(item=>{
-                if (item.length === 0) {
-                    return [{count: 0}]
-                }else{
-                    const count = item.filter(ele=>ele.note === 'อนุมัติ'??ele)
-                    return count
-                }
-            }).map(item=>item.length === 0 ? 0:item[0]['count']),
-            borderColor: 'rgb(53, 162, 235)',
-            backgroundColor: 'rgba(53, 162, 235, 0.5)',
-        },
-        {
-            label: 'ดำเนินการเสร็จสิ้น',
-            data: barChartData.map(item=>{
-                if (item.length === 0) {
-                    return [{count: 0}]
-                }else{
-                    const count = item.filter(ele=>ele.note === 'ดำเนินการเสร็จสิ้น'??ele)
-                    return count
-                }
-            }).map(item=>item.length === 0 ? 0:item[0]['count']),
-            borderColor: 'rgb(33, 200, 33)',
-            backgroundColor: 'rgba(33, 200, 33, 0.5)',
-        },
-        {
-            label: 'ปฏิเสธ',
-            data: barChartData.map(item=>{
-                if (item.length === 0) {
-                    return [{count: 0}]
-                }else{
-                    const count = item.filter(ele=>ele.note === 'ปฏิเสธ'??ele)
-                    return count
-                }
-            }).map(item=>item.length === 0 ? 0:item[0]['count']),
-            borderColor: 'rgb(33, 200, 155)',
-            backgroundColor: 'rgba(33, 200, 155, 0.5)',
-        },
-        {
-            label: 'ไม่สามารถดำเนินการได้',
-            data: barChartData.map(item=>{
-                if (item.length === 0) {
-                    return [{count: 0}]
-                }else{
-                    const count = item.filter(ele=>ele.note === 'ไม่สามารถดำเนินการได้'??ele)
-                    return count
-                }
-            }).map(item=>item.length === 0 ? 0:item[0]['count']),
-            borderColor: 'rgb(150, 200, 255)',
-            backgroundColor: 'rgba(150, 200, 255, 0.5)',
-        }]
-        setDataSetsRepair(prepare)
+        if (barChartData !== undefined) {
+            const prepare = [{
+                label: 'รอหัวหน้าดำเนินการ',
+                data: barChartData.map(item=>item.length === 0 ? [{count:0}]: item.filter(ele=>ele.note === 'รอหัวหน้าดำเนินการ'??ele))
+                    .map(item=>item.length === 0 ? 0:item[0]['count']),
+                borderColor: ArrayColor[0],
+                backgroundColor: ArrayColorAlpha[0],
+            },
+            {
+                label: 'อนุมัติ',
+                data: barChartData.map(item=>{
+                    if (item.length === 0) {
+                        return [{count: 0}]
+                    }else{
+                        return item.filter(ele=>ele.note === 'อนุมัติ'??ele)
+                    }
+                }).map(item=>item.length === 0 ? 0:item[0]['count']),
+                borderColor: ArrayColor[1],
+                backgroundColor: ArrayColorAlpha[1],
+            },
+            {
+                label: 'ดำเนินการเสร็จสิ้น',
+                data: barChartData.map(item=>{
+                    if (item.length === 0) {
+                        return [{count: 0}]
+                    }else{
+                        return item.filter(ele=>ele.note === 'ดำเนินการเสร็จสิ้น'??ele)
+                    }
+                }).map(item=>item.length === 0 ? 0:item[0]['count']),
+                borderColor: ArrayColor[2],
+                backgroundColor: ArrayColorAlpha[2],
+            },
+            {
+                label: 'ปฏิเสธ',
+                data: barChartData.map(item=>{
+                    if (item.length === 0) {
+                        return [{count: 0}]
+                    }else{
+                        return item.filter(ele=>ele.note === 'ปฏิเสธ'??ele)
+                    }
+                }).map(item=>item.length === 0 ? 0:item[0]['count']),
+                borderColor: ArrayColor[3],
+                backgroundColor: ArrayColorAlpha[3],
+            },
+            {
+                label: 'ไม่สามารถดำเนินการได้',
+                data: barChartData.map(item=>{
+                    if (item.length === 0) {
+                        return [{count: 0}]
+                    }else{
+                        return item.filter(ele=>ele.note === 'ไม่สามารถดำเนินการได้'??ele)
+                    }
+                }).map(item=>item.length === 0 ? 0:item[0]['count']),
+                borderColor: ArrayColor[4],
+                backgroundColor: ArrayColorAlpha[4],
+            }]
+            setDataSetsRepair(prepare)
+        }
     }
 
     const loadBarChartLeave = async () =>{
@@ -174,52 +163,86 @@ const Homepage = () => {
 
     const loadBarChartLeaveRoleMaid = async () =>{
         const barChartLeaveRoleMaid = await getLeaveRoleMaidBarChart();
-        const totalTypeLabel = barChartLeaveRoleMaid[0].map(item=>item['leave_type_name'])
-        
-        const seperateData = totalTypeLabel.map(label=>{
-            return barChartLeaveRoleMaid.map(item=>{
-                return item.filter(item2=>{
-                    if (item2['leave_type_name'] === label) {
-                        return {label, data: item2['count_maid']}
-                    }
-                })
-            })
-        })
-
-        const data = totalTypeLabel.map((label, i)=>{
-            return {
-                label: label,
-                data: seperateData.map(item=>item.map(item2=>item2[0]['leave_type_name'] === label?item2[0]['count_maid']:0))[i],
-                borderColor: ArrayColor[i],
-                backgroundColor: ArrayColorAlpha[i],
+        let bool = false;
+        barChartLeaveRoleMaid.forEach(item=>{
+            if (item.length > 0) {
+                bool = true;
             }
         })
-        setDataSetsLeaveRoleMaid(data)
+        
+        if (bool) {
+            
+            const totalTypeLabel = barChartLeaveRoleMaid[0].map(item=>item['leave_type_name'])
+            
+            const seperateData = totalTypeLabel.map(label=>{
+                return barChartLeaveRoleMaid.map(item=>{
+                    return item.filter(item2=>{
+                        if (item2['leave_type_name'] === label) {
+                            return {label, data: item2['count_maid']}
+                        }
+                    })
+                })
+            })
+    
+            const data = totalTypeLabel.map((label, i)=>{
+                return {
+                    label: label,
+                    data: seperateData.map(item=>item.map(item2=>item2[0]['leave_type_name'] === label?item2[0]['count_maid']:0))[i],
+                    borderColor: ArrayColor[i],
+                    backgroundColor: ArrayColorAlpha[i],
+                }
+            })
+            setDataSetsLeaveRoleMaid(data)
+        }else{
+            setDataSetsLeaveRoleMaid([{
+                label: 'ไม่พบข้อมูล',
+                data: [1],
+                borderColor: ArrayColor[0],
+                backgroundColor: ArrayColorAlpha[0],
+            }])
+        }
     }
 
     const loadBarChartLeaveRoleEn = async () =>{
         const barChartLeaveRoleEn = await getLeaveRoleEngineerBarChart();
-        const totalTypeLabel = barChartLeaveRoleEn[0].map(item=>item['leave_type_name'])
-        
-        const seperateData = totalTypeLabel.map(label=>{
-            return barChartLeaveRoleEn.map(item=>{
-                return item.filter(item2=>{
-                    if (item2['leave_type_name'] === label) {
-                        return {label, data: item2['count_en']}
-                    }
-                })
-            })
-        })
-
-        const data = totalTypeLabel.map((label, i)=>{
-            return {
-                label: label,
-                data: seperateData.map(item=>item.map(item2=>item2[0]['leave_type_name'] === label?item2[0]['count_en']:0))[i],
-                borderColor: ArrayColor[i],
-                backgroundColor: ArrayColorAlpha[i],
+        let bool = false;
+        barChartLeaveRoleEn.forEach(item=>{
+            if (item.length > 0) {
+                bool = true;
             }
         })
-        setDataSetsLeaveRoleEn(data)
+
+        if (bool) {
+            
+            const totalTypeLabel = barChartLeaveRoleEn[0].map(item=>item['leave_type_name'])
+            
+            const seperateData = totalTypeLabel.map(label=>{
+                return barChartLeaveRoleEn.map(item=>{
+                    return item.filter(item2=>{
+                        if (item2['leave_type_name'] === label) {
+                            return {label, data: item2['count_en']}
+                        }
+                    })
+                })
+            })
+    
+            const data = totalTypeLabel.map((label, i)=>{
+                return {
+                    label: label,
+                    data: seperateData.map(item=>item.map(item2=>item2[0]['leave_type_name'] === label?item2[0]['count_en']:0))[i],
+                    borderColor: ArrayColor[i],
+                    backgroundColor: ArrayColorAlpha[i],
+                }
+            })
+            setDataSetsLeaveRoleEn(data)
+        }else{
+            setDataSetsLeaveRoleEn([{
+                label: 'ไม่พบข้อมูล',
+                data: [1],
+                borderColor: ArrayColor[0],
+                backgroundColor: ArrayColorAlpha[0],
+            }])
+        }
     }
 
     const loadTableOrderMaterial = async () =>{
@@ -264,6 +287,7 @@ const Homepage = () => {
     const dataChartLeaveEngineer = pre_dataBarChart(labels,'top','สถิติการลาของช่าง', dataSetsLeaveRoleEn) // success 
     const dataChartLeaveMaid = pre_dataBarChart(labels,'top','สถิติการลาของแม่บ้าน', dataSetsLeaveRoleMaid) // success 
     const dataChartRepair = pre_dataPieChart(labelPieChart,'top','แผนภูมิการซ่อมทั้งหมด', pieChartDataSets) // success
+    console.log(dataChartRepair);
     // const dataChartRepairBar = pre_dataBarChart(labels,'top','แผนภูมิการซ่อมทั้งหมด', dataSetsRepair) // success
 
     return (

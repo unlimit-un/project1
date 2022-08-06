@@ -30,12 +30,14 @@ export const SidebarLeftManager = () => {
     const [classTogglePerson, setClassTogglePerson] = useState("");
     const [classToggleSchedual, setClassToggleSchedual] = useState("");
     const [classToggleLeave, setClassToggleLeave] = useState("");
-    const [userData, setUserData] = useState({})
+    const [userData, setUserData] = useState({});
+    const [userImage, setUserImage] = useState(null);
     
     const loadUserData = async () =>{
         const userData = await ManagerController.getUserData();
+        const userImg = await ManagerController.getImageOfUser();
+        setUserImage(userImg)
         setUserData(userData[0])
-        console.log(userData[0]);
     }
 
     useEffect(()=>{
@@ -64,13 +66,13 @@ export const SidebarLeftManager = () => {
         setOpen({...open, leave:{status: !open.leave.status}, person:{status: false}, schedual:{status: false}})
         
     }
-
     return (
         <>
             <div className="bg-blue-50 min-h-screen h-full ">
                 <div className="flex flex-col items-center">
                     <div className="flex flex-col items-center mt-4 mb-3">
-                        <img src={Logo} alt="business-man.png" className="w-20 h-20 rounded-circle shadow"/>
+                        
+                        <img src={userImage} alt="business-man.png" className="w-20 h-20 rounded-circle shadow"/>
                         <p className="m-2 text-lg">{userData['manager_name']} {userData['manager_surname']}</p>
                         <small>หัวหน้างาน</small>
                     </div>
