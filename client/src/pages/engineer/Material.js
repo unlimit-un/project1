@@ -8,7 +8,7 @@ import { InputGroupWithLabel, Radio, RadioInline, SelectOptionWithLabel } from '
 import { ModalButton, ModalCard, ModalCardConfirm } from '../../components/Modals'
 import { lazily } from "react-lazily";
 import { Skeleton } from '../../components/Loading'
-import { getMaterialeData, getMaterialOfUser } from '../../controllers/engineer/Materialcontrollers'
+import { deleteOrderMaterial, getMaterialeData, getMaterialOfUser, insertOrderMaterial } from '../../controllers/engineer/Materialcontrollers'
 import { Modal } from 'react-bootstrap'
 
 const { MuiTable } = lazily(()=>import('../../components/Tables'))
@@ -18,15 +18,18 @@ const Material = () => {
     const [modalConfirmShow, setModalConfirmShow] = useState(false)
     const [modal, setModal] = useState({mHead: (<></>),mBody: (<></>)})
     const [muiDataTable, setMuiDataTable] = useState([]);
-    const [typeInsert, setTypeInsert] = useState(true);
-
-    const loadMuiDataTable = async () =>{
+    const [typeInsert, setTypeInsert] = useState('');
+    const [materialInsert, setMaterialInsert] = useState('');
+    const [countInsert, setCountInsert] = useState('');
+    const [unitPriceInsert, setUnitPriceInsert] = useState('');
+    
+    const loadMaterialTable = async () =>{
         const materialData = await getMaterialeData();
         setMuiDataTable(materialData)
     }
 
     useEffect(()=>{
-        loadMuiDataTable();
+        loadMaterialTable();
     },[])
   
     const MuiTableData = {
@@ -40,7 +43,10 @@ const Material = () => {
                 unit_price: item['unit_price'],
                 total_price: item['total_price'],
                 status: item['note'], 
-                ED:<Delete/>,
+                ED:<Delete DeleteFnc={async()=>{
+                    const bool = await deleteOrderMaterial({order_material_id: item['order_id']});
+                    if(bool) await loadMaterialTable();
+                }}/>,
                 view:<ModalButton callback={()=>handleView(setModal)} classBtn="btn btn-outline-primary" setModalShow={setModalShow} icon={faEye}/> 
             }
         })],
@@ -71,12 +77,22 @@ const Material = () => {
         </>
     )
 
+    const resetState = () =>{
+        setCountInsert('');
+        setMaterialInsert('');
+        setTypeInsert('');
+        setUnitPriceInsert('');
+    }
 
     const handleShowAdd = async () =>{
         const materialOfUser = await getMaterialOfUser();
-        const arr_opt_material = [...materialOfUser.map(item=>{
-            return {value: item['material_id'], text: `${item['material_code']}-${item['material_name']}`}
-        })]
+        const arr_opt_material = [
+            {value: '', text:'กรุณาเลือกข้อมูล'},
+            ...materialOfUser.map(item=>{
+                return {value: item['material_id'], text: `${item['material_code']}-${item['material_name']}`}
+            })
+        ]
+        
         const formStockFunc = () =>{
             setModal({
                 mHead: (
@@ -87,21 +103,39 @@ const Material = () => {
                 mBody:(
                     <>
                         <div className="flex gap-2">
-                            <RadioInline callback={()=>{formStockFunc()}} id="fromStock" label="รายการที่มีในคลัง" name="typeInsert" value={true}/>
-                            <RadioInline callback={()=>{noStockFunc()}} id="noStock" label="รายการใหม่" name="typeInsert" value={false}/>
+                            <RadioInline 
+                                callback={({target:{value}})=>{
+                                        formStockFunc();  
+                                        setTypeInsert(value)
+                                    }
+                                }  
+                                id="fromStock" label="รายการที่มีในคลัง" name="typeInsert" value="1"
+                            />
+                            <RadioInline 
+                                callback={({target:{value}})=>{
+                                        noStockFunc();  
+                                        setTypeInsert(value)
+                                    }
+                                } 
+                                id="noStock" label="รายการใหม่" name="typeInsert" value="0"
+                            />
                         </div>
                         <div className="row">
-                            <div className="col-md-6 col-12">
-                            <SelectOptionWithLabel options_arr_obj={arr_opt_material} label="รายการวัสดุครุภัณฑ์"/>
+                            <div className="col-md-4 col-12">
+                                <SelectOptionWithLabel options_arr_obj={arr_opt_material} label="รายการวัสดุครุภัณฑ์" callback={({target:{value}})=>{setMaterialInsert(value)}}/>
                             </div>
-                            <div className="col-md-6 col-12">
-                            <InputGroupWithLabel id="input_count" placeholder="จำนวน" label="จำนวน"/>
+                            <div className="col-md-4 col-12">
+                                <InputGroupWithLabel id="input_count" placeholder="จำนวน" label="จำนวน" callback={({target:{value}})=>{setCountInsert(value)}}/>
+                            </div>
+                            <div className="col-md-4 col-12">
+                                <InputGroupWithLabel id="input_unit_price" placeholder="ราคาต่อหน่วย" label="ราคาต่อหน่วย" callback={({target:{value}})=>{setUnitPriceInsert(value)}}/>
                             </div>
                         </div>
                     </>
                 )}
             )
         }
+
         const noStockFunc = () =>{
             setModal({ 
                 mHead: (
@@ -112,15 +146,32 @@ const Material = () => {
                 mBody:(
                     <>
                         <div className="flex gap-2">
-                            <RadioInline callback={()=>{formStockFunc()}} id="fromStock" label="รายการที่มีในคลัง" name="typeInsert" value={true}/>
-                            <RadioInline callback={()=>{noStockFunc()}} id="noStock" label="รายการใหม่" name="typeInsert" value={false}/>
+                            <RadioInline 
+                                callback={({target:{value}})=>{
+                                        formStockFunc();  
+                                        setTypeInsert(value)
+                                    }
+                                }   
+                                id="fromStock" label="รายการที่มีในคลัง" name="typeInsert" value="1" 
+                            />
+                            <RadioInline 
+                                callback={({target:{value}})=>{
+                                        noStockFunc();  
+                                        setTypeInsert(value)
+                                    }
+                                } 
+                                id="noStock" label="รายการใหม่" name="typeInsert" value="0"
+                            />
                         </div>
                         <div className="row">
-                            <div className="col-md-6 col-12">
-                            <InputGroupWithLabel id="input_material" placeholder="วัสดุครุภัณฑ์ที่ต้องการสั่ง" label="ชื่อวัสดุครุภัณ์"/>
+                            <div className="col-md-4 col-12">
+                                <InputGroupWithLabel id="input_material" placeholder="วัสดุครุภัณฑ์ที่ต้องการสั่ง" label="ชื่อวัสดุครุภัณ์" callback={({target:{value}})=>{setMaterialInsert(value)}}/>
                             </div>
-                            <div className="col-md-6 col-12">
-                            <InputGroupWithLabel id="input_count" placeholder="จำนวน" label="จำนวน"/>
+                            <div className="col-md-4 col-12">
+                                <InputGroupWithLabel id="input_count" placeholder="จำนวน" label="จำนวน" callback={({target:{value}})=>{setCountInsert(value)}}/>
+                            </div>
+                            <div className="col-md-4 col-12">
+                                <InputGroupWithLabel id="input_unit_price" placeholder="ราคาต่อหน่วย" label="ราคาต่อหน่วย" callback={({target:{value}})=>{setUnitPriceInsert(value)}}/>
                             </div>
                         </div>
                     </>
@@ -128,9 +179,40 @@ const Material = () => {
             })
         }
 
-        formStockFunc();
+        setModal({
+            mHead: (
+                <>
+                    <h1 className="m-0 text-2xl"><FontAwesomeIcon icon={faBox}/> ยื่นเรื่องสั่งซื้อ</h1>
+                </>
+            ),
+            mBody:(
+                <>
+                    <div className="flex gap-2">
+                        <RadioInline 
+                            callback={({target:{value}})=>{
+                                    formStockFunc();  
+                                    setTypeInsert(value);
+                                }
+                            } 
+                            id="fromStock" label="รายการที่มีในคลัง" name="typeInsert" value="1"
+                        />
+                        <RadioInline 
+                            callback={({target:{value}})=>{
+                                    noStockFunc()
+                                    setTypeInsert(value)
+                                }
+                            } 
+                            id="noStock" label="รายการใหม่" name="typeInsert" value="0"
+                        />
+                    </div>
+                </>
+            )}
+        )
+        
     }
 
+    const formData = {typeInsert, materialInsert, countInsert, unitPriceInsert}
+    console.log(formData);
     return (
         <>
             <h1 className="text-2xl"><FontAwesomeIcon icon={faBox}/> สั่งซื้อครุภัณฑ์</h1>
@@ -138,12 +220,12 @@ const Material = () => {
                 <ModalButton icon={faPlus} text="ยื่นเรื่องสั่งซื้อ" classBtn="btn btn-outline-primary" callback={()=>handleShowAdd()} setModalShow={setModalConfirmShow}/>
             </div>
             <div className="mt-3">
-            <CardFillColorNonFooterShadow contentBody={tableMaterial}/>
+                <CardFillColorNonFooterShadow contentBody={tableMaterial}/>
             </div>
 
             {/* modal */}
             <ModalCard modalShow={modalShow} setModalShow={setModalShow} modalHead={modal.mHead} modalBody={modal.mBody} btnOkText="บันทึก" />
-            <ModalCardConfirm cancleCallback={()=>{}} confrimCallback={()=>{}} modalShow={modalConfirmShow} setModalShow={setModalConfirmShow} modalHead={modal.mHead} modalBody={modal.mBody} btnOkText="บันทึก" />
+            <ModalCardConfirm hideCallback={resetState} cancleCallback={resetState} confrimCallback={()=>{insertOrderMaterial(formData); resetState(); loadMaterialTable();}} modalShow={modalConfirmShow} setModalShow={setModalConfirmShow} modalHead={modal.mHead} modalBody={modal.mBody} btnOkText="บันทึก" />
         </>
     )
 }

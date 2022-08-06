@@ -73,7 +73,7 @@ export const SidebarLeftManager = () => {
                     <div className="flex flex-col items-center mt-4 mb-3">
                         
                         <img src={userImage} alt="business-man.png" className="w-20 h-20 rounded-circle shadow"/>
-                        <p className="m-2 text-lg">{userData['manager_name']} {userData['manager_surname']}</p>
+                        <p className="m-2 text-lg truncate w-40 text-center">{userData['manager_name']} {userData['manager_surname']}</p>
                         <small>หัวหน้างาน</small>
                     </div>
                     <div className="w-full">
@@ -238,7 +238,7 @@ export const SidebarLeftMaid = () => {
                 <div className="flex flex-col items-center">
                     <div className="flex flex-col items-center mt-4 mb-3">
                         <img src={Logo} alt="business-man.png" className="w-20 h-20 rounded-circle shadow"/>
-                        <p className="m-2 text-lg">{userdata['maid_name']} {userdata['maid_surname']} </p>
+                        <p className="m-2 text-lg truncate w-40 text-center">{userdata['maid_name']} {userdata['maid_surname']} </p>
                         <small>แม่บ้าน</small>
                     </div>
                     <div className="w-full">
@@ -370,7 +370,7 @@ export const SidebarLeftEn = () => {
                 <div className="flex flex-col items-center">
                     <div className="flex flex-col items-center mt-4 mb-3">
                         <img src={Logo} alt="business-man.png" className="w-20 h-20 rounded-circle shadow"/>
-                        <p className="m-2 text-lg">{userData['engineer_name']} {userData['engineer_surname']}</p>
+                        <p className="my-2 text-lg truncate w-40 text-center">{userData['engineer_name']} {userData['engineer_surname']}</p>
                         <small className='text-center'>ช่างซ่อม<br/>{userData['dept_name']}</small>
                     </div>
                     <div className="w-full">
