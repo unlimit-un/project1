@@ -7,7 +7,7 @@ router.get('/getCountMaidByManagerId', async (req, res)=>{
         const result = await db.query(`
             SELECT COUNT(*) AS count FROM maid AS m
             INNER JOIN location AS l ON l.location_id = m.location_id
-            WHERE l.manager_id = ${req.query['manager_id']}
+            WHERE l.manager_id = ${escape(req.query['manager_id'])}
         `);
      
         res.status(200).send(result)

@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from 'react'
+import React, { Suspense, useEffect, useState, useTransition } from 'react'
 import { CardFillColorNonFooter } from '../../../components/Cards'
 import { InputGroupWithLabel, SelectOptionWithLabel } from '../../../components/FormElements'
 // import { MuiTable, TablesStriped } from '../../../components/Tables'
@@ -9,6 +9,8 @@ import {Link} from 'react-router-dom'
 import { EditDelete } from '../../../components/EditDelete'
 import { Skeleton } from '@mui/material'
 import { lazily } from 'react-lazily'
+import { getEngineerDeptById, getEngineerDeptByManagerId } from '../../../controllers/manager/ManageEmpController'
+import { ModalCard, ModalCardConfirm } from '../../../components/Modals'
 
 const {MuiTable} = lazily(()=>import('../../../components/Tables'));
 
@@ -142,21 +144,64 @@ export const InsEmp = ({title, options, optionsLocation, optionsType}) => {
 }
 
 export const Dept = ({title, arr_obj_location}) =>{
+    const [engineerDept, setEngineerDept] = useState([]);
+    const [modal, setModal] = useState({mHead:<></>, mBody:<></>})
+    const [modalShow, setModalShow] = useState(false);
+    const loadEngineerDept = async() => {
+        const engineerDeptByManagerId = await getEngineerDeptByManagerId()
+        setEngineerDept(engineerDeptByManagerId)
+    }
+
+    const showEditModal = async(dept_id) =>{
+        await getEngineerDeptById(dept_id).then((selectedDept)=>{
+
+            setModal({
+                mHead: <h1 className="m-0 text-2xl"><FontAwesomeIcon icon={faPencil}/>แก้ไขแผนกช่าง</h1>,
+                mBody:(
+                    <>
+                        <div className="row">
+                            <div className="col-12">
+                                <InputGroupWithLabel value={selectedDept[0]['dept_code']} id="input_emp_id_modal" label="รหัสแผนก" type="text" placeholder="รหัสแผนก" callback={()=>{}}/>
+                            </div>
+                            <div className="col-12">
+                                <InputGroupWithLabel value={selectedDept[0]['dept_name']} id="input_emp_id_modal" label="แผนกช่างซ่อม" type="text" placeholder="แผนกช่างซ่อม" callback={()=>{}}/>
+                            </div>
+                            <div className="col-12">
+                                <SelectOptionWithLabel id="input_emp_id_modal" label="สถานที่" options_arr_obj={arr_obj_location} />
+                            </div>
+                        </div>
+                    </>
+                )
+                
+            })
+        })
+    }
+    
+    useEffect(()=>{
+        loadEngineerDept()
+    },[])
+
     const MuiTableData = {
         data: [
-            {id_dept: 'DEPT220',name_dept:"ช่างทั่วไป",location:"ตึก A",date:"3/7/2023",ED:<EditDelete/>},
-            {id_dept: 'DEPT200',name_dept:"ช่างอิเล็กทรอนิกส์",location:"ตึก A",date:"6/7/2023",ED:<EditDelete/>}
+            ...engineerDept.map(item=>{
+                return {
+                            dept_code: item['dept_code'],
+                            dept_name:item['dept_name'],
+                            location_name: item['location_name'],
+                            time_reg: `${item['time_reg'].split(/[\sT\s.]/)[0]} ${item['time_reg'].split(/[\sT\s.]/)[1]}`,
+                            ED:<EditDelete setModalShow={setModalShow} EditFnc={()=>{showEditModal(item['dept_id'])}}/>
+                        }
+            })
         ],
         columns: [
-            {title: "รหัสแผนก",field: "id_dept"},
-            {title: "ชื่อแผนก",field: "name_dept"},
-            {title: "สถานที่",field: "location"},
-            {title: "วันที่เพิ่มข้อมูล",field: "date"},
+            {title: "รหัสแผนก",field: "dept_code"},
+            {title: "ชื่อแผนก",field: "dept_name"},
+            {title: "สถานที่",field: "location_name"},
+            {title: "วันที่เพิ่มข้อมูล",field: "time_reg"},
             {title: "",field: "ED"}
         ]
 
     }
-
     
 
     const template = (
@@ -189,12 +234,12 @@ export const Dept = ({title, arr_obj_location}) =>{
     return(
         <>
             <CardFillColorNonFooter contentBody={template}/>
-           <div className="mt-4">
-                <Suspense fallback={<Skeleton/>}>
-                    <CardFillColorNonFooter contentBody={<MuiTable data={MuiTableData.data} columns={MuiTableData.columns} title=""/>} />
-                </Suspense>
-           </div>
-            
+            <div className="mt-4">
+                    <Suspense fallback={<Skeleton/>}>
+                        <CardFillColorNonFooter contentBody={<MuiTable data={MuiTableData.data} columns={MuiTableData.columns} title=""/>} />
+                    </Suspense>
+            </div>
+            <ModalCardConfirm setModalShow={setModalShow} modalShow={modalShow} modalBody={modal.mBody} modalHead={modal.mHead} cancleCallback={()=>{}} confrimCallback={()=>{}} btnOkText="บันทึก"/>
         </>
     )
 }

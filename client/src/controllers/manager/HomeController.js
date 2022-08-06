@@ -6,9 +6,9 @@ export const getNotifyRepairPieChart = async () =>{
         const {data} = await axiosGet(`${ROOT_SERVER}/api/manager/getNotifyRepairPieChart?user_id=${user_id}`);
         
         return data;
-      } catch (error) {
-          console.error(error)
-      }
+    } catch (error) {
+        console.error(error)
+    }
 }
 
 export const getNotifyRepairBarChart = async () =>{
