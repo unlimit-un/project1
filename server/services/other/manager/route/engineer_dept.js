@@ -32,4 +32,69 @@ router.get('/getEngineerDeptById', async (req, res)=>{
    
 })
 
+router.post('/insertEngineerDept', async (req, res)=>{
+    try {
+        const { dept_code, dept_name, location_id } = req.body
+        console.log({ dept_code, dept_name, location_id });
+        if (!(dept_code && dept_name && location_id)) {
+            res.status(400).send('data is required!')
+        }
+
+        const result = await db.query(`
+            INSERT INTO engineer_department(dept_code, dept_name, location_id)
+            VALUES(${escape(dept_code)}, ${escape(dept_name)}, ${escape(location_id)})
+        `);
+        res.status(200).send(result)
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
+   
+})
+
+router.post('/editEngineerDept', async (req, res)=>{
+    try {
+        const { dept_code, dept_name, location_id, dept_id } = req.body
+        console.log({ dept_code, dept_name, location_id, dept_id });
+        if (!(dept_code && dept_name && location_id && dept_id)) {
+            res.status(400).send('data is required!')
+        }
+
+        const result = await db.query(`
+            UPDATE 
+                engineer_department 
+            SET 
+                dept_code = ${escape(dept_code)}, 
+                dept_name = ${escape(dept_name)}, 
+                location_id = ${escape(location_id)}
+            WHERE 
+                dept_id = ${escape(dept_id)};
+        `);
+        res.status(200).send(result)
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
+   
+})
+
+router.post('/deleteEngineerDept', async (req, res)=>{
+    try {
+        const { dept_id } = req.body
+        console.log({ dept_id });
+        if (!(dept_id)) {
+            res.status(400).send('data is required!')
+        }
+
+        const result = await db.query(`
+            DELETE FROM engineer_department WHERE dept_id = ${escape(dept_id)}
+        `);
+        res.status(200).send(result)
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
+   
+})
+
 module.exports = router

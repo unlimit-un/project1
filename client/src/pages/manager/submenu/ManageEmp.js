@@ -9,8 +9,9 @@ import {Link} from 'react-router-dom'
 import { EditDelete } from '../../../components/EditDelete'
 import { Skeleton } from '@mui/material'
 import { lazily } from 'react-lazily'
-import { getEngineerDeptById, getEngineerDeptByManagerId } from '../../../controllers/manager/ManageEmpController'
+import { deleteEngineerDept, editEngineerDept, getEngineerDeptById, getEngineerDeptByManagerId, insertEngineerDept } from '../../../controllers/manager/ManageEmpController'
 import { ModalCard, ModalCardConfirm } from '../../../components/Modals'
+import Swal from 'sweetalert2'
 
 const {MuiTable} = lazily(()=>import('../../../components/Tables'));
 
@@ -65,7 +66,7 @@ export const ManageEmployee = ({title, dataSets}) => {
     )
 }
 
-export const InsEmp = ({title, options, optionsLocation, optionsType}) => {
+export const InsEmp = ({title, options, optionsLocation, optionsDept}) => {
     const [empData, setEmpData] = useState({
         data:{
             emp_id: '',
@@ -127,7 +128,7 @@ export const InsEmp = ({title, options, optionsLocation, optionsType}) => {
                                     <SelectOptionWithLabel id="select_role"  options_arr_obj={options} label="ประเภทงาน"/>
                                 </div>
                                 <div className="col-md-4 col-12">
-                                    <SelectOptionWithLabel id="select_type_engineer" label="แผนกช่าง" disable="disabled" options_arr_obj={optionsType}/>
+                                    <SelectOptionWithLabel id="select_type_engineer" label="แผนกช่าง" disable="disabled" options_arr_obj={optionsDept}/>
                                 </div>
                             </div>
                         </div>
@@ -151,23 +152,37 @@ export const Dept = ({title, arr_obj_location}) =>{
         const engineerDeptByManagerId = await getEngineerDeptByManagerId()
         setEngineerDept(engineerDeptByManagerId)
     }
+    const [deptData, setDeptData] = useState({
+        dept_name: '',
+        dept_code: '',
+        location_id: ''
+    });
 
-    const showEditModal = async(dept_id) =>{
+    const [editDeptCode, setEditDeptCode] = useState('')
+    const [editDeptName, setEditDeptName] = useState('')
+    const [editLocationId, setEditLocationId] = useState('')
+    const [editDeptId, setEditDeptId] = useState('')
+
+    const showEditModalDeptEngineer = async(dept_id) =>{
+        
         await getEngineerDeptById(dept_id).then((selectedDept)=>{
-
+            setEditDeptId(dept_id)
+            setEditDeptCode(selectedDept[0]['dept_code'])
+            setEditDeptName(selectedDept[0]['dept_name'])
+            setEditLocationId(selectedDept[0]['location_id'])
             setModal({
                 mHead: <h1 className="m-0 text-2xl"><FontAwesomeIcon icon={faPencil}/>แก้ไขแผนกช่าง</h1>,
                 mBody:(
                     <>
                         <div className="row">
                             <div className="col-12">
-                                <InputGroupWithLabel value={selectedDept[0]['dept_code']} id="input_emp_id_modal" label="รหัสแผนก" type="text" placeholder="รหัสแผนก" callback={()=>{}}/>
+                                <InputGroupWithLabel key={selectedDept[0]['dept_code']} defaultValue={selectedDept[0]['dept_code']} callback={({target:{value}})=>{setEditDeptCode(value)}} id="input_dept_code_modal" label="รหัสแผนก" type="text" placeholder="รหัสแผนก" />
                             </div>
                             <div className="col-12">
-                                <InputGroupWithLabel value={selectedDept[0]['dept_name']} id="input_emp_id_modal" label="แผนกช่างซ่อม" type="text" placeholder="แผนกช่างซ่อม" callback={()=>{}}/>
+                                <InputGroupWithLabel key={selectedDept[0]['dept_name']}  defaultValue={selectedDept[0]['dept_name']} callback={({target:{value}})=>{setEditDeptName(value)}} id="input_dept_name_modal" label="แผนกช่างซ่อม" type="text" placeholder="แผนกช่างซ่อม" />
                             </div>
                             <div className="col-12">
-                                <SelectOptionWithLabel id="input_emp_id_modal" label="สถานที่" options_arr_obj={arr_obj_location} />
+                                <SelectOptionWithLabel key={selectedDept[0]['location_id']} defaultValue={selectedDept[0]['location_id']} callback={({target:{value}})=>{setEditLocationId(value)}} id="input_location_id_modal" label="สถานที่" options_arr_obj={arr_obj_location} />
                             </div>
                         </div>
                     </>
@@ -189,7 +204,10 @@ export const Dept = ({title, arr_obj_location}) =>{
                             dept_name:item['dept_name'],
                             location_name: item['location_name'],
                             time_reg: `${item['time_reg'].split(/[\sT\s.]/)[0]} ${item['time_reg'].split(/[\sT\s.]/)[1]}`,
-                            ED:<EditDelete setModalShow={setModalShow} EditFnc={()=>{showEditModal(item['dept_id'])}}/>
+                            ED:<EditDelete setModalShow={setModalShow} 
+                                    EditFnc={()=>{showEditModalDeptEngineer(item['dept_id'])}} 
+                                    DeleteFnc={async ()=>{if(await deleteEngineerDept({dept_id: item['dept_id']})) await loadEngineerDept()}}
+                                />
                         }
             })
         ],
@@ -203,7 +221,6 @@ export const Dept = ({title, arr_obj_location}) =>{
 
     }
     
-
     const template = (
         <div className="flex justify-content flex-col">
             <div className="flex justify-between items-center">
@@ -212,25 +229,61 @@ export const Dept = ({title, arr_obj_location}) =>{
             <hr />
             <div className="flex flex-col gap-2 max-h-screen overflow-auto">
                 <div className="container-fluid">
-                    <div className="row">
-                        <div className="col-md-4 col-12">
-                            <InputGroupWithLabel id="input_emp_id" label="รหัสแผนก" type="text" placeholder="รหัสแผนก" />
+                    <form onSubmit={async (e)=>{
+                        e.preventDefault();
+                        await insertEngineerDept(deptData);
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 1500,
+                            icon: 'success',
+                            title: 'บันทึกข้อมูลสำเร็จ'
+                        }).then(async()=>{
+
+                            await loadEngineerDept();
+                            await reState();
+                        })
+                    }}>
+                        <div className="row">
+                            <div className="col-md-4 col-12">
+                                <InputGroupWithLabel value={deptData.dept_code} id="input_dept_code" label="รหัสแผนก" type="text" placeholder="รหัสแผนก" callback={({target:{value}})=>{setDeptData({...deptData, dept_code: value})}}/>
+                            </div>
+                            <div className="col-md-4 col-12">
+                                <InputGroupWithLabel  value={deptData.dept_name} id="input_dept_name" label="แผนกช่างซ่อม" type="text" placeholder="แผนกช่างซ่อม" callback={({target:{value}})=>{setDeptData({...deptData, dept_name: value})}}/>
+                            </div>
+                            <div className="col-md-4 col-12">
+                                <SelectOptionWithLabel value={deptData.location_id} id="input_location_id" label="สถานที่" options_arr_obj={arr_obj_location} callback={({target:{value}})=>{setDeptData({...deptData, location_id: value})}} />
+                            </div>
                         </div>
-                        <div className="col-md-4 col-12">
-                            <InputGroupWithLabel id="input_emp_id" label="แผนกช่างซ่อม" type="text" placeholder="แผนกช่างซ่อม" />
+                        <div className="flex justify-end">
+                            <button className="btn btn-success w-1/4" ><FontAwesomeIcon icon={faSave}/> บันทึก</button>
                         </div>
-                        <div className="col-md-4 col-12">
-                            <SelectOptionWithLabel id="input_emp_id" label="สถานที่" options_arr_obj={arr_obj_location} />
-                        </div>
-                    </div>
-                    <div className="flex justify-end">
-                        <button className="btn btn-success w-1/4" ><FontAwesomeIcon icon={faSave}/> บันทึก</button>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div> 
     )   
+    console.log({editDeptCode, editDeptName, editLocationId})
+    const editFormdata = {
+        dept_code: editDeptCode,
+        dept_name: editDeptName,
+        location_id: editLocationId,
+        dept_id: editDeptId
+    }
 
+    const reState = () =>{
+        setEditDeptId('')
+        setEditDeptCode('')
+        setEditDeptName('')
+        setEditLocationId('')
+        setDeptData({
+            dept_code:'',
+            dept_name:'',
+            location_id:''
+        })
+    }
+    
     return(
         <>
             <CardFillColorNonFooter contentBody={template}/>
@@ -239,7 +292,7 @@ export const Dept = ({title, arr_obj_location}) =>{
                         <CardFillColorNonFooter contentBody={<MuiTable data={MuiTableData.data} columns={MuiTableData.columns} title=""/>} />
                     </Suspense>
             </div>
-            <ModalCardConfirm setModalShow={setModalShow} modalShow={modalShow} modalBody={modal.mBody} modalHead={modal.mHead} cancleCallback={()=>{}} confrimCallback={()=>{}} btnOkText="บันทึก"/>
+            <ModalCardConfirm hideCallback={reState} cancleCallback={reState} confrimCallback={()=>{editEngineerDept(editFormdata); loadEngineerDept(); reState();}} setModalShow={setModalShow} modalShow={modalShow} modalBody={modal.mBody} modalHead={modal.mHead}  btnOkText="บันทึก"/>
         </>
     )
 }
