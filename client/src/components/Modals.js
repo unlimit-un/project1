@@ -30,15 +30,16 @@ export const ModalCard = ({modalHead, modalBody, modalShow, setModalShow}) => {
   )
 }
 
-export const ModalCardConfirm = ({modalHead, modalBody, modalShow, setModalShow, confrimCallback, cancleCallback, btnOkText}) => {
+export const ModalCardConfirm = ({modalHead, modalBody, modalShow, setModalShow, confrimCallback, cancleCallback, btnOkText, hideCallback}) => {
     
   return (
     <>
         <Modal
             show={modalShow}
-            onHide={()=>setModalShow(false)}
+            onHide={()=>{setModalShow(false); hideCallback()}}
             size="lg"
             centered
+            
         >
         <Modal.Header closeButton>
             <Modal.Title>
