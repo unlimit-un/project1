@@ -79,11 +79,11 @@ app.post('/api/non_auth/login', async (req, res)=>{
                 break;
         
             case 'MAID':
-                [user] = await db.query(`SELECT * FROM maid WHERE maid_username= ${escape(username)}`);
+                [user] = await db.query(`SELECT * FROM maid WHERE maid_username= ${escape(username)} AND status = 1`);
                 break;
         
             case 'ENGINEER':
-                [user] = await db.query(`SELECT * FROM engineer WHERE engineer_username= ${escape(username)}`);
+                [user] = await db.query(`SELECT * FROM engineer WHERE engineer_username= ${escape(username)} AND status = 1`);
                 break;
         
             default:
@@ -91,18 +91,21 @@ app.post('/api/non_auth/login', async (req, res)=>{
                 break;
         }
 
-        if (user && (await bcrypt.compare(password, !!user['manager_password']?user['manager_password']:!!user['maid_password']?user['maid_password']:user['engineer_password']))) {
-           
-            const token = jwt.sign(
-                { user_type: !!user['manager_id']?'MANAGER':!!user['maid_id']?'MAID':'ENGINEER',user_id: !!user['manager_id']?user['manager_id']:!!user['maid_id']?user['maid_id']:user['engineer_id']},
-                process.env.TOKEN_KEY,
-                { expiresIn: "6h" } // 1d = 1000*60*60*24
-            )
+        if (user) {
+           if (await bcrypt.compare(password, !!user['manager_password']?user['manager_password']:!!user['maid_password']?user['maid_password']:user['engineer_password'])) {
             
-            res.status(200).json(token) 
-
+               const token = jwt.sign(
+                   { user_type: !!user['manager_id']?'MANAGER':!!user['maid_id']?'MAID':'ENGINEER',user_id: !!user['manager_id']?user['manager_id']:!!user['maid_id']?user['maid_id']:user['engineer_id']},
+                   process.env.TOKEN_KEY,
+                   { expiresIn: "6h" } // 1d = 1000*60*60*24
+               )
+               
+               res.status(200).json(token) 
+           }else{
+            res.status(400).send('รหัสผ่านไม่ถูกต้อง') 
+           }
         }else{
-            res.status(400).send('username or password went wrong') 
+            res.status(400).send('ชื่อผู้ใช้ไม่ถูกต้อง')  
         }
     } catch (error) {
         console.log(error);

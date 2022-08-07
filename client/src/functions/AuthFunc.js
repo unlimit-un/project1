@@ -12,7 +12,6 @@ export const LoginFunc = async (userData, navigate, pathname) => {
       type: userData.type
     }
     const result = await axiosPostNonAuth(`${ROOT_SERVER}/api/non_auth/login`, data)
-    console.log(result);
     if (result.status === 200) {
       localStorage.setItem('user_token', result.data);
       await Swal.fire({

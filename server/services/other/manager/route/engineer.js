@@ -32,7 +32,7 @@ router.post('/insertEngineer', uploadFile ,async (req, res)=>{
         const checkUsername = await db.query(`
             SELECT * FROM engineer AS m
             LEFT JOIN location AS l ON l.location_id = m.location_id
-            WHERE l.manager_id = ${escape(manager_id)} AND (m.engineer_username = ${escape(username)} OR m.engineer_code = ${escape(emp_code)})
+            WHERE l.manager_id = ${escape(manager_id)} AND (m.engineer_username = ${escape(username)} OR m.engineer_code = ${escape(emp_code)}) AND m.status = 1
         `);
         
         if (checkUsername.length > 0){
