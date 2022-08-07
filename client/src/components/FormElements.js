@@ -40,7 +40,7 @@ export const InputGroupIconsSupfix = ({type, placeholder, callback, icon}) =>{
     )
 }
 
-export const InputGroupWithLabel= ({type, callback, id, label, disable, placeholder, defaultValue, value}) =>{
+export const InputGroupWithLabel= ({type, callback, id, label, disabled, placeholder, defaultValue, value}) =>{
     return (
         <>
             <div className="mb-3">
@@ -49,19 +49,63 @@ export const InputGroupWithLabel= ({type, callback, id, label, disable, placehol
                     type={type}
                     className="form-control" 
                     id={id} 
-                    disabled={disable}
+                    disabled={disabled}
                     required
                     placeholder={placeholder}
+                    value= {value}
+                    defaultValue={defaultValue}
                     onChange={callback}
                     autoComplete="off"
-                    defaultValue={defaultValue}
-                    value= {value}
               />
             </div>
         </>
     )
 }
-export const TextAreawithlabel= ({type, callback, id, label, disable}) =>{
+
+export const InputGroupWithOutLabel= ({type, callback, id, disabled, placeholder, defaultValue, value, className, accept, name}) =>{
+    return (
+        <>
+            <div className="mb-3">
+              <input 
+                    type={type}
+                    className={`form-control ${className}`}
+                    id={id} 
+                    name={name}
+                    disabled={disabled}
+                    required
+                    placeholder={placeholder}
+                    defaultValue={defaultValue}
+                    value={value}
+                    onChange={callback}
+                    autoComplete="off"
+                    accept= {accept}
+              />
+            </div>
+        </>
+    )
+}
+export const InputGroupWithOutLabelNotRequire= ({type, callback, id, disable, placeholder, defaultValue, value, className, accept, name}) =>{
+    return (
+        <>
+            <div className="mb-3">
+              <input 
+                    type={type}
+                    className={`form-control ${className}`}
+                    id={id} 
+                    name={name}
+                    disabled={disable}
+                    placeholder={placeholder}
+                    defaultValue={defaultValue}
+                    value={value}
+                    onChange={callback}
+                    autoComplete="off"
+                    accept= {accept}
+              />
+            </div>
+        </>
+    )
+}
+export const TextAreawithlabel= ({type, callback, id, label, disabled, value}) =>{
     return (
         <>
             <div className="mb-3">
@@ -69,10 +113,11 @@ export const TextAreawithlabel= ({type, callback, id, label, disable}) =>{
               <textarea 
                     className="form-control resize-none" 
                     id={id} 
-                    disabled={disable}
+                    disabled={disabled}
                     required
                     onChange={callback}
                     autoComplete="off"
+                    value={value}
               />
             </div>
         </>
@@ -84,7 +129,7 @@ export const SelectOptionWithLabel= ({callback, id, label, options_arr_obj, disa
         <>
             <div className="mb-3 flex flex-column">
               <label htmlFor={id} className="form-label">{label}</label>
-              <select id={id} className="form-select" disabled={disabled} onChange={callback} value={value} defaultValue={defaultValue}>
+              <select id={id} className="form-select" disabled={disabled} onChange={callback} value={value} defaultValue={defaultValue} required>
                 {
                     options_arr_obj.map((item, index)=>{
                         return(

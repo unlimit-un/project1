@@ -1,17 +1,18 @@
-import React, { Suspense, useEffect, useState, useTransition } from 'react'
+import React, { Suspense, useEffect, useRef, useState, useTransition } from 'react'
 import { CardFillColorNonFooter } from '../../../components/Cards'
-import { InputGroupWithLabel, SelectOptionWithLabel } from '../../../components/FormElements'
+import { InputGroupWithLabel, InputGroupWithOutLabel, InputGroupWithOutLabelNotRequire, SelectOptionWithLabel, TextAreawithlabel } from '../../../components/FormElements'
 // import { MuiTable, TablesStriped } from '../../../components/Tables'
-import Logo from '../../../assets/Logo.jpg'
-import {  faPencil, faPlus, faSave, faTrash,faUserPlus, faUserTie  } from '@fortawesome/free-solid-svg-icons'
+import DemoImage from '../../../assets/business-man.png'
+import {  faArrowAltCircleUp, faPencil, faPlus, faSave, faTrash,faUserPlus, faUserTie  } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {Link} from 'react-router-dom'
 import { EditDelete } from '../../../components/EditDelete'
 import { Skeleton } from '@mui/material'
 import { lazily } from 'react-lazily'
-import { deleteEngineerDept, editEngineerDept, getEngineerDeptById, getEngineerDeptByManagerId, insertEngineerDept } from '../../../controllers/manager/ManageEmpController'
+import { deleteEngineerDept, editEngineerDept, getEngineerDeptById, getEngineerDeptByManagerId, insertEmp, insertEngineerDept } from '../../../controllers/manager/ManageEmpController'
 import { ModalCard, ModalCardConfirm } from '../../../components/Modals'
 import Swal from 'sweetalert2'
+import FileResizer from 'react-image-file-resizer'
 
 const {MuiTable} = lazily(()=>import('../../../components/Tables'));
 
@@ -25,7 +26,7 @@ export const ManageEmployee = ({title, dataSets}) => {
                         return(
                             <div key={index}>
                                 <div className="flex justify-center items-center flex-col md:flex-row gap-3 ">
-                                    <img src={Logo} alt="logo.png" className="w-40 h-40 rounded"/>    
+                                    <img src={DemoImage} alt="logo.png" className="w-40 h-40 rounded"/>    
                                     <div className="w-full">
                                         <div className="flex justify-center md:justify-start">
                                             <h1 className="m-0">{item.name}</h1>
@@ -67,9 +68,10 @@ export const ManageEmployee = ({title, dataSets}) => {
 }
 
 export const InsEmp = ({title, options, optionsLocation, optionsDept}) => {
+
     const [empData, setEmpData] = useState({
         data:{
-            emp_id: '',
+            emp_code: '',
             name: '',
             surname: '',
             username: '',
@@ -77,66 +79,204 @@ export const InsEmp = ({title, options, optionsLocation, optionsDept}) => {
             email: '',
             tel: '',
             location_id: '',
-            role: '',
-            type_engineer:'',
+            role: 'maid',
+            engineer_dept:'',
+            image: null,
+            description: ''
         },
-        type_engineer: "disabled"
+        defaultData:{
+            emp_code: '',
+            name: '',
+            surname: '',
+            username: '',
+            password: '',
+            email: '',
+            tel: '',
+            location_id: '',
+            role: 'maid',
+            engineer_dept:'',
+            image: null,
+            description: ''
+        },
+        type_engineer: "disabled",
+        description: "disabled",
+        disabledNotOsEn: ''
     })
+    const [preview, setPreview] = useState(null)
+
+    useEffect(()=>{
+        // reState()
+    },[])
+
+    useEffect(() => {
+        if (empData.data.image) {
+            const render = new FileReader();
+            render.onloadend = () =>{
+              setPreview(render.result)
+            }
+            render.readAsDataURL(empData.data.image)
+        }else{
+            setPreview(null)
+        }
+        
+        if(empData.data.role === "os_en"){
+            setEmpData({
+                ...empData, 
+                type_engineer: "", 
+                description: "", 
+                disabledNotOsEn: 'disabled', 
+                data:{
+                    ...empData.data, 
+                    emp_code: '',
+                    username: '',
+                    password: '',
+                    email: '',
+                    location_id: '',
+                }
+            })
+        }else if(empData.data.role === "en"){
+            setEmpData({...empData, type_engineer: "", description: "disabled", disabledNotOsEn: '', data:{...empData.data, description: ''}})
+        }else{
+            setEmpData({...empData, type_engineer: "disabled", description: "disable",  disabledNotOsEn: '', data:{...empData.data, engineer_dept: '', description: ''}})
+        }
+
+    }, [empData.data.image, empData.data.role])
+
+
+    const SetName = ({target:{value: val}})=>{
+        setEmpData({...empData, data:{...empData.data, name: val}})
+    } 
+    const SetCode = ({target:{value: val}})=>{
+        setEmpData({...empData, data:{...empData.data, emp_code: val}})
+    } 
+    const SetSurname = ({target:{value: val}})=>{
+        setEmpData({...empData, data:{...empData.data, surname: val}})
+    } 
+    const SetUsername = ({target:{value: val}})=>{
+        setEmpData({...empData, data:{...empData.data, username: val}})
+    } 
+    const SetPassword = ({target:{value: val}})=>{
+        setEmpData({...empData, data:{...empData.data, password: val}})
+    } 
+    const SetEmail = ({target:{value: val}})=>{
+        setEmpData({...empData, data:{...empData.data, email: val}})
+    } 
+    const SetTel = ({target:{value: val}})=>{
+        setEmpData({...empData, data:{...empData.data, tel: val}})
+    } 
+    const SetRole = ({target:{value: val}})=>{
+        setEmpData({...empData, data:{...empData.data, role: val}})
+    } 
+    const SetLocationId = ({target:{value: val}})=>{
+        setEmpData({...empData, data:{...empData.data, location_id: val}})
+    } 
+    const SetTypeEngineer = ({target:{value: val}})=>{
+        setEmpData({...empData, data:{...empData.data, engineer_dept: val}})
+    } 
+    const SetDescription = ({target:{value: val}})=>{
+        setEmpData({...empData, data:{...empData.data, description: val}})
+    } 
+    const SetImage = ({target:{files}})=>{
+        let fileInput = false;
+        if (files[0]) {
+            fileInput = true;
+        }
+        if (fileInput) {
+            try {
+                FileResizer.imageFileResizer(
+                    files[0],
+                    160,
+                    160,
+                    "JPEG",
+                    100,
+                    0,
+                    (uri) => {
+                        console.log(uri);
+                        setEmpData({...empData, data:{...empData.data, image: uri}})
+                    },
+                    "file",
+                    80,
+                    80
+                );
+            } catch (err) {
+                console.log(err);
+            }
+        }
+    } 
+    const reState = ()=>{
+        setEmpData({...empData, data:{...empData.defaultData}, type_engineer:"disabled", description: "disabled", disabledNotOsEn: ''})
+    }
+
     const template = (
         <div className="flex justify-content flex-col">
-            <div className="flex justify-between items-center">
-                <h2 className="text-lg m-0"><FontAwesomeIcon icon={faUserPlus}/> {title}</h2>
-                <button className="btn btn-success"><FontAwesomeIcon icon={faPlus}/>เพิ่มพนักงาน</button>
-            </div>
-            <hr />
-            <div className="flex flex-col gap-2 max-h-screen overflow-auto">
-                <div className="container-fluid">
-                    <div className="row gap-y-5">
-                        <div className="col-lg-3 col-md-4 col-12">
-                            <div className="flex flex-col items-center gap-y-3">
-                                <img src={Logo} alt="demo.jpg" className="w-40 h-40 rounded" />
-                                <input type="file" name="" id="" className="form-control"/>
+            <form onSubmit={async (e)=>{
+                e.preventDefault();
+                console.log(empData);
+                if (!empData.data.image) return Swal.fire('ข้อมูลไม่ครบ','กรุณาเลือกรูปภาพ','info').then(()=>false) 
+                if(await insertEmp(empData.data)) await reState();
+            }}>
+                <div className="flex justify-between items-center">
+                    <h2 className="text-lg m-0"><FontAwesomeIcon icon={faUserPlus}/> {title}</h2>
+                    <button className="btn btn-success"><FontAwesomeIcon icon={faPlus}/>เพิ่มพนักงาน</button>
+                </div>
+                <hr />
+                <div className="flex flex-col gap-2 max-h-screen overflow-auto">
+                    <div className="container-fluid">
+                        <div className="row gap-y-5">
+                            <div className="col-lg-3 col-md-4 col-12">
+                                <div className="flex flex-col items-center gap-y-1">
+                                    <label htmlFor="input_emp_image">
+                                        <img src={preview?preview:DemoImage} alt={preview}  className="w-40 h-40 rounded hover:cursor-pointer shadow"/>
+                                    </label>
+                                    <InputGroupWithOutLabelNotRequire accept="image/*" name="input_emp_image" key="input_emp_image" className="!hidden" defaultValue={empData.data.image} callback={SetImage} id="input_emp_image" label="รูปภาพ" type="file" placeholder="รูปภาพ"/>
+                                    <p className="text-lg animate-bounce"><FontAwesomeIcon icon={faArrowAltCircleUp} className="text-blue-600"/> เลือกรูปภาพ</p>
+                                </div>
                             </div>
-                        </div>
-                        <div className="col-lg-9 col-md-8 col-12">
-                            <div className="row">
-                                <div className="col-md-4 col-12">
-                                    <InputGroupWithLabel id="input_emp_id" label="รหัสพนักงาน" type="text" placeholder="รหัสพนักงาน" />
-                                </div>
-                                <div className="col-md-4 col-12">
-                                    <InputGroupWithLabel id="input_name" label="ชื่อ" type="text" placeholder="ชื่อ"/>
-                                </div>
-                                <div className="col-md-4 col-12">
-                                    <InputGroupWithLabel id="input_surname" label="สกุล" type="text" placeholder="สกุล"/>
-                                </div>
-                                <div className="col-md-6 col-12">
-                                    <InputGroupWithLabel id="input_username" label="ชื่อผู้ใช้งาน" type="text" placeholder="ชื่อผู้ใช้งาน"/>
-                                </div>
-                                <div className="col-md-6 col-12">
-                                    <InputGroupWithLabel id="input_password" label="รหัสผ่าน" type="password" placeholder="รหัสผ่าน"/>
-                                </div>
-                                <div className="col-md-6 col-12">
-                                    <InputGroupWithLabel id="input_email" label="อีเมล" type="text" placeholder="อีเมล"/>
-                                </div>
-                                <div className="col-md-6 col-12">
-                                    <InputGroupWithLabel id="input_tel" label="เบอร์ติดต่อ" type="text" placeholder="เบอร์ติดต่อ"/>
-                                </div>
-                                <div className="col-md-4 col-12">
-                                    <SelectOptionWithLabel id="select_location"  options_arr_obj={optionsLocation} label="สถานที่ทำงาน"/>
-                                </div>
-                                <div className="col-md-4 col-12">
-                                    <SelectOptionWithLabel id="select_role"  options_arr_obj={options} label="ประเภทงาน"/>
-                                </div>
-                                <div className="col-md-4 col-12">
-                                    <SelectOptionWithLabel id="select_type_engineer" label="แผนกช่าง" disable="disabled" options_arr_obj={optionsDept}/>
+                            <div className="col-lg-9 col-md-8 col-12">
+                                <div className="row">
+                                    <div className="col-md-4 col-12">
+                                        <InputGroupWithLabel key={empData.defaultData.emp_code} value={empData.data.emp_code} callback={SetCode} id="input_emp_code" disabled={empData.disabledNotOsEn} label="รหัสพนักงาน" type="text" placeholder="รหัสพนักงาน" />
+                                    </div>
+                                    <div className="col-md-4 col-12">
+                                        <InputGroupWithLabel key={empData.defaultData.name} value={empData.data.name}  callback={SetName} id="input_name" label="ชื่อ" type="text" placeholder="ชื่อ"/>
+                                    </div>
+                                    <div className="col-md-4 col-12">
+                                        <InputGroupWithLabel key={empData.defaultData.surname} value={empData.data.surname}  callback={SetSurname} id="input_surname" label="สกุล" type="text" placeholder="สกุล"/>
+                                    </div>
+                                    <div className="col-md-6 col-12">
+                                        <InputGroupWithLabel key={empData.defaultData.username} value={empData.data.username}  callback={SetUsername} id="input_username" disabled={empData.disabledNotOsEn} label="ชื่อผู้ใช้งาน" type="text" placeholder="ชื่อผู้ใช้งาน"/>
+                                    </div>
+                                    <div className="col-md-6 col-12">
+                                        <InputGroupWithLabel key={empData.defaultData.password} value={empData.data.password}  callback={SetPassword} id="input_password" disabled={empData.disabledNotOsEn} label="รหัสผ่าน" type="password" placeholder="รหัสผ่าน"/>
+                                    </div>
+                                    <div className="col-md-6 col-12">
+                                        <InputGroupWithLabel key={empData.defaultData.email} value={empData.data.email}  callback={SetEmail} id="input_email" disabled={empData.disabledNotOsEn} label="อีเมล" type="email" placeholder="อีเมล"/>
+                                    </div>
+                                    <div className="col-md-6 col-12">
+                                        <InputGroupWithLabel key={empData.defaultData.tel} value={empData.data.tel}  callback={SetTel} id="input_tel" label="เบอร์ติดต่อ" type="text" placeholder="เบอร์ติดต่อ"/>
+                                    </div>
+                                    <div className="col-md-4 col-12">
+                                        <SelectOptionWithLabel key={empData.defaultData.location_id} value={empData.data.location_id} callback={SetLocationId} disabled={empData.disabledNotOsEn} id="select_location"  options_arr_obj={optionsLocation} label="สถานที่ทำงาน" />
+                                    </div>
+                                    <div className="col-md-4 col-12">
+                                        <SelectOptionWithLabel key={empData.defaultData.role} value={empData.data.role} callback={SetRole} id="select_role"  options_arr_obj={options} label="ประเภทงาน"/>
+                                    </div>
+                                    <div className="col-md-4 col-12">
+                                        <SelectOptionWithLabel key={empData.defaultData.engineer_dept} value={empData.data.engineer_dept} callback={SetTypeEngineer} id="select_type_engineer" label="แผนกช่าง" disabled={empData.type_engineer} options_arr_obj={optionsDept}/>
+                                    </div>
+                                    <div className="col-md-6 col-12">
+                                        <TextAreawithlabel key={empData.defaultData.description} value={empData.data.description} callback={SetDescription} id="text_area_desciption" label="รายละเอียด" disabled={empData.description}/>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>    
     )
+
+    
     return (
         <>
             <CardFillColorNonFooter contentBody={template} />

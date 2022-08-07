@@ -48,8 +48,8 @@ const Register = () => {
       try {
         Resizer.imageFileResizer(
           files[0],
-          200,
-          200,
+          160,
+          160,
           "JPEG",
           100,
           0,
@@ -58,8 +58,8 @@ const Register = () => {
             setUserData({...userData,image: uri})
           },
           "file",
-          150,
-          150
+          80,
+          80
         );
       } catch (err) {
         console.log(err);

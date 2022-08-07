@@ -46,6 +46,20 @@ export const axiosPost = async (uri, obj_data) =>{
     return data;
 }
 
+export const axiosPostFormData = async (uri, formData) =>{
+    const data = await axios.post(
+        `${uri}`,
+        formData,
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'authorization': `Bearer ${localStorage.getItem('user_token')}`
+            },
+        }
+    )
+    return data;
+}
+
 export const axiosPostNonAuth = async (uri, obj_data) =>{
     const data = await axios.post(
         `${uri}`,

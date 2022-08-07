@@ -109,7 +109,7 @@ app.post('/api/non_auth/login', async (req, res)=>{
     }
 })
 
-app.post('/api/non_auth/uploadFile', uploadFile, upload)
+// app.post('/api/non_auth/uploadFile', uploadFile, upload)
 
 app.use('/api', auth, require('./services/auth/route'))
 app.use('/api/manager', auth, require('./services/other/manager/router'))
