@@ -1,4 +1,4 @@
-import { axiosGet, axiosPost, axiosPostFormData, ROOT_SERVER } from "../../functions/AxiosCustom";
+import { axiosGet, axiosGetImage, axiosPost, axiosPostFormData, ROOT_SERVER } from "../../functions/AxiosCustom";
 import Swal from 'sweetalert2'
 
 export const getEngineerDeptByManagerId = async () => {
@@ -185,6 +185,52 @@ export const insertEmp = async (formData) => {
 }
 
 //todo get employee
+
+export const getMaidByManagerId = async (formData) => {
+    try {
+        const {data:{user_id: manager_id}} = await axiosGet(`${ROOT_SERVER}/api/checkToken`);
+        const {data} = await axiosGet(`${ROOT_SERVER}/api/manager/getMaidByManagerId?manager_id=${manager_id}`);
+        return data;
+    } catch (error) {
+        console.error(error)
+        await Swal.fire({
+            title: "ผิดพลาด",
+            icon: "error",
+            text: `${error.response.data}`
+        })
+    }
+}
+
+export const getEngineerByManagerId = async (formData) => {
+    try {
+        const {data:{user_id: manager_id}} = await axiosGet(`${ROOT_SERVER}/api/checkToken`);
+        const {data} = await axiosGet(`${ROOT_SERVER}/api/manager/getEngineerByManagerId?manager_id=${manager_id}`);
+        return data;
+    } catch (error) {
+        console.error(error)
+        await Swal.fire({
+            title: "ผิดพลาด",
+            icon: "error",
+            text: `${error.response.data}`
+        })
+    }
+}
+
+export const getOutSideEngineerByManagerId = async () => {
+    try {
+        const {data:{user_id: manager_id}} = await axiosGet(`${ROOT_SERVER}/api/checkToken`);
+        const {data} = await axiosGet(`${ROOT_SERVER}/api/manager/getOutSideEngineerByManagerId?manager_id=${manager_id}`);
+        return data;
+    } catch (error) {
+        console.error(error)
+        await Swal.fire({
+            title: "ผิดพลาด",
+            icon: "error",
+            text: `${error.response.data}`
+        })
+    }
+}
+
 
 
 

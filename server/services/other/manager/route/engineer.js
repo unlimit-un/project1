@@ -19,6 +19,21 @@ router.get('/getCountEngineerByManagerId', async (req, res)=>{
    
 })
 
+router.get('/getEngineerByManagerId', async (req, res)=>{
+    try {
+        const result = await db.query(`
+            SELECT * FROM engineer 
+            INNER JOIN location AS l ON l.location_id = engineer.location_id
+            WHERE manager_id = ${escape(req.query['manager_id'])}
+        `);
+        res.status(200).send(result)
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
+   
+})
+
 router.post('/insertEngineer', uploadFile ,async (req, res)=>{
     try {
 

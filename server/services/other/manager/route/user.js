@@ -33,4 +33,15 @@ router.get('/getImageOfUser', async (req, res)=>{
    
 })
 
+
+router.get('/getImageOfUserByFileName', async (req, res)=>{
+    try {
+        res.status(200).sendFile(`/${req.query['file_name']}`, {root: 'public'})
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
+   
+})
+
 module.exports = router

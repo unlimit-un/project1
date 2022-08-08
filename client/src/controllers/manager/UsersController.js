@@ -23,3 +23,16 @@ export const getImageOfUser = async () => {
   }
 
 }
+
+export const getImageOfUserByFileName = async (fileName) => {
+  try {
+    const response = await axiosGetImage(`${ROOT_SERVER}/api/manager/getImageOfUserByFileName?file_name=${fileName}`);
+    if (response.data) {
+      const imageObjectURL = URL.createObjectURL(response.data);
+      return imageObjectURL;
+    }
+  } catch (error) {
+      console.error(error)
+  }
+
+}

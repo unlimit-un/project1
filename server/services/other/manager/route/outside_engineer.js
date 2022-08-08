@@ -3,6 +3,21 @@ const { escape } = require('mysql2');
 const db = require('../../../../config/database');
 const { uploadFile } = require('../../upload');
 
+
+router.get('/getOutSideEngineerByManagerId', async (req, res)=>{
+    try {
+        const result = await db.query(`
+            SELECT * FROM outside_engineer
+            WHERE manager_id = ${escape(req.query['manager_id'])}
+        `);
+        res.status(200).send(result)
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
+   
+})
+
 router.post('/insertOutSideEngineer', uploadFile, async (req, res)=>{
     try {
 
@@ -14,10 +29,11 @@ router.post('/insertOutSideEngineer', uploadFile, async (req, res)=>{
         }
 
         const result = await db.query(`
-            INSERT INTO outside_engineer(dept_id, outside_engineer_name, outside_engineer_img, outside_engineer_description, outside_engineer_tel, manager_id) 
+            INSERT INTO outside_engineer(dept_id, outside_engineer_name, outside_engineer_name, outside_engineer_img, outside_engineer_description, outside_engineer_tel, manager_id) 
             VALUES (
                 ${escape(engineer_dept)}, 
                 ${escape(name)}, 
+                ${escape(surname)}, 
                 ${escape(req.file.filename)}, 
                 ${escape(description)}, 
                 ${escape(tel)}, 

@@ -16,32 +16,36 @@ import FileResizer from 'react-image-file-resizer'
 
 const {MuiTable} = lazily(()=>import('../../../components/Tables'));
 
-export const ManageEmployee = ({title, dataSets}) => {
+export const ManageEmployee = ({title, dataSets, ImageList}) => {
     const template = (
         <div className="flex justify-content flex-col">
             <h2 className="text-lg"><FontAwesomeIcon icon={faUserTie}/> {title}</h2>
             <div className="flex flex-col gap-2 max-h-screen overflow-auto">
                     {   
-                    dataSets.map((item, index)=>{
+                    !(dataSets && ImageList)?<h1>ไม่พบข้อมูล</h1>:dataSets.map((item, index)=>{
                         return(
                             <div key={index}>
                                 <div className="flex justify-center items-center flex-col md:flex-row gap-3 ">
-                                    <img src={DemoImage} alt="logo.png" className="w-40 h-40 rounded"/>    
+                                    <img src={ImageList[index]} alt="logo.png" className="w-40 h-40 rounded"/>    
                                     <div className="w-full">
                                         <div className="flex justify-center md:justify-start">
                                             <h1 className="m-0">{item.name}</h1>
                                         </div>
                                         <div className="container">
                                             <div className="flex md:justify-start justify-center gap-3">
-                                                <ul className="m-0 p-0">
-                                                    <li>ชื่อผู้ใช้งาน</li>
-                                                    <li>email</li>
-                                                    <li>tel</li>
+                                                <ul className="m-0 p-0 w-25">
+                                                    {item ['username'] ? <li>ชื่อผู้ใช้งาน</li>: <></>}
+                                                    {item ['email'] ? <li>email</li>: <></>}
+                                                    {item ['tel'] ? <li>เบอร์ติดต่อ</li>: <></>}
+                                                    {item ['location'] ? <li>สถานที่ทำงาน</li>: <></>}
+                                                    {item ['description'] ? <li>รายละเอียด</li>: <></>}
                                                 </ul>
-                                                <ul className="m-0 p-0">
-                                                    <li>: {item.username}</li>
-                                                    <li>: {item.email}</li>
-                                                    <li>: {item.tel}</li>
+                                                <ul className="m-0 p-0 w-75">
+                                                    {item ['username'] ? <li>: {item ['username']}</li>: <></>}
+                                                    {item ['email'] ? <li>: {item ['email']}</li>: <></>}
+                                                    {item ['tel'] ? <li>: {item ['tel']}</li>: <></>}
+                                                    {item ['location'] ? <li>: {item ['location']}</li>: <></>}
+                                                    {item ['description'] ? <li>: {item ['description']}</li>: <></>}
                                                 </ul>
                                             </div>
                                         </div>
