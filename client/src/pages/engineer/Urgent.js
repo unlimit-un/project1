@@ -1,21 +1,49 @@
 import { faWarning,faPencil,faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React,{useState,Suspense} from 'react'
+import React,{useState,Suspense, useEffect} from 'react'
 import { CardFillColorNonFooter } from '../../components/Cards';
 import { MuiTable, TablesStriped } from '../../components/Tables';
 import { Skeleton } from '../../components/Loading'
 import { lazily } from 'react-lazily';
-import { EditDelete } from '../../components/EditDelete';
+import { Delete, EditDelete } from '../../components/EditDelete';
+import { geturgentData, updateurgentById } from '../../controllers/engineer/UrgentControllers';
 
 const { CardFillColorNonFooterShadow } =lazily(()=>import('../../components/Cards'))
 const Urgent = () => {
   const [name,setName] = useState(''); 
+
+  const [DataTableData,setDataTableData] = useState ([]);
+  const loadurgentData = async () =>{
+    const urgentDataTable = await geturgentData ()
+    setDataTableData(urgentDataTable)
+    console.log(urgentDataTable);
+  }
+
+  useEffect (()=>{
+    loadurgentData();
+  },[])
+
   const dataTable = {
+
     data:[
-      {id:"A01",description:"event",location:"c05",date_time:"18.00",ED:<EditDelete/>}
+     ...DataTableData.map(item => {
+        return {
+          description:item['type'],
+          location:item['location_name'],
+          date_time:item['date_time'],
+          ED:<Delete
+          DeleteFnc={async()=>{
+            const bool = await updateurgentById({
+              urgent_id: item['urgent_id']})
+              if (bool) await loadurgentData()
+            }}
+            
+          />,
+        }
+      })
     ],
+
     columns:[
-      {title:"รหัส",field:"id"},
       {title:"รายละเอียดงาน",field:"description"},
       {title:"สถานที่",field:"location"},
       {title:"เวลา",field:"date_time"},
