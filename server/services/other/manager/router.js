@@ -9,5 +9,7 @@ router.use(require('./route/engineer_dept'))
 router.use(require('./route/maid'))
 router.use(require('./route/location'))
 router.use(require('./route/outside_engineer'))
+router.use(require('./route/days_of_week'))
+router.use(require('./route/maid_duty'))
 
 module.exports = router;

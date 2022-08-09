@@ -22,12 +22,10 @@ export const axiosGetImage = async (uri) =>{
                 'Content-Type': 'image/jpeg',
                 'Accept': 'application/json',
                 'authorization': `Bearer ${localStorage.getItem('user_token')}`
-                
             },
             responseType: "blob"
         }
     )
-    
     return data;
 }
 

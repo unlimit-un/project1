@@ -8,9 +8,9 @@ import { PageUnderConstrunction } from '../PageError'
 import Calendar from './Calendar'
 // import { MaidDuty, SpacialWork, TeamManage, UrgentWork } from './submenu/SchedualWork'
 
-const {MaidDuty, SpacialWork, TeamManage, UrgentWork} = lazily(()=>import('./submenu/SchedualWork'));
+const {MaidDuty, SpacialWork, TeamManage, UrgentWork, SchedualWork} = lazily(()=>import('./submenu/SchedualWork'));
 
-const SchedualWork = () => {
+const SchedualWorkPage = () => {
     const {page} = useParams();
     
     return (
@@ -18,7 +18,7 @@ const SchedualWork = () => {
             <h1 className="text-2xl"><FontAwesomeIcon icon={faCalendarAlt}/> จัดการงานและกิจกรรมพิเศษ</h1>
             <div>
                     {
-                            page === 'dashboard'? <Suspense fallback={<Spiner/>}><Calendar/></Suspense>:
+                            page === 'dashboard'? <Suspense fallback={<Spiner/>}><SchedualWork/></Suspense>:
                             page === 'team'? <Suspense fallback={<Spiner/>}><TeamManage/></Suspense>:
                             page === 'event'? <Suspense fallback={<Spiner/>}><SpacialWork/></Suspense>:
                             page === 'maid'? <Suspense fallback={<Spiner/>}><MaidDuty/></Suspense>:
@@ -30,4 +30,4 @@ const SchedualWork = () => {
     )
 }
 
-export default SchedualWork
+export default SchedualWorkPage

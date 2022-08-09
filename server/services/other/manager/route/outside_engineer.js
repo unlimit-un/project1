@@ -8,6 +8,7 @@ router.get('/getOutSideEngineerByManagerId', async (req, res)=>{
     try {
         const result = await db.query(`
             SELECT * FROM outside_engineer
+            INNER JOIN engineer_department AS ed ON ed.dept_id = outside_engineer.dept_id
             WHERE manager_id = ${escape(req.query['manager_id'])}
         `);
         res.status(200).send(result)

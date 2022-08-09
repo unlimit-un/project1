@@ -35,6 +35,7 @@ export const ManageEmployee = ({title, dataSets, ImageList}) => {
                                             <div className="flex md:justify-start justify-center gap-3">
                                                 <ul className="m-0 p-0 w-25">
                                                     {item ['username'] ? <li>ชื่อผู้ใช้งาน</li>: <></>}
+                                                    {item ['dept_name'] ? <li>แผนกช่าง</li>: <></>}
                                                     {item ['email'] ? <li>email</li>: <></>}
                                                     {item ['tel'] ? <li>เบอร์ติดต่อ</li>: <></>}
                                                     {item ['location'] ? <li>สถานที่ทำงาน</li>: <></>}
@@ -42,6 +43,7 @@ export const ManageEmployee = ({title, dataSets, ImageList}) => {
                                                 </ul>
                                                 <ul className="m-0 p-0 w-75">
                                                     {item ['username'] ? <li>: {item ['username']}</li>: <></>}
+                                                    {item ['dept_name'] ? <li>: {item ['dept_name']}</li>: <></>}
                                                     {item ['email'] ? <li>: {item ['email']}</li>: <></>}
                                                     {item ['tel'] ? <li>: {item ['tel']}</li>: <></>}
                                                     {item ['location'] ? <li>: {item ['location']}</li>: <></>}
@@ -195,7 +197,6 @@ export const InsEmp = ({title, options, optionsLocation, optionsDept}) => {
                     100,
                     0,
                     (uri) => {
-                        console.log(uri);
                         setEmpData({...empData, data:{...empData.data, image: uri}})
                     },
                     "file",
@@ -232,7 +233,16 @@ export const InsEmp = ({title, options, optionsLocation, optionsDept}) => {
                                     <label htmlFor="input_emp_image">
                                         <img src={preview?preview:DemoImage} alt={preview}  className="w-40 h-40 rounded hover:cursor-pointer shadow"/>
                                     </label>
-                                    <InputGroupWithOutLabelNotRequire accept="image/*" name="input_emp_image" key="input_emp_image" className="!hidden" defaultValue={empData.data.image} callback={SetImage} id="input_emp_image" label="รูปภาพ" type="file" placeholder="รูปภาพ"/>
+                                    <InputGroupWithOutLabelNotRequire 
+                                        accept="image/*" 
+                                        name="input_emp_image" 
+                                        key="input_emp_image" 
+                                        className="!hidden" 
+                                        defaultValue={empData.data.image} 
+                                        callback={SetImage} 
+                                        id="input_emp_image" 
+                                        type="file" 
+                                    />
                                     <p className="text-lg animate-bounce"><FontAwesomeIcon icon={faArrowAltCircleUp} className="text-blue-600"/> เลือกรูปภาพ</p>
                                 </div>
                             </div>

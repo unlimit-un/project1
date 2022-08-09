@@ -10,12 +10,7 @@ const {ManageEmployee, Dept, InsEmp} = lazily(()=>import('./submenu/ManageEmp'))
 
 function ManageEmp() {
     const {page} = useParams();
-    const listGroup = [
-        {username:"unlimit", name: "unlimit unarn", email:"unlimit@gmail.com", tel:"0123456789", img:""},
-        {username:"unlimit", name: "unlimit unarn", email:"unlimit@gmail.com", tel:"0123456789", img:""},
-        {username:"unlimit", name: "unlimit unarn", email:"unlimit@gmail.com", tel:"0123456789", img:""},
-        {username:"unlimit", name: "unlimit unarn", email:"unlimit@gmail.com", tel:"0123456789", img:""},
-    ]
+    
     const options = [
         {value: "maid", text: "แม่บ้าน"},
         {value: "en", text: "ช่างซ่อม"},

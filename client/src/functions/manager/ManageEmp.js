@@ -25,14 +25,14 @@ export const loadMaidDataList = async (setMaidDataList, setMaidImageList) => {
             tel:`${item['maid_tel']}`, 
             img: item['maid_img'],
             location:item['location_name'],
-            description: ''
+            description: '',
+            dept_name: ''
         }
     })])
     let arr = []
     let i = 0
     while (i < data.length) {
         const img = await getImageOfUserByFileName(data[i]['maid_img'])
-        
         if (img) {
             arr.push(img)
             i++
@@ -51,7 +51,8 @@ export const loadEngineerDataList = async (setEngineerDataList, setEngineerImage
             tel:`${item['engineer_tel']}`, 
             img: item['engineer_img'],
             location:item['location_name'],
-            description: ''
+            description: '',
+            dept_name: item['dept_name']
         }
     })])
     let arr = []
@@ -71,13 +72,14 @@ export const loadOutSideEngineerDataList = async (setEngineerDataList, setEngine
     const data = await getOutSideEngineerByManagerId()
     setEngineerDataList([...data.map(item=>{
         return{
-            username: null, 
+            username: '', 
             name: `${item['outside_engineer_name']} ${item['outside_engineer_surname']}`, 
-            email:null, 
+            email:'', 
             tel:`${item['outside_engineer_tel']}`, 
             img: item['outside_engineer_img'],
-            location: null,
-            description: item['outside_engineer_description']
+            location: '',
+            description: item['outside_engineer_description'],
+            dept_name: item['dept_name']
         }
     })])
     let arr = []

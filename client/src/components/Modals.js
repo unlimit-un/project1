@@ -46,13 +46,23 @@ export const ModalCardConfirm = ({modalHead, modalBody, modalShow, setModalShow,
                 {modalHead}
             </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-            {modalBody}
-        </Modal.Body>
-        <Modal.Footer>
-            <Button variant="outline-secondary" onClick={async ()=>{await cancleCallback(); await setModalShow(false);}}>Close</Button>
-            <Button variant="success" onClick={async ()=>{await confrimCallback(); await setModalShow(false);}}>{btnOkText||'OK'}</Button>
-        </Modal.Footer>
+        <form 
+            onSubmit={
+                async (e)=>{
+                    e.preventDefault()
+                    await confrimCallback(); 
+                    await setModalShow(false);
+                }
+            }
+        >
+            <Modal.Body>
+                {modalBody}
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="outline-secondary" onClick={async ()=>{await cancleCallback(); await setModalShow(false);}}>Close</Button>
+                <Button type="submit" variant="success">{btnOkText||'OK'}</Button>
+            </Modal.Footer>
+        </form>
         </Modal>
     </>
   )

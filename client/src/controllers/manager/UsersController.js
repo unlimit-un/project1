@@ -17,6 +17,7 @@ export const getImageOfUser = async () => {
     const {data:{user_id}} = await axiosGet(`${ROOT_SERVER}/api/checkToken`);
     const response = await axiosGetImage(`${ROOT_SERVER}/api/manager/getImageOfUser?user_id=${user_id}`);
     const imageObjectURL = URL.createObjectURL(response.data);
+    console.log(imageObjectURL);
     return imageObjectURL;
   } catch (error) {
       console.error(error)
