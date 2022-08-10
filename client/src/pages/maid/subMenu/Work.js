@@ -13,22 +13,52 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { ModalCard, ModalCardConfirm } from "../../../components/Modals";
 import { createFullCalendar, getFullCalendar } from '../../../functions/Calendar';
 import FullCalendar from "@fullcalendar/react";
+import { getworktData } from '../../../controllers/maid/WorkControllers';
 
 const { CardFillColorNonFooterShadow, EmptyCard } =lazily(()=>import('../../../components/Cards'))
 
 export const Todo = () => {
+
+  const [dataTableData ,setDataTableData] = useState([])
+
+  const loadworkdata = async() =>{
+    const WorkDatabel = await getworktData();
+    setDataTableData (WorkDatabel)
+    console.log(WorkDatabel);
+  }
+
+  useEffect (()=>{
+    loadworkdata();
+  },[])
+
     const dataTable = {
         data:[
-          {id:"A",description:"B",location:"C",status:"success",ED:<EditDelete />}
+          ...dataTableData.map(item=>{
+            return{
+              id:item['maid_duty_id'],
+              description:item['work_description'],
+              location:item['location_name'],
+              room:item['room_name'],
+              day:item['date_week_full_name_th'],
+              time_start:item['time_start'],
+              time_end:item['time_end'],
+              status:item['note'],
+              ED:<EditDelete />
+            }
+          })
         ],
         columns:[
           {title:"รหัส",field:"id"},
           {title:"รายละเอียดงาน",field:"description"},
           {title:"สถานที่",field:"location"},
+          {title:"ห้อง",field:"room"},
+          {title:"วัน",field:"day"},
+          {title:"เวลาเริ่ม",field:"time_start"},
+          {title:"เวลาเสร็จงาน",field:"time_end"},
           {title:"สถานะ",field:"status",
                lookup:{
                   success:"ดำเนินการเสร็จสิ้น", 
-                  deny:"ปฏิเสธ",
+                  waiting:"รอดำเนินการ",
                   
               }
           },

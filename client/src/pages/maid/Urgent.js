@@ -1,21 +1,53 @@
 import { faWarning,faPencil,faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React,{useState,Suspense} from 'react'
+import React,{useState,Suspense, useEffect} from 'react'
 import { CardFillColorNonFooter } from '../../components/Cards';
 import { MuiTable, TablesStriped } from '../../components/Tables';
 import { Skeleton } from '../../components/Loading'
 import { lazily } from 'react-lazily';
-import { EditDelete } from '../../components/EditDelete';
+import { EditDelete,Delete } from '../../components/EditDelete';
+import { geturgentData, Updateurgent } from '../../controllers/maid/UngentControllers';
+import { ModalCardConfirm } from '../../components/Modals';
 
 const { CardFillColorNonFooterShadow } =lazily(()=>import('../../components/Cards'))
 const Urgent = () => {
-  const [name,setName] = useState(''); 
+  const [name,setName] = useState('');
+
+
+  const [dataTableData ,setDataTableData] = useState ([]);
+  const loadungentData = async () =>{
+    const ungentDataTable = await geturgentData ()
+    setDataTableData(ungentDataTable)
+    console.log(ungentDataTable);
+  }
+  
+
+  useEffect (()=>{
+    loadungentData();
+    
+  },[])
   const dataTable = {
     data:[
-      {id:"A01",description:"event",location:"c05",date_time:"18.00",ED:<EditDelete/>}
+      ...dataTableData.map(item => {
+        return {
+          
+          description:item['type'],
+          location:item['date_time'],
+          date_time:item['work_description'],
+          ED:<Delete DeleteFnc = {async()=>{
+            const bool = await Updateurgent ({urgent_id:item['urgent_id']})
+            if (bool) {
+              loadungentData()
+            }
+          }}
+          />
+        }
+      })
+      
+        
     ],
     columns:[
-      {title:"รหัส",field:"id"},
+      
       {title:"รายละเอียดงาน",field:"description"},
       {title:"สถานที่",field:"location"},
       {title:"เวลา",field:"date_time"},
@@ -37,6 +69,11 @@ const Urgent = () => {
   return (
     <>
       <CardFillColorNonFooter contentBody={contentBody}/>
+      <ModalCardConfirm 
+        confrimCallback={async()=>{
+          await loadungentData ()
+        }}
+      />
     </>
     
 
