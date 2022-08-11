@@ -16,9 +16,9 @@ export const geturgentData = async ()=>{
  }
  export const Updateurgent = async (formdata)=>{
     try {
-        console.log(formdata);
+        // console.log(formdata);
         return Swal.fire({
-            title: 'ต้องการอัพเดทข้อมูลหรือไม่',
+            title: 'ต้องการลบข้อมูลหรือไม่',
             showCancelButton: true,
             confirmButtonText: 'ใช่',
             denyButtonText: 'ไม่ใช' ,
@@ -28,7 +28,7 @@ export const geturgentData = async ()=>{
                 await Swal.fire({
                     title: "สำเร็จ",
                     icon: "success",
-                    text: "อัพเดทข้อมูลสำเร็จ"
+                    text: "ลบข้อมูลสำเร็จ"
                 })
                 return true
             }else{

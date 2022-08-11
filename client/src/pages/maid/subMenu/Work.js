@@ -5,7 +5,7 @@ import { Skeleton, Spiner } from '../../../components/Loading'
 import { lazily } from 'react-lazily';
 import { EditDelete } from '../../../components/EditDelete';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendar } from '@fortawesome/free-solid-svg-icons';
+import { faCalendar, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { InputGroupWithLabel } from '../../../components/FormElements';
 import DayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -14,6 +14,7 @@ import { ModalCard, ModalCardConfirm } from "../../../components/Modals";
 import { createFullCalendar, getFullCalendar } from '../../../functions/Calendar';
 import FullCalendar from "@fullcalendar/react";
 import { getworktData } from '../../../controllers/maid/WorkControllers';
+import { Button } from '@material-ui/core';
 
 const { CardFillColorNonFooterShadow, EmptyCard } =lazily(()=>import('../../../components/Cards'))
 
@@ -42,8 +43,7 @@ export const Todo = () => {
               day:item['date_week_full_name_th'],
               time_start:item['time_start'],
               time_end:item['time_end'],
-              status:item['note'],
-              ED:<EditDelete />
+              view:<button className="btn btn-success"><FontAwesomeIcon icon={faPlus}/></button>
             }
           })
         ],
@@ -55,14 +55,7 @@ export const Todo = () => {
           {title:"วัน",field:"day"},
           {title:"เวลาเริ่ม",field:"time_start"},
           {title:"เวลาเสร็จงาน",field:"time_end"},
-          {title:"สถานะ",field:"status",
-               lookup:{
-                  success:"ดำเนินการเสร็จสิ้น", 
-                  waiting:"รอดำเนินการ",
-                  
-              }
-          },
-          {title:"",field:"ED"}
+          {title:"",field:"view"}
         ]
       }
       const datatTable1 ={

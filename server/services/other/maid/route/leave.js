@@ -111,16 +111,12 @@ router.post('/insertLeave', async (req, res)=>{
         INSERT INTO notify(manager_id,maid_id,leave_id,status_maid)
         VALUES(${escape(manager_id)},${escape(user_id)},${escape(insertId)},1)
         `);
-
         console.log(insertId);
-        
         res.status(200).send(result)
     } catch (error) {
         console.log(error);
         res.sendStatus(500)
     }
-  
-   
 })
 router.post('/delectLeave', async (req, res)=>{
     

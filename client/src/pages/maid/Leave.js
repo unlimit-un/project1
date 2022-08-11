@@ -71,7 +71,7 @@ console.log(fromdata);
       mHead: <h1 className="m-0 text-2xl"><FontAwesomeIcon icon={faClipboardList}/> ยื่นเรื่องการลา</h1>,
       mBody:<>
         <div className="container-fluid">
-          <form>
+          
             <div className="row">
               <div className="col-12">
                 <InputGroupWithLabel id="title" label="หัวข้อการลา" placeholder="หัวข้อการลา"  callback={setTitle}/>
@@ -90,7 +90,7 @@ console.log(fromdata);
                 <TextAreawithlabel id="description" label="รายละเอียดการลา" callback={setDescription}/>
               </div>
             </div>
-          </form>
+          
         </div>
       </>
     })

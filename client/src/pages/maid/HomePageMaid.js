@@ -49,7 +49,7 @@ const HomepageMaid = () => {
                     <h1 className="font-extrabold">{new Date().getDate()}</h1>
                 </div>
             </div>
-            <p className="lg:inline-block hidden">{`วันที่ ${new Date().getDate()} ${convertNumberToThai(new Date().getMonth())} พ.ศ ${new Date().getFullYear()+543}`}</p>
+            <p className="lg:inline-block hidden">{`วันที่ ${new Date().getDate()} ${convertNumberToThai(new Date().getMonth()+1)} พ.ศ ${new Date().getFullYear()+543}`}</p>
         </>
     )
 

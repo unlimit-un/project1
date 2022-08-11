@@ -7,23 +7,32 @@ import { ModalButton, ModalCardConfirm } from '../../components/Modals'
 import { MuiTable, TablesStriped } from '../../components/Tables'
 import { Skeleton } from '../../components/Loading'
 import { lazily } from 'react-lazily'
-import { EditDelete } from '../../components/EditDelete'
-import { GetRepairData, GetRepairLocation } from '../../controllers/maid/RepairControllers'
+import { Delete, EditDelete } from '../../components/EditDelete'
+import { GetRepairData, GetRepairLocation, getroomBylocationId, insertRepair, UpdateRepair } from '../../controllers/maid/RepairControllers'
 
 const { CardFillColorNonFooterShadow } =lazily(()=>import('../../components/Cards'))
 const Repair = () => {
   const [modalShow, setModalShow] = useState(false);
   const [optionsLocation, setOptionsLocation] = useState ([{}]);
+  const [optionsRoom, setOptionRoom] = useState ([{value:'',text:'กรุณาเลือกข้อมูล'}]);
+  const [inputLocationId, setInputLocationId] = useState('');
+  const [inputRoomId, setInputRoomId] = useState('');
+  const [inputDescript, setInputDescript] = useState ('');
   // const optionsLocation = [
   //     {value: "1", text: "ตึก A"},
   //     {value: "2", text: "ตึก B"},
   //     {value: "3", text: "ตึก C"},
   // ]
-  const optionsRoom = [
-    {value: "1", text: "A202"},
-    {value: "2", text: "A203"},
-    {value: "3", text: "A204"},
-  ]
+  // const optionsRoom = [
+  //   {value: "1", text: "A202"},
+  //   {value: "2", text: "A203"},
+  //   {value: "3", text: "A204"},
+  // ]
+  const formdata ={
+    location_id:inputLocationId,
+    room_id:inputRoomId,
+    description:inputDescript
+  }
   
   const [dataTableData, setDataTableData] = useState([]);
 
@@ -32,12 +41,20 @@ const Repair = () => {
     setDataTableData(repairDataTable)
   }
 
+
   useEffect(()=>{
     loadRepairTable ()
     loadrepairlocation ()
   },[])
 
-  console.log(dataTableData);
+  useEffect(()=>{
+    if (inputLocationId !== '') {
+      setInputRoomId ('')
+      loadRoom ()
+    }
+  },[inputLocationId])
+
+  // console.log(dataTableData);
 
   const dataTable = {
    data:[
@@ -48,7 +65,13 @@ const Repair = () => {
             room:item['room_id'],
             date_time:item['notify_repair_date'],
             status:item['note'],
-            ED:<EditDelete/>,
+            ED:<Delete DeleteFnc = {async () =>{
+              const bool = await UpdateRepair ({notify_repair_id:item['notify_repair_id']})
+              if (bool ) {
+                loadRepairTable ()
+              }
+            }}
+            />,
             view:<ModalButton icon={faEye} setModalShow={setModalShow} callback={()=>{}}/>
           }
       })
@@ -64,6 +87,8 @@ const Repair = () => {
           processing:"กำลังดำเนินการ",
           deny:"ปฏิเสธ",
           waiting:"รอดำเนินการ",
+          unable:"ไม่สามารถดำเนินการ",
+          needless:"ไม่ต้องการดำเนินการ",
         }
       },
       {title:"",field:"ED"},
@@ -84,24 +109,42 @@ const Repair = () => {
       return{value:item['location_id'],text:`${item['location_name']}`}
     })])
   }
-  console.log(optionsLocation);
+  const loadRoom = async ()=>{
+    const repairRoom = await getroomBylocationId (inputLocationId)
+    setOptionRoom ([{value:'',text:'กรุณาเลือกข้อมูล'},...repairRoom.map(item=>{
+      return{value:item['room_id'],text:`${item['room_name']}`}
+    })])
+  }
+
+  // console.log(optionsLocation);
   const Modal = {
     mHead: <h1 className="m-0 text-2xl"><FontAwesomeIcon icon={faClipboardList}/> ยื่นเรื่องซ่อม</h1>,
     mBody:<>
       <div className="container-fluid">
-        <form>
+        
           <div className="row">
             <div className="col-md-6 col-12">
-              <SelectOptionWithLabel id="location" label="สถานที่" options_arr_obj={optionsLocation} />
+              <SelectOptionWithLabel id="location" label="สถานที่" 
+                options_arr_obj={optionsLocation} 
+                callback={({target:{value}}) => {setInputLocationId(value)}} 
+                value = {inputLocationId}
+              />
             </div>
             <div className="col-md-6 col-12">
-              <SelectOptionWithLabel id="room" label="ห้อง" options_arr_obj={optionsRoom} />
+              <SelectOptionWithLabel id="room" label="ห้อง" 
+                options_arr_obj={optionsRoom} 
+                callback={({target:{value}}) => {setInputRoomId(value)}} 
+                value = {inputRoomId}
+              />
             </div>
             <div className="col-12">
-              <TextAreawithlabel id="description" label="ปัญหา"/>
+              <TextAreawithlabel id="description" label="ปัญหา"
+                callback={({target:{value}}) => {setInputDescript(value)}} 
+                value = {inputDescript}
+              />
             </div>
           </div>
-        </form>
+        
       </div>
     </>
   }
@@ -114,6 +157,12 @@ const Repair = () => {
           <MuiTable data={dataTable.data} columns={dataTable.columns} title=""/>
       </div>
   )
+  const resetState = () =>{
+    setInputLocationId('')
+    setInputDescript('')
+    setInputRoomId('')
+   
+  }
 
   return (
     <>
@@ -129,7 +178,19 @@ const Repair = () => {
         
 
         {/* modal */}
-        <ModalCardConfirm cancleCallback={()=>{}} hideCallback={()=>{}} modalShow={modalShow} setModalShow={setModalShow} modalHead={Modal.mHead} modalBody={Modal.mBody} btnOkText="บันทึก" />
+        <ModalCardConfirm 
+              confrimCallback={async()=>{
+                await insertRepair(formdata)
+                await loadRepairTable ()
+                await resetState()
+              }}
+              cancleCallback={resetState} 
+              hideCallback={resetState}
+              modalShow={modalShow} setModalShow={setModalShow}
+              modalHead={Modal.mHead} 
+              modalBody={Modal.mBody} 
+              btnOkText="บันทึก" 
+         />
     </>
   )
 }
