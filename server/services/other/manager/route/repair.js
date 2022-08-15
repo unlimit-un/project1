@@ -12,7 +12,9 @@ router.get('/getNotifyRepairPieChart', async (req, res)=>{
                     IF(status = 1, "อนุมัติ",
                         IF(status = 2,"กำลังดำเนินการซ่อม", 
                             IF(status= 3,"ดำเนินการเสร็จสิ้น", 
-                                IF(status = -1,"ไม่อนุมัติ/ปฏิเสธ","ไม่สามารถดำเนินการได้")
+                                IF(status = -1,"ไม่อนุมัติ/ปฏิเสธ",
+                                    IF(status = -2, "ไม่สามารถดำเนินการได้", "ไม่ต้องการดำเนินการ")
+                                )
                             )	
                         )
                     )
@@ -48,7 +50,9 @@ router.get('/getNotifyRepairBarChart', async (req, res)=>{
                             IF(status = 1, "อนุมัติ",
                                     IF(status = 2,"กำลังดำเนินการซ่อม", 
                                             IF(status= 3,"ดำเนินการเสร็จสิ้น", 
-                                                    IF(status = -1,"ปฏิเสธ","ไม่สามารถดำเนินการได้")
+                                                    IF(status = -1,"ปฏิเสธ",
+                                                        IF(status = -2, "ไม่สามารถดำเนินการได้", "ไม่ต้องการดำเนินการแล้ว")
+                                                    )
                                             )	
                                     )
                             )
@@ -56,7 +60,7 @@ router.get('/getNotifyRepairBarChart', async (req, res)=>{
                     notify_repair_date
             FROM
                     notify_repair AS nr
-                    INNER JOIN location AS l ON l.location_id = nr.location_id 
+                    LEFT JOIN location AS l ON l.location_id = nr.location_id 
             WHERE
                     l.manager_id =  ${escape(req.query['user_id'])} AND MONTH(notify_repair_date) = ${escape(req.query['month_number'])} AND YEAR(notify_repair_date) = YEAR(CURRENT_DATE)
             GROUP BY

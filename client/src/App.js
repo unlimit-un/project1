@@ -30,6 +30,7 @@ function App() {
             <Route path='/manager/bookmarks' element={<Manager.Bookmarks/>} /> 
             <Route path='/manager/location' element={<Manager.Location/>} /> 
             <Route path='/manager/schedual_work/:page' element={<Manager.SchedualWork/>} /> 
+            <Route path='/manager/maid_duty/:page' element={<Manager.MaidDuty/>} /> 
           </Route>
           <Route path='/maid' exac element={<Maid.Index/>}>
             <Route path='/maid/work/:page' element={<Maid.Work/>} /> 

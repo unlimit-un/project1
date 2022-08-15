@@ -127,7 +127,20 @@ const Homepage = () => {
                 }).map(item=>item.length === 0 ? 0:item[0]['count']),
                 borderColor: ArrayColor[4],
                 backgroundColor: ArrayColorAlpha[4],
-            }]
+            },
+            {
+                label: 'ไม่ต้องการดำเนินการแล้ว',
+                data: barChartData.map(item=>{
+                    if (item.length === 0) {
+                        return [{count: 0}]
+                    }else{
+                        return item.filter(ele=>ele.note === 'ไม่ต้องการดำเนินการแล้ว'??ele)
+                    }
+                }).map(item=>item.length === 0 ? 0:item[0]['count']),
+                borderColor: ArrayColor[5],
+                backgroundColor: ArrayColorAlpha[5],
+            }
+        ]
             setDataSetsRepair(prepare)
         }
     }

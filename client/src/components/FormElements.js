@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 
 export const RadioInline = ({id, value, label, name, callback}) => {
@@ -105,7 +105,7 @@ export const InputGroupWithOutLabelNotRequire= ({type, callback, id, disable, pl
         </>
     )
 }
-export const TextAreawithlabel= ({type, callback, id, label, disabled, value}) =>{
+export const TextAreawithlabel= forwardRef(({callback, id, label, disabled, value, defaultValue}, ref) =>{
     return (
         <>
             <div className="mb-3">
@@ -118,11 +118,13 @@ export const TextAreawithlabel= ({type, callback, id, label, disabled, value}) =
                     onChange={callback}
                     autoComplete="off"
                     value={value}
+                    defaultValue={defaultValue}
+                    ref={ref}
               />
             </div>
         </>
     )
-}
+})
 export const SelectOptionWithLabel= ({callback, id, label, options_arr_obj, disabled, value, defaultValue}) =>{
    
     return (

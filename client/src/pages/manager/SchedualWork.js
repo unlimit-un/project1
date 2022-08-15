@@ -8,7 +8,7 @@ import { PageUnderConstrunction } from '../PageError'
 import Calendar from './Calendar'
 // import { MaidDuty, SpacialWork, TeamManage, UrgentWork } from './submenu/SchedualWork'
 
-const {MaidDuty, SpacialWork, TeamManage, UrgentWork, SchedualWork} = lazily(()=>import('./submenu/SchedualWork'));
+const {SpacialWork, TeamManage, UrgentWork, SchedualWork} = lazily(()=>import('./submenu/SchedualWork'));
 
 const SchedualWorkPage = () => {
     const {page} = useParams();
@@ -21,7 +21,6 @@ const SchedualWorkPage = () => {
                             page === 'dashboard'? <Suspense fallback={<Spiner/>}><SchedualWork/></Suspense>:
                             page === 'team'? <Suspense fallback={<Spiner/>}><TeamManage/></Suspense>:
                             page === 'event'? <Suspense fallback={<Spiner/>}><SpacialWork/></Suspense>:
-                            page === 'maid'? <Suspense fallback={<Spiner/>}><MaidDuty/></Suspense>:
                             page === 'urgent'? <Suspense fallback={<Spiner/>}><UrgentWork/></Suspense>:
                             <PageUnderConstrunction/>
                     }

@@ -25,11 +25,16 @@ export const SidebarLeftManager = () => {
             status: false,
             id: 'leave'
         },
+        maid_duty: {
+            status: false,
+            id: 'maid_duty'
+        },
     });
     const navigate = useNavigate()
     const [classTogglePerson, setClassTogglePerson] = useState("");
     const [classToggleSchedual, setClassToggleSchedual] = useState("");
     const [classToggleLeave, setClassToggleLeave] = useState("");
+    const [classToggleMaidDuty, setClassToggleMaidDuty] = useState("");
     const [userData, setUserData] = useState({});
     const [userImage, setUserImage] = useState(null);
     
@@ -48,6 +53,7 @@ export const SidebarLeftManager = () => {
         open.person.status?setClassTogglePerson("!text-white !bg-blue-500"): setClassTogglePerson("")
         open.schedual.status?setClassToggleSchedual("!text-white !bg-blue-500"): setClassToggleSchedual("")
         open.leave.status?setClassToggleLeave("!text-white !bg-blue-500"): setClassToggleLeave("")
+        open.maid_duty.status?setClassToggleMaidDuty("!text-white !bg-blue-500"): setClassToggleMaidDuty("")
     },[open])    
     
     const resetDropDown = (e) =>{
@@ -55,15 +61,19 @@ export const SidebarLeftManager = () => {
     }
 
     const onToggleMenuPerson = (e) =>{
-        setOpen({...open, person:{status: !open.person.status}, schedual: { status: false}, leave:{status: false}})
+        setOpen({...open, person:{status: !open.person.status}, schedual: { status: false}, leave:{status: false}, maid_duty:{status: false}})
         
     }
     const onToggleMenuSchedual = (e) =>{
-        setOpen({...open, schedual:{status: !open.schedual.status}, person:{status: false}, leave:{status: false}})
+        setOpen({...open, schedual:{status: !open.schedual.status}, person:{status: false}, leave:{status: false}, maid_duty:{status: false}})
         
     }
     const onToggleMenuLeave = (e) =>{
-        setOpen({...open, leave:{status: !open.leave.status}, person:{status: false}, schedual:{status: false}})
+        setOpen({...open, leave:{status: !open.leave.status}, person:{status: false}, schedual:{status: false}, maid_duty:{status: false}})
+        
+    }
+    const onToggleMenuMaidDuty = (e) =>{
+        setOpen({...open, maid_duty:{status: !open.maid_duty.status}, person:{status: false}, schedual:{status: false}, leave:{status: false}})
         
     }
     return (
@@ -106,7 +116,30 @@ export const SidebarLeftManager = () => {
                             
                             <LinkMenuM path="/manager/repair" icon={faBell} label="แจ้งซ่อม" resetDropDown={resetDropDown}/>
                             <LinkMenuM path="/manager/material" icon={faScrewdriverWrench} label="วัสดุครุภัณฑ์" resetDropDown={resetDropDown}/>
-
+                            <li className=" p-0">
+                                <div className="group">
+                                    <button
+                                        onClick={(e)=>onToggleMenuMaidDuty(e)}
+                                        aria-expanded = {open.maid_duty.status}
+                                        aria-controls = {open.maid_duty.id} 
+                                        className = {classToggleMaidDuty+" flex justify-between items-center w-100 p-2 px-3 text-start group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-300"}
+                                    >
+                                        <span><FontAwesomeIcon icon={faTable}/> งานแม่บ้าน</span> 
+                                        <FontAwesomeIcon className={`group-hover:!text-white group-hover:bg-blue-500 transition-all ease-in-out duration-100 ${open.maid_duty.status?'rotate-180 ':'rotate-0'}`} icon={faAngleDown}/>
+                                    </button>
+                                </div>
+                                <Collapse in={open.maid_duty.status}>
+                                    <div id={open.maid_duty.id} className="py-2">
+                                        <ul className=" px-3 ">
+                                            <SubMenuLink label={"ปฏิทินแม่บ้าน"} path="/manager/maid_duty/calendar"/>
+                                            <SubMenuLink label={"เวรแม่บ้าน"} path="/manager/maid_duty/schedule"/>
+                                            <SubMenuLink label={"งานแม่บ้าน"} path="/manager/maid_duty/duty"/>
+                                            <SubMenuLink label={"อุปกรณ์งานแม่บ้าน"} path="/manager/maid_duty/material"/>
+                                            <SubMenuLink label={"ตรวจสอบงาน"} path="/manager/maid_duty/check"/>
+                                        </ul>
+                                    </div>
+                                </Collapse>
+                            </li>
                             <li className=" p-0">
                                 <div className="group">
                                     <button
@@ -123,7 +156,6 @@ export const SidebarLeftManager = () => {
                                     <div id={open.schedual.id} className="py-2">
                                         <ul className=" px-3 ">
                                             <SubMenuLink label={"ตารางงานทั้งหมด"} path="/manager/schedual_work/dashboard"/>
-                                            <SubMenuLink label={"จัดการงานแม่บ้าน"} path="/manager/schedual_work/maid"/>
                                             <SubMenuLink label={"จัดงานกิจกรรมพิเศษ"} path="/manager/schedual_work/event"/>
                                             <SubMenuLink label={"จัดการทีม"} path="/manager/schedual_work/team"/>
                                             <SubMenuLink label={"จัดการงานด่วน"} path="/manager/schedual_work/urgent"/>

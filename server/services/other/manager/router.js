@@ -11,5 +11,7 @@ router.use(require('./route/location'))
 router.use(require('./route/outside_engineer'))
 router.use(require('./route/days_of_week'))
 router.use(require('./route/maid_duty'))
+router.use(require('./route/maid_duty_assign'))
+router.use(require('./route/room'))
 
 module.exports = router;

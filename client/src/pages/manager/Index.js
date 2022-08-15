@@ -40,6 +40,7 @@ const IndexManager = () => {
                                     pathname.includes('/manager/schedual_work')?<Manager.SchedualWork/>:
                                     pathname.includes('/manager/notify')?<Manager.Notify/>:
                                     pathname.includes('/manager/location')?<Manager.Location/>:
+                                    pathname.includes('/manager/maid_duty')?<Manager.MaidDuty/>:
                                     <Manager.HomepageM/>
                                 }
                             </div>

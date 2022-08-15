@@ -38,6 +38,27 @@ router.get('/getMaidDutyById', async (req, res)=>{
    
 })
 
+router.get('/getMaidDutyByMaidId', async (req, res)=>{
+    try {
+        const result = await db.query(`
+            SELECT md.*, CONCAT_WS(' ',m.maid_name,m.maid_surname) maid_name, dw.date_week_full_name_th, 
+                CONCAT(dw.date_week_full_name_th,' ', md.time_start, '-', md.time_end)  AS date_time_duty
+            FROM maid_duty AS md
+            LEFT JOIN date_week AS dw ON dw.date_week_id = md.date_week_id
+            LEFT JOIN maid AS m ON m.maid_id = md.maid_id
+            LEFT JOIN location AS l ON l.location_id = m.location_id
+            WHERE m.maid_id = ${escape(req.query['maid_id'])}
+        `);
+     
+        res.status(200).send(result)
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
+   
+})
+
+
 router.post('/insertMaidDuty', async (req, res)=>{
     try{
 
