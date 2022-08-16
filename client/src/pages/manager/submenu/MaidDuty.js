@@ -9,10 +9,10 @@ import { InputGroupWithLabel, SelectOptionWithLabel, TextAreawithlabel } from '.
 import { ModalButton, ModalCardConfirm } from '../../../components/Modals';
 import { MuiTable } from '../../../components/Tables';
 import { getLocationByManagerId, getMaidByManagerId } from '../../../controllers/manager/ManageEmpController';
-import { deleteMaidDuty, deleteMaidDutyAssign, getDaysOfWeek, getMaidDutyAssignById, getMaidDutyAssignByManagerId, getMaidDutyById, getMaidDutyByMaidId, getMaidDutyByManagerId, getRoomByLocationId, getRoomByManagerId, insertMaidDuty, insertMaidDutyAssign, updateMaidDuty, updateMaidDutyAssgin } from '../../../controllers/manager/MaidDutyController';
+import { deleteMaidDuty, deleteMaidDutyAssign, getDaysOfWeek, getMaidDutyAssignById, getMaidDutyAssignByManagerId, getMaidDutyById, getMaidDutyByMaidId, getMaidDutyByManagerId, getMaidDutyMaterialById, getMaidDutyMaterialByManagerId, getMaterialById, getMaterialByManagerId, getRoomByLocationId, getRoomByManagerId, insertMaidDuty, insertMaidDutyAssign, insertMaidDutyMaterial, updateMaidDuty, updateMaidDutyAssgin } from '../../../controllers/manager/MaidDutyController';
 import { ArrayColor } from '../../../utils/ArrayColor';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencil, faTable, faPlus,  } from '@fortawesome/free-solid-svg-icons';
+import { faPencil, faTable, faPlus, faScrewdriverWrench,  } from '@fortawesome/free-solid-svg-icons';
 import { useForkRef } from '@material-ui/core';
 import { Skeleton, Spiner } from '../../../components/Loading';
 
@@ -256,14 +256,19 @@ export const Duty = () =>{
         room_id: '',
     })
 
-    const [maidIdModal, setMaidIdModal] = useState('')
-    const [maidDutyIdModal, setMaidDutyIdModal] = useState('')
-    const [locationIdModal, setLocationIdModal] = useState('')
-    const [roomIdModal, setRoomIdModal] = useState('')
-    const [maidDutyAssignIdModal, setMaidDutyAssignIdModal] = useState('')
+    const [dutyOptionsModal, setDutyOptionsModal] = useState({
+        maid_options:[],
+        maid_duty_options:[],
+        location_options:[],
+        room_options:[]
+    })
+
+    const [maidDutyAssignById, setMaidDutyAssignById] = useState({})
 
     const refDescription = useRef(null);
+    const refMaidDutyAssignCode = useRef(null);
     const refDescriptionModal = useRef(null);
+    const refMaidDutyAssignCodeModal = useRef(null);
     const [dataMaidDutyAssignTable, setDataMaidDutyAssignTable] = useState([])
 
     const loadMaidDutyAssginTable = async() =>{
@@ -319,7 +324,6 @@ export const Duty = () =>{
                 })
             }
         }
-
         
     }
 
@@ -333,6 +337,8 @@ export const Duty = () =>{
             room_id: '',
         })
         loadMaidDutyAssginTable();
+        refDescription.current.value = ''
+        refMaidDutyAssignCode.current.value = ''
     }
 
     useEffect(()=>{
@@ -343,14 +349,7 @@ export const Duty = () =>{
         loadOptionsData()
     },[inputDutyAssing, inputDutyAssingModal])
 
-    const [dutyOptionsModal, setDutyOptionsModal] = useState({
-        maid_options:[],
-        maid_duty_options:[],
-        location_options:[],
-        room_options:[]
-    })
-
-    const [maidDutyAssignById, setMaidDutyAssignById] = useState({})
+    
     
     const loadDataEdit = async(maid_duty_assign_id)=>{
         
@@ -405,6 +404,9 @@ export const Duty = () =>{
                 <div className="col-md-6 col-12">
                     <SelectOptionWithLabel disabled={inputDutyAssingModal.location_id?"":"disabled"} key={maidDutyAssignById['room_id']} value={inputDutyAssingModal['room_id']} id="room_id_modal" label="ห้อง" options_arr_obj={dutyOptionsModal.room_options} callback={({target:{value}})=>{setInputDutyAssignModal({...inputDutyAssingModal, room_id: value})}}/>
                 </div>
+                <div className="col-md-4 col-12">
+                    <InputGroupWithLabel ref={refMaidDutyAssignCodeModal} id="duty_assign_code_modal" label="รหัสงานแม่บ้าน" defaultValue={maidDutyAssignById['maid_duty_assign_code']}/>
+                </div>
                 <div className="col-12">
                     <TextAreawithlabel ref={refDescriptionModal} label="รายละเอียด" defaultValue={maidDutyAssignById['work_description']}/>
                 </div>
@@ -412,14 +414,13 @@ export const Duty = () =>{
             
             
         )
-    }
-
-    
+    }    
 
     const dataTableDutyAssign = {
         data:[
             ...dataMaidDutyAssignTable.map(item=>{
                 return {
+                    maid_duty_assign_code: item['maid_duty_assign_code'],
                     maid_code: item['maid_code'],
                     maid_name: item['maid_name'],
                     date: item['date_week_full_name_th'],
@@ -427,7 +428,7 @@ export const Duty = () =>{
                     location_name: item['location_name'],
                     room_name: item['room_name'],
                     work_description: item['work_description'],
-                    time_reg: `${item['time_reg'].split(/[\st\s.]/)[0]} ${item['time_reg'].split(/[\st\s.]/)[1]}`,
+                    time_reg: `${item['time_reg'].split(/[\sT\s.]/)[0]} ${item['time_reg'].split(/[\sT\s.]/)[1]}`,
                     ED: <EditDelete
                             EditFnc={()=>{loadDataEdit(item['maid_duty_assign_id'])}}
                             DeleteFnc={async()=>{
@@ -440,6 +441,7 @@ export const Duty = () =>{
         ],
         columns:[
             {title:"",field:"ED"},
+            {title:"รหัสงานแม่บ้าน",field:"maid_duty_assign_code"},
             {title:"รหัสแม่บ้าน",field:"maid_code"},
             {title:"ชื่อแม่บ้าน",field:"maid_name"},
             {title:"วันที่ทำงาน",field:"date"},
@@ -460,7 +462,7 @@ export const Duty = () =>{
                 <form 
                     onSubmit={async (e)=>{
                         e.preventDefault();
-                        if(await insertMaidDutyAssign({...inputDutyAssing, work_description: refDescription.current.value})) await reStateDutyAssign();
+                        if(await insertMaidDutyAssign({...inputDutyAssing, work_description: refDescription.current.value, maid_duty_assign_code: refMaidDutyAssignCode.current.value})) await reStateDutyAssign();
                     }} 
                 >
                     <div className="row">
@@ -476,7 +478,10 @@ export const Duty = () =>{
                         <div className="col-md-4 col-12">
                             <SelectOptionWithLabel disabled={inputDutyAssing.location_id?"":"disabled"} key="duty_assign_room_id" value={inputDutyAssing.room_id} id="room_id" label="ห้อง" options_arr_obj={dutyOptions.room_options} callback={({target:{value}})=>{setInputDutyAssign({...inputDutyAssing, room_id: value})}}/>
                         </div>
-                        <div className="col-md-6 col-12">
+                        <div className="col-md-4 col-12">
+                            <InputGroupWithLabel key="duty_assign_code" ref={refMaidDutyAssignCode} id="duty_assign_code" label="รหัสงานแม่บ้าน"/>
+                        </div>
+                        <div className="col-md-4 col-12">
                             <TextAreawithlabel key="duty_assign_work_desciption" ref={refDescription} id="work_desciption" label="รายละเอียดงาน"/>
                         </div>
                     </div>
@@ -495,9 +500,9 @@ export const Duty = () =>{
                 confrimCallback={async ()=>{
                     const formData = {
                         ...inputDutyAssingModal,
-                        work_description: refDescriptionModal.current.value
+                        work_description: refDescriptionModal.current.value,
+                        maid_duty_assign_code: refMaidDutyAssignCodeModal.current.value
                     }
-                    console.log(formData);
                     if(await updateMaidDutyAssgin(formData)) await reStateDutyAssign();
                 }}
                 cancleCallback={reStateDutyAssign} hideCallback={reStateDutyAssign} modalBody={modal.mBody} modalHead={modal.mHead} modalShow={modalShow} setModalShow={setModalShow} />
@@ -505,6 +510,210 @@ export const Duty = () =>{
     )
 }
 
-export const maidDutyMaterial = () =>{
+export const MaidDutyMaterial = () =>{
 
+    const [modalShow, setModalShow] = useState(false)
+    const [dataDutyMaterial, setDataDutyMaterial] = useState([])
+    const [options, setOptions] = useState({
+        maid_duty_assign_options: [],
+        material_options:[]
+    })
+    const [inputForm, setInputForm] = useState({
+        maid_duty_assign_id: '',
+        material_id:''
+    })
+    const [inputFormModal, setInputFormModal] = useState({
+        maid_duty_assign_id: '',
+        material_id:'',
+        maid_duty_material_id: '',
+        material_count: ''
+    })
+    const [total, setTotal] = useState('')
+    const [totalModal, setTotalModal] = useState('')
+    const refInputCount = useRef(null);
+    const refInputCountModal = useRef(null);
+
+    const loadOptions = async () =>{
+        const maidDutyAssignByManagerId = await getMaidDutyAssignByManagerId();
+        const materialByManagerId = await getMaterialByManagerId();
+
+        setOptions({
+            maid_duty_assign_options: [{value:'', text: 'เลือกงานแม่บ้าน'},...maidDutyAssignByManagerId.map(item=> {return {text:item['maid_duty_assign_code'], value:item['maid_duty_assign_id']}})],
+            material_options :[
+                {value:'', text: 'เลือกวัสดุครุภัณฑ์'},
+            ...materialByManagerId.map(item=> {return {text:`${item['material_code']}-${item['material_name']}`, value:item['material_id']}})],
+        })
+    }
+
+    const loadDataTableDutyMaterial = async () => {
+        const maidDutyMaterialByManagerId = await getMaidDutyMaterialByManagerId();
+        setDataDutyMaterial(maidDutyMaterialByManagerId)
+    }
+    
+    const showEditModal = async (mdm_id) =>{
+        const [maidDutyMaterialById] = await getMaidDutyMaterialById(mdm_id)
+
+        const [{material_quantity, material_using}] = await getMaterialById(maidDutyMaterialById['material_id'])
+        setTotalModal(material_quantity - material_using < 0 ? 'วัสดุไม่เพียงพอ':material_quantity - material_using)
+        
+        await setInputFormModal({
+            maid_duty_assign_id: maidDutyMaterialById['maid_duty_assign_id'],
+            maid_duty_material_id: maidDutyMaterialById['maid_duty_material_id'],
+            material_id: maidDutyMaterialById['material_id'],
+            material_count:  maidDutyMaterialById['material_count']
+        })
+    }
+    
+    const resetState = ()=>{
+        setInputForm({
+            maid_duty_assign_id: '',
+            material_id:''
+        })
+        refInputCount.current.value = ''
+        loadDataTableDutyMaterial();
+    }
+
+    useEffect(()=>{
+        loadDataTableDutyMaterial();
+        loadOptions();
+    },[])
+    
+    const dataTableDutyMaterial = {
+        data:[
+            ...dataDutyMaterial.map(item=>{
+                return {
+                    material_code: item['material_code'],
+                    material_name: item['material_name'],
+                    material_count: item['material_count'],
+                    maid_duty_assign_code: item['maid_duty_assign_code'],
+                    time_reg: `${item['time_reg'].split(/[\sT\s.]/)[0]} ${item['time_reg'].split(/[\sT\s.]/)[1]}`,
+                    ED: <EditDelete
+                            EditFnc={async()=>{
+                                showEditModal(item['maid_duty_material_id'])
+                            }}
+                            setModalShow={setModalShow}
+                        />
+                }
+            })
+        ],
+        columns:[
+            {title:"",field:"ED"},
+            {title:"รหัสครุภัณฑ์",field:"material_code"},
+            {title:"รหัสแม่บ้าน",field:"material_name"},
+            {title:"จำนวน",field:"material_count", type: "numeric"},
+            {title:"รหัสเวรแม่บ้าน",field:"maid_duty_assign_code"},
+            {title:"วันที่เพิ่มข้อมูล",field:"time_reg"}
+        ]
+    }
+    const loadTotalMaterial = async (material_id) =>{
+        if (modalShow) {
+            if (inputFormModal.material_id) {
+                const [{material_quantity, material_using}] = await getMaterialById(inputFormModal.material_id)
+                console.log(material_quantity, material_using);
+                setTotalModal(material_quantity- +refInputCountModal.current.value - material_using < 0 ? 'วัสดุไม่เพียงพอ':material_quantity- +refInputCountModal.current.value - material_using)
+            }
+    
+            if (material_id) {
+                const [{material_quantity, material_using}] = await getMaterialById(material_id)
+                setTotalModal(material_quantity - material_using < 0 ? 'วัสดุไม่เพียงพอ':material_quantity- +refInputCountModal.current.value - material_using)
+            }
+    
+            if (material_id === '') {
+                setTotalModal('')
+            }
+        }else{
+            if (inputForm.material_id) {
+                const [{material_quantity, material_using}] = await getMaterialById(inputForm.material_id)
+                setTotal(material_quantity- +refInputCount.current.value - material_using < 0 ? 'วัสดุไม่เพียงพอ':material_quantity- +refInputCount.current.value - material_using)
+            }
+    
+            if (material_id) {
+                const [{material_quantity, material_using}] = await getMaterialById(material_id)
+                setTotal(material_quantity- +refInputCount.current.value - material_using < 0 ? 'วัสดุไม่เพียงพอ':material_quantity- +refInputCount.current.value - material_using)
+            }
+    
+            if (material_id === '') {
+                setTotal('')
+            }
+        }
+    }
+
+    const modal = {
+        mHead:<h1 className="m-0 text-2xl"><FontAwesomeIcon icon={faPencil}/>แก้ไขข้อมูลวัสดุงานแม่บ้าน</h1>,
+        mBody:(
+
+            (options.maid_duty_assign_options.length === 0 || options.material_options.length === 0) ?<Skeleton/>:
+        
+            <div className="row">
+                <div className="col-md-4 col-12">
+                    <SelectOptionWithLabel label="รหัสงานแม่บ้าน" value={inputFormModal.maid_duty_assign_id} options_arr_obj={options.maid_duty_assign_options} callback={({target:{value}})=>{setInputFormModal({...inputFormModal, maid_duty_assign_id: value})}}/>
+                </div>
+                <div className="col-md-4 col-12">
+                    <SelectOptionWithLabel label="วัสดุครุภัณฑ์" value={inputFormModal.material_id} options_arr_obj={options.material_options} callback={({target:{value}})=>{ setInputFormModal({...inputFormModal, material_id: value}); loadTotalMaterial(value);}}/>
+                </div>
+                <div className="col-md-4 col-12">
+                    <div className="mb-3">
+                        <label className="form-label">จำนวน <small>(คงเหลือ: {totalModal})</small></label>
+                        <input className="form-control" required ref={refInputCountModal} key={inputFormModal.material_count}  defaultValue={inputFormModal.material_count}
+                            onChange={()=>{
+                                    loadTotalMaterial()
+                            }}
+                        />
+                    </div>
+                </div>
+            </div> 
+        )
+    }    
+    return (
+        <>
+            <div className="container-fluid">
+                <h1 className="text-xl"><FontAwesomeIcon icon={faScrewdriverWrench}/> จัดการวัสดุงานแม่บ้าน</h1>
+                <hr />
+                <form 
+                    onSubmit={async(e)=>{
+                        e.preventDefault()
+                        if(await insertMaidDutyMaterial({...inputForm, material_count: refInputCount.current.value})) await resetState()
+                    }}
+                >
+                    <div className="row">
+                        <div className="col-md-4 col-12">
+                            <SelectOptionWithLabel label="รหัสงานแม่บ้าน" key={inputForm.maid_duty_assign_id} value={inputForm.maid_duty_assign_id} options_arr_obj={options.maid_duty_assign_options} callback={({target:{value}})=>{setInputForm({...inputForm, maid_duty_assign_id: value})}}/>
+                        </div>
+                        <div className="col-md-4 col-12">
+                            <SelectOptionWithLabel label="วัสดุครุภัณฑ์" key={inputForm.material_id} value={inputForm.material_id} options_arr_obj={options.material_options} callback={({target:{value}})=>{ setInputForm({...inputForm, material_id: value}); loadTotalMaterial(value);}}/>
+                        </div>
+                        <div className="col-md-4 col-12">
+                            <div className="mb-3">
+                                <label className="form-label">จำนวน <small>(คงเหลือ: {total})</small></label>
+                                <input className="form-control" required ref={refInputCount} 
+                                    onChange={()=>{
+                                            loadTotalMaterial()
+                                    }}
+                                />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div className="flex justify-end">
+                        <button className="btn btn-outline-primary w-1/3">บันทึก</button>
+                    </div>
+                </form>        
+                <CardFillColorHeader
+                    classCard="mt-3"
+                    contentHeader={<h1 className="text-lg m-0">รายการวัสดุในงานแม่บ้าน</h1>} 
+                    contentBody={<MuiTable data={dataTableDutyMaterial.data} columns={dataTableDutyMaterial.columns} title=""/>}
+                />
+            
+            </div>
+            <ModalCardConfirm confrimCallback={async()=>{
+                const formData = {
+                    ...inputFormModal,
+                    material_count: refInputCountModal.current.value
+                }
+
+                //! TODO Trigger Database Update
+                console.log(formData);
+            }} cancleCallback={resetState} hideCallback={resetState} modalBody={modal.mBody} modalHead={modal.mHead} modalShow={modalShow} setModalShow={setModalShow} />
+        </>
+    )
 }

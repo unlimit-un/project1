@@ -13,5 +13,7 @@ router.use(require('./route/days_of_week'))
 router.use(require('./route/maid_duty'))
 router.use(require('./route/maid_duty_assign'))
 router.use(require('./route/room'))
+router.use(require('./route/maid_duty_material'))
+router.use(require('./route/material'))
 
 module.exports = router;

@@ -1,5 +1,7 @@
 import { axiosGet, axiosPost, ROOT_SERVER } from "../../functions/AxiosCustom";
 import Swal from 'sweetalert2'
+import { api_getMaterialById, api_getMaterialByManagerId } from "../../api/material";
+import { api_insertMaidDutyMaterial } from "../../api/maid_duty_material";
 
 export const getMaidByManagerId = async () => {
     try {
@@ -305,3 +307,41 @@ export const getMaidDutyByMaidId = async (maid_id) => {
 }
 
 //end maid duty assign
+
+//start maid duty material
+
+
+export const getMaidDutyMaterialByManagerId = async () => {
+    try {
+        const {data:{user_id : manager_id}} = await axiosGet(`${ROOT_SERVER}/api/checkToken`);
+        const {data} = await axiosGet(`${ROOT_SERVER}/api/manager/getMaidDutyMaterialByManagerId?manager_id=${manager_id}`);
+        return data;
+    } catch (error) {
+        console.error(error)
+        await Swal.fire({
+            title: "ผิดพลาด",
+            icon: "error",
+            text: `${error.response.data}`
+        })
+    }
+}
+
+export const getMaterialByManagerId = async () => await api_getMaterialByManagerId();
+export const getMaterialById = async (material_id) => await api_getMaterialById(material_id);
+export const insertMaidDutyMaterial = async (formData) => await api_insertMaidDutyMaterial(formData);
+
+export const getMaidDutyMaterialById = async (maid_duty_material_id) => {
+    try {
+        const {data} = await axiosGet(`${ROOT_SERVER}/api/manager/getMaidDutyMaterialById?maid_duty_material_id=${maid_duty_material_id}`);
+        return data;
+    } catch (error) {
+        console.error(error)
+        await Swal.fire({
+            title: "ผิดพลาด",
+            icon: "error",
+            text: `${error.response.data}`
+        })
+    }
+}
+
+//end maid duty material

@@ -5,7 +5,7 @@ import React, { Suspense, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { Spiner } from '../../components/Loading';
 import { PageUnderConstrunction } from '../PageError';
-import { Duty, MaidDutyCalendar, Schedual } from './submenu/MaidDuty';
+import { Duty, MaidDutyCalendar, Schedual, MaidDutyMaterial } from './submenu/MaidDuty';
 
 
 // MaidDuty
@@ -20,7 +20,7 @@ const MaidDuty = () =>{
                             page === 'calendar'? <Suspense fallback={<Spiner/>}><MaidDutyCalendar/></Suspense>:
                             page === 'schedule'? <Suspense fallback={<Spiner/>}><Schedual/></Suspense>:
                             page === 'duty'? <Suspense fallback={<Spiner/>}><Duty/></Suspense>:
-                            page === 'material'? <Suspense fallback={<Spiner/>}><Duty/></Suspense>:
+                            page === 'material'? <Suspense fallback={<Spiner/>}><MaidDutyMaterial/></Suspense>:
                             page === 'check'? <Suspense fallback={<Spiner/>}><Duty/></Suspense>:
                             <PageUnderConstrunction/>
                     }
@@ -29,77 +29,7 @@ const MaidDuty = () =>{
     )
 }
 export default MaidDuty
-    
-    // const dataTableModal =  {
-    //     thead:['ตึก', 'ห้อง', 'รายละเอียดงาน', ''],
-    //     tbody:[
-    //         [
-    //             'A',
-    //             'A202', 
-    //             'กวาด เช็ด ถู',
-    //             <div className="flex gap-2">
-    //                 <ModalButton setModalShow={setShowModal} icon={faPencil} classBtn="text-white bg-amber-500 hover:bg-amber-400 p-2 rounded-circle"/>
-    //                 <button className="text-white bg-red-500 hover:bg-red-400 p-2 rounded-circle"><FontAwesomeIcon  icon={faTrashAlt} /></button>
-    //             </div>
-    //         ],
-    //     ],
-    //     data:[
-    //         {building:"A",room:"A202",description:"กวาด เช็ด ถู",ED:<EditDelete/>}
-    //     ],
-    //     columns:[
-    //         {title:"ตึก",field:"building"},
-    //         {title:"ห้อง",field:"room"},
-    //         {title:"รายละเอียดงาน",field:"description"},
-    //         {title:"",field:"ED"}
-            
-    //     ]
-    // }
-    // const room_options = [
-    //     {value: '1', text: 'A202'},
-    //     {value: '2', text: 'A203'}
-    // ]
-    // const location_options = [
-    //     {value: '1', text: 'ตึก A'},
-    //     {value: '2', text: 'ตึก B'}
-    // ]
-    // const material_options = [
-    //     {value: '1', text: 'ไม้กวาด'},
-    //     {value: '2', text: 'ไม้ถูพื้น'}
-    // ]
-    // const Modal = {
-    //     mHead: (
-    //         <>
-    //             <h1 className="m-0 text-2xl">มอบหมายงาน</h1>
-    //         </>
-    //     ),
-    //     mBody: (
-    //         <>
-    //             <div className="row">
-    //                 <div className="col-md-6 col-12">
-    //                     <SelectOptionWithLabel id="location_id" options_arr_obj={location_options} label="ตึก"/>
-    //                 </div>
-    //                 <div className="col-md-6 col-12">
-    //                     <SelectOptionWithLabel id="room_id" options_arr_obj={room_options} label="ห้อง"/>
-    //                 </div>
-    //             </div>
-    //             <InputGroupWithLabel id="description" label="รายละเอียดงาน" type="text"/>
-    //             <div className="row">
-    //                 <div className="col-md-6 col-12">
-    //                     <SelectOptionWithLabel id="location_id" options_arr_obj={material_options} label="วัสุดครุภัณฑ์"/>
-    //                 </div>
-    //                 <div className="col-md-6 col-12">
-    //                     <InputGroupWithLabel id="count" label="จำนวน" type="text"/>
-    //                 </div>
-    //             </div>
-    //             <div className="flex justify-end mb-3">
-    //                 <button className="btn btn-success md:w-1/3 w-full">บันทึก</button>
-    //             </div>
-    //             <CardFillColorHeader contentHeader={<h5 className="m-0">งานทั้งหมด</h5>} contentBody={
-    //                 <MuiTable data={dataTableModal.data} columns={dataTableModal.columns} title=""/>
-    //             }/>
-    //         </>
-    //     )
-    // }
+
 
 
     // // duty check

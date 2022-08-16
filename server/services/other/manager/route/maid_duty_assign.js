@@ -53,17 +53,18 @@ router.get('/getMaidDutyAssignById', async (req, res)=>{
 router.post('/insertMaidDutyAssign', async (req, res)=>{
     try{
 
-        const {maid_duty_id, location_id, room_id, work_description, manager_id_assign} = req.body
+        const {maid_duty_id, maid_duty_assign_code, location_id, room_id, work_description, manager_id_assign} = req.body
 
-        if (!(maid_duty_id && location_id && room_id && work_description && manager_id_assign)) {
+        if (!(maid_duty_id && location_id && maid_duty_assign_code && room_id && work_description && manager_id_assign)) {
             res.status(400).send('ข้อมูลไม่ครบ');
             return false;
         }
         
         const result = await db.query(`
-            INSERT INTO maid_duty_assign(maid_duty_id, location_id, room_id, work_description, manager_id_assign)
+            INSERT INTO maid_duty_assign(maid_duty_id, maid_duty_assign_code, location_id, room_id, work_description, manager_id_assign)
             VALUES(
                 ${escape(maid_duty_id)}, 
+                ${escape(maid_duty_assign_code)}, 
                 ${escape(location_id)}, 
                 ${escape(room_id)}, 
                 ${escape(work_description)}, 
@@ -73,7 +74,11 @@ router.post('/insertMaidDutyAssign', async (req, res)=>{
      
         res.status(200).send(result)
     } catch (error) {
-        console.log(error);
+        console.log(error.sqlMessage);
+        if (error.sqlMessage.includes('Duplicate entry ')) {
+            res.status(500).send(error.sqlMessage.substr(0, 25))
+            return false
+        }
         res.sendStatus(500)
     }
    
@@ -82,9 +87,9 @@ router.post('/insertMaidDutyAssign', async (req, res)=>{
 router.post('/updateMaidDutyAssgin', async (req, res)=>{
     try{
 
-        const {maid_duty_assign_id, location_id, maid_duty_id, room_id, work_description} = req.body
+        const {maid_duty_assign_id, location_id, maid_duty_id, room_id, work_description, maid_duty_assign_code} = req.body
 
-        if (!(maid_duty_assign_id && location_id && maid_duty_id && room_id && work_description)) {
+        if (!(maid_duty_assign_id && location_id && maid_duty_id && room_id && work_description && maid_duty_assign_code)) {
             res.status(400).send('ข้อมูลไม่ครบ');
             return false;
         }
@@ -93,6 +98,7 @@ router.post('/updateMaidDutyAssgin', async (req, res)=>{
             UPDATE maid_duty_assign
             SET
                 location_id=${escape(location_id)},
+                maid_duty_assign_code=${escape(maid_duty_assign_code)},
                 maid_duty_id=${escape(maid_duty_id)},
                 room_id=${escape(room_id)},
                 work_description=${escape(work_description)}
@@ -103,6 +109,10 @@ router.post('/updateMaidDutyAssgin', async (req, res)=>{
         res.status(200).send(result)
     } catch (error) {
         console.log(error);
+        if (error.sqlMessage.includes('Duplicate entry ')) {
+            res.status(500).send(error.sqlMessage.substr(0, 25))
+            return false
+        }
         res.sendStatus(500)
     }
    
