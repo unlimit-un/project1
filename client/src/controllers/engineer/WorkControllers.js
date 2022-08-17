@@ -67,3 +67,34 @@ export const updateNotifyRepairToSuccess = async ( formData ) =>{
         })
     }
 }
+
+export const updateNotifyRepairToUnable = async ( formData ) =>{
+    try {
+        return Swal.fire({
+            title: 'ต้องการยกเลิกใช่หรือไม่',
+            showCancelButton: true,
+            confirmButtonText: 'ใช่',
+            denyButtonText: `ไม่ใช่`,
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+                await axiosPost(`${ROOT_SERVER}/api/engineer/updateNotifyRepairToUnable`,{...formData});
+                await Swal.fire({
+                    title: "สำเร็จ",
+                    icon: "success",
+                    text: "ยกเลิกงานสำเร็จ"
+                })
+                return true
+            }else{
+                return false
+            }
+          })
+    } catch (error) {
+        console.error(error)
+        await Swal.fire({
+            title: "ผิดพลาด",
+            icon: "error",
+            text: `${error.response.data}`
+        })
+    }
+}
+

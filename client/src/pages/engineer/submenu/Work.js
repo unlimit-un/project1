@@ -1,13 +1,13 @@
 import { faCheckCircle, faEye, faWrench, faXmark } from '@fortawesome/free-solid-svg-icons'
-import React, { Suspense, useEffect, useState } from 'react'
+import React, { Suspense, useEffect, useRef, useState } from 'react'
 // import { CardFillColorNonFooter } from '../../components/Cards'
 import { Skeleton } from '../../../components/Loading'
 import { ModalButton, ModalCard, ModalCardConfirm } from '../../../components/Modals'
 import { MuiTable } from '../../../components/Tables'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { lazily } from 'react-lazily'
-import { getWorkData, getWorkDataStatusProcess, updateNotifyRepairToProcessing, updateNotifyRepairToSuccess } from '../../../controllers/engineer/WorkControllers'
-import { InputGroupWithLabel } from '../../../components/FormElements'
+import { getWorkData, getWorkDataStatusProcess, updateNotifyRepairToProcessing, updateNotifyRepairToSuccess, updateNotifyRepairToUnable } from '../../../controllers/engineer/WorkControllers'
+import { InputGroupWithLabel, TextAreawithlabel } from '../../../components/FormElements'
 
 const {CardFillColorNonFooter} = lazily(()=>import('../../../components/Cards'));
 
@@ -104,14 +104,18 @@ export const Workdept = () => {
 export const Work = () => {
 
   const [workDataStatusProcess, setWorkDataStatusProcess] = useState([])
-  const [inputfinished, setInputFinished] = useState ('')
-  const [notifyRepairId, setNotifyRepairId] = useState ('')
   const [modalShow, setModalShow] = useState (false)
+  const refTextArea = useRef(null)
+  const [unableNotifyRepairId, setUnableNotifyRepairId] = useState('')
  
   const loadWorkDataStatusProcess = async () =>{
     const data = await getWorkDataStatusProcess();
     // console.log(data);
     setWorkDataStatusProcess(data)
+  }
+
+  const reState = () =>{
+    refTextArea.current.value = ''
   }
 
   useEffect(()=>{
@@ -133,10 +137,10 @@ export const Work = () => {
               accept_deny:
               <div className="flex gap-2">
                   <button className="btn btn-success " 
-                    onClick={()=>{updateNotifyRepairToSuccess({notify_repair_id:item['notify_repair_id']})}}>
+                    onClick={async ()=>{if(await updateNotifyRepairToSuccess({notify_repair_id:item['notify_repair_id']})) await loadWorkDataStatusProcess()}}>
                     <FontAwesomeIcon icon={faCheckCircle}/>
                   </button>
-                  <button className="btn btn-danger " onClick={()=>{}}><FontAwesomeIcon icon={faXmark}/></button>
+                  <ModalButton classBtn="btn btn-danger" icon={faXmark} setModalShow={setModalShow} modalShow={modalShow} callback={()=>{setUnableNotifyRepairId(item['notify_repair_id'])}}/>
               </div>
               // view:<ModalButton classBtn="btn btn-success " icon={faCheckCircle} callback={()=>{setNotifyRepairId(item['notify_repair_id'])}} modalShow={modalShow} setModalShow={setModalShow}/>
             }
@@ -155,30 +159,31 @@ export const Work = () => {
         // {title:"",field:"view"}
       ]
   }
-  // const modals = {
-  //   mHead:<h1 className="m-0 text-2xl"><FontAwesomeIcon icon={faWrench}/>รับงานแจ้งซ่อม</h1>,
-  //   mBody:(
-  //     <>
-  //       <div className="row">
-  //         <div className="col-12">
-  //           <InputGroupWithLabel label="กำหนดวันที่จะซ่อมเสร็จ" type="date" value={inputfinished} callback={({target:{value}})=>{setInputFinished(value)}}/>
-  //         </div>
-  //       </div>
-  //     </>
-  //   )
-  // }
+  const modals = {
+    mHead:<h1 className="m-0 text-2xl"><FontAwesomeIcon icon={faWrench}/>ไม่สามารถซ่อมแซมได้</h1>,
+    mBody:(
+      <>
+        <div className="row">
+          <div className="col-12">
+            <TextAreawithlabel label="กำหนดวันที่จะซ่อมเสร็จ" ref={refTextArea}/>
+          </div>
+        </div>
+      </>
+    )
+  }
 
   return(
       <>
         <Suspense fallback={<Skeleton/>}>
           <CardFillColorNonFooter contentBody={<MuiTable data={datatablework.data} columns={datatablework.columns} title="ตารางงาน"/>}/>
         </Suspense>
-          
-          <ModalCardConfirm
-            confrimCallback={async () =>{
-              await loadWorkDataStatusProcess ()
-            }}
-           />
+        <ModalCardConfirm confrimCallback={async ()=>{
+          const formData = {
+            notify_repair_id: unableNotifyRepairId,
+            unable_message: refTextArea.current.value
+          }
+          if(await updateNotifyRepairToUnable(formData)) await reState();
+        }} hideCallback={reState} cancleCallback={reState} modalBody={modals.mBody} modalHead={modals.mHead} modalShow={modalShow} setModalShow={setModalShow}/>
       </>
   )
 }
