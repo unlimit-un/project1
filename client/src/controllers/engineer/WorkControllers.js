@@ -11,3 +11,33 @@ export const getWorkData = async () => {
         console.error(error)
     }
 }
+export const updateNotifyRepairToProcessing = async ( formData ) =>{
+    try {
+        return Swal.fire({
+            title: 'ต้องการลบข้อมูลหรือไม่',
+            showCancelButton: true,
+            confirmButtonText: 'ใช่',
+            denyButtonText: `ไม่ใช่`,
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+                await axiosPost(`${ROOT_SERVER}/api/engineer/updateNotifyRepairToProcessing`,{...formData});
+                await Swal.fire({
+                    title: "สำเร็จ",
+                    icon: "success",
+                    text: "ลบข้อมูลสำเร็จ"
+                })
+                return true
+            }else{
+                return false
+            }
+          })
+
+        } catch (error) {
+            console.error(error)
+            await Swal.fire({
+                title: "ผิดพลาด",
+                icon: "error",
+                text: error.response.data
+            })
+        }
+    }
