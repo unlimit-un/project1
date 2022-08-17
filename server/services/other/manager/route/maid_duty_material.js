@@ -56,8 +56,8 @@ router.post('/insertMaidDutyMaterial', async (req, res)=>{
             return false;
         }
 
-        const [{material_quantity: checkCount}] = await db.query(`
-            SELECT material_quantity FROM material WHERE material_id = ${material_id}
+        const [{material_total: checkCount}] = await db.query(`
+            SELECT material_quantity - material_using AS material_total FROM material WHERE material_id = ${material_id}
         `)
         
         if (+checkCount < +material_count) {
@@ -83,56 +83,63 @@ router.post('/insertMaidDutyMaterial', async (req, res)=>{
    
 })
 
-// router.post('/updateMaidDuty', async (req, res)=>{
-//     try{
+router.post('/updateMaidDutyMaterial', async (req, res)=>{
+    try{
 
-//         const {maid_id, date_week_id, time_start, time_end, maid_duty_id} = req.body
+        const {material_id, maid_duty_assign_id, material_count, maid_duty_material_id} = req.body
 
-//         if (!(maid_id && date_week_id && time_start && time_end && maid_duty_id)) {
-//             res.status(400).send('ข้อมูลไม่ครบ');
-//             return false;
-//         }
+        if (!(material_id && maid_duty_assign_id && material_count && maid_duty_material_id)) {
+            res.status(400).send('ข้อมูลไม่ครบ');
+            return false;
+        }
 
-//         //todo check count in stock first!!
+        const [{material_total: checkCount}] = await db.query(`
+            SELECT material_quantity - material_using AS material_total FROM material WHERE material_id = ${material_id}
+        `)
         
-//         const result = await db.query(`
-//             UPDATE maid_duty_material 
-//             SET 
-//                 maid_duty_assign_id = maid_duty_assign_id, 
-//                 material_id = material_id, 
-//                 material_count = material_count
-//             WHERE 
-//                 maid_duty_material_id = maid_duty_material_id;
-//         `);
+        if (+checkCount < +material_count) {
+            res.status(400).send('ของในคลังไม่เพียงพอ');
+            return false
+        }
+        
+        const result = await db.query(`
+            UPDATE maid_duty_material 
+            SET 
+                maid_duty_assign_id = ${escape(maid_duty_assign_id)}, 
+                material_id = ${escape(material_id)}, 
+                material_count = ${escape(material_count)}
+            WHERE 
+                maid_duty_material_id = ${escape(maid_duty_material_id)};
+        `);
 
-//         res.status(200).send(result)
-//     } catch (error) {
-//         console.log(error);
-//         res.sendStatus(500)
-//     }
+        res.status(200).send(result)
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
    
-// })
+})
 
-// router.post('/deleteMaidDuty', async (req, res)=>{
-//     try{
+router.post('/deleteMaidDutyMaterial', async (req, res)=>{
+    try{
 
-//         const {maid_duty_id} = req.body
+        const {maid_duty_material_id} = req.body
 
-//         if (!(maid_duty_id)) {
-//             res.status(400).send('ข้อมูลไม่ครบ');
-//             return false;
-//         }
+        if (!(maid_duty_material_id)) {
+            res.status(400).send('ข้อมูลไม่ครบ');
+            return false;
+        }
         
-//         const result = await db.query(`
-//             DELETE FROM maid_duty WHERE maid_duty_id = ${escape(maid_duty_id)}
-//         `);
+        const result = await db.query(`
+            DELETE FROM maid_duty_material WHERE maid_duty_material_id = ${escape(maid_duty_material_id)}
+        `);
      
-//         res.status(200).send(result)
-//     } catch (error) {
-//         console.log(error);
-//         res.sendStatus(500)
-//     }
+        res.status(200).send(result)
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
    
-// })
+})
 
 module.exports = router

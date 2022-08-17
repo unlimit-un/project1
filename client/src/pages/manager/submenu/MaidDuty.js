@@ -9,7 +9,7 @@ import { InputGroupWithLabel, SelectOptionWithLabel, TextAreawithlabel } from '.
 import { ModalButton, ModalCardConfirm } from '../../../components/Modals';
 import { MuiTable } from '../../../components/Tables';
 import { getLocationByManagerId, getMaidByManagerId } from '../../../controllers/manager/ManageEmpController';
-import { deleteMaidDuty, deleteMaidDutyAssign, getDaysOfWeek, getMaidDutyAssignById, getMaidDutyAssignByManagerId, getMaidDutyById, getMaidDutyByMaidId, getMaidDutyByManagerId, getMaidDutyMaterialById, getMaidDutyMaterialByManagerId, getMaterialById, getMaterialByManagerId, getRoomByLocationId, getRoomByManagerId, insertMaidDuty, insertMaidDutyAssign, insertMaidDutyMaterial, updateMaidDuty, updateMaidDutyAssgin } from '../../../controllers/manager/MaidDutyController';
+import { deleteMaidDuty, deleteMaidDutyAssign, deleteMaidDutyMaterial, getDaysOfWeek, getMaidDutyAssignById, getMaidDutyAssignByManagerId, getMaidDutyById, getMaidDutyByMaidId, getMaidDutyByManagerId, getMaidDutyMaterialById, getMaidDutyMaterialByManagerId, getMaterialById, getMaterialByManagerId, getRoomByLocationId, getRoomByManagerId, insertMaidDuty, insertMaidDutyAssign, insertMaidDutyMaterial, updateMaidDuty, updateMaidDutyAssgin, updateMaidDutyMaterial } from '../../../controllers/manager/MaidDutyController';
 import { ArrayColor } from '../../../utils/ArrayColor';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTable, faPlus, faScrewdriverWrench,  } from '@fortawesome/free-solid-svg-icons';
@@ -554,7 +554,7 @@ export const MaidDutyMaterial = () =>{
         const [maidDutyMaterialById] = await getMaidDutyMaterialById(mdm_id)
 
         const [{material_quantity, material_using}] = await getMaterialById(maidDutyMaterialById['material_id'])
-        setTotalModal(material_quantity - material_using < 0 ? 'วัสดุไม่เพียงพอ':material_quantity - material_using)
+        setTotalModal(material_quantity - material_using + maidDutyMaterialById['material_count']< 0 ? 'วัสดุไม่เพียงพอ':material_quantity - material_using + maidDutyMaterialById['material_count'])
         
         await setInputFormModal({
             maid_duty_assign_id: maidDutyMaterialById['maid_duty_assign_id'],
@@ -591,6 +591,9 @@ export const MaidDutyMaterial = () =>{
                             EditFnc={async()=>{
                                 showEditModal(item['maid_duty_material_id'])
                             }}
+                            DeleteFnc={async()=>{
+                                if(await deleteMaidDutyMaterial({maid_duty_material_id: item['maid_duty_material_id']})) await resetState();
+                            }}
                             setModalShow={setModalShow}
                         />
                 }
@@ -610,12 +613,12 @@ export const MaidDutyMaterial = () =>{
             if (inputFormModal.material_id) {
                 const [{material_quantity, material_using}] = await getMaterialById(inputFormModal.material_id)
                 console.log(material_quantity, material_using);
-                setTotalModal(material_quantity- +refInputCountModal.current.value - material_using < 0 ? 'วัสดุไม่เพียงพอ':material_quantity- +refInputCountModal.current.value - material_using)
+                setTotalModal(material_quantity- +refInputCountModal.current.value - material_using< 0 ? 'วัสดุไม่เพียงพอ':material_quantity- +refInputCountModal.current.value - material_using)
             }
     
             if (material_id) {
                 const [{material_quantity, material_using}] = await getMaterialById(material_id)
-                setTotalModal(material_quantity - material_using < 0 ? 'วัสดุไม่เพียงพอ':material_quantity- +refInputCountModal.current.value - material_using)
+                setTotalModal(material_quantity- +refInputCountModal.current.value - material_using< 0 ? 'วัสดุไม่เพียงพอ':material_quantity- +refInputCountModal.current.value - material_using)
             }
     
             if (material_id === '') {
@@ -710,9 +713,7 @@ export const MaidDutyMaterial = () =>{
                     ...inputFormModal,
                     material_count: refInputCountModal.current.value
                 }
-
-                //! TODO Trigger Database Update
-                console.log(formData);
+                if(await updateMaidDutyMaterial(formData)) await resetState();
             }} cancleCallback={resetState} hideCallback={resetState} modalBody={modal.mBody} modalHead={modal.mHead} modalShow={modalShow} setModalShow={setModalShow} />
         </>
     )

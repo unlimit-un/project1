@@ -1,7 +1,7 @@
 import { axiosGet, axiosPost, ROOT_SERVER } from "../../functions/AxiosCustom";
 import Swal from 'sweetalert2'
 import { api_getMaterialById, api_getMaterialByManagerId } from "../../api/material";
-import { api_insertMaidDutyMaterial } from "../../api/maid_duty_material";
+import { api_deleteMaidDutyMaterial, api_insertMaidDutyMaterial, api_updateMaidDutyMaterial } from "../../api/maid_duty_material";
 
 export const getMaidByManagerId = async () => {
     try {
@@ -329,6 +329,8 @@ export const getMaidDutyMaterialByManagerId = async () => {
 export const getMaterialByManagerId = async () => await api_getMaterialByManagerId();
 export const getMaterialById = async (material_id) => await api_getMaterialById(material_id);
 export const insertMaidDutyMaterial = async (formData) => await api_insertMaidDutyMaterial(formData);
+export const updateMaidDutyMaterial = async (formData) => await api_updateMaidDutyMaterial(formData);
+export const deleteMaidDutyMaterial = async (formData) => await api_deleteMaidDutyMaterial(formData);
 
 export const getMaidDutyMaterialById = async (maid_duty_material_id) => {
     try {
