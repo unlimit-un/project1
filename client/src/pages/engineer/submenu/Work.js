@@ -1,20 +1,41 @@
 import { faCheckCircle, faEye, faXmark } from '@fortawesome/free-solid-svg-icons'
-import React, { Suspense, useState } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 // import { CardFillColorNonFooter } from '../../components/Cards'
 import { Skeleton } from '../../../components/Loading'
 import { ModalButton, ModalCard } from '../../../components/Modals'
 import { MuiTable } from '../../../components/Tables'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { lazily } from 'react-lazily'
+import { getWorkData } from '../../../controllers/engineer/WorkControllers'
 
 const {CardFillColorNonFooter} = lazily(()=>import('../../../components/Cards'));
 
 export const Workdept = () => {
 
   const [modalShow, setModalShow] = useState(false)
+  const [workdeptData,setWorkDeptData] = useState ([])
+  const loadWorkdeptData = async () =>{
+    const workData = await getWorkData ()
+    setWorkDeptData (workData)
+    console.log(workData);
+  }
+
+  useEffect (()=>{
+    loadWorkdeptData ()
+  },[])
   const datatableworkdapt = {
       data:[
-        {id:"A102",description:"ซ่อมไฟ",location:"ตึก A",room:"A305",date_time:"26/7/2565",view:<button className="btn btn-success "><FontAwesomeIcon icon={faCheckCircle}/></button>},
+        ...workdeptData.map(item =>{
+          return{
+            id:item['notify_repair_id'],
+            description:item['description'],
+            location:item['location_name'],
+            room:item['room_name'],
+            date_time:item['notify_repair_date'],
+            view:<ModalButton classBtn="btn btn-success " icon={faCheckCircle} callback={()=>{}}/>
+          }
+        })
+        
       ],
       columns:[
         {title:"รหัส",field:"id"},
