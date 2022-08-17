@@ -45,10 +45,10 @@ export const getWorkDataStatusProcess = async () =>{
     }
 }
 
-export const updateNotifyRepairToSuceess = async ( formData ) =>{
+export const updateNotifyRepairToSuccess = async ( formData ) =>{
     try {
         const {data:{user_id: engineer_id}} = await axiosGet(`${ROOT_SERVER}/api/checkToken`);
-        const {data} = await axiosPost(`${ROOT_SERVER}/api/engineer/updateNotifyRepairToSuceess`);
+        const {data} = await axiosPost(`${ROOT_SERVER}/api/engineer/updateNotifyRepairToSuccess`, {...formData, engineer_id});
         if (data) {
             return Swal.fire({
                 icon: 'success',

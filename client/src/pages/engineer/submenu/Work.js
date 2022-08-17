@@ -6,7 +6,7 @@ import { ModalButton, ModalCard, ModalCardConfirm } from '../../../components/Mo
 import { MuiTable } from '../../../components/Tables'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { lazily } from 'react-lazily'
-import { getWorkData, getWorkDataStatusProcess, updateNotifyRepairToProcessing } from '../../../controllers/engineer/WorkControllers'
+import { getWorkData, getWorkDataStatusProcess, updateNotifyRepairToProcessing, updateNotifyRepairToSuccess } from '../../../controllers/engineer/WorkControllers'
 import { InputGroupWithLabel } from '../../../components/FormElements'
 
 const {CardFillColorNonFooter} = lazily(()=>import('../../../components/Cards'));
@@ -34,6 +34,7 @@ export const Workdept = () => {
   const datatableworkdapt = {
       data:[
         ...workdeptData.map(item =>{
+          // console.log(item);
           return{
             id:item['notify_repair_code'],
             description:item['description'],
@@ -103,21 +104,24 @@ export const Workdept = () => {
 export const Work = () => {
 
   const [workDataStatusProcess, setWorkDataStatusProcess] = useState([])
-
+  const [inputfinished, setInputFinished] = useState ('')
+  const [notifyRepairId, setNotifyRepairId] = useState ('')
+  const [modalShow, setModalShow] = useState (false)
+ 
   const loadWorkDataStatusProcess = async () =>{
     const data = await getWorkDataStatusProcess();
-    console.log(data);
+    // console.log(data);
     setWorkDataStatusProcess(data)
   }
 
   useEffect(()=>{
     loadWorkDataStatusProcess()
   },[])
-
+  
   const datatablework = {
       data:[
         ...workDataStatusProcess.map(item=>{
-          console.log(item);
+          // console.log(item);
             return {
               id: item['notify_repair_code'],
               description:item['description'],
@@ -128,9 +132,13 @@ export const Work = () => {
               define_date: item['define_date_by_engineer'],
               accept_deny:
               <div className="flex gap-2">
-                  <button className="btn btn-success "><FontAwesomeIcon icon={faCheckCircle}/></button>
-                  <button className="btn btn-danger "><FontAwesomeIcon icon={faXmark}/></button>
+                  <button className="btn btn-success " 
+                    onClick={()=>{updateNotifyRepairToSuccess({notify_repair_id:item['notify_repair_id']})}}>
+                    <FontAwesomeIcon icon={faCheckCircle}/>
+                  </button>
+                  <button className="btn btn-danger " onClick={()=>{}}><FontAwesomeIcon icon={faXmark}/></button>
               </div>
+              // view:<ModalButton classBtn="btn btn-success " icon={faCheckCircle} callback={()=>{setNotifyRepairId(item['notify_repair_id'])}} modalShow={modalShow} setModalShow={setModalShow}/>
             }
           })
         
@@ -144,13 +152,30 @@ export const Work = () => {
         {title:"ซ่อมภายในวันที่",field:"define_date"},
         {title:"สถานะ",field:"status"},
         {title:"",field:"accept_deny"}
+        // {title:"",field:"view"}
       ]
   }
+  // const modals = {
+  //   mHead:<h1 className="m-0 text-2xl"><FontAwesomeIcon icon={faWrench}/>รับงานแจ้งซ่อม</h1>,
+  //   mBody:(
+  //     <>
+  //       <div className="row">
+  //         <div className="col-12">
+  //           <InputGroupWithLabel label="กำหนดวันที่จะซ่อมเสร็จ" type="date" value={inputfinished} callback={({target:{value}})=>{setInputFinished(value)}}/>
+  //         </div>
+  //       </div>
+  //     </>
+  //   )
+  // }
 
   return(
       <>
           <CardFillColorNonFooter contentBody={<MuiTable data={datatablework.data} columns={datatablework.columns} title="ตารางงาน"/>}/>
-          
+          <ModalCardConfirm
+            confrimCallback={async () =>{
+              await loadWorkDataStatusProcess ()
+            }}
+           />
       </>
   )
 }

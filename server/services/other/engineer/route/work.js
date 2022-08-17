@@ -55,4 +55,25 @@ router.get('/getWorkDataStatusProcess', async (req, res)=>{
         res.sendStatus(500)
     }
 })
+router.post('/updateNotifyRepairToSuccess', async (req, res)=>{
+    try {
+        const { notify_repair_id,engineer_id } = req.body
+        if (!(notify_repair_id && engineer_id)) {
+            res.status(400).send('data is required!')
+            return false;
+        }
+        const date = new Date ();
+        const finish_date = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate}`
+        const result = await db.query(`
+        UPDATE notify_repair SET status = 3 ,finished_date = ${escape(finish_date)},
+        engineer_id = ${escape(engineer_id)}
+            WHERE notify_repair_id =${escape(notify_repair_id)}
+        `);
+
+        res.status(200).send(result)
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
+})
 module.exports = router
