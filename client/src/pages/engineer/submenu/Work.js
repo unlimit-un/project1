@@ -170,7 +170,10 @@ export const Work = () => {
 
   return(
       <>
+        <Suspense fallback={<Skeleton/>}>
           <CardFillColorNonFooter contentBody={<MuiTable data={datatablework.data} columns={datatablework.columns} title="ตารางงาน"/>}/>
+        </Suspense>
+          
           <ModalCardConfirm
             confrimCallback={async () =>{
               await loadWorkDataStatusProcess ()
