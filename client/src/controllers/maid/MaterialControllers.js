@@ -23,7 +23,16 @@ export const GetMaterialData = async ()=>{
     } catch (error) {
         
     }
-
+ }
+ export const getmaterialDataById = async (order_id)=>{
+    try {
+        
+        const {data} = await axiosGet(`${ROOT_SERVER}/api/maid/getmaterialDataById?order_id= ${order_id}`);
+    
+    return data;
+    } catch (error) {
+        
+    }
  }
  export const InsertOrderMaterial = async (formData) => {
     try {

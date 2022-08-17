@@ -39,7 +39,7 @@ useEffect(()=>{
           room:item['room_name'],
           date_start:item['event_date'],
           date_end:item['finished_date'],
-          material:item['room_name'],
+          material:item['material_name'],
           count:item['material_count'],
         }
       })
@@ -69,7 +69,7 @@ useEffect(()=>{
           room:item['room_name'],
           date_start:item['event_date'],
           date_end:item['finished_date'],
-          material:item['room_name'],
+          material:item['material_name'],
           count:item['material_count'],
         }
       })

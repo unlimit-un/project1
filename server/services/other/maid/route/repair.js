@@ -7,7 +7,7 @@ router.get('/getrepairData', async (req, res)=>{
     try {
         const result = await db.query(`
         SELECT nr.notify_repair_id,
-        nr.description,l.location_id,r.room_id,nr.notify_repair_date,status,
+        nr.description,l.location_name,r.room_name,nr.notify_repair_date,status,
         IF(status = 0,"waiting", 
             IF(status = 1, "accept",
                 IF(status = 2,"process", 
@@ -31,6 +31,37 @@ router.get('/getrepairData', async (req, res)=>{
         res.sendStatus(500)
     }
 })
+
+router.get('/getrepairDataById', async (req, res)=>{
+    
+    try {
+        const result = await db.query(`
+        SELECT nr.*
+        ,l.location_name,r.room_name,status,
+        IF(status = 0,"waiting", 
+            IF(status = 1, "accept",
+                IF(status = 2,"process", 
+                    IF(status= 3,"success", 
+                        IF(status = -1,"deny",
+                            IF(status = -2, "unable", "needless")
+                     )
+                )
+            )
+    )
+) AS note
+    FROM 
+    notify_repair AS nr
+    LEFT JOIN location AS l ON nr.location_id = l.location_id
+    LEFT JOIN room AS r ON l.location_id = r.location_id
+    WHERE nr.notify_repair_id =  ${escape(req.query[`notify_repair_id`])} AND nr.status <> -3
+        `);
+        res.status(200).send(result)
+    } catch (error) {
+        console.log(error); 
+        res.sendStatus(500)
+    }
+})
+
 router.get('/getrepairDatalocation', async (req, res)=>{
     
     try {
@@ -53,6 +84,7 @@ router.get('/getrepairDatalocation', async (req, res)=>{
     }
    
 })
+
 router.get('/getroomBylocationId', async (req, res)=>{
     
     try {

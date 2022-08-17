@@ -77,3 +77,11 @@ export const UpdateRepair = async (formdata)=>{
     }
 
  }
+ export const getrepairDataById = async (notify_repair_id)=>{
+    try {
+        const {data} = await axiosGet(`${ROOT_SERVER}/api/maid/getrepairDataById?notify_repair_id= ${notify_repair_id}`);
+    return data;
+    } catch (error) {
+        console.log(error); 
+    }
+}

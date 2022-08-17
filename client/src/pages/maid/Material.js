@@ -8,7 +8,7 @@ import { InputGroupWithLabel, Radio, RadioInline, SelectOptionWithLabel } from '
 import { ModalButton, ModalCard, ModalCardConfirm } from '../../components/Modals'
 import { lazily } from "react-lazily";
 import { Skeleton } from '../../components/Loading'
-import { deleteOrderMaterial, GetMaterialData, getmaterialofUser, InsertOrderMaterial } from '../../controllers/maid/MaterialControllers'
+import { deleteOrderMaterial, GetMaterialData, getmaterialDataById, getmaterialofUser, InsertOrderMaterial } from '../../controllers/maid/MaterialControllers'
 
 const { MuiTable } = lazily(()=>import('../../components/Tables'))
 
@@ -55,13 +55,13 @@ const Material = () => {
                 list_item:item['material_name'], 
                 count:item['quantity'],
                 unit_price:item['unit_price'],
-                totle_price:item['total_price'],
+                total_price:item['total_price'],
                 status:item['note'], 
                 ED:<Delete DeleteFnc={async()=>{
                  const bool =   await deleteOrderMaterial({order_material_id: item['order_id']});
                   if(bool) await loadMaterialTable();
                 }}/>, 
-                view:<ModalButton callback={()=>handleView(setModal)} 
+                view:<ModalButton callback={()=>handleView(setModal,item['order_id'])} 
                 classBtn="btn btn-outline-primary" 
                 setModalShow={setModalShow} icon={faEye}/> ,
             }
@@ -206,7 +206,7 @@ const Material = () => {
         )}
     )
 }
-console.log({typeInsert,materialInsert,countInsert,unitPriceInsert});
+// console.log({typeInsert,materialInsert,countInsert,unitPriceInsert});
 const formData = {typeInsert,materialInsert,countInsert,unitPriceInsert}
   return (
     <>
@@ -228,7 +228,10 @@ const formData = {typeInsert,materialInsert,countInsert,unitPriceInsert}
 
 
 
-const handleView = (setModal) =>{
+const handleView = async (setModal,order_id) =>{
+
+    const [orderData] =  await getmaterialDataById (order_id)
+    const [data_reg, time_reg] = orderData['time_reg'].split(/[\sT\s.]/);
   setModal({
       mHead: (
           <>
@@ -237,28 +240,19 @@ const handleView = (setModal) =>{
       ),
       mBody: (
           <>
-              <div className="row">
-                  <div className="col-lg-3 col-md-4 col-12">
-                      <ul>
-                          <li>ปัญหา</li>
-                          <li>ผู้แจ้ง</li>
-                          <li>วันที่แจ้ง</li>
-                          <li>สถานที่</li>
-                          <li>ห้อง</li>
-                          <li>สถานะ</li>
-                      </ul>
-                  </div>
-                  <div className="col-lg-9 col-md-8 col-12">
-                      <ul className="gap-2">
-                          <li>อ่างล้างหน้าพัง</li>
-                          <li>unlimit unarn</li>
-                          <li>2022-02-21</li>
-                          <li>ตึก A</li>
-                          <li>A202</li>
-                          <li>"กำลังดำเนินการ"</li>
-                      </ul>
-                  </div>
-              </div>
+            <div className= "container-fluid">
+                <ul> 
+                    <li>รหัส:{orderData['material_code']}</li>
+                    <li>รายการ:{orderData['material_name']}</li>
+                    <li>จำนวน:{orderData['quantity']}</li>
+                    <li>ราคา:{orderData['unit_price']}</li>
+                    <li>ราคารวม:{orderData['total_price']}</li>
+                    <li>วันที่นำเข้า:{orderData['order_date']}</li>
+                    <li>สถานะ:{orderData['note']}</li>
+                    <li>วันที่เพิ่มข้อมูล:{`${data_reg} ${time_reg}`}</li>
+                </ul>
+
+            </div>
           </>
       )
   })

@@ -1,18 +1,23 @@
-import { faClipboardList, faEye, faPencil, faPlus, faScrewdriverWrench, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { faClipboardList, faCopy, faEye, faPencil, faPlus, faScrewdriverWrench, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState,Suspense, useEffect } from 'react'
 import { Bandage } from '../../components/Bandage'
 import { InputGroupWithLabel, RadioInline, SelectOptionWithLabel, TextAreawithlabel } from '../../components/FormElements'
-import { ModalButton, ModalCardConfirm } from '../../components/Modals'
+import { ModalButton, ModalCard, ModalCardConfirm } from '../../components/Modals'
 import { MuiTable, TablesStriped } from '../../components/Tables'
 import { Skeleton } from '../../components/Loading'
 import { lazily } from 'react-lazily'
 import { Delete, EditDelete } from '../../components/EditDelete'
-import { GetRepairData, GetRepairLocation, getroomBylocationId, insertRepair, UpdateRepair } from '../../controllers/maid/RepairControllers'
+import { GetRepairData, getrepairDataById, GetRepairLocation, getroomBylocationId, insertRepair, UpdateRepair } from '../../controllers/maid/RepairControllers'
 
 const { CardFillColorNonFooterShadow } =lazily(()=>import('../../components/Cards'))
 const Repair = () => {
   const [modalShow, setModalShow] = useState(false);
+  const [modalShowDetail,setModalShowDetail] = useState (false);
+  const [modal , setModal] = useState ({
+    mHead: <h1 className="m-0 text-2xl"><FontAwesomeIcon icon={faClipboardList}/> ยื่นเรื่องการลา</h1>,
+    mBody:<></>
+  });
   const [optionsLocation, setOptionsLocation] = useState ([{}]);
   const [optionsRoom, setOptionRoom] = useState ([{value:'',text:'กรุณาเลือกข้อมูล'}]);
   const [inputLocationId, setInputLocationId] = useState('');
@@ -61,8 +66,8 @@ const Repair = () => {
       ...dataTableData.map(item=>{
           return{
             problem:item['description'],
-            location:item['location_id'],
-            room:item['room_id'],
+            location:item['location_name'],
+            room:item['room_name'],
             date_time:item['notify_repair_date'],
             status:item['note'],
             ED:<Delete DeleteFnc = {async () =>{
@@ -72,7 +77,7 @@ const Repair = () => {
               }
             }}
             />,
-            view:<ModalButton icon={faEye} setModalShow={setModalShow} callback={()=>{}}/>
+            view:<ModalButton icon={faEye} setModalShow={setModalShowDetail} callback={()=>handleView(setModal,item['notify_repair_id'])} classBtn="btn btn-outline-primary"/>
           }
       })
     ],
@@ -191,8 +196,29 @@ const Repair = () => {
               modalBody={Modal.mBody} 
               btnOkText="บันทึก" 
          />
+         <ModalCard modalBody={modal.mBody} modalHead={modal.mHead} modalShow={modalShowDetail} setModalShow={setModalShowDetail}/>
     </>
-  )
+  ) 
+}
+const handleView = async (setModal,notify_repair_id) => {
+
+  const [notifyData] = await getrepairDataById (notify_repair_id)
+  const [data_reg, time_reg] = notifyData['time_reg'].split(/[\sT\s.]/);
+  setModal({
+    mHead:<h1 className="m-0 text-2xl"><FontAwesomeIcon icon={faCopy}/> รายละเอียดการแจ้งซ้อม</h1>,
+    mBody:<>
+      <div className= "container-fluid">
+        <ul>
+          <li>ปัญหา:{notifyData['description']}</li>
+          <li>สถานที่:{notifyData['location_name']}</li>
+          <li>ห้อง:{notifyData['room_name']}</li>
+          <li>วันที่แจ้ง:{notifyData['notify_repair_date']}</li>
+          <li>สถานะ:{notifyData['note']}</li>
+          <li>วันที่เพิ่มข้อมูล:{`${data_reg} ${time_reg}`}</li>
+        </ul>
+      </div>
+    </>
+  })
 }
 
 export default Repair

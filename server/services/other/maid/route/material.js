@@ -35,6 +35,36 @@ WHERE
     }
    
 })
+
+router.get('/getmaterialDataById', async (req, res)=>{
+    
+    try {
+        const result = await db.query(`
+                SELECT
+            om.*,
+            m.material_code,
+            m.material_name,
+            om.quantity * om.unit_price AS total_price,
+            STATUS,
+        IF
+            ( STATUS = 0, "waiting", IF ( STATUS = 1, "accept", "deny" ) ) AS note 
+        FROM
+            order_material AS om
+            LEFT JOIN material AS m ON om.material_id = m.material_id 
+        WHERE
+            om.order_id = ${escape(req.query[`order_id`])}
+        `);
+      
+       
+        res.status(200).send(result)
+      
+
+    } catch (error) {
+        console.log(error); 
+        res.sendStatus(500)
+    }
+   
+})
 router.get('/getmaterialofUser', async (req, res)=>{
     
     try {
