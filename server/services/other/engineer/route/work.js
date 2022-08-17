@@ -26,12 +26,30 @@ router.post('/updateNotifyRepairToProcessing', async (req, res)=>{
             return false;
         }
         const result = await db.query(`
-        UPDATE notify_repair SET status = 3 , define_date_by_engineer = ${escape(define_date_by_engineer)},
+        UPDATE notify_repair SET status = 2 , define_date_by_engineer = ${escape(define_date_by_engineer)},
         engineer_id = ${escape(engineer_id)}
             WHERE notify_repair_id =${escape(notify_repair_id)}
         `);
 
         res.status(200).send(result)
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
+})
+router.get('/getWorkDataStatusProcess', async (req, res)=>{
+    try {
+        
+        const result = await db.query(`
+        SELECT nr.* , l.location_name ,r.room_name,
+        nr.status
+        FROM notify_repair AS nr
+        LEFT JOIN location AS l ON l.location_id = nr.location_id
+        LEFT JOIN room AS r ON r.room_id = nr.room_id
+        WHERE nr.engineer_id = ${escape(req.query['engineer_id'])}AND status = 2
+        
+        `);
+            res.status(200).send(result)
     } catch (error) {
         console.log(error);
         res.sendStatus(500)
