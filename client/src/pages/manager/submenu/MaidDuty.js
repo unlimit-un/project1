@@ -9,10 +9,10 @@ import { InputGroupWithLabel, SelectOptionWithLabel, TextAreawithlabel } from '.
 import { ModalButton, ModalCardConfirm } from '../../../components/Modals';
 import { MuiTable } from '../../../components/Tables';
 import { getLocationByManagerId, getMaidByManagerId } from '../../../controllers/manager/ManageEmpController';
-import { deleteMaidDuty, deleteMaidDutyAssign, deleteMaidDutyMaterial, getDaysOfWeek, getMaidDutyAssignById, getMaidDutyAssignByManagerId, getMaidDutyById, getMaidDutyByMaidId, getMaidDutyByManagerId, getMaidDutyMaterialById, getMaidDutyMaterialByManagerId, getMaterialById, getMaterialByManagerId, getRoomByLocationId, getRoomByManagerId, insertMaidDuty, insertMaidDutyAssign, insertMaidDutyMaterial, updateMaidDuty, updateMaidDutyAssgin, updateMaidDutyMaterial } from '../../../controllers/manager/MaidDutyController';
+import { deleteMaidDuty, deleteMaidDutyAssign, deleteMaidDutyMaterial, getDaysOfWeek, getMaidDutyAssignById, getMaidDutyAssignByManagerId, getMaidDutyById, getMaidDutyByMaidId, getMaidDutyByManagerId, getMaidDutyCheckSuccessByManagerId, getMaidDutyCheckWaitingByManagerId, getMaidDutyMaterialById, getMaidDutyMaterialByManagerId, getMaterialById, getMaterialByManagerId, getRoomByLocationId, getRoomByManagerId, insertMaidDuty, insertMaidDutyAssign, insertMaidDutyMaterial, updateMaidDuty, updateMaidDutyAssgin, updateMaidDutyCheckToDeny, updateMaidDutyCheckToSuccess, updateMaidDutyMaterial } from '../../../controllers/manager/MaidDutyController';
 import { ArrayColor } from '../../../utils/ArrayColor';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencil, faTable, faPlus, faScrewdriverWrench,  } from '@fortawesome/free-solid-svg-icons';
+import { faPencil, faTable, faPlus, faScrewdriverWrench, faClipboardCheck, faXmark, faCheckCircle,  } from '@fortawesome/free-solid-svg-icons';
 import { useForkRef } from '@material-ui/core';
 import { Skeleton, Spiner } from '../../../components/Loading';
 
@@ -715,6 +715,140 @@ export const MaidDutyMaterial = () =>{
                 }
                 if(await updateMaidDutyMaterial(formData)) await resetState();
             }} cancleCallback={resetState} hideCallback={resetState} modalBody={modal.mBody} modalHead={modal.mHead} modalShow={modalShow} setModalShow={setModalShow} />
+        </>
+    )
+}
+
+export const MaidDutyCheck = () =>{
+
+    const [checkId, setCheckId] = useState('')
+
+    const [modalShow, setModalShow] = useState(false);
+
+    const [dataTableWaiting, setDataTableWaiting] = useState([]);
+    const [dataTableChecked, setDataTableSuccess] = useState([]);
+
+    const refTextArea = useRef(null)
+
+    const loadTable = async()=>{
+        const maidDutyCheckWaitingByManagerId = await getMaidDutyCheckWaitingByManagerId()
+        const maidDutyCheckSuccessByManagerId = await getMaidDutyCheckSuccessByManagerId()
+        setDataTableWaiting(maidDutyCheckWaitingByManagerId)
+        setDataTableSuccess(maidDutyCheckSuccessByManagerId)
+    }
+
+    const reState = () =>{
+        refTextArea.current.value = ''
+    }
+
+    useEffect(() => {
+
+        loadTable();
+
+    }, [])
+    
+
+    const dataTableDutyWaiting = {
+        data: [
+            ...dataTableWaiting.map(item=>{
+                console.log(item['maid_duty_check_id']);
+                return {
+                    maid_duty_assign_code: item['maid_duty_assign_code'],
+                    location_name: item['location_name'],
+                    room_name: item['room_name'],
+                    date: item['date_week_full_name_th'],
+                    time_duty: item['time_duty'],
+                    finished_date: `${item['finished_date'].split(/['\sT\s.']/)[0]} ${item['time_reg'].split(/[\sT\s.]/)[1]}`,
+                    work_description: item['work_description'],
+                    status: 'รอดำเนินการ',
+                    accept_deny:(
+                        <div className="flex gap-2">
+                            <button className="btn btn-success " 
+                                onClick={async ()=>{if(await updateMaidDutyCheckToSuccess({maid_duty_check_id: item['maid_duty_check_id']})) await loadTable()}}>
+                                <FontAwesomeIcon icon={faCheckCircle}/>
+                            </button>
+                            <ModalButton classBtn="btn btn-danger" icon={faXmark} setModalShow={setModalShow} modalShow={modalShow} callback={()=>{setCheckId(item['maid_duty_check_id'])}}/>
+              
+                        </div>
+                    )
+                }
+            })
+        ],
+        columns:[
+            {title:"",field:"accept_deny"},
+            {title:"รหัสงานแม่บ้าน",field:"maid_duty_assign_code"},
+            {title:"สถานที่",field:"location_name"},
+            {title:"ห้อง",field:"room_name"},
+            {title:"วันที่ทำงาน",field:"date"},
+            {title:"เวลาเวร",field:"time_duty"},
+            {title:"ทำเสร็จ",field:"finished_date"},
+            {title:"รายละเอียดงาน",field:"work_description"},
+            {title:"สถานะ",field:"status"},
+        ]
+    }
+
+    const dataTableDutyChecked = {
+        data:[],
+        columns: [
+            {title:"",field:"accept_deny"},
+            {title:"รหัสงานแม่บ้าน",field:"maid_duty_assign_code"},
+            {title:"สถานที่",field:"location_name"},
+            {title:"ห้อง",field:"room_name"},
+            {title:"วันที่ทำงาน",field:"date"},
+            {title:"เวลาเวร",field:"time_duty"},
+            {title:"วันที่เพิ่มข้อมูล",field:"finished_date"},
+            {title:"รายละเอียดงาน",field:"work_description"},
+            {title:"สถานะ",field:"status", lookup:{
+                "1": "ผ่าน",
+                "-1": "ไม่ผ่าน",
+            }},
+            {title:"หมายเหตุ",field:"deny_description"},
+        ]
+    }
+
+    const modals = {
+        mHead:<h1 className="m-0 text-2xl"><FontAwesomeIcon icon={faClipboardCheck}/>ไม่ผ่าน</h1>,
+        mBody:(
+          <>
+            <div className="row">
+              <div className="col-12">
+                <TextAreawithlabel label="หมายเหตุ" ref={refTextArea}/>
+              </div>
+            </div>
+          </>
+        )
+      }
+
+    return (
+        <>
+            <div className="container-fluid">
+                <h1 className="text-xl"><FontAwesomeIcon icon={faClipboardCheck}/> จัดการตรวจสอบงานแม่บ้าน</h1>
+                <hr />
+                <div className="row">
+                    <div className="col-12">
+                        <CardFillColorHeader
+                            classCard="mt-3"
+                            contentHeader={<h1 className="text-lg m-0">รายการงานที่รอตรวจสอบ</h1>} 
+                            contentBody={<MuiTable data={dataTableDutyWaiting.data} columns={dataTableDutyWaiting.columns} title=""/>}
+                        />
+                    </div>
+                    <div className="col-12">
+                        <CardFillColorHeader
+                            classCard="mt-3"
+                            contentHeader={<h1 className="text-lg m-0">รายการงานที่ผ่านการตรวจสอบแล้ว</h1>} 
+                            contentBody={<MuiTable data={dataTableDutyChecked.data} columns={dataTableDutyChecked.columns} title=""/>}
+                        />
+                    </div>
+                </div>
+            </div>
+            <ModalCardConfirm confrimCallback={async()=>{
+                const formData = {
+                    deny_description: refTextArea.current.value,
+                    maid_duty_check_id: checkId
+                }
+                    if(await updateMaidDutyCheckToDeny(formData)) await loadTable();
+                }}
+                cancleCallback={reState} hideCallback={reState} modalBody={modals.mBody} modalHead={modals.mHead} modalShow={modalShow} setModalShow={setModalShow}/>
         </>
     )
 }

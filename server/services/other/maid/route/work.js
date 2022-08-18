@@ -20,11 +20,11 @@ router.get('/getworktData', async (req, res)=>{
             r.room_name
         FROM
             maid_duty AS md
-            LEFT JOIN maid_duty_assign AS mda ON mda.maid_duty_id = md.maid_duty_id
-            LEFT JOIN manager AS m ON m.manager_id = mda.manager_id_assign
-            LEFT JOIN date_week AS dw ON dw.date_week_id = md.date_week_id
-            LEFT JOIN room AS r ON r.room_id = mda.room_id
-            LEFT JOIN location AS l ON l.location_id = mda.location_id 
+            INNER JOIN maid_duty_assign AS mda ON mda.maid_duty_id = md.maid_duty_id
+            INNER JOIN manager AS m ON m.manager_id = mda.manager_id_assign
+            INNER JOIN date_week AS dw ON dw.date_week_id = md.date_week_id
+            INNER JOIN room AS r ON r.room_id = mda.room_id
+            INNER JOIN location AS l ON l.location_id = mda.location_id 
         WHERE
             maid_id = ${escape(req.query[`maid_id`])} 
             AND WEEKDAY(CURRENT_DATE)+1 = md.date_week_id
@@ -57,7 +57,7 @@ router.get('/getworktDataComplete', async (req, res)=>{
         // console.log('getworktData');
         const result = await db.query(`
         SELECT 
-            mda.maid_duty_assign_code, mda.work_description, l.location_name, r.room_name, dw.date_week_full_name_th, md.time_start, md.time_end, mdc.note,
+            mda.maid_duty_assign_code, mda.work_description, l.location_name, r.room_name, dw.date_week_full_name_th, md.time_start, md.time_end, mdc.note, mdc.finished_date,
             IF(mdc.status = 0,"waiting",
                 IF(mdc.status = 1,"success", "fail")
             ) AS status,

@@ -2,6 +2,7 @@ import { axiosGet, axiosPost, ROOT_SERVER } from "../../functions/AxiosCustom";
 import Swal from 'sweetalert2'
 import { api_getMaterialById, api_getMaterialByManagerId } from "../../api/material";
 import { api_deleteMaidDutyMaterial, api_insertMaidDutyMaterial, api_updateMaidDutyMaterial } from "../../api/maid_duty_material";
+import { api_getMaidDutyCheckSuccessByManagerId, api_getMaidDutyCheckWaitingByManagerId, api_updateMaidDutyCheckToDeny, api_updateMaidDutyCheckToSuccess } from "../../api/maid_duty_check";
 
 export const getMaidByManagerId = async () => {
     try {
@@ -347,3 +348,10 @@ export const getMaidDutyMaterialById = async (maid_duty_material_id) => {
 }
 
 //end maid duty material
+
+//start maid duty check
+export const getMaidDutyCheckWaitingByManagerId = async()=> await api_getMaidDutyCheckWaitingByManagerId();
+export const getMaidDutyCheckSuccessByManagerId = async()=> await api_getMaidDutyCheckSuccessByManagerId();
+export const updateMaidDutyCheckToSuccess = async(formData)=> await api_updateMaidDutyCheckToSuccess(formData);
+export const updateMaidDutyCheckToDeny = async(formData)=> await api_updateMaidDutyCheckToDeny(formData);
+//end maid duty check

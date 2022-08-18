@@ -29,3 +29,7 @@ export const convertNumberToThai = (numberMonth) =>{
     numberMonth === 9? 'กันยายน': numberMonth === 10?'Oct': numberMonth === 11? 'พฤษจิกายน':
     numberMonth === 12? 'ธันวาคม': ''
 }
+
+export function convertTZ(date) {
+    return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {timeZone: "Asia/Jakarta"}));   
+}

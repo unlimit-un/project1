@@ -15,5 +15,6 @@ router.use(require('./route/maid_duty_assign'))
 router.use(require('./route/room'))
 router.use(require('./route/maid_duty_material'))
 router.use(require('./route/material'))
+router.use(require('./route/maid_duty_check'))
 
 module.exports = router;

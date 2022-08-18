@@ -5,7 +5,7 @@ import React, { Suspense, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { Spiner } from '../../components/Loading';
 import { PageUnderConstrunction } from '../PageError';
-import { Duty, MaidDutyCalendar, Schedual, MaidDutyMaterial } from './submenu/MaidDuty';
+import { Duty, MaidDutyCalendar, Schedual, MaidDutyMaterial, MaidDutyCheck } from './submenu/MaidDuty';
 
 
 // MaidDuty
@@ -21,7 +21,7 @@ const MaidDuty = () =>{
                             page === 'schedule'? <Suspense fallback={<Spiner/>}><Schedual/></Suspense>:
                             page === 'duty'? <Suspense fallback={<Spiner/>}><Duty/></Suspense>:
                             page === 'material'? <Suspense fallback={<Spiner/>}><MaidDutyMaterial/></Suspense>:
-                            page === 'check'? <Suspense fallback={<Spiner/>}><Duty/></Suspense>:
+                            page === 'check'? <Suspense fallback={<Spiner/>}><MaidDutyCheck/></Suspense>:
                             <PageUnderConstrunction/>
                     }
             </div>
