@@ -9,6 +9,7 @@ router.get('/getworktData', async (req, res)=>{
         console.log('getworktData');
         const data = await db.query(`
         SELECT
+            mda.maid_duty_assign_code,
             md.maid_duty_id,
             mda.maid_duty_assign_id,
             mda.work_description,
@@ -49,5 +50,61 @@ router.get('/getworktData', async (req, res)=>{
         res.sendStatus(500)
     }
    
+})
+router.get('/getworktDataComplete', async (req, res)=>{
+    
+    try {
+        // console.log('getworktData');
+        const result = await db.query(`
+        SELECT 
+            mda.maid_duty_assign_code, mda.work_description, l.location_name, r.room_name, dw.date_week_full_name_th, md.time_start, md.time_end, mdc.note,
+            IF(mdc.status = 0,"waiting",
+                IF(mdc.status = 1,"success", "fail")
+            ) AS status,
+            mdc.deny_description
+        FROM maid_duty_check AS mdc
+        LEFT JOIN maid_duty_assign AS mda ON  mdc.maid_duty_assign_id = mda.maid_duty_assign_id
+        LEFT JOIN maid_duty AS md ON mda.maid_duty_id = md.maid_duty_id
+        LEFT JOIN location AS l ON l.location_id = mda.location_id
+        LEFT JOIN room AS r ON r.location_id = l.location_id
+        LEFT JOIN date_week AS dw ON md.date_week_id = dw.date_week_id
+        WHERE md.maid_id = ${escape(req.query[`maid_id`])} 
+        `);
+        res.status(200).send(result)
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
+   
+})
+router.post('/insertMaidDutyCheck', async (req, res)=>{
+    
+    try {
+        const {maid_duty_assign_id} = req.body;
+        if (!(maid_duty_assign_id)) {
+            res.status(400).send('data is required!')
+            return false;
+        }
+        const result = await db.query (`
+        INSERT INTO maid_duty_check (maid_duty_assign_id) 
+        VALUES (${escape(maid_duty_assign_id)})
+        `);
+        const [{note}] = await db.query(
+            `SELECT IF(md.time_end >= CONCAT(HOUR(mdc.finished_date),':',MINUTE(mdc.finished_date)),'ทันเวลา','ล่าช้า') AS note
+            FROM maid_duty AS md
+            LEFT JOIN maid_duty_assign AS mda ON mda.maid_duty_id = md.maid_duty_id
+            LEFT JOIN maid_duty_check AS mdc ON mdc.maid_duty_assign_id = mda.maid_duty_assign_id
+            WHERE mdc.maid_duty_check_id= ${escape(result.insertId)};
+        `)
+        await db.query(`
+            UPDATE maid_duty_check 
+            SET note = ${escape(note)}
+            WHERE maid_duty_check_id = ${escape(result.insertId)}
+        `)
+        res.status(200).send(result)
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
 })
 module.exports = router

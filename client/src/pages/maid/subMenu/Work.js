@@ -13,7 +13,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { ModalCard, ModalCardConfirm } from "../../../components/Modals";
 import { createFullCalendar, getFullCalendar } from '../../../functions/Calendar';
 import FullCalendar from "@fullcalendar/react";
-import { getworktData } from '../../../controllers/maid/WorkControllers';
+import { getworktData, getworktDataComplete, insertMaidDutyCheck } from '../../../controllers/maid/WorkControllers';
 import { Button } from '@material-ui/core';
 
 const { CardFillColorNonFooterShadow, EmptyCard } =lazily(()=>import('../../../components/Cards'))
@@ -25,25 +25,28 @@ export const Todo = () => {
   const loadworkdata = async() =>{
     const WorkDatabel = await getworktData();
     setDataTableData (WorkDatabel)
-    console.log(WorkDatabel);
+    // console.log(WorkDatabel);
   }
 
   useEffect (()=>{
     loadworkdata();
+    
   },[])
 
     const dataTable = {
         data:[
           ...dataTableData.map(item=>{
             return{
-              id:item['maid_duty_id'],
+              id:item['maid_duty_assign_code'],
               description:item['work_description'],
               location:item['location_name'],
               room:item['room_name'],
               day:item['date_week_full_name_th'],
               time_start:item['time_start'],
               time_end:item['time_end'],
-              view:<button className="btn btn-success"><FontAwesomeIcon icon={faPlus}/></button>
+              view:<button className="btn btn-success" 
+                onClick={async ()=>{if(await insertMaidDutyCheck({maid_duty_assign_id: item['maid_duty_assign_id']}))loadworkdata()}}>  
+                <FontAwesomeIcon icon={faPlus}/></button>
             }
           })
         ],
@@ -58,15 +61,37 @@ export const Todo = () => {
           {title:"",field:"view"}
         ]
       }
-      const datatTable1 ={
+      const [dataComplete, setDataComplete] = useState ([])
+      const loadDataComplete = async () =>{
+        const workComplete = await getworktDataComplete ();
+        setDataComplete (workComplete)
+      }
+      useEffect (()=>{
+        loadDataComplete();
+      },[])
+      const datatTable1 = {
         data:[
-          {id:"A",description:"B",location:"C",date_time:"12.00",status:"deny"}
+          ...dataComplete.map(item =>{
+            return{
+              id:item['maid_duty_assign_code'],
+              description:item['work_description'],
+              ilocationd:item['location_name'],
+              room:item['room_name'],
+              day:item['date_week_full_name_th'],
+              itime_startd:item['time_start'],
+              time_end:item['time_end'],
+              status:item['status']
+            }
+          })
         ],
         columns:[
           {title:"รหัส",field:"id"},
           {title:"รายละเอียดงาน",field:"description"},
           {title:"สถานที่",field:"location"},
-          {title:"เวลาเข้า-ออก",field:"date_time"},
+          {title:"ห้อง",field:"room"},
+          {title:"วัน",field:"day"},
+          {title:"เวลาเริ่ม",field:"time_start"},
+          {title:"เวลาเสร็จงาน",field:"time_end"},
           {title:"สถานะ",field:"status",
               lookup:{
                 success:"ดำเนินการเสร็จสิ้น", 
