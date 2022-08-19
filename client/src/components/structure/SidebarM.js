@@ -312,6 +312,7 @@ export const SidebarLeftMaid = () => {
                                 <Collapse in={open.event.status}>
                                     <div id={open.event.id} className="py-2">
                                         <ul className=" px-3 ">
+                                            <SubMenuLink label={"ปฏิทิน"} path="/maid/event/calendar"/>
                                             <SubMenuLink label={"กิจกรรมที่ต้องทำ"} path="/maid/event/todo"/>
                                             <SubMenuLink label={"งานกิจกรรมที่เสร็จแล้ว"} path="/maid/event/done"/>
                                         </ul>
@@ -444,6 +445,7 @@ export const SidebarLeftEn = () => {
                                 <Collapse in={open.event.status}>
                                     <div id={open.event.id} className="py-2">
                                         <ul className=" px-3 ">
+                                            <SubMenuLink label={"ปฏิทิน"} path="/engineer/event/calendar"/>
                                             <SubMenuLink label={"กิจกรรมที่ต้องทำ"} path="/engineer/event/todo"/>
                                             <SubMenuLink label={"งานกิจกรรมที่เสร็จแล้ว"} path="/engineer/event/done"/>
                                         </ul>
