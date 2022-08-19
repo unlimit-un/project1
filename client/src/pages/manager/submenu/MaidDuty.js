@@ -15,6 +15,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTable, faPlus, faScrewdriverWrench, faClipboardCheck, faXmark, faCheckCircle,  } from '@fortawesome/free-solid-svg-icons';
 import { useForkRef } from '@material-ui/core';
 import { Skeleton, Spiner } from '../../../components/Loading';
+import { convertTZ } from '../../../functions/ConvertDate';
 
 export const MaidDutyCalendar = () =>{
     
@@ -751,15 +752,15 @@ export const MaidDutyCheck = () =>{
     const dataTableDutyWaiting = {
         data: [
             ...dataTableWaiting.map(item=>{
-                console.log(item['maid_duty_check_id']);
                 return {
                     maid_duty_assign_code: item['maid_duty_assign_code'],
                     location_name: item['location_name'],
                     room_name: item['room_name'],
                     date: item['date_week_full_name_th'],
                     time_duty: item['time_duty'],
-                    finished_date: `${item['finished_date'].split(/['\sT\s.']/)[0]} ${item['time_reg'].split(/[\sT\s.]/)[1]}`,
+                    finished_date: convertTZ.getFullDate(item['finished_date']),
                     work_description: item['work_description'],
+                    note: item['note'],
                     status: 'รอดำเนินการ',
                     accept_deny:(
                         <div className="flex gap-2">
@@ -783,26 +784,41 @@ export const MaidDutyCheck = () =>{
             {title:"เวลาเวร",field:"time_duty"},
             {title:"ทำเสร็จ",field:"finished_date"},
             {title:"รายละเอียดงาน",field:"work_description"},
+            {title:"หมายเหตุ",field:"note"},
             {title:"สถานะ",field:"status"},
         ]
     }
 
     const dataTableDutyChecked = {
-        data:[],
+        data:[
+            ...dataTableChecked.map(item=>{
+                return {
+                            maid_duty_assign_code: item['maid_duty_assign_code'],
+                            location_name: item['location_name'],
+                            room_name: item['room_name'],
+                            date: item['date_week_full_name_th'],
+                            time_duty: item['time_duty'],
+                            finished_date: convertTZ.getFullDate(item['finished_date']),
+                            work_description: item['work_description'],
+                            note: item['note'],
+                            status: item['status']
+                        }
+            })
+        ],
         columns: [
-            {title:"",field:"accept_deny"},
             {title:"รหัสงานแม่บ้าน",field:"maid_duty_assign_code"},
             {title:"สถานที่",field:"location_name"},
             {title:"ห้อง",field:"room_name"},
             {title:"วันที่ทำงาน",field:"date"},
             {title:"เวลาเวร",field:"time_duty"},
-            {title:"วันที่เพิ่มข้อมูล",field:"finished_date"},
+            {title:"วันที่ทำงานเสร็จ",field:"finished_date"},
             {title:"รายละเอียดงาน",field:"work_description"},
+            {title:"หมายเหตุ",field:"note"},
             {title:"สถานะ",field:"status", lookup:{
                 "1": "ผ่าน",
                 "-1": "ไม่ผ่าน",
             }},
-            {title:"หมายเหตุ",field:"deny_description"},
+            {title:"สาเหตุ",field:"deny_description"},
         ]
     }
 

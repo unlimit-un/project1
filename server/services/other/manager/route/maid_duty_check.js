@@ -16,6 +16,7 @@ router.get('/getMaidDutyCheckWaitingByManagerId', async (req, res)=>{
                 mdc.finished_date,
                 mdc.status,
                 mdc.maid_duty_check_id,
+                mdc.note,
                 mda.*
             FROM maid_duty_assign AS mda
             LEFT JOIN maid_duty AS md ON md.maid_duty_id = mda.maid_duty_id
@@ -50,6 +51,7 @@ router.get('/getMaidDutyCheckSuccessByManagerId', async (req, res)=>{
                 mdc.status,
                 mdc.deny_description,
                 mdc.maid_duty_check_id,
+                mdc.note,
                 mda.*
             FROM maid_duty_assign AS mda
             LEFT JOIN maid_duty AS md ON md.maid_duty_id = mda.maid_duty_id

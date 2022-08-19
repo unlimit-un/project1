@@ -30,6 +30,11 @@ export const convertNumberToThai = (numberMonth) =>{
     numberMonth === 12? 'ธันวาคม': ''
 }
 
-export function convertTZ(date) {
-    return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {timeZone: "Asia/Jakarta"}));   
+export class convertTZ {
+
+    static getFullDate(date){
+
+        const local_date = new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {timeZone: "Asia/Jakarta"}));   
+        return `${local_date.getFullYear()}-${local_date.getMonth()+1}-${local_date.getDate()} ${local_date.getHours()}:${local_date.getMinutes()}: ${local_date.getSeconds()}`
+    }
 }
