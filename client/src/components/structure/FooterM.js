@@ -3,25 +3,47 @@ import { faFacebook } from "@fortawesome/free-brands-svg-icons"
 import React from 'react'
 import ArticleFooter from '../Article'
 import { Link } from 'react-router-dom';
-import { faPhone } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faPhone } from '@fortawesome/free-solid-svg-icons';
 
 function FooterM() {
   const textContact = (
     <>
-      <a target="_blank" href="https://www.facebook.com/profile.php?id=100009630076896">
-        <FontAwesomeIcon icon={faFacebook} className="transition-all duration-300 ease-in-out text-white hover:scale-150"/>
-      </a>
-      <ul className="p-0 ">
-        <li>
-          <a href="tel:+66913747011" className="text-white">+66913747011</a>
-        </li>
-        <li>
-          <a href="tel:+66641120621" className="text-white"> +66641120621</a>
-        </li>
-        <li>
-          <a href="tel:+66986316036" className="text-white">+66986316036</a>
+     <div className="flex gap-3">
+      <ul className="p-0 m-0">
+        <li className="flex gap-x-2">
+          <div className="bg-blue-500 text-white rounded-circle w-6 h-6 flex justify-center items-center">
+            <FontAwesomeIcon icon={faEnvelope}/>
+          </div>
+          <div className="bg-blue-500 text-white rounded-circle w-6 h-6 flex justify-center items-center">
+            <FontAwesomeIcon icon={faPhone}/>
+          </div>
         </li>
       </ul>
+      <div className="flex flex-col">
+        <ul className="p-0 ">
+          <li>
+            <p className="m-0 text-white">Nuttasit Unarn</p>
+          </li>
+          <li>
+            <a href="tel:+66913747011" className="text-white no-underline">+66913747011</a>
+          </li>
+          <li>
+            <a href="tel:+66641120621" className="text-white no-underline"> +66641120621</a>
+          </li>
+          <li>
+            <a href="tel:+66986316036" className="text-white no-underline">+66986316036</a>
+          </li>
+          <li>
+            <p className="m-0 text-white">unlimit705@gmail.com</p>
+          </li>
+          <li>
+            <a target="_blank" href="https://www.facebook.com/profile.php?id=100009630076896">
+              <FontAwesomeIcon icon={faFacebook} className="transition-all duration-300 ease-in-out text-white hover:scale-150"/>
+            </a>
+          </li>
+        </ul>
+      </div>
+     </div>
     </>
   );
   const textAbout = `
