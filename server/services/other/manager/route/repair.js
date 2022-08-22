@@ -107,6 +107,7 @@ router.get('/getNotifyRepairAndMaterialByNotifyRepairId', async (req, res)=>{
         const result = await db.query(`
             SELECT
                 IF(nr.maid_id IS NOT NULL, m.maid_code, nr.outsider_name) AS reporter,
+                m.maid_name,
                 l.location_name,
                 r.room_name,
                 nr.notify_repair_code,
@@ -173,6 +174,7 @@ router.get('/getNotifyRepairByManagerIdStatusWaiting', async (req, res)=>{
                 IF(nr.maid_id IS NOT NULL, m.maid_code, nr.outsider_name) AS reporter,
                 l.location_name,
                 r.room_name,
+                m.maid_name,
                 IF(nr.status = 0,"รอหัวหน้าดำเนินการ", 
                         IF(nr.status = 1, "อนุมัติ",
                                 IF(nr.status = 2,"กำลังดำเนินการซ่อม", 

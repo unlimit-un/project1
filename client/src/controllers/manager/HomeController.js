@@ -1,3 +1,5 @@
+import { api_getTotalEngineerByManagerId } from "../../api/engineer";
+import { api_getTotalMaidByManagerId } from "../../api/maid";
 import { api_getNotifyRepairByManagerIdStatusWaiting, api_getTotalNotifyRepairByManagerId, api_getTotalNotifyRepairByManagerIdAndStatus } from "../../api/notify_repair";
 import { axiosGet, ROOT_SERVER } from "../../functions/AxiosCustom";
 
@@ -100,5 +102,7 @@ export const getCountEngineerByManagerId = async () =>{
 }
 
 export const getTotalNotifyRepairByManagerId = async () => await api_getTotalNotifyRepairByManagerId();
+export const getTotalEngineerByManagerId = async () => await api_getTotalEngineerByManagerId();
+export const getTotalMaidByManagerId = async () => await api_getTotalMaidByManagerId();
 export const getTotalNotifyRepairByManagerIdAndStatus = async status => await api_getTotalNotifyRepairByManagerIdAndStatus(status);
 export const getNotifyRepairByManagerIdStatusWaiting = async status => await api_getNotifyRepairByManagerIdStatusWaiting(status);

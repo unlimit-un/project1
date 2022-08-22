@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { pre_dataBarChart, pre_dataPieChart } from '../../functions/PrepareChartData'
 import { Skeleton, Spiner } from '../../components/Loading'
 import { lazily } from 'react-lazily'
-import { getCountMaidByManagerId, getLeaveBarChart, getLeaveRoleEngineerBarChart, getLeaveRoleMaidBarChart, getNotifyRepairBarChart, getNotifyRepairPieChart, getOrderMaterialTableDashboard } from '../../controllers/manager/HomeController'
+import { getCountMaidByManagerId, getLeaveBarChart, getLeaveRoleEngineerBarChart, getLeaveRoleMaidBarChart, getNotifyRepairBarChart, getNotifyRepairPieChart, getOrderMaterialTableDashboard, getTotalEngineerByManagerId, getTotalMaidByManagerId } from '../../controllers/manager/HomeController'
 import { ArrayColor, ArrayColorAlpha } from '../../utils/ArrayColor'
 // import {BarChart, PieChart} from '../../components/Charts'
 
@@ -275,8 +275,9 @@ const Homepage = () => {
         })
     }
 
-    const loadCountMaid = async () =>{
-        const countMaid = await getCountMaidByManagerId();
+    const loadCount = async () =>{
+        const count_engineer = await getTotalEngineerByManagerId();
+        const count_maid = await getTotalMaidByManagerId();
 
     }
 

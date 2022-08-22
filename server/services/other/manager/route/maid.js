@@ -35,6 +35,21 @@ router.get('/getMaidByManagerId', async (req, res)=>{
    
 })
 
+router.get('/getTotalMaidByManagerId', async (req, res)=>{
+    try {
+        const result = await db.query(`
+            SELECT COUNT(*) AS count FROM maid 
+            INNER JOIN location AS l ON l.location_id = maid.location_id
+            WHERE manager_id = ${escape(req.query['manager_id'])}
+        `);
+        res.status(200).send(result)
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
+   
+})
+
 
  
 router.post('/insertMaid', uploadFile ,async (req, res)=>{
