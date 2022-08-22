@@ -43,13 +43,13 @@ const HomepageE = () => {
         <>
             <div className="card shadow-slate-300 shadow-[5px_5px] w-full">
                 <div className="card-header !bg-red-500 text-white text-center">
-                    <p className="m-0 card-title">{convertNumberToLongEng(new Date().getMonth())}</p>
+                    <p className="m-0 card-title">{convertNumberToLongEng(new Date().getMonth()+1)}</p>
                 </div>
                 <div className="card-body text-center">
                     <h1 className="font-extrabold">{new Date().getDate()}</h1>
                 </div>
             </div>
-            <p className="lg:inline-block hidden">{`วันที่ ${new Date().getDate()} ${convertNumberToThai(new Date().getMonth())} พ.ศ.${new Date().getFullYear()+543}`}</p>
+            <p className="lg:inline-block hidden">{`วันที่ ${new Date().getDate()} ${convertNumberToThai(new Date().getMonth()+1)} พ.ศ.${new Date().getFullYear()+543}`}</p>
         </>
     )
 
