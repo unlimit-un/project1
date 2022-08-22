@@ -22,4 +22,30 @@ router.get('/getUserData', async (req, res)=>{
    
 })
 
+router.get('/getImageOfUser', async (req, res)=>{
+    try {
+        const result = await db.query(`
+            SELECT maid_img 
+            FROM maid
+            WHERE maid_id = ${escape(req.query['user_id'])}
+        `);
+        res.status(200).sendFile(`/${result[0]['maid_img']}`, {root: 'public'})
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
+   
+})
+
+
+router.get('/getImageOfUserByFileName', async (req, res)=>{
+    try {
+        res.status(200).sendFile(`/${req.query['file_name']}`, {root: 'public'})
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
+   
+})
+
 module.exports = router

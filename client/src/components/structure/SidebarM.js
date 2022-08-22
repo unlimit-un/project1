@@ -237,10 +237,13 @@ export const SidebarLeftMaid = () => {
     const [classToggleWork, setClassToggleWork] = useState("");
     const [classToggleActivity, setClassToggleActivity] = useState("");
     const [userdata ,setUserData] = useState({})
+    const [userImge,setUserImage] = useState(null)
 
     const loadUserData = async () =>{
         const userData = await MaidControllers.GetUserData();
         setUserData(userData[0])
+        const Img = await MaidControllers.getImageOfUser();
+        setUserImage(Img)
     }
     
    
@@ -268,7 +271,7 @@ export const SidebarLeftMaid = () => {
             <div className="bg-blue-50 min-h-screen h-full ">
                 <div className="flex flex-col items-center">
                     <div className="flex flex-col items-center mt-4 mb-3">
-                        <img src={Logo} alt="business-man.png" className="w-20 h-20 rounded-circle shadow"/>
+                        <img src={userImge} alt="business-man.png" className="w-20 h-20 rounded-circle shadow"/>
                         <p className="m-2 text-lg truncate w-40 text-center">{userdata['maid_name']} {userdata['maid_surname']} </p>
                         <small>แม่บ้าน</small>
                     </div>
