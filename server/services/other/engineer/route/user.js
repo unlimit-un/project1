@@ -12,11 +12,34 @@ router.get('/getUserData', async (req, res)=>{
         WHERE engineer_id = ${escape(req.query['user_id'])}
         `);
      
-       if (result.length > 0) {
         res.status(200).send(result)
-       }else{
+       
+    } catch (error) {
+        console.log(error);
         res.sendStatus(500)
-       }
+    }
+   
+})
+
+router.get('/getImageOfUser', async (req, res)=>{
+    try {
+        const result = await db.query(`
+            SELECT engineer_img 
+            FROM engineer
+            WHERE engineer_id = ${escape(req.query['user_id'])}
+        `);
+        res.status(200).sendFile(`/${result[0]['engineer_img']}`, {root: 'public'})
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
+   
+})
+
+
+router.get('/getImageOfUserByFileName', async (req, res)=>{
+    try {
+        res.status(200).sendFile(`/${req.query['file_name']}`, {root: 'public'})
     } catch (error) {
         console.log(error);
         res.sendStatus(500)

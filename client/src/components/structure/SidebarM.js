@@ -373,11 +373,13 @@ export const SidebarLeftEn = () => {
     const [classToggleWork, setClassToggleWork] = useState("");
     const [classToggleActivity, setClassToggleActivity] = useState("");
     const [userData, setUserData] = useState({})
+    const [userImage, setUserImage] = useState(null)
 
     const LoadUserData = async () =>{
         const userData = await EngineerController.getUserData();
+        const img = await EngineerController.getImageOfUser();
         setUserData(userData[0]);
-        console.log(userData[0]);
+        setUserImage(img)
     }
 
     useEffect(()=>{
@@ -404,7 +406,7 @@ export const SidebarLeftEn = () => {
             <div className="bg-blue-50 min-h-screen h-full ">
                 <div className="flex flex-col items-center">
                     <div className="flex flex-col items-center mt-4 mb-3">
-                        <img src={Logo} alt="business-man.png" className="w-20 h-20 rounded-circle shadow"/>
+                        <img src={userImage} alt="business-man.png" className="w-20 h-20 rounded-circle shadow"/>
                         <p className="my-2 text-lg truncate w-40 text-center">{userData['engineer_name']} {userData['engineer_surname']}</p>
                         <small className='text-center'>ช่างซ่อม<br/>{userData['dept_name']}</small>
                     </div>
