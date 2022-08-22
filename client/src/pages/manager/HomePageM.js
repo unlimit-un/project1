@@ -156,8 +156,8 @@ const Homepage = () => {
                     return item
                 }
             }).map(item=>item[0]['count_maid']),
-            borderColor: 'rgb(255, 99, 132)',
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            borderColor: ArrayColor[18],
+            backgroundColor: ArrayColorAlpha[18],
         },
         {
             label: 'ช่างซ่อม',
@@ -168,8 +168,8 @@ const Homepage = () => {
                     return item
                 }
             }).map(item=>item[0]['count_en']),
-            borderColor: 'rgb(53, 162, 235)',
-            backgroundColor: 'rgba(53, 162, 235, 0.5)',
+            borderColor:  ArrayColor[21],
+            backgroundColor: ArrayColorAlpha[21],
         }]
         setDataSetsLeave(prepare)
     }
@@ -276,14 +276,15 @@ const Homepage = () => {
     }
 
     const loadCount = async () =>{
-        const count_engineer = await getTotalEngineerByManagerId();
-        const count_maid = await getTotalMaidByManagerId();
-
+        const [{count: count_engineer}] = await getTotalEngineerByManagerId();
+        const [{count: count_maid}] = await getTotalMaidByManagerId();
+        setCountEngineer(count_engineer)
+        setCountMaid(count_maid)
     }
 
     useEffect(() => {
         checkAutoRedirectUser(navigate, pathname);
-
+        loadCount();
         loadPieChart();
         loadBarChartLeaveRoleEn();
         loadBarChartLeaveRoleMaid();
@@ -312,17 +313,17 @@ const Homepage = () => {
                     <div className="row gap-y-5 mt-4">
                         <div className="col-md-4 col-12">
                             <Suspense fallback={<Skeleton/>}>
-                                <CardFillColor colorBody="bg-emerald-400" colorFooter="!bg-emerald-500" title="20" subTitle="จำนวนพนักงาน" caption="ข้อมูลเพิ่มเติม"/>
+                                <CardFillColor colorBody="bg-emerald-400" colorFooter="!bg-emerald-500" title={+countEngineer + +countMaid} subTitle="จำนวนพนักงาน" caption="ข้อมูลเพิ่มเติม"/>
                             </Suspense>
                         </div>
                         <div className="col-md-4 col-12">
                             <Suspense fallback={<Skeleton/>}>
-                                <CardFillColor colorBody="bg-purple-400" colorFooter="!bg-purple-500" title="10" subTitle="จำนวนแม่บ้าน" caption="ข้อมูลเพิ่มเติม"/>
+                                <CardFillColor colorBody="bg-purple-400" colorFooter="!bg-purple-500" title={countMaid} subTitle="จำนวนแม่บ้าน" caption="ข้อมูลเพิ่มเติม"/>
                             </Suspense>
                         </div>
                         <div className="col-md-4 col-12">
                             <Suspense fallback={<Skeleton/>}>
-                                <CardFillColor colorBody="bg-slate-400" colorFooter="!bg-slate-500" title="10" subTitle="จำนวนช่าง" caption="ข้อมูลเพิ่มเติม"/>
+                                <CardFillColor colorBody="bg-slate-400" colorFooter="!bg-slate-500" title={countEngineer} subTitle="จำนวนช่าง" caption="ข้อมูลเพิ่มเติม"/>
                             </Suspense>
                         </div>
                     </div>

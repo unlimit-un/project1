@@ -55,6 +55,25 @@ router.get('/getWorkDataStatusProcess', async (req, res)=>{
         res.sendStatus(500)
     }
 })
+
+router.get('/getWorkDataToDoByEngineerId', async (req, res)=>{
+    try {
+        
+        const result = await db.query(`
+            SELECT nr.* , l.location_name ,r.room_name,
+            nr.status
+            FROM notify_repair AS nr
+            LEFT JOIN location AS l ON l.location_id = nr.location_id
+            LEFT JOIN room AS r ON r.room_id = nr.room_id
+            WHERE nr.engineer_id = ${escape(req.query['engineer_id'])} AND status >= 2
+        
+        `);
+            res.status(200).send(result)
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
+})
 router.post('/updateNotifyRepairToSuccess', async (req, res)=>{
     try {
         const { notify_repair_id,engineer_id } = req.body
