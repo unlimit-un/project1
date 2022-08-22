@@ -14,7 +14,7 @@ const app = express();
 // const origin = process.env.NODE_ENV === 'development'? "http://localhost:3000": "http://192.168.43.201:3000";
 
 app.use(cors({
-    origin: ["http://192.168.43.201:3000", "http://localhost:3000"],
+    origin: ["http://192.168.43.201:3000", "http://localhost:3000", "http://192.168.1.7:3000"],
     credentials: true
 })); 
 
@@ -67,7 +67,7 @@ app.post('/api/non_auth/register_manager', uploadFile, async (req, res)=>{
 app.post('/api/non_auth/login', async (req, res)=>{
     try {
         const {username, password, type} = req.body;
-
+        console.log({username, password, type});
         if (!(username && password && type)) {
             res.status(400).send('data is requried')
             return false;

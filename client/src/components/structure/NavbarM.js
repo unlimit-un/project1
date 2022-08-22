@@ -3,7 +3,7 @@ import Logo from '../../assets/Logo.jpg'
 import Demo from '../../assets/business-man.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faBell, faExclamationCircle, faUsers } from '@fortawesome/free-solid-svg-icons'
-import { Dropdown } from 'react-bootstrap'
+import { Container, Dropdown, Nav, Navbar } from 'react-bootstrap'
 import { ListGroupDropdownItem } from '../ListGroup'
 import { Link } from 'react-router-dom'
 import * as MaidControllers from '../../controllers/maid/UserControllers'
@@ -12,35 +12,61 @@ import * as ManagerController from '../../controllers/manager/UsersController'
 
 export const NavbarHomepage = () =>{
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-blue-400">
+        // <nav className="navbar navbar-expand-lg navbar-light bg-blue-400">
+        //     <div className="container-fluid transition-all duration-300">
+        //         <Link to="/" className="text-3xl text-white nav-link hover:!text-pink-500 "> หน้าหลัก </Link>
+        //         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        //             <span className="navbar-toggler-icon"></span>
+        //         </button>
+        //         <div className="collapse navbar-collapse flex justify-content-between" id="navbarNav">
+        //             <ul className="navbar-nav">
+                        // <li className="nav-item">
+                        // <Link to="/" className="text-3xl text-white nav-link hover:!text-pink-500"> สถานที่ทั้งหมด </Link>
+                        // </li>
+                        // <li className="nav-item">
+                        // <Link to="/" className="text-3xl text-white nav-link hover:!text-pink-500"> ติดต่อ </Link>
+                        // </li>
+                        // <li className="nav-item">
+                        // <Link to="/" className="text-3xl text-white nav-link hover:!text-pink-500"> เกี่ยวกับ </Link>
+                        // </li>
+        //             </ul>
+        //             <ul className="navbar-nav">
+        //                 <li className="nav-item">
+        //                 <Link to="/login" className="text-3xl text-white nav-link hover:!text-pink-500"> เข้าสู่ระบบ </Link>
+        //                 </li>
+        //                 <li className="nav-item">
+        //                 <Link to="/register" className="text-3xl text-white nav-link hover:!text-pink-500"> สมัครสมาชิก </Link>
+        //                 </li>
+        //             </ul>
+        //         </div>
+        //     </div>
+        // </nav>
+        <Navbar collapseOnSelect expand="lg" className="navbar-light bg-blue-400">
             <div className="container-fluid transition-all duration-300">
-                <Link to="/" className="text-3xl text-white nav-link hover:!text-pink-500 "> หน้าหลัก </Link>
-                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon"></span>
-                </button>
-                <div className="collapse navbar-collapse flex justify-content-between" id="navbarNav">
-                    <ul className="navbar-nav">
+                <Link to="/"><img src={Logo} alt="Logo.jpg" className="rounded-circle w-12 h-12 my-2 ms-3"/></Link>
+                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                <Navbar.Collapse id="responsive-navbar-nav">
+                    <Nav className="me-auto ms-lg-3 ms-0">
                         <li className="nav-item">
-                        <Link to="/" className="text-3xl text-white nav-link hover:!text-pink-500"> สถานที่ทั้งหมด </Link>
+                            <Link to="/" className="!text-3xl text-white nav-link hover:!text-pink-500 ">หน้าหลัก</Link>
                         </li>
                         <li className="nav-item">
-                        <Link to="/" className="text-3xl text-white nav-link hover:!text-pink-500"> ติดต่อ </Link>
+                            <Link to="/" className="text-3xl text-white nav-link hover:!text-pink-500"> สถานที่ทั้งหมด </Link>
                         </li>
                         <li className="nav-item">
-                        <Link to="/" className="text-3xl text-white nav-link hover:!text-pink-500"> เกี่ยวกับ </Link>
-                        </li>
-                    </ul>
-                    <ul className="navbar-nav">
-                        <li className="nav-item">
-                        <Link to="/login" className="text-3xl text-white nav-link hover:!text-pink-500"> เข้าสู่ระบบ </Link>
+                            <Link to="/" className="text-3xl text-white nav-link hover:!text-pink-500"> ติดต่อ </Link>
                         </li>
                         <li className="nav-item">
-                        <Link to="/register" className="text-3xl text-white nav-link hover:!text-pink-500"> สมัครสมาชิก </Link>
+                            <Link to="/" className="text-3xl text-white nav-link hover:!text-pink-500"> เกี่ยวกับ </Link>
                         </li>
-                    </ul>
-                </div>
+                    </Nav>
+                    <Nav>
+                        <Link to="/login" className="text-3xl text-white nav-link hover:!text-pink-500">เข้าสู่ระบบ</Link>
+                        <Link to="/register" className="text-3xl text-white nav-link hover:!text-pink-500">สมัครสมาชิก</Link>
+                    </Nav>
+                </Navbar.Collapse>
             </div>
-        </nav>
+            </Navbar>
     )
 }
 
