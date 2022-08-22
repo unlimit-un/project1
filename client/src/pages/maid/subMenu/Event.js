@@ -99,7 +99,6 @@ export const EventTodo = () => {
           {title:"ครุภัณฑ์",field:"material"},
           {title:"จำนวนครุภัณฑ์",field:"count"},
         ]
-    
       }
     
       const doneTable = {

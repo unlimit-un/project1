@@ -10,6 +10,7 @@ import { SidebarRightEn } from '../../components/structure/SidebarM'
 import { convertNumberToLongEng, convertNumberToThai } from '../../functions/ConvertDate'
 import { getleavepiechart } from '../../controllers/engineer/HomeControllers'
 import { ArrayColor, ArrayColorAlpha } from '../../utils/ArrayColor'
+import { getworkCurrentDate, getWorkData, getWorkDataStatusProcess, getWorkDataToDoByEngineerId } from '../../controllers/engineer/WorkControllers'
 
 const { CardFillColorNonFooter } = lazily(()=>import('../../components/Cards'))
 const { PieChart } =lazily(()=>import('../../components/Charts'))
@@ -18,6 +19,7 @@ const HomepageE = () => {
     const [height, setHeight] = useState(0);
     const [piechartdatasets , setPieChartDataSets] = useState ([]);
     const [labelpiechart , setLabelPieChart] = useState ([]);
+    const [workCurrentDate, setWorkCurrentDate] = useState ([])
     const ref = useRef(null)
 
     const loadPieChart = async() =>{
@@ -30,14 +32,28 @@ const HomepageE = () => {
             borderWidth: 1,
         }])
     }
+    const lodaworkCurrentDate = async ()=>{
+        const currendate = await getWorkDataToDoByEngineerId()
+        setWorkCurrentDate (currendate)
+        console.log(currendate);
+    }
    
     const dataChartLeave = pre_dataPieChart(labelpiechart,'top','', piechartdatasets)
 
     const todoCard = (
         <>
-            <p>รายการงานที่ต้องทำวันนี้:</p>
-            <ListGroupFlush lists={[{detail: 'test'}, {detail: 'test'}]}/>
+             <h5 className="card-title">รายการงานที่ต้องทำวันนี้:</h5>
+                    <ListGroupFlush   lists={[...workCurrentDate.map(item=>{
+                        return {detail:`
+                        | ${item['notify_repair_code']} 
+                        | ${item['description']} 
+                        | ${item['status']=== 2 ? "กำลังดำเนินการ":"ดำเนินการเสร็จสิ้น"} 
+                        `}
+                        })]}
+                    />
+                        
         </>
+    
     )
     const todayCard = (
         <>
@@ -89,6 +105,7 @@ const HomepageE = () => {
     
     useEffect(()=>{
         loadPieChart();
+        lodaworkCurrentDate();
     },[])
     useEffect(() => {
         setHeight(ref.current.clientHeight)

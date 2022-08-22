@@ -10,8 +10,9 @@ import { ListGroupFlushWithLink } from '../ListGroup';
 import * as EngineerController from '../../controllers/engineer/UserControllers'
 import * as MaidControllers from '../../controllers/maid/UserControllers'
 import * as ManagerController from '../../controllers/manager/UsersController'
-import { geturgentData } from '../../controllers/maid/UngentControllers';
+import { geturgentData as geturgentmaidData } from '../../controllers/maid/UngentControllers';
 import { getNotifyRepairByManagerIdStatusWaiting } from '../../controllers/manager/HomeController';
+import { geturgentData as geturgentengineerData } from '../../controllers/engineer/UrgentControllers';
 
 export const SidebarLeftManager = () => {
     const [open, setOpen] = useState({
@@ -352,7 +353,7 @@ export const SidebarLeftMaid = () => {
 export const SidebarRightMaid = ({maxHeight}) =>{
     const [ungent,setUngent] = useState ([])
     const loadungent = async () =>{
-        const ungentdata = await geturgentData();
+        const ungentdata = await geturgentmaidData();
         setUngent (ungentdata)
     }
     
@@ -502,13 +503,30 @@ export const SidebarLeftEn = () => {
 }
 
 export const SidebarRightEn = ({maxHeight}) =>{
+    const [urgentEn,setUrgentEn] = useState ([])
+    const loadUngenten = async () =>{
+        const ungentEn = await geturgentengineerData ()
+        setUrgentEn(ungentEn)
+    }
+    useEffect(()=>{
+        loadUngenten ();
+    },[])
     const listGroup = [
-        {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
-        {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
-        {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
-        {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
-        {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
-        {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."}
+        ...urgentEn.map(item =>{
+            return {
+            title: item['date_time'], 
+            icon: faWarning, 
+            path:"/engineer/urgent", 
+            link_name:"ข้อมูลเพิ่มเติม",
+            detail: item['location_name']
+        }
+        })
+       
+        // {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
+        // {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
+        // {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
+        // {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
+        // {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."}
     ]
     
     return (

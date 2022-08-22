@@ -44,6 +44,16 @@ export const getWorkDataStatusProcess = async () =>{
         console.error(error)
     }
 }
+export const getWorkDataToDoByEngineerId = async ()=>{
+    try {
+        const {data:{user_id}} = await axiosGet(`${ROOT_SERVER}/api/checkToken`);
+        const {data} = await axiosGet(`${ROOT_SERVER}/api/engineer/getWorkDataToDoByEngineerId?engineer_id= ${user_id}`);
+    
+    return data;
+    } catch (error) {
+        
+    }
+ }
 
 export const updateNotifyRepairToSuccess = async ( formData ) =>{
     try {

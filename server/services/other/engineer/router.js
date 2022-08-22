@@ -5,5 +5,6 @@ router.use(require('./route/material'))
 router.use(require('./route/urgent'))
 router.use(require('./route/work'))
 router.use(require('./route/spacial_event'))
+router.use(require('./route/event'))
 
 module.exports = router;

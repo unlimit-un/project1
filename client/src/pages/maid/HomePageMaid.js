@@ -36,7 +36,7 @@ const HomepageMaid = () => {
     const lodaworkCurrentDate = async ()=>{
         const currendate = await getworkCurrentDate()
         setWorkCurrentDate (currendate)
-        console.log(currendate);
+        // console.log(currendate);
     }
     const dataChartLeave = pre_dataPieChart(labelpiechart,'top','', piechartdatasets)
 
