@@ -16,6 +16,7 @@ import { faPencil, faTable, faPlus, faScrewdriverWrench, faClipboardCheck, faXma
 import { useForkRef } from '@material-ui/core';
 import { Skeleton, Spiner } from '../../../components/Loading';
 import { convertTZ } from '../../../functions/ConvertDate';
+import { lazily } from 'react-lazily'
 
 export const MaidDutyCalendar = () =>{
     

@@ -23,6 +23,26 @@ export const getworktData = async ()=>{
         
     }
  }
+ export const getWorkByMaidId = async ()=>{
+    try {
+        const {data:{user_id}} = await axiosGet(`${ROOT_SERVER}/api/checkToken`);
+        const {data} = await axiosGet(`${ROOT_SERVER}/api/maid/getWorkByMaidId?maid_id= ${user_id}`);
+    
+    return data;
+    } catch (error) {
+        
+    }
+ }
+ export const getworkCurrentDate = async ()=>{
+    try {
+        const {data:{user_id}} = await axiosGet(`${ROOT_SERVER}/api/checkToken`);
+        const {data} = await axiosGet(`${ROOT_SERVER}/api/maid/getworkCurrentDate?maid_id= ${user_id}`);
+    
+    return data;
+    } catch (error) {
+        
+    }
+ }
  export const insertMaidDutyCheck = async (formData)=>{
     try {
         const {data} = await axiosPost(`${ROOT_SERVER}/api/maid/insertMaidDutyCheck`, {...formData});
