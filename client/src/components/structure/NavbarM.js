@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Logo from '../../assets/Logo.jpg'
 import Demo from '../../assets/business-man.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -6,6 +6,7 @@ import { faBars, faBell, faExclamationCircle, faUsers } from '@fortawesome/free-
 import { Dropdown } from 'react-bootstrap'
 import { ListGroupDropdownItem } from '../ListGroup'
 import { Link } from 'react-router-dom'
+import * as MaidControllers from '../../controllers/maid/UserControllers'
 
 export const NavbarHomepage = () =>{
     return (
@@ -158,6 +159,14 @@ export const NavbarMaid = () => {
         {title:"unlimit", icon: faUsers, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."}
     ]
     const ref = useRef();
+    const [userImage, setUserImage] = useState(null)
+    const LoadUserData = async () =>{
+        const img = await MaidControllers.getImageOfUser();
+        setUserImage(img)
+    }
+    useEffect(()=>{
+        LoadUserData();
+    },[])
   return (
     <>
         <nav className="navbar navbar-expand-lg bg-blue-50 sticky-top shadow-slate-100 shadow-md p-0">
@@ -191,7 +200,7 @@ export const NavbarMaid = () => {
                                         <ListGroupDropdownItem lists={listGroup}/>
                                     </Dropdown.Menu>
                                 </Dropdown>
-                                <img src={Demo} alt="business-man.png" className="rounded-circle w-12 h-12"/>
+                                <img src={userImage} alt="business-man.png" className="rounded-circle w-12 h-12"/>
                             </div>
                         </div>
                     </div>
