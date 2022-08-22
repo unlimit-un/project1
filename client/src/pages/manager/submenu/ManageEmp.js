@@ -204,7 +204,7 @@ export const InsEmp = ({title, options, optionsLocation, optionsDept}) => {
                     80
                 );
             } catch (err) {
-                console.log(err);
+                
             }
         }
     } 
@@ -216,7 +216,7 @@ export const InsEmp = ({title, options, optionsLocation, optionsDept}) => {
         <div className="flex justify-content flex-col">
             <form onSubmit={async (e)=>{
                 e.preventDefault();
-                console.log(empData);
+                
                 if (!empData.data.image) return Swal.fire('ข้อมูลไม่ครบ','กรุณาเลือกรูปภาพ','info').then(()=>false) 
                 if(await insertEmp(empData.data)) await reState();
             }}>
@@ -418,7 +418,7 @@ export const Dept = ({title, arr_obj_location}) =>{
             </div>
         </div> 
     )   
-    console.log({editDeptCode, editDeptName, editLocationId})
+    
     const editFormdata = {
         dept_code: editDeptCode,
         dept_name: editDeptName,

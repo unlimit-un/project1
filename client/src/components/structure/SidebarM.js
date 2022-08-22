@@ -155,7 +155,6 @@ export const SidebarLeftManager = () => {
                                 <Collapse in={open.schedual.status}>
                                     <div id={open.schedual.id} className="py-2">
                                         <ul className=" px-3 ">
-                                            <SubMenuLink label={"ตารางงานทั้งหมด"} path="/manager/schedual_work/dashboard"/>
                                             <SubMenuLink label={"จัดงานกิจกรรมพิเศษ"} path="/manager/schedual_work/event"/>
                                             <SubMenuLink label={"จัดการทีม"} path="/manager/schedual_work/team"/>
                                             <SubMenuLink label={"จัดการงานด่วน"} path="/manager/schedual_work/urgent"/>

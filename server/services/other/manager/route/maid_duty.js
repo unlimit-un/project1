@@ -10,6 +10,7 @@ router.get('/getMaidDutyByManagerId', async (req, res)=>{
             LEFT JOIN maid AS m ON m.maid_id = md.maid_id
             LEFT JOIN location AS l ON l.location_id = m.location_id
             WHERE l.manager_id = ${escape(req.query['manager_id'])}
+            ORDER BY maid_name
         `);
      
         res.status(200).send(result)
@@ -28,6 +29,7 @@ router.get('/getMaidDutyById', async (req, res)=>{
             LEFT JOIN maid AS m ON m.maid_id = md.maid_id
             LEFT JOIN location AS l ON l.location_id = m.location_id
             WHERE md.maid_duty_id = ${escape(req.query['maid_duty_id'])}
+            ORDER BY maid_name
         `);
      
         res.status(200).send(result)

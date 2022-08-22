@@ -77,8 +77,8 @@ const Homepage = () => {
                 label: 'รอหัวหน้าดำเนินการ',
                 data: barChartData.map(item=>item.length === 0 ? [{count:0}]: item.filter(ele=>ele.note === 'รอหัวหน้าดำเนินการ'??ele))
                     .map(item=>item.length === 0 ? 0:item[0]['count']),
-                borderColor: ArrayColor[0],
-                backgroundColor: ArrayColorAlpha[0],
+                borderColor: ArrayColor[5],
+                backgroundColor: ArrayColorAlpha[5],
             },
             {
                 label: 'อนุมัติ',
@@ -89,8 +89,8 @@ const Homepage = () => {
                         return item.filter(ele=>ele.note === 'อนุมัติ'??ele)
                     }
                 }).map(item=>item.length === 0 ? 0:item[0]['count']),
-                borderColor: ArrayColor[1],
-                backgroundColor: ArrayColorAlpha[1],
+                borderColor: ArrayColor[4],
+                backgroundColor: ArrayColorAlpha[4],
             },
             {
                 label: 'ดำเนินการเสร็จสิ้น',
@@ -101,8 +101,8 @@ const Homepage = () => {
                         return item.filter(ele=>ele.note === 'ดำเนินการเสร็จสิ้น'??ele)
                     }
                 }).map(item=>item.length === 0 ? 0:item[0]['count']),
-                borderColor: ArrayColor[2],
-                backgroundColor: ArrayColorAlpha[2],
+                borderColor: ArrayColor[3],
+                backgroundColor: ArrayColorAlpha[3],
             },
             {
                 label: 'ปฏิเสธ',
@@ -113,8 +113,8 @@ const Homepage = () => {
                         return item.filter(ele=>ele.note === 'ปฏิเสธ'??ele)
                     }
                 }).map(item=>item.length === 0 ? 0:item[0]['count']),
-                borderColor: ArrayColor[3],
-                backgroundColor: ArrayColorAlpha[3],
+                borderColor: ArrayColor[2],
+                backgroundColor: ArrayColorAlpha[2],
             },
             {
                 label: 'ไม่สามารถดำเนินการได้',
@@ -125,8 +125,8 @@ const Homepage = () => {
                         return item.filter(ele=>ele.note === 'ไม่สามารถดำเนินการได้'??ele)
                     }
                 }).map(item=>item.length === 0 ? 0:item[0]['count']),
-                borderColor: ArrayColor[4],
-                backgroundColor: ArrayColorAlpha[4],
+                borderColor: ArrayColor[1],
+                backgroundColor: ArrayColorAlpha[1],
             },
             {
                 label: 'ไม่ต้องการดำเนินการแล้ว',
@@ -137,8 +137,8 @@ const Homepage = () => {
                         return item.filter(ele=>ele.note === 'ไม่ต้องการดำเนินการแล้ว'??ele)
                     }
                 }).map(item=>item.length === 0 ? 0:item[0]['count']),
-                borderColor: ArrayColor[5],
-                backgroundColor: ArrayColorAlpha[5],
+                borderColor: ArrayColor[0],
+                backgroundColor: ArrayColorAlpha[0],
             }
         ]
             setDataSetsRepair(prepare)
@@ -300,7 +300,7 @@ const Homepage = () => {
     const dataChartLeaveEngineer = pre_dataBarChart(labels,'top','สถิติการลาของช่าง', dataSetsLeaveRoleEn) // success 
     const dataChartLeaveMaid = pre_dataBarChart(labels,'top','สถิติการลาของแม่บ้าน', dataSetsLeaveRoleMaid) // success 
     const dataChartRepair = pre_dataPieChart(labelPieChart,'top','แผนภูมิการซ่อมทั้งหมด', pieChartDataSets) // success
-    console.log(dataChartRepair);
+    
     // const dataChartRepairBar = pre_dataBarChart(labels,'top','แผนภูมิการซ่อมทั้งหมด', dataSetsRepair) // success
 
     return (

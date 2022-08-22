@@ -10,7 +10,7 @@ import * as SubMenu from './submenu/Leave'
 
 const Leave = () => {
     const {page} = useParams();
-    console.log(page);
+    
     return (
         <>
             <div className="container-fluid">

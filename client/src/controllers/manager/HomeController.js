@@ -1,3 +1,4 @@
+import { api_getNotifyRepairByManagerIdStatusWaiting, api_getTotalNotifyRepairByManagerId, api_getTotalNotifyRepairByManagerIdAndStatus } from "../../api/notify_repair";
 import { axiosGet, ROOT_SERVER } from "../../functions/AxiosCustom";
 
 export const getNotifyRepairPieChart = async () =>{
@@ -97,3 +98,7 @@ export const getCountEngineerByManagerId = async () =>{
         console.error(error)
     }
 }
+
+export const getTotalNotifyRepairByManagerId = async () => await api_getTotalNotifyRepairByManagerId();
+export const getTotalNotifyRepairByManagerIdAndStatus = async status => await api_getTotalNotifyRepairByManagerIdAndStatus(status);
+export const getNotifyRepairByManagerIdStatusWaiting = async status => await api_getNotifyRepairByManagerIdStatusWaiting(status);

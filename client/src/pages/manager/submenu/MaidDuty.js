@@ -305,7 +305,7 @@ export const Duty = () =>{
         }
 
         if (modalShow) {
-            console.log(modalShow);
+            
             if (inputDutyAssingModal.maid_id) {
                 const MaidDutyByMaidId = await getMaidDutyByMaidId(inputDutyAssingModal.maid_id)
                 const locationByManagerId = await getLocationByManagerId();
@@ -613,7 +613,7 @@ export const MaidDutyMaterial = () =>{
         if (modalShow) {
             if (inputFormModal.material_id) {
                 const [{material_quantity, material_using}] = await getMaterialById(inputFormModal.material_id)
-                console.log(material_quantity, material_using);
+                
                 setTotalModal(material_quantity- +refInputCountModal.current.value - material_using< 0 ? 'วัสดุไม่เพียงพอ':material_quantity- +refInputCountModal.current.value - material_using)
             }
     

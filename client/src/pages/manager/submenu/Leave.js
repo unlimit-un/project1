@@ -146,7 +146,7 @@ export const Leave = () => {
     }
     // useEffect(() => {
     //     setHeight(ref.current.clientHeight)
-    //     console.log(height);
+    //     
     // }, [height])
     const tableLeave = (
         <div className="container-fluid">
