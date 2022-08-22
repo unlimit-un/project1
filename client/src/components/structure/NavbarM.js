@@ -7,6 +7,8 @@ import { Dropdown } from 'react-bootstrap'
 import { ListGroupDropdownItem } from '../ListGroup'
 import { Link } from 'react-router-dom'
 import * as MaidControllers from '../../controllers/maid/UserControllers'
+import * as EngineerController from '../../controllers/engineer/UserControllers'
+import * as ManagerController from '../../controllers/manager/UsersController'
 
 export const NavbarHomepage = () =>{
     return (
@@ -44,6 +46,16 @@ export const NavbarHomepage = () =>{
 
 export const NavbarManager = () => {
     // console.log(open.main_menu);
+    const [userImage, setUserImage] = useState(null)
+
+    const LoadUserData = async () =>{
+        const img = await ManagerController.getImageOfUser();
+        setUserImage(img)
+    }
+
+    useEffect(()=>{
+        LoadUserData();
+    },[])
     const listGroup = [
         {title:"unlimit", icon: faUsers, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
         {title:"unlimit", icon: faUsers, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
@@ -85,7 +97,7 @@ export const NavbarManager = () => {
                                         <ListGroupDropdownItem lists={listGroup}/>
                                     </Dropdown.Menu>
                                 </Dropdown>
-                                <img src={Demo} alt="business-man.png" className="rounded-circle w-12 h-12"/>
+                                <img src={userImage} alt="business-man.png" className="rounded-circle w-12 h-12"/>
                             </div>
                         </div>
                     </div>
@@ -97,6 +109,17 @@ export const NavbarManager = () => {
 }
 
 export const NavbarEn = () =>{
+    const [userImage, setUserImage] = useState(null)
+
+    const LoadUserData = async () =>{
+        const img = await EngineerController.getImageOfUser();
+        setUserImage(img)
+    }
+
+    useEffect(()=>{
+        LoadUserData();
+    },[])
+
     const listGroup = [
         {title:"unlimit", icon: faUsers, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
         {title:"unlimit", icon: faUsers, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
@@ -138,7 +161,7 @@ export const NavbarEn = () =>{
                                             <ListGroupDropdownItem lists={listGroup}/>
                                         </Dropdown.Menu>
                                     </Dropdown>
-                                    <img src={Demo} alt="business-man.png" className="rounded-circle w-12 h-12"/>
+                                    <img src={userImage} alt="business-man.png" className="rounded-circle w-12 h-12"/>
                                 </div>
                             </div>
                         </div>
