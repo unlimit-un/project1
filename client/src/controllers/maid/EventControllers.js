@@ -12,7 +12,6 @@ export const geteventData = async ()=>{
     } catch (error) {
         
     }
-
  }
  export const geteventDataStatus = async ()=>{
     try {
@@ -23,5 +22,14 @@ export const geteventData = async ()=>{
     } catch (error) {
         
     }
-
+ }
+ export const getSpacialEventByMaidId = async ()=>{
+    try {
+        const {data:{user_id}} = await axiosGet(`${ROOT_SERVER}/api/checkToken`);
+        const {data} = await axiosGet(`${ROOT_SERVER}/api/maid/getSpacialEventByMaidId?maid_id= ${user_id}`);
+    
+    return data;
+    } catch (error) {
+        
+    }
  }

@@ -9,6 +9,7 @@ import { lazily } from "react-lazily";
 import {GetLeavepiechart} from '../../controllers/maid/HomeControllers'
 import { convertNumberToLongEng, convertNumberToThai } from '../../functions/ConvertDate'
 import { ArrayColor, ArrayColorAlpha } from '../../utils/ArrayColor'
+import { getworkCurrentDate } from '../../controllers/maid/WorkControllers'
 
 const { CardFillColorNonFooter } = lazily(()=>import('../../components/Cards'))
 const { PieChart } =lazily(()=>import('../../components/Charts'))
@@ -21,6 +22,7 @@ const HomepageMaid = () => {
     
     const [piechartdatasets , setPieChartDataSets] = useState ();
     const [labelpiechart , setLabelPieChart] = useState ();
+    const [workCurrentDate, setWorkCurrentDate] = useState ([])
     const loadpiechart =  async() =>{
         const pieChartData = await GetLeavepiechart();
         setLabelPieChart([...pieChartData.map(item=>item['leave_type_name'])]);
@@ -31,13 +33,28 @@ const HomepageMaid = () => {
             borderWidth: 1,
         }])
     }
+    const lodaworkCurrentDate = async ()=>{
+        const currendate = await getworkCurrentDate()
+        setWorkCurrentDate (currendate)
+        console.log(currendate);
+    }
     const dataChartLeave = pre_dataPieChart(labelpiechart,'top','', piechartdatasets)
 
     const todoCard = (
         <>
-            <p>รายการงานที่ต้องทำวันนี้:</p>
-            <ListGroupFlush lists={[{detail: 'test'}, {detail: 'test'}]}/>
+             <h5 className="card-title">รายการงานที่ต้องทำวันนี้:</h5>
+                    <ListGroupFlush   lists={[...workCurrentDate.map(item=>{
+                        return {detail:`
+                        | ${item['maid_duty_assign_code']} 
+                        | ${item['work_description']} 
+                        | ${item['time_start']}
+                        -${item['time_end']}
+                        `}
+                        })]}
+                    />
+                        
         </>
+    
     )
     const todayCard = (
         <>
@@ -89,6 +106,7 @@ const HomepageMaid = () => {
     
     useEffect(()=>{
         loadpiechart();
+        lodaworkCurrentDate();
     },[])
     useEffect(() => {
         setHeight(ref.current.clientHeight)

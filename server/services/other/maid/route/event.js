@@ -25,7 +25,7 @@ router.get('/geteventData', async (req, res)=>{
         LEFT JOIN location AS l ON l.location_id = se.location_id
         LEFT JOIN room AS r ON r.room_id = se.room_id 
     WHERE
-        tm.maid_id = ${escape(req.query[`tm.maid_id`])}
+        tm.maid_id = ${escape(req.query[`tm.maid_id`])} AND se.status = 0
         `);
         res.status(200).send(result)
     } catch (error) {

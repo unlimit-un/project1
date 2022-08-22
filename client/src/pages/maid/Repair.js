@@ -94,6 +94,7 @@ const Repair = () => {
           waiting:"รอดำเนินการ",
           unable:"ไม่สามารถดำเนินการ",
           needless:"ไม่ต้องการดำเนินการ",
+          accept: "ผ่านอนุมัติ",
         }
       },
       {title:"",field:"ED"},

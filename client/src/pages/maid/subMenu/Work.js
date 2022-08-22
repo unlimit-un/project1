@@ -5,7 +5,7 @@ import { Skeleton, Spiner } from '../../../components/Loading'
 import { lazily } from 'react-lazily';
 import { EditDelete } from '../../../components/EditDelete';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendar, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faCalendar, faCalendarAlt, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { InputGroupWithLabel } from '../../../components/FormElements';
 import DayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -13,9 +13,10 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { ModalCard, ModalCardConfirm } from "../../../components/Modals";
 import { createFullCalendar, getFullCalendar } from '../../../functions/Calendar';
 import FullCalendar from "@fullcalendar/react";
-import { getworktData, getworktDataComplete, insertMaidDutyCheck } from '../../../controllers/maid/WorkControllers';
+import { getWorkByMaidId, getworktData, getworktDataComplete, insertMaidDutyCheck } from '../../../controllers/maid/WorkControllers';
 import { Button } from '@material-ui/core';
 import { convertTZ } from '../../../functions/ConvertDate';
+import { ArrayColor } from '../../../utils/ArrayColor';
 
 const { CardFillColorNonFooterShadow, EmptyCard } =lazily(()=>import('../../../components/Cards'))
 
@@ -27,6 +28,8 @@ export const Todo = () => {
   const loadworkdata = async() =>{
     const WorkDatabel = await getworktData();
     const workComplete = await getworktDataComplete ();
+    const works = await getWorkByMaidId ();
+    
 
     setDataComplete (workComplete)
     setDataTableData (WorkDatabel)
@@ -34,8 +37,7 @@ export const Todo = () => {
   }
 
   useEffect (()=>{
-    loadworkdata();
-    
+    loadworkdata();    
   },[])
   console.log(dataTableData);
     const dataTable = {
@@ -72,7 +74,6 @@ export const Todo = () => {
       const datatTable1 = {
         data:[
           ...dataComplete.map(item =>{
-            const finished_date = convertTZ(item['finished_date'])
             return{
               id:item['maid_duty_assign_code'],
               description:item['work_description'],
@@ -81,7 +82,7 @@ export const Todo = () => {
               day:item['date_week_full_name_th'],
               time_start:item['time_start'],
               time_end:item['time_end'],
-              finished_date: `${finished_date.getFullYear()}-${finished_date.getMonth()+1}-${finished_date.getDate()} ${finished_date.getHours()}:${finished_date.getMinutes()}: ${finished_date.getSeconds()}`,
+              finished_date: convertTZ.getFullDate(item['finished_date']),
               status:item['status'],
               note: item['note'],
               deny_description: item['deny_description']
@@ -107,7 +108,6 @@ export const Todo = () => {
           },
           {title:"สาเหตุ",field:"deny_description"},
           
-    
         ]
       }
      
@@ -146,90 +146,42 @@ export const Todo = () => {
 }
 
 export const Schedule = () => {
-    const [isModal, setIsModal] = useState(false);
-    const [values, setValues] = useState({
-        title: '',
-        start: '',
-        end: ''
-    })
-    const [event, setEvent] = useState([])
-    const [isPending, startTransition] = useTransition();
-    useEffect(() => {
-       loadData();
-    }, [])
-
-    const loadData = async () =>{
-        
-        const result = await getFullCalendar()
-        startTransition(()=>{
-          const data = result.map((item, i)=>{
-              return{
-                  title: item['calendar_title'],
-                  start: item['date_start'],
-                  end: item['date_end'],
-                  allDay: item['all_day'] === 1 ? true: false,
-                  color: item['calendar_id'] >5 ? "red": null
-              }
-          })
-          setEvent([...data, ])
-        })
-        // {
-        //     title:'unlimit',
-        //     daysOfWeek: [ '3' ], // these recurrent events move separately
-        //     startTime: '11:00:00',
-        //     endTime: '11:30:00',
-        //     color: 'red'
-        //   }
+  const [workCalendar, setWorkClendar] = useState ([])
+  let checkName = ''
+    let colorIndex = 0;
+  const loadworkCalendar = async ()=>{
+    const works = await getWorkByMaidId ();
+    setWorkClendar ([...works.map((item, i)=>{
+      if (checkName !== item['date_week_id']) {
+        checkName = item['date_week_id']
+        colorIndex = colorIndex+1
     }
-
-    const handdleSelect = (info) =>{
-        console.log(info);
-        setIsModal(true)
-        setValues({...values,
-            start: info.startStr,
-            end: info.endStr
-        })
+    return{
+        title: item['work_description'],
+        startTime: item['time_start'],
+        endTime: item['time_end'],
+        daysOfWeek: [item['date_week_id']],
+        color: ArrayColor[colorIndex]
     }
-
-    const handleClick = (info) => {
-      console.log(info);
-    }
-
-    const Modal = {
-        mHead: (
-            <>
-                <h1 className="m-0 text-2xl"><FontAwesomeIcon icon={faCalendar}/> รายละเอียดงาน</h1>
-            </>
-        ),
-        mBody: (
-            <>
-            </>
-        )
-    }
-    return (
-        <>
-          <Suspense fallback={<Skeleton/>}>
-            {isPending?<Spiner/>:null}
-              <EmptyCard contentBody={
-                <FullCalendar
-                    plugins={[DayGridPlugin, timeGridPlugin,interactionPlugin]}
-                    headerToolbar={{
-                        center: 'dayGridMonth,timeGridWeek,timeGridDay',
-                    }}
-                    initialView="dayGridMonth"
-                    weekends={true}
-                    selectable={true}
-                    selectLongPressDelay= "1"
-                    select={handdleSelect}
-                    events={event}
-                    eventDisplay="auto"
-                    eventClick={handleClick}
-                />
-              }
-            />
-          </Suspense>
-          <ModalCard modalShow={isModal} modalHead={Modal.mHead} modalBody={Modal.mBody} setModalShow={setIsModal}/>
-        </>
-    )
+    })]) 
+  }
+ useEffect(()=>{
+   loadworkCalendar ()
+ },[])
+ return (
+    <>
+          <h1 className="text-2xl"><FontAwesomeIcon icon={faCalendarAlt}/> ปฎิทินกิจกรรม</h1>
+          <div className="row "></div>
+          <FullCalendar
+          plugins={[DayGridPlugin, timeGridPlugin,interactionPlugin]}
+          headerToolbar={{
+              center: 'dayGridMonth,timeGridWeek,timeGridDay',
+          }}
+          initialView="dayGridMonth"
+          events={workCalendar}
+          eventDisplay="auto"
+        />  
+  </>
+)
 }
 
