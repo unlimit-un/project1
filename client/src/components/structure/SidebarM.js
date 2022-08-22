@@ -10,6 +10,7 @@ import { ListGroupFlushWithLink } from '../ListGroup';
 import * as EngineerController from '../../controllers/engineer/UserControllers'
 import * as MaidControllers from '../../controllers/maid/UserControllers'
 import * as ManagerController from '../../controllers/manager/UsersController'
+import { geturgentData } from '../../controllers/maid/UngentControllers';
 
 export const SidebarLeftManager = () => {
     const [open, setOpen] = useState({
@@ -339,13 +340,31 @@ export const SidebarLeftMaid = () => {
 }
 
 export const SidebarRightMaid = ({maxHeight}) =>{
+    const [ungent,setUngent] = useState ([])
+    const loadungent = async () =>{
+        const ungentdata = await geturgentData();
+        setUngent (ungentdata)
+    }
+    
+    useEffect(()=>{
+        loadungent()
+    },[])
     const listGroup = [
-        {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
-        {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
-        {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
-        {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
-        {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
-        {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."}
+            ...ungent.map(item =>{
+                return {
+                    title: item['date_time'], 
+                    icon: faWarning, 
+                    path:"/maid/ungent", 
+                    link_name:"ข้อมูลเพิ่มเติม",
+                    detail: item['location_name']
+                }
+            })
+       
+        // {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
+        // {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
+        // {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
+        // {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."},
+        // {title:"unlimit", icon: faWarning, path:"/", link_name:"ข้อมูลเพิ่มเติม",detail:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ipsam."}
     ]
     
     return (

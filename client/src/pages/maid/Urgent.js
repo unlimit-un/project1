@@ -32,8 +32,8 @@ const Urgent = () => {
         return {
           
           description:item['type'],
-          location:item['date_time'],
-          date_time:item['work_description'],
+          location:item['location_name'],
+          date_time:item['date_time'],
           ED:<Delete DeleteFnc = {async()=>{
             const bool = await Updateurgent ({urgent_id:item['urgent_id']})
             if (bool) {

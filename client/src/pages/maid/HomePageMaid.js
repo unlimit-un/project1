@@ -134,7 +134,9 @@ const HomepageMaid = () => {
                     </div>
                 </div>
                 <div className="col-lg-3 col-md-4 col-12">
-                    <Suspense fallback={<Skeleton/>}><SidebarRightMaid maxHeight={height}/></Suspense>
+                    <Suspense fallback={<Skeleton/>}>
+                        <SidebarRightMaid maxHeight={height}/>
+                    </Suspense>
                 </div>
             </div>
         </>
