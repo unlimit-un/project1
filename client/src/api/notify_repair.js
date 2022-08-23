@@ -62,6 +62,20 @@ export const api_getNotifyRepairByManagerId = async () => {
     }
 }
 
+export const api_getNotifyRepairById = async (notify_repair_id) => {
+    try {
+        const {data} = await axiosGet(`${ROOT_SERVER}/api/manager/getNotifyRepairById?notify_repair_id=${notify_repair_id}`);
+        return data;
+    } catch (error) {
+        console.error(error)
+        await Swal.fire({
+            title: "ผิดพลาด",
+            icon: "error",
+            text: `${error.response.data}`
+        })
+    }
+}
+
 export const api_getNotifyRepairAndMaterialByNotifyRepairId = async (notify_repair_id) => {
     try {
         const {data} = await axiosGet(`${ROOT_SERVER}/api/manager/getNotifyRepairAndMaterialByNotifyRepairId?notify_repair_id=${notify_repair_id}`);

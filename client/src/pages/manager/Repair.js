@@ -11,11 +11,11 @@ import { Skeleton } from '../../components/Loading'
 import { EditDelete } from '../../components/EditDelete'
 import { getNotifyRepairByManagerIdStatusWaiting, getTotalNotifyRepairByManagerId, getTotalNotifyRepairByManagerIdAndStatus } from '../../controllers/manager/HomeController'
 import { InputGroupWithLabel, SelectOptionWithLabel } from '../../components/FormElements'
-import { getMaterialById, getMaterialByManagerId } from '../../controllers/manager/MaidDutyController'
-import { getEngineerDeptByManagerId } from '../../controllers/manager/ManageEmpController'
+import { getMaterialById, getMaterialByManagerId, getRoomByLocationId } from '../../controllers/manager/MaidDutyController'
+import { getEngineerDeptByManagerId, getLocationByManagerId } from '../../controllers/manager/ManageEmpController'
 import { ListGroupFlush } from '../../components/ListGroup'
 import Swal from 'sweetalert2'
-import { getNotifyRepairAndMaterialByNotifyRepairId, getNotifyRepairByManagerId, updateNotifyRepairToAccept, updateNotifyRepairToDeny } from '../../controllers/manager/ReapairContoller'
+import { getNotifyRepairAndMaterialByNotifyRepairId, getNotifyRepairById, getNotifyRepairByManagerId, updateNotifyRepairToAccept, updateNotifyRepairToDeny } from '../../controllers/manager/ReapairContoller'
 import { convertTZ } from '../../functions/ConvertDate'
 
 const {MuiTable} = lazily(()=>import('../../components/Tables'));
@@ -36,8 +36,8 @@ const Repair = () => {
 
     const [modalShow, setModalShow] = useState(false)
     const [assignModalShow, setAssignModalShow] = useState(false)
+    const [editModalShow, setEditModalShow] = useState(false)
     const [modal, setModal] = useState({mHead:<></>,mBody: <></>})
-    const [assignWork, setAssignWork] = useState([])
     const [notifyRepairId, setNotifyRepairId] = useState('')
     const [dataTableWaiting, setDataTableWaiting] = useState([])
     const [dataTableHistory, setDataTableHistory] = useState([])
@@ -51,10 +51,32 @@ const Repair = () => {
     })
     const [materialUseList, setMaterialUseList] = useState([])
     const [total, setTotal] = useState('')
+
+    const [optionsLocation, setOptionsLocation] = useState ([]);
+    const [optionsRoom, setOptionRoom] = useState ([]);
+    const [inputEditForm, setInputEditForm] = useState({
+        location_id: '',
+        room_id: '',
+        description: '',
+        dept_id: '',
+        engineer_id: '',
+        define_date: '',
+        unable_message: '',
+        status: '',
+        notify_repair_code: '',
+    })
     
     const refInputCode = useRef(null);
     const refInputCount = useRef(null);
     
+    const loadRoom = async (location_id)=>{
+        setInputEditForm({...inputEditForm, room_id: ''})
+        const repairRoom = await getRoomByLocationId (location_id)
+        setOptionRoom ([{value:'',text:'กรุณาเลือกข้อมูล'},...repairRoom.map(item=>{
+          return{value:item['room_id'],text:`${item['room_name']}`}
+        })])
+    }
+
     const loadData = async () =>{
         const [{count_notify: total}] = await getTotalNotifyRepairByManagerId();
         const [{count_notify: success}]= await getTotalNotifyRepairByManagerIdAndStatus(3);
@@ -76,6 +98,13 @@ const Repair = () => {
     useEffect(()=>{
         loadData();
     },[])
+
+    // useEffect(()=>{
+    //     if (inputEditForm.location_id !== '') {
+    //         setInputEditForm({...inputEditForm, room_id: ''})
+    //         loadRoom ()
+    //     }
+    // },[inputEditForm.location_id])
 
     const totalCard = (
         <div className="container-fulid">
@@ -246,11 +275,9 @@ const Repair = () => {
                     date: item['notify_repair_date'], 
                     location: item['location_name'], 
                     room: item['room_name'], 
-                    status:"รอดำเนินการ", 
-                    ED:<EditDelete/>, 
+                    status:"รอดำเนินการ"
                 }
             })
-            // {checkbox: <input className="accent-pink-300 focus:accent-pink-500" type="checkbox" value="2" onClick={({target,target:{value}})=>target.checked?handleCheck(value):handleUnCheck(value)} />,issue: 'โต๊ะหัก', notify_person:"unlimit unarn", date:"2022-02-21", location:"ตึก A", room:"A202", status:"success", ED:<EditDelete/>, view:<ModalButton callback={handleView} classBtn="btn btn-outline-primary" setModalShow={setModalShow} icon={faEye}/> },
         ],
         columns: [
             {title: "",field: "checkbox", },
@@ -260,8 +287,6 @@ const Repair = () => {
             {title: "สถานที่",field: "location", },
             {title: "ห้อง",field: "room", },
             {title: "สถานะ",field: "status"},
-            {title: "",field: "view"},
-            {title: "",field: "ED"},
         ]
     }
 
@@ -277,7 +302,11 @@ const Repair = () => {
                     status: item['status'], 
                     update_at: convertTZ.getFullDate(item['update_at']), 
                     view:<ModalButton callback={()=>{handleView(item['notify_repair_id'])}} classBtn="btn btn-outline-primary" setModalShow={setModalShow} icon={faEye}/>,
-                    ED:<EditDelete/>
+                    ED:<EditDelete
+                        EditFnc={()=>{showEditModal(item['notify_repair_id'])}}
+                        DeleteFnc={()=>{}}
+                        setModalShow={setEditModalShow}
+                    />
                 }
             })
         ],
@@ -340,10 +369,61 @@ const Repair = () => {
         }
     }
 
+    const showEditModal = async (notify_repair_id) =>{
+        setNotifyRepairId(notify_repair_id)
+        if (options.dept_options.length === 0 || options.material_options.length === 0 || optionsLocation.length === 0) {
+            const materialByManagerId = await getMaterialByManagerId();
+            const engineerDeptBtManagerId = await getEngineerDeptByManagerId();
+            const location = await getLocationByManagerId ()
+            
+            setOptions({
+                dept_options: [{text: 'เลือกวัสดุครุภัณ์', value: ''}, 
+                        ...engineerDeptBtManagerId.map(item=> {return {text: item['dept_name'], value:item['dept_id']}}),
+                    ],
+                material_options: [{text: 'เลือกวัสดุครุภัณฑ์', value: ''}, 
+                        ...materialByManagerId.map(item=> {return {text:`${item['material_code']}-${item['material_name']}`, value:item['material_id']}}),
+                    ]
+            })
+            setOptionsLocation ([{value:'',text:'กรุณาเลือกสถานที่'},...location.map(item=>{
+              return{value:item['location_id'],text:`${item['location_name']}`}
+            })])
+            
+            
+        }
+        const [notifyRepairById] = await getNotifyRepairById(notify_repair_id);
+        const repairRoom = await getRoomByLocationId (notifyRepairById['location_id'])
+        
+        setOptionRoom ([{value:'',text:'กรุณาเลือกข้อมูล'},...repairRoom.map(item=>{
+            return{value:item['room_id'],text:`${item['room_name']}`}
+        })])
+        setInputEditForm({
+            define_date: notifyRepairById['define_date_by_engineer'],
+            dept_id: notifyRepairById['engineer_dept_id'],
+            description: notifyRepairById['description'],
+            engineer_id: notifyRepairById['engineer_id'],
+            location_id: notifyRepairById['location_id'],
+            room_id: notifyRepairById['room_id'],
+            status: notifyRepairById['status'],
+            unable_message: notifyRepairById['unable_message'],
+            notify_repair_code: notifyRepairById['notify_repair_code'],
+        })
+    }
+
     const reState = () =>{
         setInputForm({
             dept_id: '',
             material_id:''
+        })
+        setInputEditForm({
+            location_id: '',
+            room_id: '',
+            description: '',
+            dept_id: '',
+            engineer_id: '',
+            define_date: '',
+            unable_message: '',
+            status: '',
+            notify_repair_code: '',
         })
         setNotifyRepairId('')
         setMaterialUseList([])
@@ -489,6 +569,35 @@ const Repair = () => {
             
         )
     }
+    console.log(optionsRoom, inputEditForm.room_id);
+    //todo: status location room description engineer define_date unable_message material
+    //complete: status location room description code dept engineer define_date unable_message material
+    const refInputCodeEdit = useRef(null)
+    const editModal = {
+        mHead: <h1 className="m-0 text-2xl"><FontAwesomeIcon icon={faPlus}/> มอบหมายงานให้แผนกช่าง</h1>,
+        mBody:(
+            !(options.dept_options.length === 0 || options.material_options.length || optionsLocation)?<Skeleton/>:
+            <>
+                <div className="row">
+                    <div className="col-md-4 col-12">
+                        <InputGroupWithLabel label="รหัสการซ่อม" defaultValue={inputEditForm.notify_repair_code} placeholder="รหัสการซ่อม" ref={refInputCodeEdit}/>
+                    </div>
+                    <div className="col-md-4 col-12">
+                        <SelectOptionWithLabel label="แจ้งไปยังแผนกช่าง" value={inputEditForm.dept_id} options_arr_obj={options.dept_options} callback={({target:{value}})=>{ setInputEditForm({...inputEditForm, dept_id:value})}}/>
+                    </div>
+                    <div className="col-md-4 col-12">
+                        <SelectOptionWithLabel label="สถานที่" value={inputEditForm.location_id} options_arr_obj={optionsLocation} callback={({target:{value}})=>{ setInputEditForm({...inputEditForm, location_id:value}); loadRoom (value);}}/>
+                    </div>
+                    <div className="col-md-4 col-12">
+                        <SelectOptionWithLabel label="ห้อง" value={inputEditForm.room_id} options_arr_obj={optionsRoom} callback={({target:{value}})=>{ setInputEditForm({...inputEditForm, room_id:value});}}/>
+                    </div>
+                </div>
+                
+            </>
+            
+        )
+    }
+
     return (
         <>
             <h1 className="text-2xl"><FontAwesomeIcon icon={faBell}/> จัดการข้อมูลการแจ้งซ่อม</h1>
@@ -529,18 +638,24 @@ const Repair = () => {
 
             {/* modal */}
             <ModalCardConfirm
-            confrimCallback={async()=>{
-                
-                const formData = {
-                    notify_repair_id: notifyRepairId,
-                    notify_repair_code: refInputCode.current.value,
-                    engineer_dept_id: inputForm.dept_id, 
-                    material_list: [...materialUseList.map(item=>({material_id: item['material_id'], material_count: item['material_count']}))]
-                }
-                
-                if (await updateNotifyRepairToAccept(formData)) reState();
-            }}
-            cancleCallback={reState} hideCallback={reState} modalBody={assignModal.mBody} modalHead={assignModal.mHead} modalShow={assignModalShow} setModalShow={setAssignModalShow}/>
+                confrimCallback={async()=>{
+                    
+                    const formData = {
+                        notify_repair_id: notifyRepairId,
+                        notify_repair_code: refInputCode.current.value,
+                        engineer_dept_id: inputForm.dept_id, 
+                        material_list: [...materialUseList.map(item=>({material_id: item['material_id'], material_count: item['material_count']}))]
+                    }
+                    
+                    if (await updateNotifyRepairToAccept(formData)) reState();
+                }}
+                cancleCallback={reState} hideCallback={reState} modalBody={assignModal.mBody} modalHead={assignModal.mHead} modalShow={assignModalShow} setModalShow={setAssignModalShow}/>
+            <ModalCardConfirm
+                confrimCallback={async()=>{
+                    
+                }}
+                cancleCallback={reState} hideCallback={reState} modalBody={editModal.mBody} modalHead={editModal.mHead} modalShow={editModalShow} setModalShow={setEditModalShow}/>
+            
             <ModalCard modalShow={modalShow} setModalShow={setModalShow} modalBody={modal.mBody} modalHead={modal.mHead}/>
         </>
     )

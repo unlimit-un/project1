@@ -19,6 +19,8 @@ function App() {
           <Route path='/' exac element={<HomePage/>}>
             <Route path='/login' element={<Login/>}/>
             <Route path='/register' element={<Register/>}/>
+            <Route path='/contact' element={<Register/>}/>
+            <Route path='/about' element={<Register/>}/>
           </Route>
           <Route path='/manager' exac element={<Manager.IndexManager/>}>
             <Route path='/manager/manage_emp/:page' element={<Manager.ManageEmp/>} /> 

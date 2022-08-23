@@ -223,6 +223,28 @@ router.get('/getNotifyRepairByManagerId', async (req, res)=>{
     }
 })
 
+router.get('/getNotifyRepairById', async (req, res)=>{
+    try {
+        const result = await db.query(`
+            SELECT 
+                IF(nr.maid_id IS NOT NULL, m.maid_code, nr.outsider_name) AS reporter,
+                l.location_name,
+                r.room_name,
+                nr.*
+            FROM notify_repair AS nr
+            LEFT JOIN location AS l ON nr.location_id = l.location_id
+            LEFT JOIN maid AS m ON m.maid_id = nr.maid_id
+            LEFT JOIN room AS r ON r.room_id = nr.room_id
+            WHERE notify_repair_id = ${escape(req.query['notify_repair_id'])}
+            ORDER BY nr.update_at DESC
+        `);
+        res.status(200).send(result)
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
+})
+
 router.post('/updateNotifyRepairToAccept', async (req, res)=>{
     try {
 
