@@ -12,11 +12,12 @@ import { EditDelete } from '../../components/EditDelete'
 import { getNotifyRepairByManagerIdStatusWaiting, getTotalNotifyRepairByManagerId, getTotalNotifyRepairByManagerIdAndStatus } from '../../controllers/manager/HomeController'
 import { InputGroupWithLabel, SelectOptionWithLabel } from '../../components/FormElements'
 import { getMaterialById, getMaterialByManagerId, getRoomByLocationId } from '../../controllers/manager/MaidDutyController'
-import { getEngineerDeptByManagerId, getLocationByManagerId } from '../../controllers/manager/ManageEmpController'
+import { getEngineerByManagerId, getEngineerDeptByManagerId, getLocationByManagerId } from '../../controllers/manager/ManageEmpController'
 import { ListGroupFlush } from '../../components/ListGroup'
 import Swal from 'sweetalert2'
-import { getNotifyRepairAndMaterialByNotifyRepairId, getNotifyRepairById, getNotifyRepairByManagerId, updateNotifyRepairToAccept, updateNotifyRepairToDeny } from '../../controllers/manager/ReapairContoller'
+import { deleteNotifyRepairMaterial, getEngineerByDeptId, getNotifyRepairAndMaterialByNotifyRepairId, getNotifyRepairById, getNotifyRepairByManagerId, getNotifyRepairMaterialByRepairId, insertNotifyRepairMaterial, updateNotifyRepair, updateNotifyRepairToAccept, updateNotifyRepairToDeny } from '../../controllers/manager/ReapairContoller'
 import { convertTZ } from '../../functions/ConvertDate'
+import { faJava } from '@fortawesome/free-brands-svg-icons'
 
 const {MuiTable} = lazily(()=>import('../../components/Tables'));
 // const {CardFillColorNonFooter} = lazily(()=>import('../../components/Cards'));
@@ -50,10 +51,12 @@ const Repair = () => {
         material_id:''
     })
     const [materialUseList, setMaterialUseList] = useState([])
+    const [materialUseListEdit, setMaterialUseListEdit] = useState([])
     const [total, setTotal] = useState('')
 
     const [optionsLocation, setOptionsLocation] = useState ([]);
     const [optionsRoom, setOptionRoom] = useState ([]);
+    const [optionsEngineer, setOptionEngineer] = useState ([]);
     const [inputEditForm, setInputEditForm] = useState({
         location_id: '',
         room_id: '',
@@ -64,16 +67,31 @@ const Repair = () => {
         unable_message: '',
         status: '',
         notify_repair_code: '',
+        material_id:''
     })
     
     const refInputCode = useRef(null);
     const refInputCount = useRef(null);
+    
+    const refInputCodeEdit = useRef(null)
+    const refInputDescriptionEdit = useRef(null)
+    const refInputDefineDateEdit = useRef(null)
+    const refInputUnableEdit = useRef(null)
+    const refInputCountEdit = useRef(null);
     
     const loadRoom = async (location_id)=>{
         setInputEditForm({...inputEditForm, room_id: ''})
         const repairRoom = await getRoomByLocationId (location_id)
         setOptionRoom ([{value:'',text:'กรุณาเลือกข้อมูล'},...repairRoom.map(item=>{
           return{value:item['room_id'],text:`${item['room_name']}`}
+        })])
+    }
+
+    const loadEngineer = async (dept_id)=>{
+        setInputEditForm({...inputEditForm, engineer_id: ''})
+        const engineer = await getEngineerByDeptId(dept_id)
+        setOptionEngineer ([{value:'',text:'กรุณาเลือกข้อมูล'},...engineer.map(item=>{
+          return{value:item['engineer_id'],text:`${item['engineer_code']}-${item['engineer_name']}`}
         })])
     }
 
@@ -99,13 +117,6 @@ const Repair = () => {
         loadData();
     },[])
 
-    // useEffect(()=>{
-    //     if (inputEditForm.location_id !== '') {
-    //         setInputEditForm({...inputEditForm, room_id: ''})
-    //         loadRoom ()
-    //     }
-    // },[inputEditForm.location_id])
-
     const totalCard = (
         <div className="container-fulid">
             <p className="text-md m-0 text-start">ทั้งหมด</p>
@@ -116,7 +127,6 @@ const Repair = () => {
         </div>
         
     )
-
     const successCard = (
         <div className="container-fulid">
             <p className="text-md m-0 text-start">ดำเนินการเสร็จสิ้น</p>
@@ -126,7 +136,6 @@ const Repair = () => {
             </div>
         </div>
     )
-
     const processCard = (
         <div className="container-fulid">
             <p className="text-md m-0 text-start">กำลังดำเนินการ</p>
@@ -136,7 +145,6 @@ const Repair = () => {
             </div>
         </div>
     )
-
     const waitingCard = (
         <div className="container-fulid">
             <p className="text-md m-0 text-start">รอดำเนินการ</p>
@@ -146,7 +154,6 @@ const Repair = () => {
             </div>
         </div>
     )
-
     const acceptCard = (
         <div className="container-fulid">
             <p className="text-md m-0 text-start">ผ่านการอนุมัติ</p>
@@ -350,6 +357,22 @@ const Repair = () => {
             setTotal('')
         }
     }
+    const loadTotalMaterialEdit = async (material_id) =>{
+        
+        if (inputEditForm.material_id) {
+            const [{material_quantity, material_using}] = await getMaterialById(inputEditForm.material_id)
+            setTotal(material_quantity- +refInputCountEdit.current.value - material_using < 0 ? 'วัสดุไม่เพียงพอ':material_quantity- +refInputCountEdit.current.value - material_using)
+        }
+
+        if (material_id) {
+            const [{material_quantity, material_using}] = await getMaterialById(material_id)
+            setTotal(material_quantity- +refInputCountEdit.current.value - material_using < 0 ? 'วัสดุไม่เพียงพอ':material_quantity- +refInputCountEdit.current.value - material_using)
+        }
+
+        if (material_id === '') {
+            setTotal('')
+        }
+    }
 
    
 
@@ -371,7 +394,7 @@ const Repair = () => {
 
     const showEditModal = async (notify_repair_id) =>{
         setNotifyRepairId(notify_repair_id)
-        if (options.dept_options.length === 0 || options.material_options.length === 0 || optionsLocation.length === 0) {
+        if (options.dept_options.length === 0 || options.material_options.length === 0 || optionsLocation.length === 0 || optionsEngineer.length ===0) {
             const materialByManagerId = await getMaterialByManagerId();
             const engineerDeptBtManagerId = await getEngineerDeptByManagerId();
             const location = await getLocationByManagerId ()
@@ -385,13 +408,20 @@ const Repair = () => {
                     ]
             })
             setOptionsLocation ([{value:'',text:'กรุณาเลือกสถานที่'},...location.map(item=>{
-              return{value:item['location_id'],text:`${item['location_name']}`}
+                return{value:item['location_id'],text:`${item['location_name']}`}
             })])
             
             
         }
         const [notifyRepairById] = await getNotifyRepairById(notify_repair_id);
         const repairRoom = await getRoomByLocationId (notifyRepairById['location_id'])
+        const engineer = await getEngineerByManagerId();
+        const notify_material = await getNotifyRepairMaterialByRepairId(notify_repair_id)
+
+        setMaterialUseListEdit(notify_material)
+        setOptionEngineer ([{value:'',text:'กรุณาเลือกช่างซ่อม'},...engineer.map(item=>{
+            return{value:item['engineer_id'],text:`${item['engineer_code']}-${item['engineer_name']}`}
+        })])
         
         setOptionRoom ([{value:'',text:'กรุณาเลือกข้อมูล'},...repairRoom.map(item=>{
             return{value:item['room_id'],text:`${item['room_name']}`}
@@ -492,6 +522,77 @@ const Repair = () => {
         }
     }
 
+    const checkAddButtonEdit = () =>{
+        const [{text}] = options.material_options.filter(item=>{
+            if(item['value'] === +inputEditForm.material_id) {
+                return item.text
+            }
+        })
+        let checkUnique = true
+        if (materialUseListEdit.length>0) {
+            checkUnique = materialUseListEdit.every(item=>{
+                console.log(item);
+                if (+item.material_id === +inputEditForm.material_id) {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 1500,
+                        icon: 'info',
+                        title: 'วัสดุครุภัณฑ์ซ้ำ'
+                    })
+                    return false
+                }else{
+                    return true
+                }
+            })
+        }
+
+        let checkTotal = true
+        if (isNaN(+total)) {
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 1500,
+                icon: 'info',
+                title: 'จำนวนวัสดุครุภัณฑ์ไม่เพียงพอ'
+            })
+            checkTotal = false
+        }
+
+        if (!refInputCountEdit.current.value || isNaN(+refInputCountEdit.current.value)) {
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 1500,
+                icon: 'info',
+                title: 'ใส่จำนวนเป็นตัวเลข'
+            })
+        }
+
+        if (checkUnique && checkTotal && refInputCountEdit.current.value) {
+            (async ()=>{
+                const formData = {
+                    notify_repair_id: notifyRepairId,
+                    material_id: inputEditForm.material_id,
+                    material_count: refInputCountEdit.current.value
+                }
+                if (await insertNotifyRepairMaterial(formData)) {
+                    
+                    setMaterialUseListEdit([...materialUseListEdit,
+                        {
+                            material_code: text.split('-')[0],
+                            material_name: text.split('-')[1],
+                            material_id: inputEditForm.material_id,
+                            material_count: refInputCountEdit.current.value,
+                        }
+                    ])
+                }
+            })()
+        }
+    }
     
     const tableWaiting = (
         <div className="container-fluid">
@@ -569,35 +670,114 @@ const Repair = () => {
             
         )
     }
-    console.log(optionsRoom, inputEditForm.room_id);
-    //todo: status location room description engineer define_date unable_message material
-    //complete: status location room description code dept engineer define_date unable_message material
-    const refInputCodeEdit = useRef(null)
+    //todo:  material
+    //complete: location room code dept engineer status description
+    
     const editModal = {
-        mHead: <h1 className="m-0 text-2xl"><FontAwesomeIcon icon={faPlus}/> มอบหมายงานให้แผนกช่าง</h1>,
+        mHead: <h1 className="m-0 text-2xl"><FontAwesomeIcon icon={faPlus}/> แก้ไขข้อมูลการแจ้งซ่อม</h1>,
         mBody:(
             !(options.dept_options.length === 0 || options.material_options.length || optionsLocation)?<Skeleton/>:
             <>
                 <div className="row">
                     <div className="col-md-4 col-12">
-                        <InputGroupWithLabel label="รหัสการซ่อม" defaultValue={inputEditForm.notify_repair_code} placeholder="รหัสการซ่อม" ref={refInputCodeEdit}/>
+                        <InputGroupWithLabel key={inputEditForm.notify_repair_code} label="รหัสการซ่อม" defaultValue={inputEditForm.notify_repair_code} placeholder="รหัสการซ่อม" ref={refInputCodeEdit}/>
                     </div>
                     <div className="col-md-4 col-12">
-                        <SelectOptionWithLabel label="แจ้งไปยังแผนกช่าง" value={inputEditForm.dept_id} options_arr_obj={options.dept_options} callback={({target:{value}})=>{ setInputEditForm({...inputEditForm, dept_id:value})}}/>
+                        <SelectOptionWithLabel key={inputEditForm.location_id} label="สถานที่" defaultValue={inputEditForm.location_id} options_arr_obj={optionsLocation} callback={({target:{value}})=>{ setInputEditForm({...inputEditForm, location_id:value}); loadRoom (value);}}/>
                     </div>
                     <div className="col-md-4 col-12">
-                        <SelectOptionWithLabel label="สถานที่" value={inputEditForm.location_id} options_arr_obj={optionsLocation} callback={({target:{value}})=>{ setInputEditForm({...inputEditForm, location_id:value}); loadRoom (value);}}/>
+                        <SelectOptionWithLabel key={inputEditForm.room_id} label="ห้อง" defaultValue={inputEditForm.room_id} options_arr_obj={optionsRoom} callback={({target:{value}})=>{ setInputEditForm({...inputEditForm, room_id:value});}}/>
                     </div>
                     <div className="col-md-4 col-12">
-                        <SelectOptionWithLabel label="ห้อง" value={inputEditForm.room_id} options_arr_obj={optionsRoom} callback={({target:{value}})=>{ setInputEditForm({...inputEditForm, room_id:value});}}/>
+                        <InputGroupWithLabel key={inputEditForm.description} label="รายละเอียด" defaultValue={inputEditForm.description} placeholder="รายละเอียด" ref={refInputDescriptionEdit}/>
                     </div>
+                    <div className="col-md-4 col-12">
+                        <SelectOptionWithLabel label="สถานะ" value={inputEditForm.status} 
+                            options_arr_obj={[
+                                {value:'0',text:'รอหัวหน้าดำเนินการ'},
+                                {value:'1',text:'อนุมัติ'},
+                                {value:'2',text:'กำลังดำเนินการ'},
+                                {value:'3',text:'ดำเนินการเสร็จสิ้น'},
+                                {value:'-1',text:'ไม่ผ่านอนุมัติ/ปฏิเสธ'},
+                                {value:'-2',text:'ไม่สามารถดำเนินการได้'},
+                                {value:'-3',text:'ไม่ต้องการการดำเนินการ'},
+                            ]} 
+                            callback={({target:{value}})=>{ setInputEditForm({...inputEditForm, status:value});}}
+                        />
+                    </div>
+                    <div className="col-md-4 col-12">
+                        <SelectOptionWithLabel key={inputEditForm.dept_id} label="แจ้งไปยังแผนกช่าง" disabled={+inputEditForm.status >= 1?"":"disabled"} defaultValue={inputEditForm.dept_id||''} options_arr_obj={options.dept_options} callback={({target:{value}})=>{ setInputEditForm({...inputEditForm, dept_id:value}); loadEngineer(value)}}/>
+                    </div>
+                    <div className="col-md-4 col-12">
+                        <SelectOptionWithLabel key={inputEditForm.engineer_id} label="ช่างซ่อม" disabled={+inputEditForm.status === 2?"":"disabled"} defaultValue={inputEditForm.engineer_id||''} options_arr_obj={optionsEngineer} callback={({target:{value}})=>{ setInputEditForm({...inputEditForm, engineer_id:value}); }}/>
+                    </div>
+                    <div className="col-md-4 col-12">
+                        <InputGroupWithLabel key={inputEditForm.define_date} disabled={+inputEditForm.status === 2?"":"disabled"} label="กำหนดระยะเวลาโดยช่าง" defaultValue={inputEditForm.define_date} placeholder="กำหนดระยะเวลาโดยช่าง" ref={refInputDefineDateEdit}/>
+                    </div>
+                    <div className="col-md-4 col-12">
+                        <InputGroupWithLabel key={inputEditForm.unable_message} disabled={+inputEditForm.status === -2?"":"disabled"} label="หมายเหตุจากช่าง" defaultValue={inputEditForm.unable_message} placeholder="หมายเหตุจากช่าง" ref={refInputUnableEdit}/>
+                    </div>
+                </div>
+                <hr />
+                <div className="row">
+                    <div className="col-md-4 col-12">
+                        <SelectOptionWithLabel label="วัสดุครุภัณฑ์" options_arr_obj={options.material_options} callback={({target:{value}})=>{ setInputEditForm({...inputEditForm, material_id: value}); loadTotalMaterialEdit(value);}}/>
+                    </div>
+                    <div className="col-md-4 col-12">
+                        <label className="form-label">จำนวน <small>(คงเหลือ: {total})</small></label>
+                        <input className="form-control mb-3" required ref={refInputCountEdit} 
+                            onChange={()=>{
+                                    loadTotalMaterialEdit()
+                            }}
+                        />
+                    </div>
+                    <div className="col-md-4 col-12 flex items-end">
+                        <button type="button" className="btn btn-info mb-3" onClick={()=>checkAddButtonEdit()}>เพิ่มอุปกรณ์</button>
+                    </div>
+                </div>
+                <div className="mt-2">
+                    <h5 className="m-0 text-lg">รายการอุปกรณ์ที่ใช้</h5>
+                    <table className="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>รหัส</th>
+                                <th>ชื่อ</th>
+                                <th>จำนวน</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                materialUseListEdit.length !== 0 ? materialUseListEdit.map((item, i)=>{
+                                    
+                                    return (
+                                        <tr key={'sub'+i}>
+                                            <td>{item['material_code']}</td>
+                                            <td>{item['material_name']}</td>
+                                            <td>{item['material_count']}</td>
+                                            <td><button type="button" className="btn btn-outline-danger" onClick={async ()=> {
+                                                if (await deleteNotifyRepairMaterial({notify_repair_id: notifyRepairId, material_id: item['material_id']})) {
+                                                    
+                                                    setMaterialUseListEdit(materialUseListEdit.filter(ele=>{
+                                                        return ele['material_id'] !== item['material_id']??ele
+                                                    }))
+                                                }
+                                            }}
+                                            ><FontAwesomeIcon icon={faXmarkCircle}/>
+                                            </button></td>
+                                        </tr>
+                                    )
+                                }):<></>
+                            }
+                        </tbody>
+                    </table>
                 </div>
                 
             </>
             
         )
     }
-
+    // console.log(materialUseListEdit);
     return (
         <>
             <h1 className="text-2xl"><FontAwesomeIcon icon={faBell}/> จัดการข้อมูลการแจ้งซ่อม</h1>
@@ -652,7 +832,16 @@ const Repair = () => {
                 cancleCallback={reState} hideCallback={reState} modalBody={assignModal.mBody} modalHead={assignModal.mHead} modalShow={assignModalShow} setModalShow={setAssignModalShow}/>
             <ModalCardConfirm
                 confrimCallback={async()=>{
-                    
+                    const formData = {
+                        ...inputEditForm, 
+                        description: refInputDescriptionEdit.current.value,
+                        notify_repair_code: refInputCodeEdit.current.value,
+                        define_date: refInputDefineDateEdit.current.value,
+                        unable_message: refInputUnableEdit.current.value,
+                        notify_repair_id: notifyRepairId
+                    }
+
+                    if (await updateNotifyRepair(formData)) reState();
                 }}
                 cancleCallback={reState} hideCallback={reState} modalBody={editModal.mBody} modalHead={editModal.mHead} modalShow={editModalShow} setModalShow={setEditModalShow}/>
             

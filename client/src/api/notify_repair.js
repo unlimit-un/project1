@@ -117,3 +117,16 @@ export const api_updateNotifyRepairToDeny = async (formData) =>{
         })
     }
 }
+
+export const api_updateNotifyRepair = async (formData) =>{
+    try {
+        return InsertFormSwal(()=>axiosPost(`${ROOT_SERVER}/api/manager/updateNotifyRepair`,{...formData}))
+    } catch (error) {
+        console.error(error)
+        await Swal.fire({
+            title: "ผิดพลาด",
+            icon: "error",
+            text: `${error.response.data}`
+        })
+    }
+}

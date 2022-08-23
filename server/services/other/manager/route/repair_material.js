@@ -2,36 +2,61 @@ const router = require('express').Router();
 const { escape } = require('mysql2');
 const db = require('../../../../config/database');
 
-// router.get('/getNotifyRepairAndMaterialByNotifyRepairId', async (req, res)=>{
-//     try {
-//         const result = await db.query(`
-//             SELECT 
-//                 IF(nr.maid_id IS NOT NULL, m.maid_code, nr.outsider_name) AS reporter,
-//                 l.location_name,
-//                 r.room_name,
-//                 IF(nr.status = 0,"รอหัวหน้าดำเนินการ", 
-//                         IF(nr.status = 1, "อนุมัติ",
-//                                 IF(nr.status = 2,"กำลังดำเนินการซ่อม", 
-//                                         IF(nr.status= 3,"ดำเนินการเสร็จสิ้น", 
-//                                                 IF(nr.status = -1,"ปฏิเสธ",
-//                                                     IF(nr.status = -2, "ไม่สามารถดำเนินการได้", "ไม่ต้องการดำเนินการแล้ว")
-//                                                 )
-//                                         )	
-//                                 )
-//                         )
-//                 ) AS note,
-//                 nr.*
-//             FROM notify_repair AS nr
-//             LEFT JOIN location AS l ON nr.location_id = l.location_id
-//             LEFT JOIN maid AS m ON m.maid_id = nr.maid_id
-//             LEFT JOIN room AS r ON r.room_id = nr.room_id
-//             WHERE l.manager_id = ${escape(req.query['manager_id'])} AND nr.status = 0
-//         `);
-//         res.status(200).send(result)
-//     } catch (error) {
-//         console.log(error);
-//         res.sendStatus(500)
-//     }
-// })
+router.get('/getNotifyRepairMaterialByRepairId', async (req, res)=>{
+    try {
+        const result = await db.query(`
+            SELECT nrm.*, m.material_code, m.material_name FROM notify_repair_material AS nrm
+            LEFT JOIN notify_repair AS nr ON nr.notify_repair_id = nrm.notify_repair_id
+            LEFT JOIN material AS m ON m.material_id = nrm.material_id
+            WHERE
+            nrm.notify_repair_id = ${escape(req.query['notify_repair_id'])}
+        `);
+        res.status(200).send(result)
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
+})
+
+router.post('/insertNotifyRepairMaterial', async (req, res)=>{
+    try {
+        const {notify_repair_id, material_id, material_count} = req.body
+
+        if (!(notify_repair_id && material_id && material_count)) {
+            res.status(400).send('data is required!')
+        }
+
+        const result = await db.query(`
+            INSERT INTO notify_repair_material (notify_repair_id, material_id, material_count)
+            VALUES(
+                ${escape(notify_repair_id)},
+                ${escape(material_id)},
+                ${escape(material_count)}
+            )
+        `);
+        res.status(200).send(result)
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
+})
+
+router.post('/deleteNotifyRepairMaterial', async (req, res)=>{
+    try {
+        const {notify_repair_id, material_id} = req.body
+
+        if (!(notify_repair_id && material_id)) {
+            res.status(400).send('data is required!')
+        }
+
+        const result = await db.query(`
+            DELETE FROM notify_repair_material WHERE material_id= ${escape(material_id)} AND notify_repair_id = ${escape(notify_repair_id)}
+        `);
+        res.status(200).send(result)
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
+})
 
 module.exports = router

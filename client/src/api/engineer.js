@@ -15,3 +15,17 @@ export const api_getTotalEngineerByManagerId = async () => {
         })
     }
 }
+
+export const api_getEngineerByDeptId = async (dept_id) => {
+    try {
+        const {data} = await axiosGet(`${ROOT_SERVER}/api/manager/getEngineerByDeptId?dept_id=${dept_id}`);
+        return data;
+    } catch (error) {
+        console.error(error)
+        await Swal.fire({
+            title: "ผิดพลาด",
+            icon: "error",
+            text: `${error.response.data}`
+        })
+    }
+}

@@ -321,6 +321,107 @@ router.post('/updateNotifyRepairToDeny', async (req, res)=>{
     }
 })
 
+router.post('/updateNotifyRepair', async (req, res)=>{
+    try {
+
+        const {notify_repair_id, location_id, room_id, description, dept_id, engineer_id, unable_message, define_date, status, notify_repair_code} = req.body
+        //true conditions
+        if (!(notify_repair_id || location_id || room_id || description || status)) {
+            res.status(400).send('ข้อมูลไม่ครบ');
+            return false;
+        }
+        let sql = '';
+        if (+status === 0|| +status === -3 || +status === -1) {
+            sql = `
+                UPDATE notify_repair
+                SET 
+                    location_id = ${escape(location_id)}, 
+                    room_id = ${escape(room_id)}, 
+                    description = ${escape(description)}, 
+                    notify_repair_code = ${escape(notify_repair_code)},
+                    engineer_dept_id = NULL , 
+                    engineer_id = NULL , 
+                    unable_message = NULL , 
+                    define_date_by_engineer = NULL , 
+                    status = ${escape(status)}
+                WHERE
+                    notify_repair_id = ${escape(notify_repair_id)}
+            `
+        }else if(+status === 1){
+            if (!(dept_id)) {
+                res.status(400).send('ข้อมูลไม่ครบ');
+                return false;
+            }
+            sql = `
+                UPDATE notify_repair
+                SET 
+                    location_id = ${escape(location_id)}, 
+                    room_id = ${escape(room_id)}, 
+                    description = ${escape(description)}, 
+                    notify_repair_code = ${escape(notify_repair_code)},
+                    engineer_dept_id = ${escape(dept_id)}, 
+                    engineer_id = NULL , 
+                    unable_message = NULL , 
+                    define_date_by_engineer = NULL , 
+                    status = ${escape(status)}
+                WHERE
+                    notify_repair_id = ${escape(notify_repair_id)}
+            `
+        }else if(+status === 2 || +status === 3){
+            if (!(dept_id || engineer_id || define_date)) {
+                res.status(400).send('ข้อมูลไม่ครบ');
+                return false;
+            }
+            sql = `
+                UPDATE notify_repair
+                SET 
+                    location_id = ${escape(location_id)}, 
+                    room_id = ${escape(room_id)}, 
+                    description = ${escape(description)}, 
+                    notify_repair_code = ${escape(notify_repair_code)},
+                    engineer_dept_id = ${escape(dept_id)}, 
+                    engineer_id = ${escape(engineer_id)}, 
+                    unable_message = NULL , 
+                    define_date_by_engineer = ${escape(define_date)}, 
+                    status = ${escape(status)}
+                WHERE
+                    notify_repair_id = ${escape(notify_repair_id)}
+            `
+        }else{
+            if (!(dept_id || engineer_id || define_date || unable_message)) {
+                res.status(400).send('ข้อมูลไม่ครบ');
+                return false;
+            }
+            sql = `
+                UPDATE notify_repair
+                SET 
+                    location_id = ${escape(location_id)}, 
+                    room_id = ${escape(room_id)}, 
+                    description = ${escape(description)}, 
+                    notify_repair_code = ${escape(notify_repair_code)},
+                    engineer_dept_id = ${escape(dept_id)}, 
+                    engineer_id = ${escape(engineer_id)}, 
+                    unable_message = ${escape(unable_message)}, 
+                    define_date_by_engineer = ${escape(status)}, 
+                    status = ${escape(status)}
+                WHERE
+                    notify_repair_id = ${escape(notify_repair_id)}
+            `
+        }
+        const result = await db.query(sql);
+        console.log(result);
+        res.status(200).send(result)
+        // res.sendStatus(200)
+    } catch (error) {
+        console.log(error);
+        if (error.sqlMessage.includes('Duplicate entry ')) {
+            res.status(500).send(error.sqlMessage.substr(0, 25))
+            return false
+        }
+        res.sendStatus(500)
+    }
+})
+
 
 
 module.exports = router

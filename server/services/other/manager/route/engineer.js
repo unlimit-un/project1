@@ -35,6 +35,22 @@ router.get('/getEngineerByManagerId', async (req, res)=>{
    
 })
 
+router.get('/getEngineerByDeptId', async (req, res)=>{
+    try {
+        const result = await db.query(`
+            SELECT * FROM engineer 
+            INNER JOIN location AS l ON l.location_id = engineer.location_id
+            INNER JOIN engineer_department AS ed ON ed.dept_id = engineer.dept_id
+            WHERE ed.dept_id = ${escape(req.query['dept_id'])}
+        `);
+        res.status(200).send(result)
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
+   
+})
+
 router.get('/getTotalEngineerByManagerId', async (req, res)=>{
     try {
         const result = await db.query(`
