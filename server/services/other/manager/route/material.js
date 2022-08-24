@@ -42,4 +42,130 @@ router.get('/getMaterialById', async(req, res)=>{
     }
 })
 
+router.post('/insertMaterial', async(req, res)=>{
+    try{
+
+        const {material_code, material_name, material_quantity, import_date, manager_id} = req.body
+
+        if (!(material_code && material_name && material_quantity && import_date && manager_id)) {
+            res.status(400).send('ข้อมูลไม่ครบ')
+        }
+
+        const result = await db.query(`
+            INSERT INTO material(material_code, material_name, material_quantity, import_date, manager_id) 
+            VALUES (
+                ${escape(material_code)},
+                ${escape(material_name)}, 
+                ${escape(material_quantity)}, 
+                ${escape(import_date)}, 
+                ${escape(manager_id)} 
+            );
+        `);
+        
+        res.status(200).send(result)
+    } catch (error) {
+        console.log(error);
+        if (error.sqlMessage.includes('Duplicate entry ')) {
+            res.status(500).send(error.sqlMessage.substr(0, 25))
+            return false
+        }
+        res.sendStatus(500)
+    }
+})
+
+router.post('/deleteMaterial', async(req, res)=>{
+    try{
+
+        const {material_id} = req.body
+
+        if (!(material_id)) {
+            res.status(400).send('ข้อมูลไม่ครบ')
+        }
+
+        const result = await db.query(`
+            DELETE FROM material WHERE material_id = ${escape(material_id)}
+        `);
+        
+        res.status(200).send(result)
+    } catch (error) {
+        console.log(error);
+        if (error.sqlMessage.includes('Duplicate entry ')) {
+            res.status(500).send(error.sqlMessage.substr(0, 25))
+            return false
+        }
+        res.sendStatus(500)
+    }
+})
+
+router.post('/uploadMaterial', async(req, res)=>{
+    try{
+
+        const {material_code, material_name, material_quantity, import_date, material_using, type, material_id} = req.body
+
+        if (!(material_code && material_name && material_quantity && import_date && material_using && type && material_id)) {
+            res.status(400).send('ข้อมูลไม่ครบ')
+        }
+
+        let sql = '';
+
+        if (type === 'maid') {
+            const { maid_import_id } = req.body
+            sql = `
+                UPDATE 
+                    material 
+                SET 
+                    material_code = ${escape(material_code)}, 
+                    material_name = ${escape(material_name)}, 
+                    material_quantity = ${escape(material_quantity)}, 
+                    material_using = ${escape(material_using)}, 
+                    import_date = ${escape(import_date)}, 
+                    maid_import_id = ${escape(maid_import_id)} 
+                WHERE 
+                    material_id = ${escape(material_id)};
+            `
+        }else if(type === 'engineer'){
+            const { engineer_import_id } = req.body
+            sql = `
+                UPDATE 
+                    material 
+                SET 
+                    material_code = ${escape(material_code)}, 
+                    material_name = ${escape(material_name)}, 
+                    material_quantity = ${escape(material_quantity)}, 
+                    material_using = ${escape(material_using)}, 
+                    import_date = ${escape(import_date)}, 
+                    engineer_import_id = ${escape(engineer_import_id)} 
+                WHERE 
+                    material_id = ${escape(material_id)};
+            `
+        }else{
+            //manager
+            const { manager_id } = req.body
+            sql = `
+                UPDATE 
+                    material 
+                SET 
+                    material_code = ${escape(material_code)}, 
+                    material_name = ${escape(material_name)}, 
+                    material_quantity = ${escape(material_quantity)}, 
+                    material_using = ${escape(material_using)}, 
+                    import_date = ${escape(import_date)}, 
+                    manager_id = ${escape(manager_id)} 
+                WHERE 
+                    material_id = ${escape(material_id)};
+            `
+        }
+        const result = await db.query(sql);
+        
+        res.status(200).send(result)
+    } catch (error) {
+        console.log(error);
+        if (error.sqlMessage.includes('Duplicate entry ')) {
+            res.status(500).send(error.sqlMessage.substr(0, 25))
+            return false
+        }
+        res.sendStatus(500)
+    }
+})
+
 module.exports = router
