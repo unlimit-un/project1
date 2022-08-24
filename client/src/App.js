@@ -8,6 +8,8 @@ import { PageForbidden, PageNotFound, PageUnderConstrunction} from './pages/Page
 import * as Manager from './pages/manager/ImportManager'
 import * as Maid from './pages/maid/ImportMaid';
 import * as En from './pages/engineer/ImportEn';
+import Contact from './pages/Contact';
+import About from './pages/About';
 
 function App() {
   return (
@@ -19,8 +21,8 @@ function App() {
           <Route path='/' exac element={<HomePage/>}>
             <Route path='/login' element={<Login/>}/>
             <Route path='/register' element={<Register/>}/>
-            <Route path='/contact' element={<Register/>}/>
-            <Route path='/about' element={<Register/>}/>
+            <Route path='/contact' element={<Contact/>}/>
+            <Route path='/about' element={<About/>}/>
           </Route>
           <Route path='/manager' exac element={<Manager.IndexManager/>}>
             <Route path='/manager/manage_emp/:page' element={<Manager.ManageEmp/>} /> 

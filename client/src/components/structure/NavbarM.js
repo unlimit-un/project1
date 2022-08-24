@@ -54,10 +54,10 @@ export const NavbarHomepage = () =>{
                             <Link to="/" className="text-3xl text-white nav-link hover:!text-pink-500"> สถานที่ทั้งหมด </Link>
                         </li>
                         <li className="nav-item">
-                            <Link to="/" className="text-3xl text-white nav-link hover:!text-pink-500"> ติดต่อ </Link>
+                            <Link to="/contact" className="text-3xl text-white nav-link hover:!text-pink-500"> ติดต่อ </Link>
                         </li>
                         <li className="nav-item">
-                            <Link to="/" className="text-3xl text-white nav-link hover:!text-pink-500"> เกี่ยวกับ </Link>
+                            <Link to="/about" className="text-3xl text-white nav-link hover:!text-pink-500"> เกี่ยวกับ </Link>
                         </li>
                     </Nav>
                     <Nav>

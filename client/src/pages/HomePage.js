@@ -6,6 +6,8 @@ import Login from './Login'
 import Register from './Register'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { NavbarHomepage } from '../components/structure/NavbarM'
+import Contact from './Contact'
+import About from './About'
 
 const HomePage = () => {
 
@@ -42,7 +44,9 @@ const {pathname} = useLocation()
             <div className="md:grid md:grid-cols-2 grid-cols-1 flex flex-col-reverse">
               {pathname === '/'?imgHome:imgLogin}
               <div className="col d-flex justify-center z-10">
-              {pathname === '/'?homepage: pathname === '/login/' || pathname === '/login'?<Login/>:<Register/>}
+              {pathname === '/'?homepage: pathname === '/login/' || pathname === '/login' ?<Login/>:
+              pathname === '/register/' || pathname === '/register' ?<Register/>:
+              pathname === '/contact/'  || pathname === '/contact'  ?<Contact/>:<About/>}
               </div>
             </div>
           </div>
