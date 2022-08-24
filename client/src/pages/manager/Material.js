@@ -1,38 +1,59 @@
 import { faScrewdriverWrench,faPencil,faTrash, faSave } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { Suspense } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 import { lazily } from 'react-lazily'
 import { Skeleton } from '../../components/Loading'
 import { EditDelete } from '../../components/EditDelete'
 import { CardFillColorNonFooter } from '../../components/Cards'
+import { getMaterialByManagerId } from '../../controllers/manager/MaterialController'
 // import { FilterTable } from '../../components/Tables'
 const { MuiTable } = lazily(()=>import('../../components/Tables'))
 const Material = () => {
 
-  const data = [
-    { id: "A3264", list_name: 'โต๊ะไม้ขนาด 100*80', count:2, import_date:'12/02/65', import_person:'Unlimit unarn', status_person:'หัวหน้างาน', ED:<EditDelete/> },
-    { id: "A3264", list_name: 'โต๊ะไม้ขนาด 100*80', count:2, import_date:'12/02/65', import_person:'Unlimit unarn', status_person:'หัวหน้างาน', ED:<EditDelete/> },
-    { id: "A3264", list_name: 'โต๊ะไม้ขนาด 100*80', count:2, import_date:'12/02/65', import_person:'Unlimit unarn', status_person:'หัวหน้างาน', ED:<EditDelete/> },
-    { id: "A3264", list_name: 'โต๊ะไม้ขนาด 100*80', count:2, import_date:'12/02/65', import_person:'Unlimit unarn', status_person:'หัวหน้างาน', ED:<EditDelete/> },
-  ];
+  const [dataTableMaterial, setDataTableMaterial] = useState([])
 
-  const columns = [
-    {title: "รหัสครุภัณฑ์",field: "id"},
-    {title: "รายการ",field: "list_name"},
-    {title: "จำนวน",field: "count"},
-    {title: "วันที่นำเข้า",field: "import_date"},
-    {title: "คนที่สั่ง",field: "import_person"},
-    {title: "สถานะบุคคล",field: "status_person"},
-    {title: "",field: "ED"},
-  ];
+  const loadData = async () =>{
+    const dataTable = await getMaterialByManagerId();
+
+    setDataTableMaterial(dataTable)
+  }
+
+  useEffect(()=>{
+    loadData()
+  },[])
+
+  const muiData = {
+    data:[
+      ...dataTableMaterial.map(item=>{
+        return { 
+          id: item['material_code'], 
+          list_name: item['material_name'], 
+          count: item['material_quantity'], 
+          using: item['material_using'],
+          import_date: item['import_date'], 
+          import_person: item['importer_name'], 
+          status_person: item['importer_role'], 
+          ED:<EditDelete/> 
+        }
+      })
+    ],
+    columns:[
+      {title: "รหัสครุภัณฑ์",field: "id"},
+      {title: "รายการ",field: "list_name"},
+      {title: "จำนวนทั้งหมด",field: "count" , type:"numeric"},
+      {title: "จำนวนที่ถูกใช้",field: "using", type:"numeric"},
+      {title: "วันที่นำเข้า",field: "import_date"},
+      {title: "คนที่สั่ง",field: "import_person"},
+      {title: "สถานะบุคคล",field: "status_person"},
+      {title: "",field: "ED"},
+    ]
+  }
+
   return (
     <>
         <h1 className="text-2xl"><FontAwesomeIcon icon={faScrewdriverWrench}/> วัสดุครุภัณฑ์</h1>
         <div className="container-fluid">
-          <Suspense fallback= {<Skeleton/>}> 
-            <CardFillColorNonFooter contentBody={<MuiTable data={data} columns={columns} title="ตารางวัสดุครุภัณฑ์"/>}/>
-          </Suspense>  
-          <div className="card card-body mt-4">
+          <div className="card card-body">
             <div className="flex flex-column justify-center">
               <h3>เพิ่มรายการวัสดุครุภัณฑ์</h3>
               <form>
@@ -65,6 +86,11 @@ const Material = () => {
             <div className="flex justify-end mt-4">
               <button className="btn btn-success w-25"><FontAwesomeIcon icon={faSave}/> เพิ่ม</button>
             </div>
+          </div>
+          <div className="mt-3">
+            <Suspense fallback= {<Skeleton/>}> 
+              <CardFillColorNonFooter contentBody={<MuiTable data={muiData.data} columns={muiData.columns} title="ตารางวัสดุครุภัณฑ์"/>}/>
+            </Suspense>  
           </div>
         </div>
     </>
