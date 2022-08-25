@@ -126,13 +126,13 @@ export const TextAreawithlabel= forwardRef(({callback, id, label, disabled, valu
         </>
     )
 })
-export const SelectOptionWithLabel= ({callback, id, label, options_arr_obj, disabled, value, defaultValue}) =>{
+export const SelectOptionWithLabel= ({callback, id, label, options_arr_obj, disabled, value, defaultValue, required = "required"}) =>{
    
     return (
         <>
             <div className="mb-3 flex flex-column">
               <label htmlFor={id} className="form-label">{label}</label>
-              <select id={id} className="form-select" disabled={disabled} onChange={callback} value={value} defaultValue={defaultValue} required>
+              <select id={id} className="form-select" disabled={disabled} onChange={callback} value={value} defaultValue={defaultValue} required={required}>
                 {
                     options_arr_obj.map((item, index)=>{
                         return(

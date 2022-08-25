@@ -5,9 +5,11 @@ import { lazily } from 'react-lazily'
 import { Skeleton } from '../../components/Loading'
 import { EditDelete } from '../../components/EditDelete'
 import { CardFillColorNonFooter } from '../../components/Cards'
-import { deleteMaterial, getMaterialByManagerId, insertMaterial } from '../../controllers/manager/MaterialController'
-import { InputGroupWithLabel } from '../../components/FormElements'
+import { deleteMaterial, getMaterialByManagerId, insertMaterial, updateMaterial } from '../../controllers/manager/MaterialController'
+import { InputGroupWithLabel, SelectOptionWithLabel } from '../../components/FormElements'
 import { ModalCardConfirm } from '../../components/Modals'
+import { getMaidByManagerId, getMaterialById } from '../../controllers/manager/MaidDutyController'
+import { getEngineerByManagerId } from '../../controllers/manager/ManageEmpController'
 // import { FilterTable } from '../../components/Tables'
 const { MuiTable } = lazily(()=>import('../../components/Tables'))
 const Material = () => {
@@ -22,9 +24,23 @@ const Material = () => {
   const refNameModal = useRef(null);
   const refCountModal = useRef(null);
   const refUsingModal = useRef(null);
-  const refMaidModal = useRef(null);
-  const refEnModal = useRef(null);
-  const [importDateModal, setImportDateModal] = useState('');
+  const refImportDateModal = useRef(null);
+
+  const [maidIdModal, setMaidIdModal] = useState('');
+  const [engineerIdModal, setEngineerModal] = useState('');
+  const [materialDefault, setMaterialDefault] = useState({
+    material_code:'',
+    material_name:'',
+    material_quantity:'',
+    material_using:'',
+    import_date:'',
+    material_id:''
+  });
+
+  const [options, setOptions] = useState({
+    maid:[],
+    engineer: []
+  });
 
   const [modalShow, setModalShow] = useState(false)
 
@@ -38,8 +54,39 @@ const Material = () => {
     loadData()
   },[])
 
+  const showEditModal = async material_id =>{
+    const [materialData] = await getMaterialById(material_id);
+    const maidList = await getMaidByManagerId();
+    const engineerList = await getEngineerByManagerId();
+
+    setOptions({
+      maid:[{text:'เลือกแม่บ้าน', value: ''}, ...maidList.map(item=>({value:item['maid_id'], text:`${item['maid_code']}-${item['maid_name']}`}))],
+      engineer: [{text:'เลือกช่างซ่อม', value: ''}, ...engineerList.map(item=>({value:item['engineer_id'], text:`${item['engineer_code']}-${item['engineer_name']}`}))],
+    })
+
+    setMaterialDefault({
+      import_date: materialData['import_date'],
+      material_code: materialData['material_code'],
+      material_name: materialData['material_name'],
+      material_quantity: materialData['material_quantity'],
+      material_using: materialData['material_using'],
+      material_id: material_id
+    })
+    
+    setEngineerModal(materialData['engineer_import_id']);
+    setMaidIdModal(materialData['maid_import_id']);
+  }
+
   const reState = () =>{
     setImportDate('')
+    setMaterialDefault({
+      material_code:'',
+      material_name:'',
+      material_quantity:'',
+      material_using:'',
+      import_date:'',
+      material_id:''
+    })
     refCode.current.value = ''
     refName.current.value = ''
     refCount.current.value = ''
@@ -52,26 +99,26 @@ const Material = () => {
       <>
         <div className="row" >
           <div className="col-md-4 col-12">
-            <InputGroupWithLabel ref={refCodeModal} label="รหัสวัสดุครุภัณฑ์" placeholder="รหัสวัสดุครุภัณฑ์" id="material_code"/>
+            <InputGroupWithLabel ref={refCodeModal} key={materialDefault.material_code} defaultValue={materialDefault.material_code} label="รหัสวัสดุครุภัณฑ์" placeholder="รหัสวัสดุครุภัณฑ์" id="material_code"/>
           </div>
           <div className="col-md-4 col-12">
-            <InputGroupWithLabel ref={refNameModal} label="ชื่อวัสดุครุภัณฑ์" placeholder="ชื่อวัสดุครุภัณฑ์" id="material_code"/>
+            <InputGroupWithLabel ref={refNameModal} key={materialDefault.material_name} defaultValue={materialDefault.material_name} label="ชื่อวัสดุครุภัณฑ์" placeholder="ชื่อวัสดุครุภัณฑ์" id="material_code"/>
           </div>
           <div className="col-md-4 col-12">
-            <InputGroupWithLabel ref={refCountModal} label="จำนวน" placeholder="จำนวน" id="material_code"/>
+            <InputGroupWithLabel ref={refCountModal} key={materialDefault.material_quantity} defaultValue={materialDefault.material_quantity} label="จำนวน" placeholder="จำนวน" id="material_code"/>
           </div>
           <div className="col-md-4 col-12">
-            <InputGroupWithLabel label="วันที่นำเข้า" placeholder="วันที่นำเข้า" id="material_code" type="date" callback={({target:{value}})=>{setImportDateModal(value)}}/>
+            <InputGroupWithLabel ref={refUsingModal} key={materialDefault.material_using} defaultValue={materialDefault.material_using} label="จำที่ถูกใช้" placeholder="จำที่ถูกใช้" id="material_code"/>
           </div>
           <div className="col-md-4 col-12">
-            <InputGroupWithLabel ref={refUsingModal} label="จำที่ถูกใช้" placeholder="จำที่ถูกใช้" id="material_code"/>
+            <InputGroupWithLabel ref={refImportDateModal} key={materialDefault.import_date} defaultValue={materialDefault.import_date} label="วันที่นำเข้า" placeholder="วันที่นำเข้า" id="material_code" type="date"/>
           </div>
-          {/* end of today */}
+          {/*end of today */}
           <div className="col-md-4 col-12">
-            <InputGroupWithLabel ref={refMaidModal} label="รหัสวัสดุครุภัณฑ์" placeholder="รหัสวัสดุครุภัณฑ์" id="material_code"/>
+            <SelectOptionWithLabel required="" callback={({target:{value}}) =>{setEngineerModal(value); setMaidIdModal('')}}  disabled={maidIdModal?"disabled":""} options_arr_obj={options.engineer} label="รหัสช่างซ่อมที่นำเข้า" defaultValue={engineerIdModal} key={engineerIdModal}/>
           </div>
           <div className="col-md-4 col-12">
-            <InputGroupWithLabel ref={refEnModal} label="รหัสวัสดุครุภัณฑ์" placeholder="รหัสวัสดุครุภัณฑ์" id="material_code"/>
+            <SelectOptionWithLabel required="" callback={({target:{value}}) =>{setMaidIdModal(value); setEngineerModal('')}}  disabled={engineerIdModal?"disabled":""} options_arr_obj={options.maid} label="รหัสแม่บ้านที่นำเข้า" defaultValue={maidIdModal} key={maidIdModal}/>
           </div>
         </div>
       </>
@@ -90,11 +137,13 @@ const Material = () => {
           import_person: item['importer_name'], 
           status_person: item['importer_role'], 
           ED:<EditDelete 
-            EditFnc={()=>{}}
-            DeleteFnc={async ()=>{
-              if(await deleteMaterial({material_id: item['material_id']})) await reState();
-            }}
-            setModalShow={setModalShow}
+              EditFnc={()=>{
+                showEditModal(item['material_id']);
+              }}
+              DeleteFnc={async ()=>{
+                if(await deleteMaterial({material_id: item['material_id']})) await reState();
+              }}
+              setModalShow={setModalShow}
             /> 
         }
       })
@@ -152,7 +201,23 @@ const Material = () => {
             <Suspense fallback= {<Skeleton/>}> 
               <CardFillColorNonFooter contentBody={<MuiTable data={muiData.data} columns={muiData.columns} title="ตารางวัสดุครุภัณฑ์"/>}/>
             </Suspense> 
-            <ModalCardConfirm hideCallback={reState} cancleCallback={reState} confrimCallback={()=>{}} modalBody={modal.mBody} modalHead={modal.mHead} modalShow={modalShow} setModalShow={setModalShow}/>
+            <ModalCardConfirm confrimCallback={async()=>{
+              const formData = {
+                import_date: refImportDateModal.current.value,
+                material_code: refCodeModal.current.value,
+                material_name: refNameModal.current.value,
+                material_quantity: refCountModal.current.value,
+                material_using: refUsingModal.current.value,
+                material_id: materialDefault.material_id,
+              }
+              if (maidIdModal) {
+                if(await updateMaterial({...formData, type:"maid", maid_import_id: maidIdModal,})) await reState();
+              }else if(engineerIdModal){
+                if(await updateMaterial({...formData, type:"engineer", engineer_import_id: engineerIdModal})) await reState();
+              }else{
+                if(await updateMaterial({...formData, type:"manager"})) await reState();
+              }
+            }} hideCallback={reState} cancleCallback={reState} modalBody={modal.mBody} modalHead={modal.mHead} modalShow={modalShow} setModalShow={setModalShow}/>
           </div>
         </div>
     </>

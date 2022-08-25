@@ -97,12 +97,12 @@ router.post('/deleteMaterial', async(req, res)=>{
     }
 })
 
-router.post('/uploadMaterial', async(req, res)=>{
+router.post('/updateMaterial', async(req, res)=>{
     try{
 
-        const {material_code, material_name, material_quantity, import_date, material_using, type, material_id} = req.body
+        const {material_code, material_name, material_quantity, import_date, material_using, type, material_id, manager_id} = req.body
 
-        if (!(material_code && material_name && material_quantity && import_date && material_using && type && material_id)) {
+        if (!(material_code && material_name && material_quantity && import_date && material_using && type && material_id && manager_id)) {
             res.status(400).send('ข้อมูลไม่ครบ')
         }
 
@@ -119,7 +119,9 @@ router.post('/uploadMaterial', async(req, res)=>{
                     material_quantity = ${escape(material_quantity)}, 
                     material_using = ${escape(material_using)}, 
                     import_date = ${escape(import_date)}, 
-                    maid_import_id = ${escape(maid_import_id)} 
+                    manager_id = ${escape(manager_id)},
+                    maid_import_id = ${escape(maid_import_id)},
+                    engineer_import_id = NULL
                 WHERE 
                     material_id = ${escape(material_id)};
             `
@@ -134,13 +136,14 @@ router.post('/uploadMaterial', async(req, res)=>{
                     material_quantity = ${escape(material_quantity)}, 
                     material_using = ${escape(material_using)}, 
                     import_date = ${escape(import_date)}, 
+                    manager_id = ${escape(manager_id)},
+                    maid_import_id = NULL,
                     engineer_import_id = ${escape(engineer_import_id)} 
                 WHERE 
                     material_id = ${escape(material_id)};
             `
         }else{
             //manager
-            const { manager_id } = req.body
             sql = `
                 UPDATE 
                     material 
@@ -150,7 +153,9 @@ router.post('/uploadMaterial', async(req, res)=>{
                     material_quantity = ${escape(material_quantity)}, 
                     material_using = ${escape(material_using)}, 
                     import_date = ${escape(import_date)}, 
-                    manager_id = ${escape(manager_id)} 
+                    manager_id = ${escape(manager_id)},
+                    maid_import_id = NULL,
+                    engineer_import_id = NULL
                 WHERE 
                     material_id = ${escape(material_id)};
             `
