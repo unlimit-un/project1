@@ -40,11 +40,8 @@ router.get('/getNotifyRepairPieChart', async (req, res)=>{
         
         `);
      
-       if (result.length > 0) {
         res.status(200).send(result)
-       }else{
-        res.sendStatus(500)
-       }
+       
     } catch (error) {
         console.log(error);
         res.sendStatus(500)
@@ -215,6 +212,28 @@ router.get('/getNotifyRepairByManagerId', async (req, res)=>{
             LEFT JOIN room AS r ON r.room_id = nr.room_id
             WHERE l.manager_id = ${escape(req.query['manager_id'])}
             ORDER BY nr.update_at DESC
+        `);
+        res.status(200).send(result)
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
+})
+
+
+router.get('/getTotalNotifyRepairByManagerIdGroupByType', async (req, res)=>{
+    try {
+        const result = await db.query(`
+            SELECT 
+                COUNT(nr.notify_repair_id) AS count, 
+                IF(nr.status >= 0, "positive","negative") AS type
+            FROM notify_repair AS nr
+            LEFT JOIN location AS l ON nr.location_id = l.location_id
+            LEFT JOIN maid AS m ON m.maid_id = nr.maid_id
+            LEFT JOIN room AS r ON r.room_id = nr.room_id
+            WHERE l.manager_id = ${escape(req.query['manager_id'])}
+            GROUP BY type
+            ORDER BY type
         `);
         res.status(200).send(result)
     } catch (error) {

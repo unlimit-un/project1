@@ -1,6 +1,6 @@
-import { axiosGet, axiosPost, ROOT_SERVER } from "../functions/AxiosCustom";
+import { axiosGet, axiosPost, ROOT_SERVER } from "../../functions/AxiosCustom";
 import Swal from 'sweetalert2'
-import { DeleteFormSwal, InsertFormSwal, InsertToastFormSwal } from "../functions/Swal";
+import { DeleteFormSwal, InsertFormSwal, InsertToastFormSwal } from "../../functions/Swal";
 
 export const api_getMaterialByManagerId = async () => {
     try {

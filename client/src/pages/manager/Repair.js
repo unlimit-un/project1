@@ -193,7 +193,6 @@ const Repair = () => {
 
     const handleView = async (notify_repair_id) =>{
         const notifyRepairById = await getNotifyRepairAndMaterialByNotifyRepairId(notify_repair_id);
-        console.log(notifyRepairById[0]['status']);
         const status = +notifyRepairById[0]['status'] === 0 ?"text-warning":
                         +notifyRepairById[0]['status'] > 0 ? "text-success": "text-danger"
         setModal({

@@ -64,4 +64,66 @@ router.get('/getLeaveRoleEngineerBarChart', async (req, res)=>{
 
 })
 
+router.get('/getLeaveByManagerId', async (req, res)=>{
+    try {
+        const result = await db.query(`
+            SELECT l.*, 
+                IF(l.engineer_id IS NOT NULL, CONCAT(e.engineer_code, "-", e.engineer_name), CONCAT(m.maid_code, "-", m.maid_name)) AS requester,
+                lt.leave_type_name
+            FROM ${"`leave`"} AS l
+            LEFT JOIN leave_type AS lt ON lt.leave_type_id = l.leave_type_id
+            LEFT JOIN maid AS m ON m.maid_id = l.maid_id
+            LEFT JOIN engineer AS e ON e.engineer_id = l.engineer_id
+            LEFT JOIN location AS lo ON lo.location_id = e.location_id OR lo.location_id = m.location_id
+            WHERE lo.manager_id =${escape(req.query["manager_id"])}
+        `);
+        res.status(200).send(result)
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
+
+})
+
+router.get('/getTotalLeaveByManagerId', async (req, res)=>{
+    try {
+        const result = await db.query(`
+            SELECT 
+                COUNT(l.leave_id) AS count
+            FROM ${"`leave`"} AS l
+            LEFT JOIN leave_type AS lt ON lt.leave_type_id = l.leave_type_id
+            LEFT JOIN maid AS m ON m.maid_id = l.maid_id
+            LEFT JOIN engineer AS e ON e.engineer_id = l.engineer_id
+            LEFT JOIN location AS lo ON lo.location_id = e.location_id OR lo.location_id = m.location_id
+            WHERE lo.manager_id = ${escape(req.query["manager_id"])}
+        `);
+        res.status(200).send(result)
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
+})
+
+router.get('/getTotalLeaveByManagerIdGroupByType', async (req, res)=>{
+    try {
+        const result = await db.query(`
+            SELECT 
+                COUNT(l.leave_id) AS count,
+                IF(l.status >= 0, "positive","negative") AS type
+            FROM ${"`leave`"} AS l
+            LEFT JOIN leave_type AS lt ON lt.leave_type_id = l.leave_type_id
+            LEFT JOIN maid AS m ON m.maid_id = l.maid_id
+            LEFT JOIN engineer AS e ON e.engineer_id = l.engineer_id
+            LEFT JOIN location AS lo ON lo.location_id = e.location_id OR lo.location_id = m.location_id
+            WHERE lo.manager_id =${escape(req.query["manager_id"])}
+            GROUP BY type
+            ORDER BY type
+        `);
+        res.status(200).send(result)
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500)
+    }
+})
+
 module.exports = router

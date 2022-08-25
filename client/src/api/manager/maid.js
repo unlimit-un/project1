@@ -1,4 +1,4 @@
-import { axiosGet, axiosPost, ROOT_SERVER } from "../functions/AxiosCustom";
+import { axiosGet, axiosPost, ROOT_SERVER } from "../../functions/AxiosCustom";
 import Swal from 'sweetalert2'
 
 export const api_getTotalMaidByManagerId = async () => {

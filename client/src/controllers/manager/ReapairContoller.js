@@ -1,6 +1,6 @@
-import { api_getEngineerByDeptId } from "../../api/engineer";
-import { api_getNotifyRepairAndMaterialByNotifyRepairId, api_getNotifyRepairById, api_getNotifyRepairByManagerId, api_updateNotifyRepair, api_updateNotifyRepairToAccept, api_updateNotifyRepairToDeny } from "../../api/notify_repair";
-import { api_deleteNotifyRepairMaterial, api_getNotifyRepairMaterialByRepairId, api_insertNotifyRepairMaterial } from "../../api/notify_repair_material";
+import { api_getEngineerByDeptId } from "../../api/manager/engineer";
+import { api_getNotifyRepairAndMaterialByNotifyRepairId, api_getNotifyRepairById, api_getNotifyRepairByManagerId, api_updateNotifyRepair, api_updateNotifyRepairToAccept, api_updateNotifyRepairToDeny } from "../../api/manager/notify_repair";
+import { api_deleteNotifyRepairMaterial, api_getNotifyRepairMaterialByRepairId, api_insertNotifyRepairMaterial } from "../../api/manager/notify_repair_material";
 
 export const updateNotifyRepairToAccept = async(formData) =>await api_updateNotifyRepairToAccept(formData);
 export const updateNotifyRepairToDeny = async(formData) =>await api_updateNotifyRepairToDeny(formData);

@@ -1,4 +1,4 @@
-import { api_deleteMaterial, api_getMaterialByManagerId, api_insertMaterial, api_updateMaterial } from "../../api/material";
+import { api_deleteMaterial, api_getMaterialByManagerId, api_insertMaterial, api_updateMaterial } from "../../api/manager/material";
 
 export const getMaterialByManagerId = async () =>await api_getMaterialByManagerId();
 export const insertMaterial = async (formData) =>await api_insertMaterial(formData);

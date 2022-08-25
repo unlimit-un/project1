@@ -313,17 +313,20 @@ const Homepage = () => {
                     <div className="row gap-y-5 mt-4">
                         <div className="col-md-4 col-12">
                             <Suspense fallback={<Skeleton/>}>
-                                <CardFillColor colorBody="bg-emerald-400" colorFooter="!bg-emerald-500" title={+countEngineer + +countMaid} subTitle="จำนวนพนักงาน" caption="ข้อมูลเพิ่มเติม"/>
+                                {!(countEngineer && countMaid)?<Skeleton/>:<CardFillColor colorBody="bg-emerald-400" colorFooter="!bg-emerald-500" title={+countEngineer + +countMaid} subTitle="จำนวนพนักงาน" caption="ข้อมูลเพิ่มเติม"/>}
+                                
                             </Suspense>
                         </div>
                         <div className="col-md-4 col-12">
                             <Suspense fallback={<Skeleton/>}>
-                                <CardFillColor colorBody="bg-purple-400" colorFooter="!bg-purple-500" title={countMaid} subTitle="จำนวนแม่บ้าน" caption="ข้อมูลเพิ่มเติม"/>
+                                {!(countMaid)?<Skeleton/>:<CardFillColor colorBody="bg-purple-400" colorFooter="!bg-purple-500" title={countMaid} subTitle="จำนวนแม่บ้าน" caption="ข้อมูลเพิ่มเติม"/>}
+                                
                             </Suspense>
                         </div>
                         <div className="col-md-4 col-12">
                             <Suspense fallback={<Skeleton/>}>
-                                <CardFillColor colorBody="bg-slate-400" colorFooter="!bg-slate-500" title={countEngineer} subTitle="จำนวนช่าง" caption="ข้อมูลเพิ่มเติม"/>
+                                {!(countEngineer)?<Skeleton/>:<CardFillColor colorBody="bg-slate-400" colorFooter="!bg-slate-500" title={countEngineer} subTitle="จำนวนช่าง" caption="ข้อมูลเพิ่มเติม"/>}
+                                
                             </Suspense>
                         </div>
                     </div>

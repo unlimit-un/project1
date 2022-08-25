@@ -1,6 +1,6 @@
-import { api_getTotalEngineerByManagerId } from "../../api/engineer";
-import { api_getTotalMaidByManagerId } from "../../api/maid";
-import { api_getNotifyRepairByManagerIdStatusWaiting, api_getTotalNotifyRepairByManagerId, api_getTotalNotifyRepairByManagerIdAndStatus } from "../../api/notify_repair";
+import { api_getTotalEngineerByManagerId } from "../../api/manager/engineer";
+import { api_getTotalMaidByManagerId } from "../../api/manager/maid";
+import { api_getNotifyRepairByManagerIdStatusWaiting, api_getTotalNotifyRepairByManagerId, api_getTotalNotifyRepairByManagerIdAndStatus } from "../../api/manager/notify_repair";
 import { axiosGet, ROOT_SERVER } from "../../functions/AxiosCustom";
 
 export const getNotifyRepairPieChart = async () =>{

@@ -1,126 +1,197 @@
 import React,{Suspense, useEffect, useRef, useState} from 'react'
 import {  faHome, faEye,faCopy,faPencil,faTrash} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import { CardFillColorNonFooter } from '../../components/Cards'
 import { ModalCard,ModalButton } from '../../components/Modals'
-import { Bandage } from '../../components/Bandage'
-// import { MuiTable  } from '../../components/Tables'
 import { Skeleton } from '../../components/Loading'
-import { EditDelete } from '../../components/EditDelete'
-import { SidebarRightManager } from '../../components/structure/SidebarM'
 import { lazily } from 'react-lazily'
+import { getLeaveByManagerId, getOrderMaterialByManagerId, getTotalLeaveByManagerId, getTotalLeaveByManagerIdGroupByType, getTotalNotifyRepairByManagerId, getTotalNotifyRepairByManagerIdGroupByType, getTotalOrderMaterialByManagerId, getTotalOrderMaterialByManagerIdGroupByType } from '../../controllers/manager/RequestController'
+import { getNotifyRepairByManagerId } from '../../controllers/manager/ReapairContoller'
 
 const {MuiTable} = lazily(()=>import('../../components/Tables'));
 const {CardFillColorNonFooter} = lazily(()=>import('../../components/Cards'));
 
 const Request = () => {
 
-    // const ref = useRef(null)
-    // const [height, setHeight] = useState(0);
-
+    const [dataTableOrder, setDataTableOrder] = useState([]);    
+    const [dataTableLeave, setDataTableLeave] = useState([]);    
+    const [dataTableRepair, setDataTableRepair] = useState([]);
+    const [total, setTotal] = useState(0);
+    const [totalApprove, setTotalApprove] = useState(0);
+    const [totalDeny, setTotalDeny] = useState(0);
     
+
+    const loadData = async () =>{
+        const orderList = await getOrderMaterialByManagerId();
+        const leaveList = await getLeaveByManagerId();
+        const repairList = await getNotifyRepairByManagerId();
+
+        const [{count: totalLeave}] = await getTotalLeaveByManagerId();
+        const [{count: totalOrder}] = await getTotalOrderMaterialByManagerId();
+        const [{count_notify: totalRepair}] = await getTotalNotifyRepairByManagerId();
+
+        const leaveGroupType = await getTotalLeaveByManagerIdGroupByType();
+        const orderGroupType = await getTotalOrderMaterialByManagerIdGroupByType();
+        const repairGroupType = await getTotalNotifyRepairByManagerIdGroupByType();
+        
+        let positive = 0, negative = 0;
+
+        leaveGroupType.forEach(item=>item['type'] === 'positive'? positive +=item['count']:negative +=item['count'])
+        repairGroupType.forEach(item=>item['type'] === 'positive'? positive +=item['count']:negative +=item['count'])
+        orderGroupType.forEach(item=>item['type'] === 'positive'? positive +=item['count']:negative +=item['count'])
+        
+        setDataTableLeave(leaveList)
+        setDataTableOrder(orderList)
+        setDataTableRepair(repairList)
+
+        setTotal(totalLeave+totalOrder+totalRepair)
+        setTotalApprove(positive)
+        setTotalDeny(negative)
+    }
+
+    useEffect(()=>{
+        loadData()
+    },[])
 
     const acceptCard =(
        <div className="container-fulid">
-            <p className="text-3xl m-0 text-start">112</p>
-            <p className="text-3xl m-0 text-end">คำขอทั้งหมด</p>
+            <p className="text-3xl m-0 text-start">{total}</p>
+            <p className="text-md m-0 text-end">คำขอทั้งหมด</p>
        </div> 
-    )
-    const totalCard =(
-        <div className="container-fulid">
-            <p className="text-3xl m-0 text-start">8</p>
-            <p className="text-3xl m-0 text-end">ที่ยังไม่เปิด</p>
-        </div>
-    )
-    const waitingCards =(
-        <div className="container-fulid">
-            <p className="text-3xl m-0 text-start">0</p>
-            <p className="text-3xl m-0 text-end">อื่นๆ</p>
-        </div>
     )
     const approveCard = (
         <div className="container-fulid">
-            <p className="text-3xl m-0 text-start">0</p>
-            <p className="text-3xl m-0 text-end">คำขอที่อนุมัติ</p>
+            <p className="text-3xl m-0 text-start">{totalApprove}</p>
+            <p className="text-md m-0 text-end">คำขอที่อนุมัติ</p>
         </div>
     )
     const disapprovedCard = (
         <div className="container-fulid">
-            <p className="text-3xl m-0 text-start">0</p>
-            <p className="text-3xl m-0 text-end">คำขอที่ไม่อนุมัติ</p>
+            <p className="text-3xl m-0 text-start">{totalDeny}</p>
+            <p className="text-md m-0 text-end">คำขอที่ไม่อนุมัติ</p>
         </div>
     )
 
-    const [modalShow,setModalShow] = useState(false)
-
-    const MuiTableData = {
+    const MuiTableDataOrder = {
         data:[
-            {id: 'A233456', subject:"เบิกเครื่องมือซ้อม", date:"3/7/2023",status:"processing", ED:<EditDelete/>, view:<ModalButton classBtn="btn btn-outline-primary" setModalShow={setModalShow} icon={faEye}/> },
+            ...dataTableOrder.map(item=>{
+                return {
+                    material_name: item['material_name'],
+                    requester: item['requester'],
+                    quantity: item['quantity'],
+                    unit_price: item['unit_price'],
+                    order_date: item['order_date'],
+                    is_stock: item['is_stock'],
+                    status: item['status'],
+                }
+            })
         ],
         columns: [
-            {title: "",field: "ED"},
-            {title: "รหัสพนักงาน",field: "id",  },
-            {title: "เรื่อง",field: "subject",  },
-            {title: "วันที่แจ้ง",field: "date", },
-            {title: "สถานะ",field: "status", 
+            {title: "ชื่อผู้ร้องขอ",field: "requester",  },
+            {title: "ชื่อครุภัณฑ์",field: "material_name",  },
+            {title: "จำนวน",field: "quantity", type:"numeric"},
+            {title: "ราคาต่อหน่วย",field: "unit_price", type:"numeric"},
+            {title: "วันที่ส่งคำขอ",field: "order_date", },
+            {title: "คลัง",field: "is_stock", 
                 lookup:{
-                    waiting: "รอดำเนินการ", 
-                    processing:"กำลังดำเนินการ",
-                    success:"ดำเนินการเสร็จสิ้น", 
-                    deny:"ปฏิเสธ",
-                    unable:"ไม่สามารถดำเนินการได้",
+                    "1": "มี", 
+                    "0":"ไม่มี",
                 }
             },
-            {title: "",field: "view"},
+            {title: "สถานะ",field: "status", 
+                lookup:{
+                    "-1": "ปฏิเสธ", 
+                    "0":"รอดำเนินการ",
+                    "1":"อนุมัติ", 
+                }
+            },
         ]
     }
 
-    // useEffect(() => {
-    //     setHeight(ref.current.clientHeight)
-    //     
-    // }, [height])
+    const MuiTableDataLeave = {
+        data:[
+            ...dataTableLeave.map(item=>{
+                return {
+                    title: item['title'],
+                    requester: item['requester'],
+                    leave_type: item['leave_type_name'],
+                    description: item['description'],
+                    date_start: item['date_start'],
+                    date_end: item['date_end'],
+                    status: item['status'],
+                }
+            })
+        ],
+        columns: [
+            {title: "ชื่อผู้ร้องขอ",field: "requester"},
+            {title: "หัวข้อการลา",field: "title",  },
+            {title: "ประเภทการลา",field: "leave_type",  },
+            {title: "รายละเอียด",field: "description"},
+            {title: "เริ่มวันที่",field: "date_start"},
+            {title: "ถึงวันที่",field: "date_end", },
+            {title: "สถานะ",field: "status", 
+                lookup:{
+                    "-1": "ปฏิเสธ", 
+                    "0":"รอดำเนินการ",
+                    "1":"อนุมัติ", 
+                }
+            },
+        ]
+    }
+
+    const MuiTableDataRepair = {
+        data:[
+            ...dataTableRepair.map(item=>{
+                return {
+                    issue: item['description'], 
+                    notify_person: item['reporter'], 
+                    date: item['notify_repair_date'], 
+                    location: item['location_name'], 
+                    room: item['room_name'], 
+                    status: item['status'], 
+                }
+            })
+        ],
+        columns: [
+            {title: "ปัญหา",field: "issue", },
+            {title: "ผู้แจ้ง",field: "notify_person",},
+            {title: "วันที่แจ้ง",field: "date",},
+            {title: "สถานที่",field: "location", },
+            {title: "ห้อง",field: "room", },
+            {title: "สถานะ",field: "status", 
+                lookup:{
+                    "0": "รอดำเนินการ", 
+                    "1": "ผ่านการอนุมัติ",
+                    "2":"กำลังดำเนินการซ่อม",
+                    "3":"ดำเนินการเสร็จสิ้น", 
+                    "-1":"ปฏิเสธ",
+                    "-2":"ไม่สามารถดำเนินการได้",
+                    "-3":"ไม่ต้องการดำเนินการ",
+                }
+            },
+        ]
+    }
 
     const tableRequest = (
         <div className="container-fulid">
             <Suspense fallback={<Skeleton/>}>
-                <MuiTable data={MuiTableData.data} columns={MuiTableData.columns} title=""/>
+                <MuiTable data={MuiTableDataOrder.data} columns={MuiTableDataOrder.columns} title="ตารางสั่งซื้อครุภัณฑ์"/>
             </Suspense>
         </div>
     )
-
-    const Modal = {
-        mHead:(
-            <>
-                <h1 className="m0 text-2xl"><FontAwesomeIcon icon={faCopy}/> รายละเอียด</h1>
-            </>
-        ),
-        mBody:(
-            <>
-                <div className="row">
-                    <div className="col-lg-3 col-md-4 col-12">
-                        <ul>
-                            <li>รหัสพนักงาน :</li>
-                            <li>ชื่อ - นามสกุล :</li>
-                            <li>แม่บ้าน / ช่าง :</li>
-                            <li>รายละเอียด :</li>
-                            <li>วันที่แจ้ง :</li>
-                            <li>สถานะ</li>
-                        </ul>
-                    </div>
-                    <div className="col-lg-9 col-md-8 col-12">
-                        <ul className="gap-2">
-                            <li>A233456</li>
-                            <li>unlimit unarn</li>
-                            <li>ช่างซ่อม</li>
-                            <li>เบิกเครื่องมือซ้อม</li>
-                            <li>3/7/2023</li>
-                            <li>"กำลังดำเนินการ"</li>
-                        </ul>
-                    </div>
-                </div>
-            </>
-        )
-    }
+    const tableLeave = (
+        <div className="container-fulid">
+            <Suspense fallback={<Skeleton/>}>
+                <MuiTable data={MuiTableDataLeave.data} columns={MuiTableDataLeave.columns} title="ตารางการลา"/>
+            </Suspense>
+        </div>
+    )
+    const tableRepair = (
+        <div className="container-fulid">
+            <Suspense fallback={<Skeleton/>}>
+                <MuiTable data={MuiTableDataRepair.data} columns={MuiTableDataRepair.columns} title="ตารางการแจ้งซ่อม"/>
+            </Suspense>
+        </div>
+    )
 
     return (
         <>
@@ -129,43 +200,40 @@ const Request = () => {
             <div className="row items-stretch gap-y-2">
                 <div className="col-md-4 col-12">
                      <Suspense fallback={<Skeleton/>}>
-                        <CardFillColorNonFooter classBody="bg-blue-400  rounded" contentBody={acceptCard} classCard="text-white "/>
+                        {!total?<Skeleton/>:<CardFillColorNonFooter classBody="bg-blue-400  rounded" contentBody={acceptCard} classCard="text-white "/>}
                      </Suspense>
                  </div>
-                 <div className="col-md-4 col-12">
-                        <Suspense fallback={<Skeleton/>}>
-                            <CardFillColorNonFooter classBody="bg-green-400  rounded" contentBody={totalCard} classCard="text-white "/>
-                        </Suspense>
-                 </div>
-                    <div className="col-md-4 col-12">
-                         <Suspense fallback={<Skeleton/>}>
-                            <CardFillColorNonFooter classBody="bg-yellow-400  rounded" contentBody={waitingCards} classCard=""/>
-                         </Suspense>
-                     </div>
-                    {/* <div className="col-lg-6 col-12"> */}
-                        <div className="col-md-4 col-12">
-                                <Suspense fallback={<Skeleton/>}>
-                                    <CardFillColorNonFooter classBody="bg-red-400  rounded" contentBody={approveCard} classCard="text-white "/>
-                                </Suspense>
-                        </div>
-                        <div className="col-md-4 col-12">
-                                <Suspense fallback={<Skeleton/>}>
-                                    <CardFillColorNonFooter classBody="bg-red-400  rounded" contentBody={disapprovedCard} classCard="text-white "/>
-                                </Suspense>
-                        </div>
-                 {/* </div> */}
+                <div className="col-md-4 col-12">
+                    <Suspense fallback={<Skeleton/>}>
+                        {!totalApprove?<Skeleton/>:<CardFillColorNonFooter classBody="bg-green-400  rounded" contentBody={approveCard} classCard="text-white "/>}
+                        
+                    </Suspense>
+                </div>
+                <div className="col-md-4 col-12">
+                    <Suspense fallback={<Skeleton/>}>
+                        {!totalDeny?<Skeleton/>:<CardFillColorNonFooter classBody="bg-red-400  rounded" contentBody={disapprovedCard} classCard="text-white "/>}
+                        
+                    </Suspense>
+                </div>
             </div>
             <div className="mt-3">
                 <Suspense fallback={<Skeleton/>}>
                     <CardFillColorNonFooter contentBody={tableRequest}/>
                 </Suspense>
             </div>
-            {/* <div className="col-md-4 col-12">
-                <SidebarRightManager maxHeight={height}/>
-            </div> */}
+            <div className="mt-3">
+                <Suspense fallback={<Skeleton/>}>
+                    <CardFillColorNonFooter contentBody={tableLeave}/>
+                </Suspense>
+            </div>
+            <div className="mt-3">
+                <Suspense fallback={<Skeleton/>}>
+                    <CardFillColorNonFooter contentBody={tableRepair}/>
+                </Suspense>
+            </div>
+            
          </div>
-         {/* modal */}
-         <ModalCard modalShow={modalShow} setModalShow={setModalShow} modalBody={Modal.mBody} modalHead={Modal.mHead}/>
+
         </>
     )
 }
