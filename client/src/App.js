@@ -14,16 +14,14 @@ import About from './pages/About';
 function App() {
   return (
     <>
-      <div className="bg-gray-100 min-h-screen">
-
         {/* Routing */}
         <Routes>
           <Route path='/' exac element={<HomePage/>}>
             <Route path='/login' element={<Login/>}/>
             <Route path='/register' element={<Register/>}/>
-            <Route path='/contact' element={<Contact/>}/>
-            <Route path='/about' element={<About/>}/>
           </Route>
+          <Route path='/contact' element={<Contact/>}/>
+          <Route path='/about' element={<About/>}/>
           <Route path='/manager' exac element={<Manager.IndexManager/>}>
             <Route path='/manager/manage_emp/:page' element={<Manager.ManageEmp/>} /> 
             <Route path='/manager/material' element={<Manager.Material/>} /> 
@@ -57,7 +55,6 @@ function App() {
           <Route path='/under_construction' exac element={<PageUnderConstrunction/>}/>
           <Route path='*' element={<PageNotFound/>}/>
         </Routes>
-      </div>
     </>
   );
 }

@@ -40,16 +40,12 @@ const {pathname} = useLocation()
     <>
       <NavbarHomepage/>
       <div className="bg-blue-200 container-fluid min-h-screen flex items-center justify-center relative">
-          <div className="my-5">
             <div className="md:grid md:grid-cols-2 grid-cols-1 flex flex-col-reverse">
               {pathname === '/'?imgHome:imgLogin}
               <div className="col d-flex justify-center z-10">
-              {pathname === '/'?homepage: pathname === '/login/' || pathname === '/login' ?<Login/>:
-              pathname === '/register/' || pathname === '/register' ?<Register/>:
-              pathname === '/contact/'  || pathname === '/contact'  ?<Contact/>:<About/>}
+              {pathname === '/'?homepage: pathname === '/login/' || pathname === '/login' ?<Login/>:<Register/>}
               </div>
             </div>
-          </div>
       </div>
     </>
   )
