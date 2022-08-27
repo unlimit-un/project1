@@ -15,9 +15,10 @@ const Request = () => {
     const [dataTableOrder, setDataTableOrder] = useState([]);    
     const [dataTableLeave, setDataTableLeave] = useState([]);    
     const [dataTableRepair, setDataTableRepair] = useState([]);
-    const [total, setTotal] = useState(0);
-    const [totalApprove, setTotalApprove] = useState(0);
-    const [totalDeny, setTotalDeny] = useState(0);
+    const [total, setTotal] = useState('');
+    const [totalApprove, setTotalApprove] = useState('');
+    const [totalDeny, setTotalDeny] = useState('');
+    const [totalWaiting, setTotalWaiting] = useState('');
     
 
     const loadData = async () =>{
@@ -33,11 +34,17 @@ const Request = () => {
         const orderGroupType = await getTotalOrderMaterialByManagerIdGroupByType();
         const repairGroupType = await getTotalNotifyRepairByManagerIdGroupByType();
         
-        let positive = 0, negative = 0;
+        let positive = 0, negative = 0, bal=0;
 
-        leaveGroupType.forEach(item=>item['type'] === 'positive'? positive +=item['count']:negative +=item['count'])
-        repairGroupType.forEach(item=>item['type'] === 'positive'? positive +=item['count']:negative +=item['count'])
-        orderGroupType.forEach(item=>item['type'] === 'positive'? positive +=item['count']:negative +=item['count'])
+        leaveGroupType.forEach(item=>{
+            item['type'] === 'positive'? positive +=item['count']: item['type'] === 'negative'?negative += item['count']: bal += item['count']
+        })
+        repairGroupType.forEach(item=>{
+            item['type'] === 'positive'? positive +=item['count']: item['type'] === 'negative'?negative += item['count']: bal += item['count']
+        })
+        orderGroupType.forEach(item=>{
+            item['type'] === 'positive'? positive +=item['count']: item['type'] === 'negative'?negative += item['count']: bal += item['count']
+        })
         
         setDataTableLeave(leaveList)
         setDataTableOrder(orderList)
@@ -46,6 +53,7 @@ const Request = () => {
         setTotal(totalLeave+totalOrder+totalRepair)
         setTotalApprove(positive)
         setTotalDeny(negative)
+        setTotalWaiting(bal)
     }
 
     useEffect(()=>{
@@ -62,6 +70,12 @@ const Request = () => {
         <div className="container-fulid">
             <p className="text-3xl m-0 text-start">{totalApprove}</p>
             <p className="text-md m-0 text-end">คำขอที่อนุมัติ</p>
+        </div>
+    )
+    const waitingCard = (
+        <div className="container-fulid">
+            <p className="text-3xl m-0 text-start">{totalWaiting}</p>
+            <p className="text-md m-0 text-end">คำขอที่รออนุมัติ</p>
         </div>
     )
     const disapprovedCard = (
@@ -198,20 +212,26 @@ const Request = () => {
          <h1 className="text-2xl"><FontAwesomeIcon icon={faHome}/> หน้าหลัก</h1>
          <div className="container-fluid">
             <div className="row items-stretch gap-y-2">
-                <div className="col-md-4 col-12">
+                <div className="col-md-3 col-12">
                      <Suspense fallback={<Skeleton/>}>
-                        {!total?<Skeleton/>:<CardFillColorNonFooter classBody="bg-blue-400  rounded" contentBody={acceptCard} classCard="text-white "/>}
+                        {total  === ''?<Skeleton/>:<CardFillColorNonFooter classBody="bg-blue-400  rounded" contentBody={acceptCard} classCard="text-white "/>}
                      </Suspense>
                  </div>
-                <div className="col-md-4 col-12">
+                <div className="col-md-3 col-12">
                     <Suspense fallback={<Skeleton/>}>
-                        {!totalApprove?<Skeleton/>:<CardFillColorNonFooter classBody="bg-green-400  rounded" contentBody={approveCard} classCard="text-white "/>}
+                        {totalApprove  === ''?<Skeleton/>:<CardFillColorNonFooter classBody="bg-green-400  rounded" contentBody={approveCard} classCard="text-white "/>}
                         
                     </Suspense>
                 </div>
-                <div className="col-md-4 col-12">
+                <div className="col-md-3 col-12">
                     <Suspense fallback={<Skeleton/>}>
-                        {!totalDeny?<Skeleton/>:<CardFillColorNonFooter classBody="bg-red-400  rounded" contentBody={disapprovedCard} classCard="text-white "/>}
+                        {totalWaiting  === ''?<Skeleton/>:<CardFillColorNonFooter classBody="bg-yellow-400  rounded" contentBody={waitingCard} classCard="text-black "/>}
+                        
+                    </Suspense>
+                </div>
+                <div className="col-md-3 col-12">
+                    <Suspense fallback={<Skeleton/>}>
+                        {totalDeny  === ''?<Skeleton/>:<CardFillColorNonFooter classBody="bg-red-400  rounded" contentBody={disapprovedCard} classCard="text-white "/>}
                         
                     </Suspense>
                 </div>

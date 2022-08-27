@@ -226,7 +226,9 @@ router.get('/getTotalNotifyRepairByManagerIdGroupByType', async (req, res)=>{
         const result = await db.query(`
             SELECT 
                 COUNT(nr.notify_repair_id) AS count, 
-                IF(nr.status >= 0, "positive","negative") AS type
+                IF(nr.status > 0, "positive",
+                    IF(nr.status < 0, "negative", "bal")
+                ) AS type
             FROM notify_repair AS nr
             LEFT JOIN location AS l ON nr.location_id = l.location_id
             LEFT JOIN maid AS m ON m.maid_id = nr.maid_id

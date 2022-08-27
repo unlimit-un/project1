@@ -67,7 +67,9 @@ router.get('/getTotalOrderMaterialByManagerIdGroupByType', async (req, res)=>{
         const result = await db.query(`
             SELECT 
                 COUNT(om.order_id) AS count, 
-                IF(om.status >= 0, "positive","negative") AS type
+                IF(om.status > 0, "positive",
+                    IF(om.status < 0, "negative", "bal")
+                ) AS type
             FROM order_material AS om
             LEFT JOIN material AS ma ON ma.material_id = om.material_id
             LEFT JOIN engineer AS e ON e.engineer_id = om.engineer_id

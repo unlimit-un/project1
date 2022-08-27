@@ -783,28 +783,28 @@ const Repair = () => {
             <div className="container-fluid">
                 <div className="row items-stretch gap-y-2">
                     <div className="col-lg-3 col-md-6 col-12">
-                        {!cardData.total?<Skeleton/>:<CardFillColorNonFooter classBody="bg-blue-400  rounded" contentBody={totalCard} classCard="text-white "/>}
+                        {cardData.total === ''?<Skeleton/>:<CardFillColorNonFooter classBody="bg-blue-400  rounded" contentBody={totalCard} classCard="text-white "/>}
                     </div>
                     <div className="col-lg-3 col-md-6 col-12">
-                        {!cardData.success?<Skeleton/>:<CardFillColorNonFooter classBody="bg-green-400  rounded" contentBody={successCard} classCard="text-white "/>}
+                        {cardData.success === ''?<Skeleton/>:<CardFillColorNonFooter classBody="bg-green-400  rounded" contentBody={successCard} classCard="text-white "/>}
                     </div>
                     <div className="col-lg-3 col-md-6 col-12">
-                        {!cardData.success?<Skeleton/>:<CardFillColorNonFooter classBody="bg-purple-400  rounded" contentBody={processCard} classCard="text-white"/>}                        
+                        {cardData.process === ''?<Skeleton/>:<CardFillColorNonFooter classBody="bg-purple-400  rounded" contentBody={processCard} classCard="text-white"/>}                        
                     </div>
                     <div className="col-lg-3 col-md-6 col-12">
-                        {!cardData.success?<Skeleton/>:<CardFillColorNonFooter classBody="bg-yellow-400  rounded" contentBody={waitingCard} classCard=""/>}                        
+                        {cardData.waiting === ''?<Skeleton/>:<CardFillColorNonFooter classBody="bg-yellow-400  rounded" contentBody={waitingCard} classCard=""/>}                        
                     </div>
                     <div className="col-md-6 col-12">
-                        {!cardData.success?<Skeleton/>:<CardFillColorNonFooter classBody="bg-lime-400  rounded" contentBody={acceptCard} classCard="text-white"/>}                        
+                        {cardData.accept === ''?<Skeleton/>:<CardFillColorNonFooter classBody="bg-lime-400  rounded" contentBody={acceptCard} classCard="text-white"/>}                        
                     </div>
                     <div className="col-md-6 col-12">
-                        {!cardData.success?<Skeleton/>:<CardFillColorNonFooter classBody="bg-red-400  rounded" contentBody={denyCard} classCard="text-white "/>}
+                        {cardData.deny === ''?<Skeleton/>:<CardFillColorNonFooter classBody="bg-red-400  rounded" contentBody={denyCard} classCard="text-white "/>}
                     </div>
                     <div className="col-md-6 col-12">
-                        {!cardData.success?<Skeleton/>:<CardFillColorNonFooter classBody="bg-red-900  rounded" contentBody={unableCard} classCard="text-white"/>}   
+                        {cardData.unable === ''?<Skeleton/>:<CardFillColorNonFooter classBody="bg-red-900  rounded" contentBody={unableCard} classCard="text-white"/>}   
                     </div>
                     <div className="col-md-6 col-12">
-                        {!cardData.success?<Skeleton/>:<CardFillColorNonFooter classBody="bg-slate-400  rounded" contentBody={needlessCard} classCard="text-white "/>}
+                        {cardData.needless === ''?<Skeleton/>:<CardFillColorNonFooter classBody="bg-slate-400  rounded" contentBody={needlessCard} classCard="text-white "/>}
                     </div>
                 </div>
                 <div className="mt-3">
