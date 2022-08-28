@@ -14,7 +14,7 @@ const app = express();
 // const origin = process.env.NODE_ENV === 'development'? "http://localhost:3000": "http://192.168.43.201:3000";
 
 app.use(cors({
-    origin: ["http://192.168.43.201:3000", "http://localhost:3000", "http://192.168.1.7:3000"],
+    origin: ["http://192.168.43.201:3000", "http://localhost:3000", "http://192.168.1.7:3000", "http://localhost:80", "http://localhost"],
     credentials: true
 })); 
 
