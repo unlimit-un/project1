@@ -6,6 +6,9 @@ import { CardFillColorNonFooter } from '../components/Cards'
 import  Logo from '../assets/Logo.jpg'
 import  UserDemo from '../assets/business-man.png'
 import  QRCode from '../assets/demo.jpg'
+import  About1 from '../assets/About1.png'
+import  About2 from '../assets/About2.png'
+import  About3 from '../assets/About3.png'
 import { NavbarHomepage } from '../components/structure/NavbarM'
 import FooterM from '../components/structure/FooterM'
 
@@ -77,7 +80,7 @@ const Contact = () => {
                 </div>
                 <div className="row justify-around">
                     <div className="col-md-3 col-12">
-                        <img src={QRCode} alt="QRCode.png" className="" />
+                        <img src={About3} alt="About3.png" className="" />
                     </div>
                     <div className="col-md-5 col-12">
                         <h1 className="text-2xl">จัดการตารางงาน ตารางเวร การลา</h1>
@@ -92,7 +95,7 @@ const Contact = () => {
                 </div>
                 <div className="row justify-around !mt-16">
                     <div className="col-md-3 col-12 order-2">
-                        <img src={QRCode} alt="QRCode.png" className="" />
+                        <img src={About2} alt="About2.png" className="" />
                     </div>
                     <div className="col-md-5 col-12 order-1">
                         <h1 className="text-2xl">สถานที่ แจ้งเตือนสถานะงานต่างๆ และการอนุมัติ</h1>
@@ -107,7 +110,7 @@ const Contact = () => {
                 </div>
                 <div className="row justify-around !mt-16">
                     <div className="col-md-3 col-12">
-                        <img src={QRCode} alt="QRCode.png" className="" />
+                        <img src={About1} alt="About1.png" className="" />
                     </div>
                     <div className="col-md-5 col-12">
                         <h1 className="text-2xl">แจ้งซ่อม วัสดุครุภัณฑ์</h1>
