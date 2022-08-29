@@ -43,13 +43,13 @@ const Contact = () => {
                                     <img src={UserDemo} alt="UserDemo.png" className="w-36 h-36 rounded-circle" />
                                     <ul className="p-0 m-0 flex flex-col gap-2 mt-3">
                                         <li>
-                                            <FontAwesomeIcon icon={faPhone}/> 091-374-7011
+                                            <FontAwesomeIcon icon={faPhone}/> 064-112-0621
                                         </li>
                                         <li>
-                                            <FontAwesomeIcon icon={faFacebook}/> Unlimit Unarn
+                                            <FontAwesomeIcon icon={faFacebook}/> Suphatarachai Rongsak
                                         </li>
                                         <li>
-                                            <FontAwesomeIcon icon={faEnvelopeOpenText}/> unlimit705@gmail.com
+                                            <FontAwesomeIcon icon={faEnvelopeOpenText}/> suphatarachai@gmail.com
                                         </li>
                                     </ul>
                                     <img src={QRCode} alt="QRCode.png" className="w-20 h-20 rounded"  />
@@ -63,10 +63,10 @@ const Contact = () => {
                                             <FontAwesomeIcon icon={faPhone}/> 091-374-7011
                                         </li>
                                         <li>
-                                            <FontAwesomeIcon icon={faFacebook}/> Unlimit Unarn
+                                            <FontAwesomeIcon icon={faFacebook}/> Siriwimon Panno
                                         </li>
                                         <li>
-                                            <FontAwesomeIcon icon={faEnvelopeOpenText}/> unlimit705@gmail.com
+                                            <FontAwesomeIcon icon={faEnvelopeOpenText}/> @gmail.com
                                         </li>
                                     </ul>
                                     <img src={QRCode} alt="QRCode.png" className="w-20 h-20 rounded"  />

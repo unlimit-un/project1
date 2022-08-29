@@ -15,6 +15,7 @@ import { getNotifyRepairByManagerIdStatusWaiting } from '../../controllers/manag
 import { geturgentData as geturgentengineerData } from '../../controllers/engineer/UrgentControllers';
 
 export const SidebarLeftManager = () => {
+    
     const [open, setOpen] = useState({
         person: {
             status: false,
@@ -104,21 +105,39 @@ export const SidebarLeftManager = () => {
                                         <FontAwesomeIcon className={`group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-100 ${open.person.status?'rotate-180 ':'rotate-0 '}`} icon={faAngleDown}/>
                                     </button>
                                 </div>
+                                {/* พนักงาน */}
                                 <Collapse in={open.person.status}>
                                     <div id={open.person.id} className="py-2">
                                         <ul className=" px-3 ">
                                             <SubMenuLink label={"แม่บ้าน"} path="/manager/manage_emp/maid"/>
-                                            <SubMenuLink label={"ช่างซ่อม"} path="/manager/manage_emp/en"/>
-                                            <SubMenuLink label={"ช่างซ่อมภายนอก"} path="/manager/manage_emp/os_en"/>
                                             <SubMenuLink label={"เพิ่มพนักงานในระบบ"} path="/manager/manage_emp/ins"/>
-                                            <SubMenuLink label={"เพิ่มแผนกช่างซ่อม"} path="/manager/manage_emp/dept"/>
                                         </ul>
+                                        <div className="group">
+                                            <button
+                                                onClick={(e)=>onToggleMenuPerson(e)}
+                                                aria-expanded = {open.person.status}
+                                                aria-controls = {open.person.id} 
+                                                className = {classTogglePerson+" flex justify-between items-center w-100 p-2 px-3 text-start group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-300"}
+                                            >
+                                                <span className="flex justify-items-end"> ช่าง</span> 
+                                                {/* <li>ช่าง</li> */}
+                                                <FontAwesomeIcon className={`group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-100 ${open.person.status?'rotate-180 ':'rotate-0 '}`} icon={faAngleDown}/>
+                                            </button>
+                                        </div>
+
+                                    <Collapse in={open.person.status}>
+                                        <div id={open.person.id} className="py-2">
+                                            <ul className="px-3">
+                                                    <SubMenuLink label={"ช่างซ่อม"} path="/manager/manage_emp/en"/>
+                                                    <SubMenuLink label={"เพิ่มแผนกช่างซ่อม"} path="/manager/manage_emp/dept"/>
+                                                    <SubMenuLink label={"ช่างซ่อมภายนอก"} path="/manager/manage_emp/os_en"/>
+                                            </ul>
+                                        </div>
+                                    </Collapse>
                                     </div>
-                                </Collapse>
+                                </Collapse>  
                             </li>
                             
-                            <LinkMenuM path="/manager/repair" icon={faBell} label="แจ้งซ่อม" resetDropDown={resetDropDown}/>
-                            <LinkMenuM path="/manager/material" icon={faScrewdriverWrench} label="วัสดุครุภัณฑ์" resetDropDown={resetDropDown}/>
                             <li className=" p-0">
                                 <div className="group">
                                     <button
@@ -131,6 +150,7 @@ export const SidebarLeftManager = () => {
                                         <FontAwesomeIcon className={`group-hover:!text-white group-hover:bg-blue-500 transition-all ease-in-out duration-100 ${open.maid_duty.status?'rotate-180 ':'rotate-0'}`} icon={faAngleDown}/>
                                     </button>
                                 </div>
+                                {/* งานแม่บ้าน */}
                                 <Collapse in={open.maid_duty.status}>
                                     <div id={open.maid_duty.id} className="py-2">
                                         <ul className=" px-3 ">
@@ -155,6 +175,7 @@ export const SidebarLeftManager = () => {
                                         <FontAwesomeIcon className={`group-hover:!text-white group-hover:bg-blue-500 transition-all ease-in-out duration-100 ${open.schedual.status?'rotate-180 ':'rotate-0'}`} icon={faAngleDown}/>
                                     </button>
                                 </div>
+                                {/* งานและกิจกรรม */}
                                 <Collapse in={open.schedual.status}>
                                     <div id={open.schedual.id} className="py-2">
                                         <ul className=" px-3 ">
@@ -177,6 +198,7 @@ export const SidebarLeftManager = () => {
                                         <FontAwesomeIcon className={`group-hover:!text-white group-hover:bg-blue-500 ease-in-out duration-100 ${open.leave.status?'rotate-180 ':'rotate-0'}`} icon={faAngleDown}/>
                                     </button>
                                 </div>
+                                {/* ลา */}
                                 <Collapse in={open.leave.status}>
                                     <div id={open.leave.id} className="py-2">
                                         <ul className=" px-3 ">
@@ -187,6 +209,8 @@ export const SidebarLeftManager = () => {
                                 </Collapse>
                             </li>
                             <LinkMenuM path="/manager/request" icon={faClipboardCheck} label="คำขออนุมัติ" resetDropDown={resetDropDown}/>
+                            <LinkMenuM path="/manager/repair" icon={faBell} label="แจ้งซ่อม" resetDropDown={resetDropDown}/>
+                            <LinkMenuM path="/manager/material" icon={faScrewdriverWrench} label="วัสดุครุภัณฑ์" resetDropDown={resetDropDown}/>
                             <LinkMenuM path="/manager/location" icon={faBuilding} label="จัดการสถานที่" resetDropDown={resetDropDown}/>
                             <li className=" p-0 group  text-sm">
                                 <button onClick={()=>SignOutFunc(navigate)} className="p-2 px-3 text-gray-600 no-underline w-100 block group-hover:!text-white hover:bg-red-500 ease-in-out duration-300 text-left">
