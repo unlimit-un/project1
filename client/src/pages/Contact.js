@@ -3,12 +3,15 @@ import { faEnvelope, faEnvelopeOpenText, faPhone } from '@fortawesome/free-solid
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import { CardFillColorNonFooter } from '../components/Cards'
-import  Logo from '../assets/Logo.jpg'
 import  UserDemo from '../assets/business-man.png'
-import  QRCode from '../assets/demo.jpg'
+import  QRCode from '../assets/qrcode.png'
 import  About1 from '../assets/About1.png'
 import  About2 from '../assets/About2.png'
 import  About3 from '../assets/About3.png'
+import  Page from '../assets/page.jpg'
+import  Imgmin from '../assets/siri.jpg'
+import  Imgnick from '../assets/nick.jpg'
+import  Imgunlimit from '../assets/unlimit.jpg'
 import { NavbarHomepage } from '../components/structure/NavbarM'
 import FooterM from '../components/structure/FooterM'
 
@@ -17,7 +20,7 @@ const Contact = () => {
   return (
     <>
         <NavbarHomepage/>
-        <img src={Logo} alt="bg.png" className="w-full max-h-36" />
+        <img src={Page} alt="page.jpg" className="w-full max-h-36" />
         <div className="bg-blue-200 container-fluid min-h-screen">
             <div className="container py-5">
                 <div className="card max-w-3xl mx-auto -translate-y-20">
@@ -26,7 +29,7 @@ const Contact = () => {
                         <div className="row row-cols-md-3 row-cols-1">
                             <div className="col border-r-2 border-r-slate-300">
                                 <div className="flex flex-col gap-3 items-center">
-                                    <img src={UserDemo} alt="UserDemo.png" className="w-36 h-36 rounded-circle" />
+                                    <img src={Imgunlimit} alt="unlimit.jpg" className="w-36 h-36 rounded-circle" />
                                     <ul className="p-0 m-0 flex flex-col gap-2 mt-3">
                                         <li>
                                             <FontAwesomeIcon icon={faPhone}/> 091-374-7011
@@ -38,35 +41,35 @@ const Contact = () => {
                                             <FontAwesomeIcon icon={faEnvelopeOpenText}/> unlimit705@gmail.com
                                         </li>
                                     </ul>
-                                    <img src={QRCode} alt="QRCode.png" className="w-20 h-20 rounded"  />
+                                    <img src={QRCode} alt="qrcode.png" className="w-20 h-20 rounded"  />
                                 </div>
                             </div>
                             <div className="col border-r-2 border-r-slate-300">
                                 <div className="flex flex-col gap-3 items-center">
-                                    <img src={UserDemo} alt="UserDemo.png" className="w-36 h-36 rounded-circle" />
+                                    <img src={Imgmin} alt="siri.jpg" className="w-36 h-36 rounded-circle" />
                                     <ul className="p-0 m-0 flex flex-col gap-2 mt-3">
                                         <li>
-                                            <FontAwesomeIcon icon={faPhone}/> 091-374-7011
+                                            <FontAwesomeIcon icon={faPhone}/> 098-631-6036
                                         </li>
                                         <li>
-                                            <FontAwesomeIcon icon={faFacebook}/> Unlimit Unarn
+                                            <FontAwesomeIcon icon={faFacebook}/> Siriwimon Panno
                                         </li>
                                         <li>
-                                            <FontAwesomeIcon icon={faEnvelopeOpenText}/> unlimit705@gmail.com
+                                            <FontAwesomeIcon icon={faEnvelopeOpenText}/> nawamin987987@gmail.com
                                         </li>
                                     </ul>
-                                    <img src={QRCode} alt="QRCode.png" className="w-20 h-20 rounded"  />
+                                    <img src={QRCode} alt="qrcode.png" className="w-20 h-20 rounded"  />
                                 </div>
                             </div>
                             <div className="col">
                                 <div className="flex flex-col gap-3 items-center">
-                                    <img src={UserDemo} alt="UserDemo.png" className="w-36 h-36 rounded-circle" />
+                                    <img src={Imgnick} alt="nick.jpg" className="w-36 h-36 rounded-circle" />
                                     <ul className="p-0 m-0 flex flex-col gap-2 mt-3">
                                         <li>
                                             <FontAwesomeIcon icon={faPhone}/> 091-374-7011
                                         </li>
                                         <li>
-                                            <FontAwesomeIcon icon={faFacebook}/> Unlimit Unarn
+                                            <FontAwesomeIcon icon={faFacebook}/> SupataraChai
                                         </li>
                                         <li>
                                             <FontAwesomeIcon icon={faEnvelopeOpenText}/> unlimit705@gmail.com
