@@ -49,15 +49,6 @@ const Contact = () => {
                                     <img src={Imgmin} alt="siri.jpg" className="w-36 h-36 rounded-circle" />
                                     <ul className="p-0 m-0 flex flex-col gap-2 mt-3">
                                         <li>
-<<<<<<< HEAD
-                                            <FontAwesomeIcon icon={faPhone}/> 064-112-0621
-                                        </li>
-                                        <li>
-                                            <FontAwesomeIcon icon={faFacebook}/> Suphatarachai Rongsak
-                                        </li>
-                                        <li>
-                                            <FontAwesomeIcon icon={faEnvelopeOpenText}/> suphatarachai@gmail.com
-=======
                                             <FontAwesomeIcon icon={faPhone}/> 098-631-6036
                                         </li>
                                         <li>
@@ -65,7 +56,6 @@ const Contact = () => {
                                         </li>
                                         <li>
                                             <FontAwesomeIcon icon={faEnvelopeOpenText}/> nawamin987987@gmail.com
->>>>>>> 1d3bb74804b770fe4be5e03e756894626ac8e9c1
                                         </li>
                                     </ul>
                                     <img src={QRCode} alt="qrcode.png" className="w-20 h-20 rounded"  />
@@ -79,14 +69,10 @@ const Contact = () => {
                                             <FontAwesomeIcon icon={faPhone}/> 091-374-7011
                                         </li>
                                         <li>
-<<<<<<< HEAD
-                                            <FontAwesomeIcon icon={faFacebook}/> Siriwimon Panno
-=======
                                             <FontAwesomeIcon icon={faFacebook}/> SupataraChai
->>>>>>> 1d3bb74804b770fe4be5e03e756894626ac8e9c1
                                         </li>
                                         <li>
-                                            <FontAwesomeIcon icon={faEnvelopeOpenText}/> @gmail.com
+                                            <FontAwesomeIcon icon={faEnvelopeOpenText}/> unlimit705@gmail.com
                                         </li>
                                     </ul>
                                     <img src={QRCode} alt="QRCode.png" className="w-20 h-20 rounded"  />
