@@ -162,6 +162,7 @@ export const Leave = () => {
         date_end:'',
         status:''
     })
+    const [defaultView, setDefaultView] = useState(null)
 
     const [dataTableLeaveWaiting, setDataTableLeaveWaiting] = useState([]);
     const [dataTableLeaveConsidered, setDataTableLeaveConsidered] = useState([]);
@@ -227,6 +228,12 @@ export const Leave = () => {
 
         setLeaveTypeId(leaveData['leave_type_id'])
         setStatus(leaveData['status'])
+    }
+
+    const showViewModal = async leave_id =>{
+        const [leaveData] = await getLeaveById(leave_id);
+        
+        setDefaultView({...leaveData})
     }
 
     const reState = () =>{
@@ -305,9 +312,11 @@ export const Leave = () => {
                   status: "รอดำเนินการ",
                   view: (
                     <ModalButton
-                      classBtn="btn btn-outline-primary"
-                      setModalShow={setModalShow}
-                      icon={faEye}
+                        callback={()=>{showViewModal(item['leave_id'])}}
+                        modalShow={modalShow}
+                        classBtn="btn btn-outline-primary"
+                        setModalShow={setModalShow}
+                        icon={faEye}
                     />
                   ),
                 };
@@ -342,7 +351,7 @@ export const Leave = () => {
                         DeleteFnc={async()=>{if(await deleteLeave({leave_id: item['leave_id']})) reState();}}
                         setModalShow={setModalShowEdit}
                     />, 
-                    view:<ModalButton classBtn="btn btn-outline-primary" setModalShow={setModalShow} callback={()=>{}} icon={faEye}/>
+                    view:<ModalButton classBtn="btn btn-outline-primary" setModalShow={setModalShow} callback={()=>{showViewModal(item['leave_id'])}} icon={faEye}/>
                 }
             })
             
@@ -433,7 +442,7 @@ export const Leave = () => {
             </>
         )
     }
-
+    console.log(!defaultView);
     const Modal = {
         mHead: (
             <>
@@ -445,25 +454,33 @@ export const Leave = () => {
                 <div className="row">
                     <div className="col-lg-3 col-md-4 col-12">
                         <ul>
-                            <li>รหัสพนักงาน</li>
-                            <li>ชื่อ - นามสกุล</li>
+                            <li>รหัสการลา</li>
+                            <li>ชื่อผู้ร้องขอ</li>
                             <li>แม่บ้าน / ช่าง</li>
                             <li>ประเภทการลา</li>
+                            <li>หัวข้อ</li>
                             <li>รายละเอียดการลา</li>
                             <li>ลาวันที่ - ถึงวันที่</li>
                             <li>สถานะ</li>
+                            <li>วันที่เพิ่มข้อมูล</li>
                         </ul>
                     </div>
                     <div className="col-lg-9 col-md-8 col-12">
-                        <ul className="gap-2">
-                            <li>3456123</li>
-                            <li>unlimit unarn</li>
-                            <li>ช่างซ่อม</li>
-                            <li>ลากิจ</li>
-                            <li>ไปธุระต่างจังหวัด</li>
-                            <li>1/02/65 - 3/02/65</li>
-                            <li>"กำลังดำเนินการ"</li>
-                        </ul>
+                            {
+                                defaultView? 
+                                    <ul className="gap-2">
+                                        <li>{defaultView['leave_code']}</li>
+                                        <li>{defaultView['requester']}</li>
+                                        <li>{defaultView['maid_id']?"แม่บ้าน":"ช่างซ่อม"}</li>
+                                        <li>{defaultView['leave_type_name']}</li>
+                                        <li>{defaultView['title']}</li>
+                                        <li>{defaultView['description']}</li>
+                                        <li>{`${defaultView['date_start']} ถึง ${defaultView['date_end']}`}</li>
+                                        <li className={defaultView['status'] === 0 ? "text-warning": defaultView['status'] === 1? "text-success": "text-danger"}>{defaultView['note']}</li>
+                                        <li>{convertTZ.getFullDate(defaultView['time_reg'])}</li>
+                                    </ul>:
+                                <></>
+                            }
                     </div>
                 </div>
             </>

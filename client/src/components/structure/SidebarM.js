@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import Logo from '../../assets/business-man.png'
 import { Collapse } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown, faHome, faScrewdriverWrench, faUserGear, faTable, faBell, faClipboardList, faClipboardCheck, faBuilding, faPowerOff, faExclamationCircle, faUsers, faWarning } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDown, faHome, faScrewdriverWrench, faUserGear, faTable, faBell, faClipboardList, faClipboardCheck, faBuilding, faPowerOff, faExclamationCircle, faUsers, faWarning, faReceipt } from "@fortawesome/free-solid-svg-icons";
 import { LinkMenuM, SubMenuLink } from '../LinkMenuM';
 import {SignOutFunc} from '../../functions/AuthFunc'
 import { useNavigate } from 'react-router-dom';
@@ -212,6 +212,7 @@ export const SidebarLeftManager = () => {
                             <LinkMenuM path="/manager/repair" icon={faBell} label="แจ้งซ่อม" resetDropDown={resetDropDown}/>
                             <LinkMenuM path="/manager/material" icon={faScrewdriverWrench} label="วัสดุครุภัณฑ์" resetDropDown={resetDropDown}/>
                             <LinkMenuM path="/manager/location" icon={faBuilding} label="จัดการสถานที่" resetDropDown={resetDropDown}/>
+                            <LinkMenuM path="/manager/order" icon={faReceipt} label="สั่งซื้อวัสดุครุภัณฑ์" resetDropDown={resetDropDown}/>
                             <li className=" p-0 group  text-sm">
                                 <button onClick={()=>SignOutFunc(navigate)} className="p-2 px-3 text-gray-600 no-underline w-100 block group-hover:!text-white hover:bg-red-500 ease-in-out duration-300 text-left">
                                     <FontAwesomeIcon icon={faPowerOff} className="text-black group-hover:!text-white ease-in-out duration-300"/> ออกจากระบบ

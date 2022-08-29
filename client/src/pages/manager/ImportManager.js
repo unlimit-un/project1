@@ -10,5 +10,6 @@ import IndexManager from './Index';
 import ManageEmp from './ManageEmp';
 import HomepageM from './HomePageM';
 import MaidDuty from './MaidDuty';
+import OrderMaterial from './OrderMaterial';
 
-export { Bookmarks, IndexManager, Leave, Location, ManageEmp, Material, Notify, Repair, Request, SchedualWork, HomepageM, MaidDuty }
+export { OrderMaterial, Bookmarks, IndexManager, Leave, Location, ManageEmp, Material, Notify, Repair, Request, SchedualWork, HomepageM, MaidDuty }

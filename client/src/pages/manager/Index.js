@@ -7,6 +7,7 @@ import FooterM from '../../components/structure/FooterM'
 import { checkAutoRedirectUser } from '../../functions/AuthFunc'
 import { useLocation, useNavigate } from 'react-router-dom'
 import * as Manager from './ImportManager'
+import { PageNotFound } from '../PageError'
 
 const IndexManager = () => {
     const navigate = useNavigate();
@@ -41,7 +42,8 @@ const IndexManager = () => {
                                     pathname.includes('/manager/notify')?<Manager.Notify/>:
                                     pathname.includes('/manager/location')?<Manager.Location/>:
                                     pathname.includes('/manager/maid_duty')?<Manager.MaidDuty/>:
-                                    <Manager.HomepageM/>
+                                    pathname.includes('/manager/order')?<Manager.OrderMaterial/>:
+                                    <PageNotFound/>
                                 }
                             </div>
                         </div>
