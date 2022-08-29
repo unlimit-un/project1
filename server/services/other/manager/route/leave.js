@@ -89,7 +89,10 @@ router.get('/getLeaveById', async (req, res)=>{
         const result = await db.query(`
             SELECT l.*, 
                 IF(l.engineer_id IS NOT NULL, CONCAT(e.engineer_code, "-", e.engineer_name), CONCAT(m.maid_code, "-", m.maid_name)) AS requester,
-                lt.leave_type_name
+                lt.leave_type_name,
+			IF(l.status = 0, "รอดำเนินการ",
+				IF(l.status = 1, "อนุมัติ", "ไม่อนุมัติ")
+			) AS note
             FROM ${"`leave`"} AS l
             LEFT JOIN leave_type AS lt ON lt.leave_type_id = l.leave_type_id
             LEFT JOIN maid AS m ON m.maid_id = l.maid_id

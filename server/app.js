@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const multer = require('multer');
 
 require('dotenv').config();
 const bcrypt = require('bcryptjs');
@@ -9,7 +8,7 @@ const { escape } = require('mysql2')
 const db = require('./config/database');
 const jwt = require('jsonwebtoken')
 const auth = require('./middleware/verify_token');
-const { upload, uploadFile } = require('./services/other/upload');
+const { uploadFile } = require('./services/other/upload');
 const app = express();
 // const origin = process.env.NODE_ENV === 'development'? "http://localhost:3000": "http://192.168.43.201:3000";
 
